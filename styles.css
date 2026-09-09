@@ -1,0 +1,1624 @@
+/* ==========================================================================
+   HOLDERA — hero landing
+   Art direction: light grey studio hero, grotesk type, orange accent, and a
+   warm near-black "sheet" that slides up over the hero on scroll while the
+   brain point cloud sinks behind it (brain.js). Dark from the sheet to the
+   footer since 08-09-2026.
+   Fonts: Geist + Geist Mono (one superfamily). Colour lives only in :root (incl. alpha layers).
+   Three colour groups: the light hero, --sh-* for the dark content sheet, and
+   --on-ink-* for the surfaces that were dark before the sheet was (side
+   drawer, floating island, hero bar).
+   Named exceptions: 6px double-bezel padding; hero entrance choreography at 900/1100ms.
+   ========================================================================== */
+
+/* Geist + Geist Mono, alojadas aquí (SIL OFL). Generado por _build/fetch-fonts.js
+   el 2026-09-08: subconjuntos latin y latin-ext, variables en peso. */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("assets/fonts/geist-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("assets/fonts/geist-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url("assets/fonts/geist-mono-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url("assets/fonts/geist-mono-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  --font: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* light hero */
+  --bg: #e5e5e5;
+  --bg-2: #f1f1f1;
+  --bg-3: #cbcbcb;
+  --surface: #ededed;
+  --surface-2: #f7f7f7;
+  --text: #141414;
+  --text-2: #3d3d3d;
+  --text-muted: #666666;
+  --text-fade: #7a7a7a;
+  --border: rgba(20, 20, 20, 0.10);
+  --border-strong: rgba(20, 20, 20, 0.22);
+  --white: #ffffff;
+  --white-40: rgba(255, 255, 255, 0.40);
+  --white-70: rgba(255, 255, 255, 0.70);
+
+  /* ink (buttons, marks, bar) */
+  --ink: #101010;
+  --ink-2: #1d1d1d;
+  --ink-hi: rgba(255, 255, 255, 0.12);
+
+  /* accent */
+  --accent: #f08a24;
+  --accent-hover: #ff9a37;
+  /* --accent-ink is "the accent, safe as TEXT on the content sheet". Its VALUE
+     flips with the sheet, its meaning does not — which is why inverting the
+     sheet needed no selector changes here. On the old near-white sheet #f08a24
+     measured 2.42:1 and failed AA, so it was darkened to #a8530a (5.19:1). On
+     the dark sheet the failure is the other way round — #a8530a measures 2.5:1
+     on #121110 — so it is lightened instead. Decorative accent (dots, halos,
+     pulses, the fish rim) still uses --accent. */
+  --accent-ink: #f59b45;
+  /* The accent as TEXT on the LIGHT HERO. .stars is the only consumer, and it
+     is why --accent-ink could not simply be flipped: one of its ten users was
+     never on the sheet. #f08a24 measures 2.42:1 on the hero grey; this is the
+     old --accent-ink value, 5.19:1, kept for exactly that job. */
+  /* Darkened from #a8530a on 08-09-2026, and the guard is why. #a8530a measures
+     4.27:1 on the hero grey — fine for .stars (decorative, 3:1) but NOT for the
+     service list's hover colour, which is 18px body text and owes 4.5:1.
+     #9c4c08 is 4.83:1 and improves both other consumers: the stars go 4.27 ->
+     4.83, and the white tick of the consent checkbox (which is drawn ON this
+     colour by accent-color) goes 5.38 -> 6.09. */
+  --accent-hero: #9c4c08;
+  --accent-soft: rgba(240, 138, 36, 0.18);
+
+  /* Perlin wave field (waves.js reads both). The thread is WHITE, not ink, and
+     that is an accessibility decision rather than a taste one. The palest stop
+     of the H1 gradient (--text-fade #7a7a7a) measures 3.41:1 on the hero grey,
+     and the house floor for large text is 3:1 — there is almost no headroom.
+     An ink hairline behind that word drops the local ground to ~#d5d5d5 and the
+     ratio to 2.93:1, i.e. a fail. A white hairline LIFTS the local ground
+     instead, so every piece of hero text ends up with MORE contrast than it had
+     before the field existed, not less. Measured, not assumed:
+     _build/contrast.js checks the woven ground. */
+  /* There is no --wave-line-on-dark. There was, and it could never be seen:
+     the field is z-index 0 inside the hero and the showcase veil is z-index 3
+     at 93% opacity, so only 7% of the thread survives — about 1/255. Recolouring
+     something that is covered is dead code, so the whole tone-lerp went with it. */
+  --wave-line: rgba(255, 255, 255, 0.62);
+  /* The field is masked so it reads as weather rather than wallpaper: full in
+     the lower middle where the cloud and the wordmark live, gone at the top
+     corners where the nav and the card sit. */
+  --wave-mask: radial-gradient(116% 98% at 54% 82%,
+    rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 34%, rgba(0, 0, 0, 0.72) 58%,
+    rgba(0, 0, 0, 0.30) 79%, rgba(0, 0, 0, 0) 97%);
+
+  /* Service showcase (directional hover reveal). The veil is what turns the
+     light hero dark while a service is held: warm near-black, same family as
+     the content sheet, never #000000. */
+  --sc-veil: rgba(11, 10, 9, 0.93);
+  /* The big service title sits ON TOP of the artwork, and one of the five
+     families (Asesorías) is a near-white ivory panel. Without a scrim the
+     title would be #f5f3ef on #e9e1d5 — about 1.1:1. This is the shadow that
+     buys the title its contrast back wherever it lands. */
+  --sc-title-scrim: radial-gradient(58% 62% at 50% 50%,
+    rgba(8, 7, 6, 0.80) 0%, rgba(8, 7, 6, 0.62) 46%, rgba(8, 7, 6, 0) 100%);
+  /* There is no --sc-img-shadow either. clip-path clips an element's ENTIRE
+     rendering, outer box-shadows included, and .sc__img is clipped by
+     definition — even fully open, its polygon is exactly the border box. Two
+     drop shadows were being declared and clipped to nothing on every panel.
+     The panels are separated from the backdrop by the inset hairline below. */
+
+  /* planet — --planet-* are read by planet.js, --orbit-title is the resting
+     colour of a step title before the scroll wipe brightens it */
+  --planet-rim: #f0a24c;
+  --planet-cloud: #e8ded0;
+  /* The resting colour of a step title, before the scroll wipe brings the
+     bright copy in over it. It is the FALLBACK reading of the word, not a
+     shadow: at 38-108px this is WCAG large text and owes 3:1. The first value
+     tried here, #4a443c, measured 1.96:1 and the guard caught it. 4.52:1 keeps
+     a clear step down from the wiped-in --sh-text (17.02:1) with room to spare. */
+  --orbit-title: #847b6c;
+
+  /* The mobile hero->sheet seam. On desktop the sheet SLIDES OVER the hero as
+     a rounded card with a shadow, so the boundary is a designed edge. Below
+     901px there is no pin and no overlap (main{margin-top:0}), so light grey
+     would meet near-black on a straight line — banned by the house floor,
+     which asks for >=3 intermediate stops or >=120px of overlap. These are
+     the three stops; the ramp below runs over 200px. */
+  --seam-1: #a09b93;
+  --seam-2: #4d4842;
+  --seam-3: #22201d;
+
+  /* brain hologram — read by brain.js, which is why they live here and not in
+     the shader. The cloud is shaded by measured surface curvature: crowns of
+     the gyri take --brain-crown, the sulci between them take --brain-sulcus.
+     Two warm neutrals a long way apart in value and close in hue, so the folds
+     read as structure without introducing a second colour to the palette. */
+  /* These are the colours the shader MIXES, not the colours you see: each point
+     is drawn at partial alpha over --bg #e5e5e5, which lifts it a long way. A
+     crown at #3a342c composites to roughly #6a625a on the hero, which is the
+     mid tone we actually want. Picking the on-screen value here instead gives a
+     dusty, washed-out cloud — that was the first attempt. */
+  --brain-crown: #3a342c;
+  --brain-sulcus: #0c0b0a;
+
+  /* partner brand marks — used only for the hover tint on the partners strip
+     (generated with the marks by _build/build-partner-logos.js) */
+  --brand-openai: #412991;
+  --brand-anthropic: #191919;
+  --brand-googlecloud: #4285F4;
+  --brand-azure: #0078D4;
+  --brand-n8n: #EA4B71;
+  --brand-make: #6D00CC;
+  --brand-hubspot: #FF7A59;
+  --brand-zapier: #FF4F00;
+
+  /* content sheet (DARK) — slides up over the light hero.
+     Inverted 07-09-2026 on Alex's brief: the hero stays light grey, and from the
+     moment the sheet rises everything is dark to the footer. The token NAMES are
+     unchanged on purpose — every rule in this file already reads the sheet's
+     colour from --sh-*, so the inversion is a palette swap, not a rewrite.
+     Warm near-blacks, never #000000 (banned): the sheet has to sit under a warm
+     grey hero and a #f08a24 accent without turning blue. */
+  --sh-bg: #121110;
+  --sh-bg-2: #191715;
+  --sh-surface: #1c1a17;
+  --sh-surface-2: #211e1b;
+  --sh-text: #f5f3ef;
+  --sh-text-2: #d2ccc2;
+  --sh-muted: #9c958b;
+  --sh-border: rgba(255, 250, 242, 0.10);
+  --sh-border-strong: rgba(255, 250, 242, 0.22);
+  /* Form fields still need their own, heavier border, and for the mirror of the
+     old reason: a #1c1a17 field on a #191715 panel is ~1.06:1, so the border is
+     the ONLY thing identifying the control and WCAG 1.4.11 asks for 3:1. Kept
+     separate from --sh-border-strong so the .tag pills stay a hairline. */
+  --sh-field-border: rgba(255, 250, 242, 0.44);
+  /* The boundary of a CONTROL whose only affordance is its outline — the ghost
+     and secondary buttons. --sh-border-strong is a decorative hairline and
+     composites to just 1.95:1 on --sh-bg, under the 3:1 WCAG 1.4.11 asks of
+     anything needed to identify a control. (It failed on the old light sheet
+     too, at ~1.5:1 — this is a fix, not a regression.) 0.36 is the lowest step
+     that clears 3:1 against ALL FOUR sheet backgrounds: 3.24 / 3.27 / 3.27 /
+     3.23. Do not lower it without re-running _build/contrast.js. */
+  --sh-control-border: rgba(255, 250, 242, 0.36);
+  /* the deepest sheet surface and a 40% ivory stroke: both read by panel.css */
+  --sh-surface-3: #171513;
+  --sh-tint: rgba(255, 250, 242, 0.035);
+  /* On a dark surface a white inset bevel finally means something — it measured
+     1.00:1 on the old near-white sheet and was removed. This is the light-source
+     highlight along the top edge of a raised card. */
+  --sh-bevel: inset 0 1px 0 rgba(255, 250, 242, 0.07);
+
+  /* on ink — the surfaces that stay dark on a light page:
+     side drawer, floating island, hero bar, terminal */
+  --on-ink-text: #f4f4f4;
+  --on-ink-text-2: #c9c9c9;
+  --on-ink-muted: #8f8f8f;
+  --on-ink-border: rgba(255, 255, 255, 0.08);
+  --on-ink-border-strong: rgba(255, 255, 255, 0.16);
+  --on-ink-hi: rgba(255, 255, 255, 0.06);
+
+  /* alpha layers (white / black / brand tints) — every translucent colour used below */
+  --w-0: rgba(255, 255, 255, 0);
+  --w-28: rgba(255, 255, 255, 0.28);
+  --w-35: rgba(255, 255, 255, 0.35);
+  --w-60: rgba(255, 255, 255, 0.60);
+  --w-84: rgba(255, 255, 255, 0.84);
+  /* the inset hairline of the showcase panels */
+  --w-22: rgba(255, 250, 242, 0.22);
+  --w-40: rgba(255, 250, 242, 0.40);
+  --w-90: rgba(255, 255, 255, 0.90);
+  --k-0: rgba(0, 0, 0, 0);
+  --k-06: rgba(0, 0, 0, 0.06);
+  --k-08: rgba(0, 0, 0, 0.08);
+  /* black alpha on a LIGHT surface — the only one left is the arrow ring on the
+     accent panel of the hero card. It was removed with the viz strokes and came
+     back when that panel needed it. */
+  --k-24: rgba(0, 0, 0, 0.24);
+  --text-a0: rgba(20, 20, 20, 0);
+  --text-a06: rgba(20, 20, 20, 0.06);
+  --text-a14: rgba(20, 20, 20, 0.14);
+  --accent-a0: rgba(240, 138, 36, 0);
+  --accent-a09: rgba(240, 138, 36, 0.09);
+  --accent-a10: rgba(240, 138, 36, 0.10);
+  --bar-a: rgba(18, 18, 18, 0.96);
+  --bar-b: rgba(40, 40, 40, 0.92);
+  /* the fixed nav's glass: light while it rides over the hero / the page band,
+     dark once the sheet has reached it (paso 6) */
+  --nav-glass-light: rgba(229, 229, 229, 0.82);
+  --nav-glass: rgba(18, 17, 16, 0.80);
+  --scrim: rgba(6, 5, 4, 0.66);   /* read by panel.css (popover scrim); the drawer no longer has one */
+  --panel: #23201c;
+
+  /* shape, motion, layout */
+  --r-xl: 32px;
+  --r-lg: 24px;
+  --r-md: 16px;
+  --r-sm: 10px;
+  --r-pill: 999px;
+  --r-sheet: 40px;
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-in: cubic-bezier(0.55, 0, 1, 0.45);
+  --t-fast: 200ms;
+  --t-mid: 420ms;
+  --t-slow: 900ms;
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px -8px rgba(0, 0, 0, 0.10), 0 28px 56px -24px rgba(0, 0, 0, 0.16);
+  --shadow-ink: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 8px 20px -10px rgba(0, 0, 0, 0.55), 0 24px 44px -20px rgba(0, 0, 0, 0.45);
+  --shadow-dk: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 30px 80px -30px rgba(0, 0, 0, 0.7);
+  /* Elevation on the DARK sheet. A drop shadow lifts a light card off a light
+     ground; on a dark ground there is nothing left to darken, so the card is
+     raised by a lit TOP EDGE instead and the shadow only deepens the seat.
+     That is why --shadow-sh leads with the bevel. */
+  --shadow-sh: inset 0 1px 0 rgba(255, 250, 242, 0.06), 0 1px 2px rgba(0, 0, 0, 0.40), 0 14px 30px -16px rgba(0, 0, 0, 0.60), 0 36px 70px -36px rgba(0, 0, 0, 0.55);
+  /* The sheet's own edge, where the dark sheet meets the light hero above it.
+     Here a dark shadow DOES work — it is cast upward onto the light hero — and
+     the hairline is light so the sheet reads as a lid with a lit rim. */
+  --shadow-sheet: 0 -1px 0 rgba(255, 250, 242, 0.10), 0 -14px 34px -14px rgba(20, 18, 16, 0.26), 0 -44px 110px -24px rgba(20, 18, 16, 0.22);
+  --nav-h: 76px;
+  --bar-h: 46px;
+  --bar-inset: 20px;
+  --gutter: clamp(20px, 2.5vw, 36px);
+  --z-nav: 30;   /* above the sheet (10) and the footer, below grain, drawer and skip link */
+  --z-sheet: 10;
+  --z-grain: 60;
+  --z-drawer: 80;
+
+  color-scheme: light;
+}
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html.is-locked { overflow: hidden; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.6;
+  /* --sh-text, not --text: the background here is a SHEET token and is now
+     dark. .hero sets its own color: var(--text), so the light hero is
+     unaffected by this. */
+  color: var(--sh-text);
+  background: var(--sh-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img { max-width: 100%; display: block; }
+[hidden] { display: none !important; }
+a { color: inherit; }
+h1, h2, h3 { margin: 0; font-weight: 500; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
+/* The sheet is DARK now, so an --ink (#101010) focus ring on it is invisible —
+   this line used to be the light-sheet counterpart of the drawer rule below and
+   flipped with the sheet. --sh-text measures 17:1 on --sh-bg. */
+.sheet :focus-visible, .footer :focus-visible { outline-color: var(--sh-text); }
+.drawer :focus-visible { outline-color: var(--on-ink-text); }
+.container { width: min(1240px, 100% - 2 * var(--gutter)); margin-inline: auto; }
+
+.skip-link {
+  position: fixed; top: 12px; left: 12px; z-index: 100;
+  padding: 8px 16px; border-radius: var(--r-pill);
+  background: var(--ink); color: var(--white); font-size: 13px; text-decoration: none;
+  transform: translateY(-200%); transition: transform var(--t-fast) var(--ease);
+}
+.skip-link:focus { transform: none; }
+
+.grain {
+  position: fixed; inset: 0; z-index: var(--z-grain); pointer-events: none; opacity: 0.045;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* --------------------------------------------------------------------------
+   Buttons — one 3-variant system
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  border-radius: var(--r-pill); border: 1px solid transparent;
+  font-size: 13px; font-weight: 500; letter-spacing: 0.01em; line-height: 1;
+  text-decoration: none; cursor: pointer; white-space: nowrap;
+  transition: transform var(--t-fast) var(--ease), background-color var(--t-fast) var(--ease),
+              border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease), box-shadow var(--t-mid) var(--ease);
+}
+.btn:active { transform: scale(0.98); }
+.btn__icon {
+  width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--ink-hi);
+  transition: transform var(--t-fast) var(--ease), background-color var(--t-fast) var(--ease);
+}
+.btn--primary { padding: 6px 6px 6px 20px; background: var(--ink); color: var(--white); box-shadow: var(--shadow-ink); }
+.btn--primary:hover { background: var(--ink-2); }
+.btn--primary:hover .btn__icon { transform: translate(2px, -1px) scale(1.06); background: var(--accent); }
+.btn--secondary { padding: 12px 24px; border-color: var(--border-strong); color: var(--text); background: var(--white-40); }
+.btn--secondary:hover { background: var(--white-70); border-color: var(--text-2); }
+.btn--ghost { padding: 12px 8px; color: var(--text-2); background: transparent; }
+.btn--ghost:hover { color: var(--text); }
+/* dark-surface variants */
+.btn--on-dark.btn--primary { background: var(--white); color: var(--ink); box-shadow: var(--shadow-dk); }
+.btn--on-dark.btn--primary .btn__icon { background: var(--k-08); }
+.btn--on-dark.btn--primary:hover { background: var(--surface-2); }
+.sheet .btn--secondary { border-color: var(--sh-control-border); color: var(--sh-text); background: transparent; }
+.sheet .btn--secondary:hover { background: var(--sh-tint); }
+.btn--on-dark.btn--secondary { border-color: var(--on-ink-border-strong); color: var(--on-ink-text); background: transparent; }
+.btn--on-dark.btn--secondary:hover { background: var(--on-ink-hi); border-color: var(--on-ink-text-2); }
+/* size / shape modifiers */
+.btn--sm { min-height: 40px; padding: 8px 16px 8px 12px; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+.btn--icon { width: 40px; height: 40px; padding: 0; justify-content: center; }
+
+.burger { position: relative; width: 16px; height: 10px; display: inline-block; }
+.burger i {
+  position: absolute; left: 0; width: 100%; height: 1.5px; border-radius: 2px; background: currentColor;
+  transition: transform var(--t-fast) var(--ease), top var(--t-fast) var(--ease);
+}
+.burger i:first-child { top: 0; }
+.burger i:last-child { top: 8.5px; }
+.burger.is-x i:first-child { top: 4.25px; transform: rotate(45deg); }
+.burger.is-x i:last-child { top: 4.25px; transform: rotate(-45deg); }
+[aria-expanded="true"] .burger i:first-child { top: 4.25px; transform: rotate(45deg); }
+[aria-expanded="true"] .burger i:last-child { top: 4.25px; transform: rotate(-45deg); }
+
+/* --------------------------------------------------------------------------
+   Hero stage
+   -------------------------------------------------------------------------- */
+.hero-stage { position: relative; height: 250dvh; }
+.hero-sentinel { position: absolute; top: 150dvh; left: 0; width: 1px; height: 1px; } /* = where the sheet fully covers the hero */
+.hero {
+  position: sticky; top: 0; height: 100dvh; min-height: min(640px, 100dvh); overflow: hidden;
+  color: var(--text);
+  background:
+    radial-gradient(120% 95% at 50% 32%, var(--bg-2) 0%, var(--bg) 46%, var(--bg-3) 100%);
+}
+.hero::after { /* soft vignette */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, var(--w-35) 0%, var(--w-0) 22%, var(--k-0) 78%, var(--k-06) 100%);
+  /* the white lift at the top would sit ON the dark showcase and grey it out */
+  opacity: 1; transition: opacity var(--t-mid) var(--ease);
+}
+.hero.is-showcase::after { opacity: 0; }
+
+/* Perlin wave field — z-index 0, i.e. under the cloud (1), the copy (2), the
+   bar (4) and the nav (5). It never covers anything. See --wave-line for why
+   the thread is white. */
+.hero__waves { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.hero__waves canvas {
+  display: block; width: 100%; height: 100%;
+  -webkit-mask-image: var(--wave-mask); mask-image: var(--wave-mask);
+}
+
+/* Nav — FIXED since paso 6: the bar follows the scroll on every page. It sits
+   at the top of <body>, outside the hero (which goes inert once the sheet
+   covers it). Three states written by script.js:
+     is-scrolled   past 8px: a light glass so the bar stays legible over the
+                   page band / the pinned hero, and it compresses to 64px
+     is-over-sheet the dark sheet has reached the bar: dark glass, on-ink text
+     is-veiled     the service showcase has darkened the hero: on-ink text */
+.nav {
+  position: fixed; inset: 0 0 auto 0; height: var(--nav-h); z-index: var(--z-nav);
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  padding: 0 var(--gutter);
+  /* its own ink: as a child of <body> it would inherit the SHEET's light text
+     (the brand name vanished on the light hero the first time round) */
+  color: var(--text);
+  background: transparent;
+  transition: background-color var(--t-mid) var(--ease), height var(--t-mid) var(--ease),
+              box-shadow var(--t-mid) var(--ease), opacity var(--t-slow) var(--ease), transform 1100ms var(--ease);
+}
+.nav.is-scrolled {
+  height: 64px;
+  background: var(--nav-glass-light);
+  backdrop-filter: blur(18px) saturate(1.1); -webkit-backdrop-filter: blur(18px) saturate(1.1);
+  box-shadow: 0 1px 0 var(--border);
+}
+.nav.is-over-sheet {
+  background: var(--nav-glass);
+  box-shadow: 0 1px 0 var(--on-ink-border);
+}
+/* the veil is transparent by design: the showcase's own backdrop is the ground */
+.nav.is-veiled { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; }
+/* entrance: the nav is no longer under .hero [data-enter], so it has its own;
+   script.js adds is-ready with the hero's, or at once on pages without one */
+.has-js .nav[data-enter] { opacity: 0; transform: translateY(-10px); transition-delay: 120ms; }
+.has-js .nav[data-enter].is-ready { opacity: 1; transform: none; transition-delay: 0s; }
+.nav__brand {
+  justify-self: start; display: inline-flex; align-items: center; gap: 12px;
+  font-size: 17px; font-weight: 600; letter-spacing: -0.01em; text-decoration: none;
+}
+.nav__mark {
+  width: 30px; height: 30px; border-radius: var(--r-sm); background: var(--ink); display: grid; place-items: center;
+  box-shadow: var(--shadow-ink);
+}
+.nav__mark img { width: 11px; height: auto; }
+.nav__links { display: flex; align-items: center; gap: 28px; font-size: 13px; font-weight: 500; }
+.nav__links > a, .nav__sub-toggle {
+  position: relative; display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 0; color: var(--text-2); text-decoration: none; background: none; border: 0; cursor: pointer;
+  transition: color var(--t-fast) var(--ease);
+}
+.nav__links > a:hover, .nav__sub-toggle:hover { color: var(--text); }
+.nav__links .is-active { color: var(--text); }
+.nav__links .is-active::after {
+  content: ""; position: absolute; left: 50%; bottom: -1px; width: 4px; height: 4px; border-radius: 50%;
+  background: var(--text); transform: translateX(-50%);
+}
+.nav__item { position: relative; }
+.nav__sub-toggle svg { transition: transform var(--t-fast) var(--ease); }
+.nav__sub-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+.nav__sub {
+  position: absolute; top: calc(100% + 8px); left: 50%; translate: -50% 0; width: 280px;
+  padding: 6px; border-radius: var(--r-lg);
+  background: var(--white-70); border: 1px solid var(--white-70); box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(20px) saturate(1.1); -webkit-backdrop-filter: blur(20px) saturate(1.1);
+  opacity: 0; visibility: hidden; transform: translateY(-8px);
+  transition: opacity var(--t-mid) var(--ease), transform var(--t-mid) var(--ease), visibility 0s linear var(--t-mid);
+}
+.nav__item.is-open .nav__sub { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.nav__sub a {
+  display: flex; flex-direction: column; gap: 2px; padding: 12px 16px; border-radius: calc(var(--r-lg) - 6px);
+  text-decoration: none; color: var(--text); font-size: 13px; font-weight: 500;
+  transition: background-color var(--t-fast) var(--ease);
+}
+.nav__sub a small { font-size: 11px; font-weight: 400; color: var(--text-muted); }
+.nav__sub a:hover { background: var(--white-70); }
+.nav__right { justify-self: end; display: flex; align-items: center; gap: 20px; }
+.nav__tz { display: flex; flex-direction: column; align-items: flex-end; line-height: 1.25; }
+.nav__tz-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--text-muted); }
+.nav__tz-time { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text-2); font-variant-numeric: tabular-nums; }
+
+/* Hero copy (left) */
+/* ONE column, not two independently anchored blocks. The copy used to be
+   anchored to the TOP and the service list to the BOTTOM of the same corner,
+   with nothing coupling them: at 1440x900 that happened to leave 31px of gap,
+   and below ~870px of viewport height they overlapped — the list (z-index 4)
+   landing on the two hero CTAs (z-index 2) and swallowing their clicks.
+   Measured at 1366x768 before the fix: elementFromPoint at the centre of
+   "Habla con nosotros" returned the LI of "Asesorías 1:1".
+   space-between keeps the copy at the top and the list above the bar, and they
+   can no longer cross at any height. */
+.hero__left {
+  position: absolute; left: var(--gutter); z-index: 4;
+  top: clamp(152px, 21vh, 208px);
+  bottom: calc(var(--bar-inset) + var(--bar-h) + 26px);
+  display: flex; flex-direction: column; justify-content: space-between; gap: 28px;
+  pointer-events: none;   /* the column is a spacer; its children take the clicks */
+}
+.hero__left > * { pointer-events: auto; }
+.hero__copy { width: min(700px, 49vw); }
+.eyebrow {
+  display: flex; align-items: center; gap: 8px; margin: 0 0 24px;
+  font-size: 12px; letter-spacing: 0.02em; color: var(--text-muted);
+}
+.eyebrow__bar { width: 1px; height: 14px; background: var(--text-muted); }
+.hero__title {
+  font-size: clamp(46px, 5.1vw, 74px); line-height: 0.98; letter-spacing: -0.035em; font-weight: 500;
+  margin: 0 0 24px; color: var(--text);
+}
+.hero__title .line { display: block; overflow: hidden; padding-bottom: 0.06em; margin-bottom: -0.06em; }
+/* The gradient lives on each LINE, not on the h1. background-clip: text only
+   masks text that paints in the element's own layer, and during the entrance
+   every line is a transformed (composited) inline-block: with the clip on the
+   h1 the three lines slid in INVISIBLE and popped into place when the
+   transition ended — caught on the mobile pass-1 screenshot (title box laid
+   out, no glyphs). Each line carries its own copy of the sweep, sized to three
+   lines and offset per line, so the block still darkens top-left and fades
+   bottom-right as one gradient. */
+.hero__title .line > span {
+  display: inline-block;
+  background: linear-gradient(100deg, var(--text) 0%, var(--text-2) 46%, var(--text-fade) 100%);
+  background-size: 100% 300%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero__title .line:nth-child(2) > span { background-position: 0 50%; }
+.hero__title .line:nth-child(3) > span { background-position: 0 100%; }
+.hero__proof { display: flex; align-items: center; gap: 12px; margin: 0 0 32px; font-size: 13px; color: var(--text-2); }
+.stars { display: inline-flex; gap: 2px; color: var(--accent-hero); }
+.stars svg { fill: currentColor; }
+.hero__actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+/* Scene: wordmark, figure, bar */
+.hero__scene { position: absolute; inset: 0; pointer-events: none; }
+.hero__wordmark-wrap {
+  position: absolute; left: 0; right: 0; bottom: -0.1em; z-index: 1;
+  display: flex; justify-content: center; font-size: clamp(120px, 21.5vw, 330px); line-height: 1;
+}
+.hero__wordmark {
+  font-size: inherit; font-weight: 600; letter-spacing: -0.03em; line-height: 1; white-space: nowrap;
+  background: linear-gradient(180deg, var(--text-a14) 0%, var(--text-a06) 60%, var(--text-a0) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; user-select: none;
+}
+/* The cloud floats rather than standing on the bottom edge, so it centres — and
+   it sits BELOW the copy (z-index 1, not 3). The robot could sit on top because
+   it was an opaque, narrow, bottom-anchored silhouette; a 10.000-point halo is
+   494px wide with no edge, and at 1440px there is no horizontal position that
+   clears both the headline and the aside. Behind the copy the H1 glyphs stay
+   solid and the cloud still reads over the HOLDERA wordmark. */
+.hero__figure-wrap { position: absolute; inset: 0; z-index: 1; display: flex; justify-content: center; align-items: center; }
+/* The brain hologram: a 10.000-point cloud pulled out of Brain.fbx and drawn in
+   raw WebGL (see brain.js), with a poster image as the fallback.
+   No aspect-ratio here: with an explicit height it only fills in the width,
+   which max-width then clamps without recomputing the height — so the box was
+   never actually square and the fixed-fov projection cropped the cloud. Width
+   and height are both stated instead, and brain.js fits to whichever is tighter. */
+.hero__figure {
+  position: relative; margin: 0;
+  height: min(96%, 96dvh); width: min(52vw, 96dvh);
+  will-change: transform, opacity;
+}
+.brain__poster, .brain__canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* The poster is a CSS background rather than an <img> so a browser that paints
+   the cloud never downloads it: it is fetched only with no JS (.has-js never
+   lands, so the first rule matches) or when brain.js reports no WebGL. */
+.brain__poster { background: center / contain no-repeat; transition: opacity 700ms var(--ease); }
+html:not(.has-js) .brain__poster,
+.hero__figure.is-fallback .brain__poster { background-image: url("assets/img/brain-poster.png"); }
+.hero__figure.is-live .brain__poster { opacity: 0; }
+.brain__canvas { display: block; opacity: 0; transition: opacity 700ms var(--ease); }
+.hero__figure.is-live .brain__canvas { opacity: 1; }
+/* Designed loading state, zero bytes: while the geometry is in flight the
+   figure is a soft breathing disc rather than an empty hole. On a fast link
+   this is gone before the hero entrance finishes; on a congested one it is
+   what stands in for the cloud. Reduced motion stills it (see the block at the
+   end of this file, which disables every animation). */
+.hero__figure:not(.is-live):not(.is-fallback)::after {
+  content: ""; position: absolute; inset: 18%; border-radius: 50%;
+  background: radial-gradient(circle at 50% 45%, var(--k-06), var(--k-0) 70%);
+  animation: brain-wait 2.4s var(--ease) infinite;
+}
+@keyframes brain-wait { 0%, 100% { opacity: 0.5; transform: scale(0.96); } 50% { opacity: 1; transform: scale(1); } }
+/* Four service chips with equal gaps between them: max-content tracks laid
+   out with space-between, so the spacing is even regardless of how long the
+   labels are. Still a grid, so the 2x2 mobile override below just works. */
+.hero__bar {
+  position: absolute; left: var(--bar-inset); right: var(--bar-inset); bottom: var(--bar-inset);
+  height: var(--bar-h); z-index: 4; pointer-events: auto;
+  display: grid; grid-template-columns: repeat(4, max-content); justify-content: space-between; align-items: center; gap: 16px;
+  padding: 0 clamp(20px, 2.4vw, 32px);
+  border-radius: var(--r-md); border: 1px solid var(--on-ink-hi);
+  background: linear-gradient(90deg, var(--bar-a) 0%, var(--bar-b) 50%, var(--bar-a) 100%);
+  color: var(--w-84); font-size: 12px; letter-spacing: 0.01em;
+  box-shadow: var(--shadow-ink);
+}
+.hero__bar > * { display: inline-flex; align-items: center; min-width: 0; color: inherit; }
+
+/* Aside (right): widget + partners */
+.hero__aside {
+  position: absolute; right: var(--gutter); top: clamp(152px, 21vh, 208px); z-index: 2;
+  width: min(372px, 27vw);
+}
+/* The flex lives on the INNER wrapper, not on .hero__aside: GSAP owns the
+   outer element's opacity/transform on scroll and the showcase owns the
+   inner one's, so neither ever writes the other's property. Same reason as
+   .hero__copy-in. */
+.hero__aside-in { display: flex; flex-direction: column; gap: 44px; }
+.hero__copy-in, .hero__aside-in {
+  transition: opacity var(--t-mid) var(--ease), transform var(--t-mid) var(--ease), visibility 0s;
+}
+/* visibility: hidden, not just opacity 0 + pointer-events: none.
+   pointer-events stops the mouse, but it leaves the buttons and the contact
+   card TABBABLE inside a fully transparent box: with the pointer resting on a
+   service name, Shift+Tab moved focus onto an invisible "Habla con nosotros"
+   with no focus ring anywhere on screen (WCAG 2.4.7). visibility also takes
+   them out of the accessibility tree, and it is delayed by --t-mid on the way
+   in so the fade is still seen, and applied at 0s on the way out so they come
+   straight back. */
+.hero.is-showcase .hero__copy-in,
+.hero.is-showcase .hero__aside-in {
+  opacity: 0; pointer-events: none; visibility: hidden;
+  transition: opacity var(--t-mid) var(--ease), transform var(--t-mid) var(--ease),
+              visibility 0s linear var(--t-mid);
+}
+.hero.is-showcase .hero__copy-in { transform: translateY(-26px); }
+.hero.is-showcase .hero__aside-in { transform: translateY(-20px); }
+.hero.is-showcase .hero__figure-wrap { opacity: 0; transform: translateY(30px) scale(0.96); }
+.hero.is-showcase .hero__wordmark-wrap { opacity: 0; }
+.hero__figure-wrap, .hero__wordmark-wrap {
+  transition: opacity var(--t-mid) var(--ease), transform var(--t-mid) var(--ease);
+}
+.widget {
+  /* position + overflow are load-bearing for the pixel reveal: .widget__alt and
+     the pixel grid are absolutely positioned with inset, and without a
+     positioned ancestor here they resolved against .hero__aside and spilled
+     down over the partners strip. */
+  position: relative; overflow: hidden;
+  display: block; padding: 6px; border-radius: var(--r-xl); text-decoration: none; color: inherit;
+  background: var(--w-28); border: 1px solid var(--w-60);
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+}
+.widget:hover { transform: translateY(-3px); }
+.widget__core {
+  position: relative; display: grid; grid-template-columns: 96px 1fr; gap: 16px; min-height: 176px; padding: 16px;
+  border-radius: calc(var(--r-xl) - 6px);
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  box-shadow: inset 0 1px 1px var(--w-90), inset 0 0 0 1px var(--border);
+}
+.widget__mark {
+  width: 96px; height: 96px; border-radius: var(--r-lg); background: var(--ink); display: grid; place-items: center;
+  box-shadow: var(--shadow-ink);
+}
+.widget__mark img { width: 20px; height: auto; }
+.widget__text { align-self: center; margin: 0; padding-right: 28px; font-size: 18px; line-height: 1.25; letter-spacing: -0.01em; font-weight: 500; color: var(--text); }
+.widget__foot { grid-column: 1 / -1; display: flex; align-items: center; justify-content: flex-end; gap: 16px; margin-top: auto; }
+.widget__arrow {
+  width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
+  border: 1px solid var(--border-strong); color: var(--text);
+  transition: background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.widget:hover .widget__arrow { background: var(--ink); color: var(--white); transform: translate(2px, -1px); }
+
+/* --------------------------------------------------------------------------
+   Pixelated reveal — the hero card swaps state behind a flicker of random
+   square pixels (reference: "Pixelated Image Reveal").
+
+   The reference drives it with GSAP staggers. This does it in plain JS
+   (script.js) for the same reason brain.js/fish.js/planet.js exist: the page
+   must not need a CDN to work. The pixels are the CARD's own colours, and the
+   two states are two content states, not two photos — the site has no stock
+   imagery and invents none.
+   -------------------------------------------------------------------------- */
+.widget__alt, .widget__pixels {
+  position: absolute; inset: 6px; border-radius: calc(var(--r-xl) - 6px);
+  pointer-events: none;
+}
+.widget__alt {
+  display: none;
+  grid-template-columns: 96px 1fr; gap: 16px; padding: 16px;
+  background: linear-gradient(180deg, var(--accent-hover), var(--accent));
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--k-08);
+}
+.widget__alt-mark {
+  width: 96px; height: 96px; border-radius: var(--r-lg); background: var(--w-60);
+  display: grid; place-items: center;
+}
+.widget__alt-mark img { width: 20px; height: auto; }
+.widget__alt-text {
+  align-self: center; margin: 0; padding-right: 28px;
+  font-size: 18px; line-height: 1.25; letter-spacing: -0.01em; font-weight: 500;
+}
+.widget__alt-foot {
+  grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; margin-top: auto;
+}
+.widget__alt-label {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+}
+.widget__arrow--alt { border-color: var(--k-24); color: var(--ink); }
+/* the card is a link, so the swapped-in state must not eat the click */
+[data-pixel-reveal].is-swapped .widget__alt { display: grid; }
+
+.widget__pixels { overflow: hidden; }
+.widget__pixel {
+  position: absolute; display: none;
+  /* the pixels read as the card breaking up, so they are the card's own ink */
+  background: var(--ink);
+}
+/* the second half of the flicker happens over the accent panel, where ink
+   pixels would disappear into it */
+[data-pixel-reveal].is-swapped .widget__pixel { background: var(--accent-hover); }
+
+@media (prefers-reduced-motion: reduce) {
+  /* no flicker: script.js swaps the layer directly and skips the grid entirely */
+  .widget__pixels { display: none; }
+}
+
+.partners__label { margin: 0 0 16px; text-align: right; font-size: 12px; color: var(--text-muted); }
+.partners__grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(4, auto); justify-content: space-between; gap: 16px 16px;
+}
+.partners__grid li {
+  display: flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 600; letter-spacing: -0.01em;
+  color: var(--text-2); opacity: 0.85; white-space: nowrap;
+  transition: opacity var(--t-fast) var(--ease);
+}
+.partners__grid li:hover { opacity: 1; }
+/* the real brand marks: monochrome at rest so the strip reads as one system,
+   each brand colour (--brand, set per item) on hover. */
+.partners__grid svg { width: 15px; height: 15px; flex: none; fill: currentColor; color: var(--text); transition: color var(--t-fast) var(--ease); }
+.partners__grid li:hover svg { color: var(--brand, var(--text)); }
+
+/* --------------------------------------------------------------------------
+   Service list + directional hover showcase
+   Recreation of the "Directional Hover Reveal" reference Alex sent. The
+   reference drives the wipes with GSAP; these are CSS clip-path transitions,
+   for the same reason brain.js and planet.js are hand-written WebGL: the page
+   must not need a CDN to work.
+
+   The list lives in the dead band the baseline screenshot found between the
+   hero CTAs (y 568) and the bottom bar (y 834). The showcase never covers it:
+   the stage is inset from the left so the artwork starts where the list ends,
+   exactly as the reference keeps its "Recent works" column clear.
+
+   Pointer-only, on purpose. It fires on mouseenter and NOT on keyboard focus:
+   the whole thing is decoration, and swapping the hero out from under a
+   keyboard user who is only tabbing through five links would hide the H1 for
+   the one audience that cannot see the artwork anyway. Keyboard gets a normal
+   focus ring; screen readers get five plain links.
+   -------------------------------------------------------------------------- */
+/* Position comes from .hero__left; this only sets its own width. */
+.hero__works { width: min(360px, 30vw); }
+/* Not --text-muted. The hero's ground is a radial gradient that runs from
+   --bg-2 at the top to --bg-3 at the corners, and this list sits in the
+   BOTTOM-LEFT — the darkest ground on the page, and darker still under the
+   vignette's --k-06. #666 measures 4.56:1 against --bg but only ~4.4:1 where
+   the label actually sits, i.e. an AA fail that the guard was passing because
+   it was measuring the wrong backdrop. Every colour here is now checked
+   against --k-06 over --bg-3, the worst ground the hero can produce. */
+.hero__works-label {
+  margin: 0 0 12px; font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.18em; color: var(--text-2);
+  transition: color var(--t-mid) var(--ease);
+}
+.hero__works-list { list-style: none; margin: 0; padding: 0; }
+.hero__works-list a {
+  display: inline-block; padding: 4px 0; text-decoration: none;
+  font-size: clamp(15px, 1.2vw, 18px); font-weight: 500; letter-spacing: -0.012em;
+  color: var(--text-2);
+  transition: color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+/* --ink, not --accent-hero. At 17.28px/500 this is normal body text and owes
+   4.5:1; the accent measures 3.99:1 on the ground under the last item. The
+   accent still marks the current item — but on the showcase veil, where it is
+   6.97:1, which is where the reference uses it too. */
+.hero__works-list a:hover { color: var(--ink); transform: translateX(6px); }
+.hero__works-list a.is-current { transform: translateX(6px); }
+
+/* the list is the one piece of hero copy that SURVIVES the showcase, so it
+   changes clothes instead of fading */
+.hero.is-showcase .hero__works-label { color: var(--on-ink-muted); }
+.hero.is-showcase .hero__works-list a { color: var(--on-ink-text-2); }
+.hero.is-showcase .hero__works-list a.is-current,
+.hero.is-showcase .hero__works-list a:hover { color: var(--accent); }
+
+.hero__showcase {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  overflow: hidden;
+}
+/* the veil, under the artwork: it is what turns the light hero dark */
+.hero__showcase::before {
+  content: ""; position: absolute; inset: 0;
+  background: var(--sc-veil); opacity: 0;
+  transition: opacity var(--t-mid) var(--ease-in);
+}
+.hero.is-showcase .hero__showcase::before { opacity: 1; transition-timing-function: var(--ease); }
+
+.sc__bgs { position: absolute; inset: 0; }
+.sc__bg {
+  position: absolute; inset: -3%;
+  background: center / cover no-repeat;
+  /* The reference knocks its backdrops down with brightness(0.2) and that is
+     exactly the job: at full strength the backdrop is as legible as the three
+     panels in front of it and you read the same artwork twice, at two scales.
+     Dark enough to be atmosphere, not a second composition. */
+  filter: brightness(0.38) saturate(0.85);
+  opacity: 0; transform: scale(1.05);
+  visibility: hidden;
+  transition: opacity 380ms var(--ease-in), transform 700ms var(--ease-in), visibility 0s linear 380ms;
+}
+.sc__bg.is-on {
+  opacity: 1; transform: none; visibility: visible;
+  transition: opacity 640ms var(--ease), transform 1300ms var(--ease), visibility 0s;
+}
+
+.sc__stage {
+  position: absolute;
+  left: 27%; right: var(--gutter);
+  top: calc(var(--nav-h) + 14px);
+  bottom: calc(var(--bar-inset) + var(--bar-h) + 26px);
+  display: grid; grid-template-areas: "stage";
+}
+.sc__item {
+  grid-area: stage;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  visibility: hidden;
+  transition: visibility 0s linear 420ms;
+}
+.sc__item.is-on { visibility: visible; transition-delay: 0s; }
+
+.sc__title {
+  grid-area: 1 / 1 / -1 / -1;
+  position: relative; z-index: 10;
+  align-self: center; margin: 0;
+  font-size: clamp(28px, 5.2vw, 84px); line-height: 0.98; letter-spacing: -0.035em;
+  font-weight: 500; color: var(--sh-text); text-wrap: balance;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 260ms var(--ease-in), transform 260ms var(--ease-in);
+}
+/* The scrim is a child of the title's own stacking context (z-index 10), so it
+   paints ABOVE the artwork and BELOW the letters. That is what lets the ivory
+   Asesorías panel sit under white type without the title dropping to ~1.1:1. */
+.sc__title::before {
+  content: ""; position: absolute; z-index: -1; inset: -85% -14%;
+  background: var(--sc-title-scrim);
+}
+.sc__item.is-on .sc__title {
+  opacity: 1; transform: none;
+  transition: opacity 520ms var(--ease) 110ms, transform 720ms var(--ease) 110ms;
+}
+
+.sc__img {
+  position: relative; overflow: hidden;
+  /* INSET only. An outline would be drawn outside the box and clipped away,
+     and so is any outer box-shadow — see the note where --sc-img-shadow used
+     to be. The hairline is inside the border box, so it survives the wipe and
+     travels with it. */
+  box-shadow: inset 0 0 0 1px var(--w-22);
+  clip-path: var(--clip-from);
+  transition: clip-path 360ms var(--ease-in);
+  will-change: clip-path;
+}
+.sc__img > i {
+  display: block; width: 100%; height: 100%;
+  background: center 45% / cover no-repeat;
+  transform: scale(1.14);
+  transition: transform 700ms var(--ease-in);
+}
+/* Four-point polygons on both ends: clip-path only interpolates between shapes
+   with the same vertex count, so every edge state is written as four corners
+   collapsed onto one side rather than as an inset(). */
+.sc__img[data-dir="right"]  { --clip-from: polygon(100% 0, 100% 0, 100% 100%, 100% 100%); }
+.sc__img[data-dir="left"]   { --clip-from: polygon(0 0, 0 0, 0 100%, 0 100%); }
+.sc__img[data-dir="top"]    { --clip-from: polygon(0 0, 100% 0, 100% 0, 0 0); }
+.sc__img[data-dir="bottom"] { --clip-from: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); }
+
+.sc__item.is-on .sc__img {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  transition: clip-path 560ms var(--ease);
+  transition-delay: var(--sd, 0ms);
+}
+.sc__item.is-on .sc__img > i {
+  transform: none;
+  transition: transform 1100ms var(--ease);
+  transition-delay: var(--sd, 0ms);
+}
+/* the stagger is only on the way IN; leaving, all three close together */
+.sc__img:nth-of-type(1) { --sd: 0ms; }
+.sc__img:nth-of-type(2) { --sd: 90ms; }
+.sc__img:nth-of-type(3) { --sd: 170ms; }
+
+/* Five compositions over a 10x10 stage, one per service, laid out so no two
+   read the same way — the reference's pos-1..pos-15 idea. Row / column /
+   row-end / column-end. */
+.sc__img--a1 { grid-area: 1 / 1 / 5 / 5; }
+.sc__img--a2 { grid-area: 4 / 8 / 11 / 11; }
+.sc__img--a3 { grid-area: 7 / 3 / 11 / 6; }
+
+.sc__img--b1 { grid-area: 3 / 4 / 7 / 9; }
+.sc__img--b2 { grid-area: 5 / 1 / 11 / 4; }
+.sc__img--b3 { grid-area: 1 / 7 / 5 / 10; }
+
+.sc__img--c1 { grid-area: 6 / 6 / 10 / 11; }
+.sc__img--c2 { grid-area: 1 / 1 / 8 / 4; }
+.sc__img--c3 { grid-area: 3 / 5 / 7 / 8; }
+
+.sc__img--d1 { grid-area: 1 / 3 / 5 / 8; }
+.sc__img--d2 { grid-area: 4 / 8 / 11 / 11; }
+.sc__img--d3 { grid-area: 6 / 1 / 10 / 4; }
+
+.sc__img--e1 { grid-area: 7 / 4 / 11 / 9; }
+.sc__img--e2 { grid-area: 1 / 8 / 8 / 11; }
+.sc__img--e3 { grid-area: 2 / 1 / 6 / 4; }
+
+/* The nav changes clothes on a dark ground: the showcase veil (is-veiled) and
+   the sheet (is-over-sheet) share the on-ink palette. */
+.nav.is-veiled .nav__brand, .nav.is-over-sheet .nav__brand,
+.nav.is-veiled .nav__links > a, .nav.is-over-sheet .nav__links > a,
+.nav.is-veiled .nav__sub-toggle, .nav.is-over-sheet .nav__sub-toggle { color: var(--on-ink-text-2); }
+.nav.is-veiled .nav__links .is-active, .nav.is-over-sheet .nav__links .is-active { color: var(--on-ink-text); }
+.nav.is-veiled .nav__links .is-active::after, .nav.is-over-sheet .nav__links .is-active::after { background: var(--on-ink-text); }
+.nav.is-veiled .nav__tz-label, .nav.is-over-sheet .nav__tz-label { color: var(--on-ink-muted); }
+.nav.is-veiled .nav__tz-time, .nav.is-over-sheet .nav__tz-time { color: var(--on-ink-text-2); }
+.nav.is-veiled .nav__mark, .nav.is-over-sheet .nav__mark { background: var(--on-ink-hi); }
+.nav.is-veiled .nav__brand:hover, .nav.is-over-sheet .nav__brand:hover,
+.nav.is-veiled .nav__links > a:hover, .nav.is-over-sheet .nav__links > a:hover,
+.nav.is-veiled .nav__sub-toggle:hover, .nav.is-over-sheet .nav__sub-toggle:hover { color: var(--on-ink-text); }
+/* --sh-control-border, not --on-ink-border-strong: the MENÚ button is a ghost
+   control whose ONLY affordance is its outline, so WCAG 1.4.11 asks 3:1.
+   --on-ink-border-strong composites to 1.64:1 on the veil and the guard caught
+   it. This is the same distinction the content sheet already makes between a
+   decorative hairline and a control's boundary. */
+.nav.is-veiled .btn--secondary, .nav.is-over-sheet .btn--secondary {
+  border-color: var(--sh-control-border); color: var(--on-ink-text); background: transparent;
+}
+.nav.is-veiled .btn--secondary:hover, .nav.is-over-sheet .btn--secondary:hover { background: var(--on-ink-hi); border-color: var(--on-ink-text-2); }
+.nav.is-veiled :focus-visible, .nav.is-over-sheet :focus-visible { outline-color: var(--on-ink-text); }
+.hero.is-showcase :focus-visible { outline-color: var(--on-ink-text); }
+.nav__brand, .nav__links > a, .nav__sub-toggle, .nav__tz-label, .nav__tz-time, .nav__mark {
+  transition: color var(--t-mid) var(--ease), background-color var(--t-mid) var(--ease);
+}
+
+/* --------------------------------------------------------------------------
+   Load-in choreography (gated by .has-js so content shows without JS)
+   -------------------------------------------------------------------------- */
+.has-js .hero [data-enter] {
+  opacity: 0; transform: translateY(22px);
+  transition: opacity var(--t-slow) var(--ease), transform 1100ms var(--ease);
+  transition-delay: calc(var(--d, 0) * 1ms + 120ms);
+}
+.has-js .hero .hero__title .line > [data-enter] { transform: translateY(110%); }
+.has-js .hero .hero__figure[data-enter] { transform: translateY(40px) scale(0.97); }
+.has-js .hero.is-ready [data-enter],
+.has-js .hero.is-ready .hero__title .line > [data-enter],
+.has-js .hero.is-ready .hero__figure[data-enter] { opacity: 1; transform: none; }
+/* GSAP owns .hero__figure transform once ready; keep the transition off then */
+.has-js .hero.is-ready.is-scrolling [data-enter] { transition: none; }
+/* …and once the entrance has finished (is-settled, 2.1 s after is-ready) the
+   two elements GSAP writes to with the scroll never transition again. Before
+   this, scrolling back to the top re-armed the 900 ms entrance transition on
+   top of the scrub's inline writes and the nav stayed invisible for up to
+   ~1.8 s — long enough to read as "the menu is gone". */
+.has-js .hero.is-settled .hero__wordmark { transition: none; }
+
+/* --------------------------------------------------------------------------
+   Content sheet (dark) — slides up over the sticky hero
+   -------------------------------------------------------------------------- */
+main {
+  position: relative; z-index: var(--z-sheet); margin-top: -100dvh;
+  border-radius: var(--r-sheet) var(--r-sheet) 0 0;
+  /* clip, NOT hidden: overflow:hidden turns main into a scroll container and
+     any position:sticky inside it (the services deck) stops sticking to the
+     window. overflow:clip clips the same way without that side effect. */
+  overflow: clip;
+  background: var(--sh-bg); color: var(--sh-text);
+  box-shadow: var(--shadow-sheet);
+}
+.sheet { position: relative; padding: clamp(96px, 12vw, 168px) 0; }
+.sheet--process {
+  background: linear-gradient(180deg, var(--sh-bg-2) 0%, var(--sh-bg-2) calc(100% - 200px), var(--sh-bg) 100%);
+}
+.sheet--cta {
+  background:
+    radial-gradient(60% 50% at 80% 60%, var(--accent-a09) 0%, var(--accent-a0) 60%),
+    var(--sh-bg);
+}
+.tag {
+  display: inline-flex; align-items: center; gap: 10px; margin: 0 0 28px;
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 400;
+  color: var(--sh-text-2);
+}
+.tag::before { content: ""; width: 1px; height: 13px; background: var(--accent-ink); }
+.sheet__title {
+  max-width: 15ch; margin: 0 0 28px;
+  font-size: clamp(38px, 5vw, 74px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 500;
+}
+.fade {
+  background: linear-gradient(90deg, var(--sh-text-2) 0%, var(--sh-muted) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.sheet__lead { max-width: 58ch; margin: 0; font-size: clamp(16px, 1.3vw, 19px); line-height: 1.6; color: var(--sh-text-2); }
+
+/* Process */
+/* --------------------------------------------------------------------------
+   Orbit — "Cómo trabajamos": the four steps sliding past a spinning planet.
+
+   Rebuild of the reference "Scroll-Spinning Earth" component. Two things there
+   are reproduced exactly, both clip-path animations:
+
+     1. TITLE WIPE. Each title is two stacked copies. The bottom one is quiet;
+        the top one is clipped from the right with inset(0 X% 0 0) and X runs
+        100 -> 0 as the title crosses the viewport, so the bright copy wipes in
+        left to right. The reference drives it with framer-motion's useScroll;
+        here it is a --wipe custom property written by script.js.
+
+     2. DESCRIPTION BAND. The reference opens a full-bleed bar with
+        clip-path: inset(50% 0 50%) -> inset(0 0 0), i.e. it splits open from a
+        centre line. Same here — on hover AND on focus-within, so it is
+        reachable from the keyboard, which the reference's onMouseOver-only
+        version is not.
+
+   The reference's red bar becomes --accent; its beige titles become the sheet's
+   own text tokens. No colour is carried over from the reference.
+   -------------------------------------------------------------------------- */
+.orbit { position: relative; margin: clamp(48px, 6vw, 88px) 0 clamp(40px, 5vw, 72px); }
+.orbit__sky {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  pointer-events: none;
+}
+.orbit__gl {
+  width: min(78vh, 62vw, 620px); height: min(78vh, 62vw, 620px);
+  display: block; opacity: 0; transition: opacity 1100ms var(--ease);
+}
+.orbit.is-live .orbit__gl { opacity: 1; }
+
+.orbit__steps {
+  position: relative; list-style: none; margin: 0; padding: 0;
+  display: flex; flex-direction: column;
+}
+.ostep { position: relative; padding: clamp(6px, 1vw, 14px) 0; }
+/* Focusing a step OPENS its accent band, so the ring is drawn against orange,
+   not against the sheet — hence --ink (7.58:1 on --accent) rather than the
+   sheet's usual light ring, which would sit at 2.3:1 on that band.
+   Do NOT add a companion `.ostep:focus { outline: none }` to suppress a double
+   ring: it has the same specificity as this rule and, coming later, silently
+   removed the focus indicator altogether. */
+.has-js .ostep:focus-visible { outline: 2px solid var(--ink); outline-offset: -6px; border-radius: var(--r-sm); }
+.ostep__row {
+  width: min(1240px, 100% - 2 * var(--gutter)); margin-inline: auto;
+  display: flex; align-items: center; gap: clamp(14px, 1.6vw, 26px);
+}
+.ostep__num {
+  font-family: var(--font-mono); font-size: clamp(11px, 0.9vw, 13px);
+  letter-spacing: 0.14em; color: var(--accent-ink); flex: none;
+}
+.ostep__title {
+  position: relative; margin: 0;
+  font-size: clamp(38px, 7.2vw, 108px); line-height: 1.02;
+  letter-spacing: -0.04em; font-weight: 500; text-transform: uppercase;
+  color: var(--orbit-title);
+}
+/* The bright copy, wiped in from the left as the title scrolls up. It is a
+   PSEUDO-ELEMENT reading data-word, not a second span: two spans with the
+   same word and no space between them were crawled as one glued token
+   («EscuchamosEscuchamos»). The "/ \"\"" alt keeps the generated text out of
+   the accessible name, so a screen reader hears the word once. */
+.ostep__title::before {
+  content: attr(data-word) / "";
+  position: absolute; inset: 0; color: var(--sh-text);
+  clip-path: inset(0 100% 0 0);
+  pointer-events: none;
+}
+.has-js .ostep__title::before { clip-path: inset(0 calc(var(--wipe, 100) * 1%) 0 0); }
+/* Without JS --wipe never arrives, so the fallback above would clip the bright
+   copy away entirely. That is fine — the title's own text carries the word.
+   The title is never invisible. */
+
+.ostep__desc {
+  margin: 0; font-size: 14px; line-height: 1.55; color: var(--sh-muted);
+  width: min(1240px, 100% - 2 * var(--gutter)); margin-inline: auto;
+  max-width: 58ch; padding-top: 6px;
+}
+
+/* ---- the accent band, on hover and on focus ---- */
+.has-js .ostep__desc {
+  /* The band fills the WHOLE step, not a slim strip across its middle. A strip
+     was the first attempt and it broke the title: the word turns --ink when the
+     band opens, so every part of it above and below the strip became dark ink
+     on the dark sheet — invisible. Covering the full row keeps the darkened
+     word legible over orange for its entire height. */
+  position: absolute; inset: 0; z-index: 2;
+  width: 100%; max-width: none; margin: 0;
+  display: flex; align-items: center; justify-content: flex-end;
+  padding: 0 var(--gutter);
+  background: var(--accent); color: var(--ink);
+  font-size: clamp(14px, 1.15vw, 18px); line-height: 1.45; text-align: right;
+  clip-path: inset(50% 0 50%);
+  transition: clip-path 420ms var(--ease);
+  pointer-events: none;
+}
+/* the copy sits to the RIGHT of the big word, as in the reference */
+.has-js .ostep__desc { padding-left: 52%; }
+.has-js .ostep:hover .ostep__desc,
+.has-js .ostep:focus-within .ostep__desc { clip-path: inset(0 0 0); }
+/* the row has to sit above the band so the big word is never covered by it */
+.has-js .ostep__row { position: relative; z-index: 3; }
+/* ...and the band must not wash out the word it belongs to */
+.has-js .ostep:hover .ostep__title,
+.has-js .ostep:focus-within .ostep__title { color: var(--ink); }
+.has-js .ostep:hover .ostep__title::before,
+.has-js .ostep:focus-within .ostep__title::before { color: var(--ink); }
+.has-js .ostep:hover .ostep__num,
+.has-js .ostep:focus-within .ostep__num { color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit__gl { transition: none; }
+  .has-js .ostep__desc { transition: none; }
+  /* a wipe that cannot animate must not hide the bright copy either */
+  .has-js .ostep__title::before { clip-path: inset(0 0 0 0); }
+}
+
+@media (max-width: 900px) {
+  /* No hover on touch, so the band would never open. The description goes back
+     to being a plain paragraph under its title. */
+  .has-js .ostep__desc {
+    position: static; transform: none; clip-path: none;
+    background: transparent; color: var(--sh-muted);
+    width: min(1240px, 100% - 2 * var(--gutter)); margin-inline: auto;
+    max-width: 58ch; padding: 6px 0 0; display: block; pointer-events: auto;
+    text-align: left;   /* the desktop band is right-aligned; a plain paragraph is not */
+  }
+  .orbit__gl { width: min(70vw, 380px); height: min(70vw, 380px); }
+  .ostep { padding: 14px 0; }
+  /* ...and with no band, the desktop hover/focus colours (ink, for reading
+     over the orange band) would paint the word ink on the near-black sheet:
+     a focused step title at ~1.1:1. Keep the resting colours here. */
+  .has-js .ostep:hover .ostep__title, .has-js .ostep:focus-within .ostep__title { color: var(--orbit-title); }
+  .has-js .ostep:hover .ostep__title::before, .has-js .ostep:focus-within .ostep__title::before { color: var(--sh-text); }
+  .has-js .ostep:hover .ostep__num, .has-js .ostep:focus-within .ostep__num { color: var(--accent-ink); }
+}
+
+.stats { display: flex; flex-wrap: wrap; gap: 32px 64px; margin-top: clamp(48px, 5vw, 72px); padding-top: 36px; border-top: 1px solid var(--sh-border); }
+.stat b { display: block; font-size: clamp(40px, 4.2vw, 60px); font-weight: 500; letter-spacing: -0.035em; line-height: 1; margin-bottom: 8px; }
+.stat span { font-size: 13px; color: var(--sh-muted); }
+
+/* CTA + form */
+.cta { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 96px); align-items: start; }
+.form { padding: 6px; border-radius: var(--r-xl); background: var(--sh-tint); border: 1px solid var(--sh-border); box-shadow: var(--shadow-sh); }
+.form__shell {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: clamp(24px, 2.5vw, 32px);
+  border-radius: calc(var(--r-xl) - 6px); background: var(--sh-surface-2); box-shadow: var(--sh-bevel);
+}
+.form__field { display: flex; flex-direction: column; gap: 8px; }
+.form__field--full { grid-column: 1 / -1; }
+.form label { font-size: 12px; letter-spacing: 0.04em; color: var(--sh-text-2); }
+.form input, .form textarea {
+  width: 100%; padding: 12px 16px; border-radius: var(--r-md); border: 1px solid var(--sh-field-border);
+  background: var(--sh-surface); color: var(--sh-text); font: inherit; font-size: 15px; resize: vertical;
+  transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+}
+/* Text fields swap the outline for a coloured border plus a soft halo. Checkboxes
+   must NOT be in here: they paint natively, so border-color and box-shadow are
+   ignored and suppressing the outline left the required consent box with no
+   visible focus at all. They keep the global :focus-visible ring instead. */
+.form input:not([type="checkbox"]):focus, .form textarea:focus { outline: none; border-color: var(--accent-ink); box-shadow: 0 0 0 4px var(--accent-soft); }
+.form .is-invalid { border-color: var(--accent-ink); }
+.form__consent { flex-direction: row; align-items: flex-start; gap: 12px; }
+.form__consent input { width: 18px; height: 18px; flex: none; margin: 2px 0 0; padding: 0; border-radius: 4px; accent-color: var(--accent-hero); }
+.form__consent input.is-invalid { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+.form__consent label { font-size: 13px; letter-spacing: 0; line-height: 1.5; color: var(--sh-text-2); }
+.form__legal { grid-column: 1 / -1; margin: 0; font-size: 12px; line-height: 1.5; color: var(--sh-muted); }
+.field__err { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 12px; color: var(--accent-ink); }
+.field__err::before { content: "!"; width: 16px; height: 16px; flex: none; border-radius: 50%; border: 1px solid currentColor; display: grid; place-items: center; font-size: 11px; font-weight: 600; }
+.form__error { grid-column: 1 / -1; margin: 0; font-size: 13px; color: var(--accent-ink); }
+.form__submit { grid-column: 1 / -1; justify-self: start; margin-top: 8px; }
+.form__done { display: flex; align-items: center; gap: 16px; padding: 36px 32px; border-radius: calc(var(--r-xl) - 6px); background: var(--sh-surface-2); }
+.form__done-mark { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--ink); font-weight: 600; }
+.form__done p { margin: 0; color: var(--sh-text-2); }
+
+/* Footer — three columns (brand, site map, contact) over a legal line. The
+   markup is shared by every page (_build/shell/footer.html) and guarded by
+   _build/check-shell.js. Contact data is still unconfirmed: each link is a
+   [data-placeholder] with a visible "[… por confirmar]" label, styled so it
+   cannot be mistaken for real data. */
+.footer { position: relative; z-index: var(--z-sheet); background: var(--sh-bg-2); color: var(--sh-muted); border-top: 1px solid var(--sh-border); padding: clamp(56px, 7vw, 96px) 0 32px; }
+.footer__grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 40px clamp(32px, 5vw, 96px); align-items: start; }
+.footer__brand { max-width: 38ch; }
+.footer__logo { width: 64px; height: auto; opacity: 0.9; margin-bottom: 20px; }
+.footer__line { margin: 0; font-size: 14px; line-height: 1.6; color: var(--sh-text-2); }
+.footer__head { margin: 0 0 16px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sh-text-2); }
+.footer__nav, .footer__contact { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; font-size: 14px; }
+.footer__nav a, .footer__contact a { color: var(--sh-text-2); text-decoration: none; transition: color var(--t-fast) var(--ease); }
+.footer__nav a:hover, .footer__contact a:hover { color: var(--sh-text); }
+.footer__addr { margin: 6px 0 0; font-size: 13px; color: var(--sh-muted); }
+.footer__bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px 24px; margin-top: clamp(40px, 5vw, 64px); padding-top: 24px; border-top: 1px solid var(--sh-border); font-size: 13px; }
+.footer__copy { margin: 0; }
+.footer__legal { display: flex; gap: 20px; }
+.footer__legal a { color: var(--sh-muted); text-decoration: none; transition: color var(--t-fast) var(--ease); }
+.footer__legal a:hover { color: var(--sh-text); }
+/* A placeholder reads as a placeholder: mono, dashed underline, muted. Never
+   restyle this to look like a real link — it exists so unconfirmed data cannot
+   ship looking real (see CLAUDE.md, "Pendiente"). */
+[data-placeholder] { font-family: var(--font-mono); font-size: 12.5px; letter-spacing: 0.02em; color: var(--sh-muted); border-bottom: 1px dashed var(--sh-border-strong); }
+.footer__contact a[data-placeholder] { color: var(--sh-muted); }
+
+/* Scroll reveals (gated) */
+.has-js .reveal { opacity: 0; transform: translateY(44px); }
+.has-js .reveal[data-reveal="left"] { transform: translateX(-88px); }
+.has-js .reveal[data-reveal="right"] { transform: translateX(88px); }
+.has-js .reveal.is-in {
+  opacity: 1; transform: none;
+  transition: opacity 500ms var(--ease), transform 600ms var(--ease);
+  transition-delay: calc(var(--i, 0) * 80ms);
+}
+
+
+/* Drawer */
+/* Full screen since 08-09-2026 (encargo de Alex): one column, no scrim — the
+   panel IS the screen, so there is nothing left behind it to dim. */
+.drawer { position: fixed; inset: 0; z-index: var(--z-drawer); display: grid; grid-template-columns: 1fr; visibility: hidden; }
+.drawer.is-open { visibility: visible; }
+.drawer__panel {
+  display: flex; flex-direction: column; gap: 32px; padding: 24px 32px 32px;
+  background: var(--panel); color: var(--on-ink-text); border-left: 1px solid var(--on-ink-border-strong);
+  transform: translateY(-2%); opacity: 0;
+  transition: transform var(--t-mid) var(--ease), opacity var(--t-mid) var(--ease);
+}
+.drawer.is-open .drawer__panel { transform: none; opacity: 1; }
+.drawer__panel { border-left: 0; overflow-y: auto; }
+.drawer__head { display: flex; align-items: center; justify-content: space-between; min-height: 28px; }
+.drawer__brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 600; font-size: 17px; }
+.drawer__brand img { width: 11px; height: auto; }
+/* leaving states ease in */
+.drawer:not(.is-open) .drawer__panel { transition-timing-function: var(--ease-in); }
+.nav__item:not(.is-open) .nav__sub { transition-timing-function: var(--ease-in); }
+/* --------------------------------------------------------------------------
+   Marquee menu rows — hovering a full-width menu link slides a contrasting band
+   in from the NEAREST EDGE, filled with an endless marquee of words and rounded
+   images. (Reference: "Marquee Menu Rows".)
+
+   The reference computes the closest edge in JS and drives the slide with GSAP.
+   Same idea here, but the slide is a CSS transition on a custom property that
+   script.js sets to -101% or 101% depending on the edge — so if GSAP never
+   loads, or JS dies, the rows are still ordinary links and the band simply
+   never appears. The scroll of the marquee itself is a CSS keyframe, as in the
+   reference.
+
+   Everything is re-themed: the reference's pale blue band becomes --accent with
+   --ink text, and the type is the page's own scale.
+   -------------------------------------------------------------------------- */
+.mrows { display: flex; flex-direction: column; margin: 0; flex: 1; justify-content: center; }
+.mrow__link {
+  position: relative; display: block; overflow: hidden;
+  text-decoration: none; color: var(--on-ink-text);
+  border-top: 1px solid var(--on-ink-border);
+}
+/* the staggered entrance is the DRAWER's, not the row's */
+.drawer .mrow__link {
+  opacity: 0; transform: translateY(10px);
+  transition: opacity var(--t-mid) var(--ease), transform var(--t-mid) var(--ease);
+  transition-delay: calc(var(--i, 0) * 45ms + 90ms);
+}
+.mrows > *:last-child .mrow__link, .mrows .mrow__link:last-child { border-bottom: 1px solid var(--on-ink-border); }
+.drawer.is-open .mrow__link { opacity: 1; transform: none; }
+.drawer:not(.is-open) .mrow__link { transition-timing-function: var(--ease-in); transition-delay: 0s; }
+
+.mrow__label {
+  display: block; padding: clamp(6px, 1.1vh, 14px) var(--gutter);
+  /* seven rows since the nav grew (Cómo trabajamos, Panel demo): at 68px the
+     stack was 861px tall and the drawer has no scroll; 52px keeps 7 rows in
+     ~620px at 1440x900 and ~540px at 1366x768 */
+  font-size: clamp(26px, 4.2vw, 52px); line-height: 1.16; font-weight: 500;
+  letter-spacing: -0.035em; text-transform: uppercase;
+}
+
+.mrow__band {
+  /* A band is a full-row strip holding eight background images, and it is
+     translated out of sight until you hover it. In the drawer that cost
+     nothing, because a closed drawer is visibility:hidden and never painted.
+     On the page it is different: five always-laid-out bands = 40 image paints
+     the browser does for something nobody can see. content-visibility lets it
+     skip the whole subtree until the band is actually needed. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 120px;
+  position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+  background: var(--accent); color: var(--ink);
+  transform: translate3d(0, var(--edge, 101%), 0);
+  transition: transform 600ms var(--ease);
+}
+.mrow__track {
+  display: block; height: 100%; width: 100%;
+  transform: translate3d(0, calc(var(--edge, 101%) * -1), 0);
+  transition: transform 600ms var(--ease);
+}
+.mrow__link:hover .mrow__band,
+.mrow__link:focus-visible .mrow__band,
+.mrow__link:hover .mrow__track,
+.mrow__link:focus-visible .mrow__track { transform: translate3d(0, 0, 0); }
+
+.mrow__inner {
+  display: flex; align-items: center; height: 100%; width: max-content;
+  animation: mrow-scroll 18s linear infinite;
+  /* PAUSED until the band is actually on screen. There are ten of these once
+     the services list exists (five menu rows + five service rows) and every one
+     was scrolling forever behind a hidden band; with will-change forcing a
+     compositor layer each, screenshots of the page began timing out. The
+     marquee only needs to move while you can see it. */
+  animation-play-state: paused;
+}
+.mrow__link:hover .mrow__inner,
+.mrow__link:focus-visible .mrow__inner { animation-play-state: running; }
+.mrow__inner span {
+  white-space: nowrap; padding: 0 1.4vw;
+  font-size: clamp(24px, 4vw, 52px); font-weight: 400; letter-spacing: -0.03em;
+  text-transform: uppercase; color: var(--ink);
+}
+.mrow__img {
+  flex: none; width: clamp(76px, 9vw, 128px); height: 66%;
+  margin: 0 1.2vw; border-radius: var(--r-pill);
+  background-size: cover; background-position: 50% 50%;
+}
+@keyframes mrow-scroll { to { transform: translate3d(-50%, 0, 0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  /* no slide and no scroll. The band still appears, instantly, so hovering
+     still does something; it just does not move. */
+  .mrow__band, .mrow__track { transition: none; }
+  .mrow__inner { animation: none; }
+  .drawer .mrow__link { opacity: 1; transform: none; transition: none; }
+}
+@media (max-width: 900px) {
+  /* no hover on touch: the band would never open, so the rows stay plain */
+  .mrow__band { display: none; }
+  .mrow__label { font-size: clamp(26px, 8vw, 40px); }
+}
+
+/* --------------------------------------------------------------------------
+   Servicios — deck of five slides driven by scroll ("Async Slide Transitions").
+
+   The reference swaps pages on CLICK: the outgoing one goes x:-50%, scale 0.8,
+   opacity 0.4 while the incoming one travels from x:100% to 0, both on the same
+   custom ease. Alex wanted that motion, but advanced by SCROLLING — so instead
+   of a timeline per click, script.js maps scroll position to a continuous
+   progress and writes the same three properties every frame. The eye still
+   reads it as one slide clicking over to the next.
+
+   No GSAP: the reference needs CustomEase and SplitText, neither of which this
+   project loads, and a scroll-linked deck should not stop working because a CDN
+   is slow. The ease is applied in JS; the entrance of the type is CSS.
+
+   WITHOUT JS the slides are five ordinary blocks stacked down the page, all
+   readable — every absolute position below is behind .has-js.
+   -------------------------------------------------------------------------- */
+/* The always-visible index of the five services (see index.html). Pills with
+   a control border (3:1), each a link to its slide's anchor. */
+.svc-index { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 10px; }
+.svc-index a {
+  display: inline-flex; align-items: baseline; gap: 8px; padding: 8px 14px;
+  border-radius: var(--r-pill); border: 1px solid var(--sh-control-border);
+  color: var(--sh-text); text-decoration: none; font-size: 13px; font-weight: 500;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.svc-index a small { font-size: 12px; font-weight: 400; color: var(--sh-muted); }
+.svc-index a:hover { background: var(--sh-tint); border-color: var(--sh-text-2); }
+@media (max-width: 560px) { .svc-index a small { display: none; } }
+
+.deck { margin-top: clamp(32px, 4vw, 56px); }
+.deck__slide { padding: clamp(32px, 5vw, 64px) 0; border-top: 1px solid var(--sh-border); }
+.deck__inner { width: min(1240px, 100% - 2 * var(--gutter)); margin-inline: auto; }
+.deck__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 clamp(24px, 4vw, 72px); }
+.deck__col { list-style: none; margin: 0; padding: 0; }
+.deck__row {
+  position: relative; display: flex; justify-content: space-between; gap: 16px;
+  padding: 10px 0; font-size: clamp(11px, 0.85vw, 13px);
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.deck__k { color: var(--sh-muted); }
+.deck__v { color: var(--sh-text); text-align: right; }
+.deck__line {
+  position: absolute; left: 0; bottom: 0; width: 100%; height: 1px;
+  background: var(--sh-border-strong); transform-origin: left center;
+}
+.deck__title {
+  margin: clamp(24px, 4vh, 56px) 0 0;
+  font-size: clamp(30px, 9vw, 132px); line-height: 0.9; font-weight: 500;
+  /* the mask for the entrance is overflow:hidden, and at line-height .9 it
+     shaved the accent off the O of TRANSFORMACION / AUTOMATIZACION */
+  padding-top: 0.1em;
+  letter-spacing: -0.045em; color: var(--sh-text);
+  overflow: hidden;
+}
+
+/* ---- with JS: one sticky viewport, five stacked slides ---- */
+.has-js .deck__stage { position: relative; height: 460dvh; }
+.has-js .deck__viewport {
+  position: sticky; top: 0; height: 100dvh; overflow: hidden;
+  display: grid; align-items: center;
+}
+.has-js .deck__slide {
+  position: absolute; inset: 0; border-top: 0; padding: 0;
+  display: grid; align-content: center;
+  /* OPAQUE. In the video the incoming page is a solid panel that covers the
+     one it replaces; transparent slides just ghost through each other, which is
+     what the first attempt did. */
+  background: var(--sh-bg);
+  /* written every frame by script.js */
+  transform: translate3d(var(--x, 0), var(--y, 0), 0) scale(var(--s, 1));
+  opacity: var(--o, 1);
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+  pointer-events: none;
+}
+.has-js .deck__slide.is-live { pointer-events: auto; }
+/* a slide nowhere near the viewport costs nothing */
+.has-js .deck__slide.is-off { visibility: hidden; }
+
+/* the reference wipes its rules in from the side as a slide arrives */
+.has-js .deck__line { transform: scaleX(0); transition: transform 900ms var(--ease); transition-delay: calc(var(--i, 0) * 70ms + 120ms); }
+.has-js .deck__line--r { transform-origin: right center; }
+.has-js .deck__slide.is-entered .deck__line { transform: scaleX(1); }
+.has-js .deck__k, .has-js .deck__v, .has-js .deck__title {
+  transform: translateY(60%); opacity: 0;
+  transition: transform 900ms var(--ease), opacity 600ms var(--ease);
+  transition-delay: calc(var(--i, 0) * 70ms + 90ms);
+}
+.has-js .deck__title { transition-delay: 60ms; }
+.has-js .deck__slide.is-entered .deck__k,
+.has-js .deck__slide.is-entered .deck__v,
+.has-js .deck__slide.is-entered .deck__title { transform: none; opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* no sliding deck at all: back to five plain stacked blocks */
+  .has-js .deck__stage { height: auto; }
+  .has-js .deck__viewport { position: static; height: auto; display: block; overflow: visible; }
+  .has-js .deck__slide {
+    position: static; transform: none !important; opacity: 1 !important;
+    visibility: visible !important; padding: clamp(32px, 5vw, 64px) 0;
+    border-top: 1px solid var(--sh-border); pointer-events: auto;
+  }
+  .has-js .deck__line { transform: scaleX(1); transition: none; }
+  .has-js .deck__k, .has-js .deck__v, .has-js .deck__title { transform: none; opacity: 1; transition: none; }
+}
+@media (max-width: 900px) {
+  .deck__grid { grid-template-columns: 1fr; gap: 0; }
+  .has-js .deck__stage { height: 420dvh; }
+  /* 9.6vw, not 13vw: «TRANSFORMACIÓN» is ~8.9em wide at this tracking and the
+     title is overflow:hidden (the entrance mask), so at 390px anything above
+     ~39px clips the word. 9.6vw is 37px there. */
+  .deck__title { font-size: clamp(26px, 9.6vw, 84px); }
+}
+
+.drawer__foot { margin-top: auto; display: flex; flex-direction: column; gap: 20px; }
+.drawer__foot .btn { justify-content: space-between; }
+.drawer__meta { display: flex; justify-content: space-between; margin: 0; font-size: 12px; color: var(--on-ink-muted); font-family: var(--font-mono); }
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .hero__copy { width: min(520px, 44vw); }
+  .hero__aside { width: min(340px, 30vw); }
+  .partners__grid { grid-template-columns: repeat(2, 1fr); }
+  .widget__core { grid-template-columns: 72px 1fr; gap: 12px; min-height: 0; }
+  .widget__mark { width: 72px; height: 72px; border-radius: var(--r-md); }
+  .widget__text { font-size: 16px; padding-right: 24px; }
+}
+
+/* --------------------------------------------------------------------------
+   SHORT desktop viewports. Until now the hero was only ever checked at
+   1440x900, where everything happens to fit. It has to hold, between the nav
+   and the bottom bar: the eyebrow, a three-line H1, the proof line, two CTAs
+   AND the five-item service list. A maximised window on a 1366x768 laptop
+   gives about 660-690px of viewport, and at that height the column simply does
+   not fit — the list ran into the bar. So the whole left column tightens
+   together, in two steps, rather than any one piece being cut.
+   These are the first HEIGHT queries in the file; everything else keys off
+   width. Re-measure with the four-viewport check in the task notes if you
+   touch the H1 size, the list size or --bar-h.
+   -------------------------------------------------------------------------- */
+/* 895px, and the number is derived, not guessed. The column needs
+   top + copy(382) + gap(28) + list(206) + bottom(92) <= H, and in this range
+   top is 0.21H, so it fits while 0.21H + 708 <= H, i.e. H >= 896. At exactly
+   1440x900 — the size Alex has been reviewing — that leaves ~4px, which
+   space-between spends on the gap, and the H1 he approved keeps its 73px. One
+   pixel lower and the tightening starts.
+   (An earlier attempt put this at 865 "to be safe" and was wrong in the
+   dangerous direction: at 866 the column was already overflowing by 24px and
+   the list cleared the bottom bar by 2px, by luck.) */
+@media (min-width: 901px) and (max-height: 895px) {
+  .hero__left { top: clamp(96px, 13vh, 190px); gap: clamp(14px, 2.2vh, 28px); }
+  /* the aside shares the column's top, or the two heads drift apart */
+  .hero__aside { top: clamp(96px, 13vh, 190px); }
+  .hero__title { font-size: clamp(38px, 4.3vw, 66px); margin-bottom: 18px; }
+  .hero__copy .eyebrow { margin-bottom: 16px; }
+  .hero__proof { margin-bottom: 22px; }
+  .hero__works-label { margin-bottom: 8px; }
+  .hero__works-list a { padding: 2px 0; font-size: clamp(14px, 1.05vw, 16px); }
+}
+@media (min-width: 901px) and (max-height: 760px) {
+  .hero__left { top: clamp(84px, 11vh, 120px); }
+  .hero__aside { top: clamp(84px, 11vh, 120px); }
+  .hero__title { font-size: clamp(34px, 3.6vw, 52px); }
+  .hero__works-label { margin-bottom: 6px; }
+  .hero__works-list a { padding: 1px 0; font-size: 14px; }
+  .hero__bar { --bar-h: 40px; font-size: 11px; }
+}
+
+/* nav has to give way before the centre column touches the right one */
+@media (max-width: 1080px) {
+  .nav__links { gap: 16px; }
+  .nav__right { gap: 12px; }
+}
+@media (max-width: 1120px) {
+  .nav__tz { display: none; }
+}
+
+@media (max-width: 900px) {
+  :root { --nav-h: 64px; }
+  /* the seam ramp — see --seam-* in :root. Keyed to the FIRST sheet, not to
+     .sheet--intro, which was removed with the "Qué hacemos" section. */
+  main > .sheet:first-child {
+    background:
+      radial-gradient(70% 40% at 50% 0%, var(--accent-a10) 0%, var(--accent-a0) 60%),
+      linear-gradient(180deg,
+        var(--bg-3) 0px,
+        var(--seam-1) 48px,
+        var(--seam-2) 104px,
+        var(--seam-3) 152px,
+        var(--sh-bg) 200px,
+        var(--sh-bg) calc(100% - 200px),
+        var(--sh-bg-2) 100%);
+  }
+  .hero-stage { height: auto; }
+  .hero { position: relative; height: auto; min-height: 100dvh; display: flex; flex-direction: column; padding-top: var(--nav-h); }
+  .hero-sentinel { top: min(100dvh, 100%); }
+  .nav { grid-template-columns: 1fr auto; }
+  .nav__links, .nav__tz { display: none; }
+  /* display: contents dissolves the desktop left column so .hero__copy and
+     .hero__works become direct flex items of .hero again and keep their own
+     order. The DOM already has them in visual order, so this is belt and
+     braces rather than the thing holding the reading order together. */
+  .hero__left { display: contents; }
+  .hero__copy, .hero__aside { position: static; width: auto; padding: 0 var(--gutter); }
+  .hero__copy { order: 1; margin-top: 20px; }
+  .hero__title { font-size: clamp(34px, 9.4vw, 48px); letter-spacing: -0.03em; }
+  /* The showcase is a pointer effect and there is no pointer here; the list
+     stays as what it always was underneath — five links to Servicios, sitting
+     in the gap the baseline screenshot showed between the CTAs and the cloud. */
+  .hero__showcase { display: none; }
+  .hero__works {
+    position: static; width: auto; order: 2;
+    padding: 0 var(--gutter); margin-top: 30px;
+  }
+  .hero__works-list a { font-size: 16px; }
+  .hero__scene { order: 3; position: relative; inset: auto; height: min(58dvh, 500px); margin-top: 4px; }
+  /* the canvas fills the scene box here: a square figure centred in a taller
+     box left a dead band above and below the cloud */
+  .hero__figure { height: 100%; width: 100%; max-width: none; max-height: 100%; aspect-ratio: auto; }
+  .hero__wordmark-wrap { font-size: clamp(96px, 26vw, 200px); }
+  .hero__bar {
+    --bar-inset: 12px; --bar-h: auto;
+    grid-template-columns: repeat(2, 1fr); justify-content: stretch; gap: 8px 16px; padding: 12px 16px; font-size: 11px;
+  }
+  .hero__bar > * { justify-content: flex-start; }
+  .hero__aside { order: 4; padding-top: 40px; padding-bottom: 40px; }
+  .hero__aside-in { gap: 32px; }
+  .partners__grid { grid-template-columns: repeat(2, 1fr); }
+  .partners__label { text-align: left; }
+  /* No radius here. Below 901px the sheet does not overlap the hero, so a
+     rounded lid only exposed the dark body in two "ears" between the light
+     hero and the light-grey start of the seam ramp. The seam IS the edge. */
+  main { margin-top: 0; border-radius: 0; }
+  .feature, .feature--alt { grid-template-columns: 1fr; }
+  .feature--alt .feature__visual { order: 0; }
+  .feature__visual { min-height: 240px; }
+  .cta { grid-template-columns: 1fr; }
+  .form__shell { grid-template-columns: 1fr; }
+  .drawer { grid-template-columns: 1fr; }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  .hero__title { font-size: clamp(48px, 6.6vw, 64px); }
+  .hero__scene { height: min(58dvh, 620px); }
+  .hero__aside-in { flex-direction: row; align-items: flex-start; gap: 40px; }
+  .hero__aside-in > * { flex: 1 1 0; min-width: 0; }
+  .partners__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 560px) {
+  .hero__proof { flex-wrap: wrap; }
+  .widget__core { grid-template-columns: 72px 1fr; min-height: 0; }
+  .widget__mark { width: 72px; height: 72px; border-radius: var(--r-md); }
+  .widget__text { font-size: 16px; }
+  .footer__grid { grid-template-columns: 1fr; gap: 36px; }
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion — everything visible, nothing moves
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .has-js .hero [data-enter], .has-js .hero .hero__title .line > [data-enter], .has-js .hero .hero__figure[data-enter],
+  .has-js .reveal, .term__lines li { opacity: 1 !important; transform: none !important; }
+  .drawer__links a { opacity: 1; transform: none; }
+}

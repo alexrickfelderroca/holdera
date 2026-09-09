@@ -1,0 +1,10 @@
+.screenshots/
+*.bak
+node_modules/
+# fuentes de los modelos 3D y material de referencia de Alex: no se sirven ni se
+# publican; los resultados que sí viajan son assets/model/*.bin y assets/img/*
+/brain-hologram/
+/fish-hologram/
+/hologram-gezegen/
+/*.mp4
+/WhatsApp Image *.jpeg

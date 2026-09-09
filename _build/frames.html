@@ -1,0 +1,52 @@
+<!doctype html>
+<!-- Herramienta de sesion: extrae fotogramas de los mp4 de referencia que paso
+     Alex. No forma parte del sitio; vive en _build/ porque es utillaje
+     reconstruible (ver CLAUDE.md global: el scratchpad se borra).
+
+     Dos trampas, las dos costaron una ronda:
+     1. `seeked` NO garantiza que el fotograma este presentado.
+     2. Y sobre todo: _build/serve.js NO responde peticiones Range, asi que
+        Chrome no puede BUSCAR dentro del mp4 — cada seek devolvia el mismo
+        primer fotograma. Por eso esto REPRODUCE el video y captura al vuelo
+        con requestVideoFrameCallback en vez de saltar por marcas de tiempo. -->
+<meta charset="utf-8">
+<title>frame grabber</title>
+<style>body{margin:0;background:#111}video{display:none}canvas{max-width:100%}</style>
+<video id="v" preload="auto" muted playsinline></video>
+<canvas id="c"></canvas>
+<script>
+window.grab = async function (src, fracs) {
+  var v = document.getElementById('v');
+  var c = document.getElementById('c');
+  var ctx = c.getContext('2d');
+
+  await new Promise(function (res, rej) {
+    v.onerror = function () { rej('video error ' + (v.error && v.error.code)); };
+    v.onloadeddata = res;
+    v.src = src;
+    v.load();
+  });
+  c.width = v.videoWidth; c.height = v.videoHeight;
+
+  var marks = fracs.map(function (f) { return f * v.duration; });
+  var out = [];
+  var next = 0;
+
+  await new Promise(function (res) {
+    function onFrame() {
+      while (next < marks.length && v.currentTime >= marks[next]) {
+        ctx.drawImage(v, 0, 0, c.width, c.height);
+        out.push(c.toDataURL('image/jpeg', 0.8));
+        next++;
+      }
+      if (next >= marks.length || v.ended) { v.pause(); res(); return; }
+      v.requestVideoFrameCallback(onFrame);
+    }
+    v.onended = function () { res(); };
+    v.requestVideoFrameCallback(onFrame);
+    v.play();
+  });
+
+  return { w: v.videoWidth, h: v.videoHeight, dur: v.duration, frames: out };
+};
+</script>

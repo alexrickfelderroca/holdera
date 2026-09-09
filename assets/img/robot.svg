@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1365" width="1024" height="1365" role="img" aria-label="Busto de un robot con visor y luces naranjas">
+  <defs>
+    <radialGradient id="headShade" cx="0.42" cy="0.28" r="0.8">
+      <stop offset="0" stop-color="#3b3b3b"/>
+      <stop offset="0.45" stop-color="#181818"/>
+      <stop offset="1" stop-color="#050505"/>
+    </radialGradient>
+    <linearGradient id="bodyV" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a2a2a"/>
+      <stop offset="0.35" stop-color="#151515"/>
+      <stop offset="1" stop-color="#090909"/>
+    </linearGradient>
+    <linearGradient id="bodyH" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.10"/>
+      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.16"/>
+    </linearGradient>
+    <linearGradient id="neckV" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a0a0a"/>
+      <stop offset="1" stop-color="#1c1c1c"/>
+    </linearGradient>
+    <linearGradient id="neckH" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#000000" stop-opacity="0.6"/>
+      <stop offset="0.35" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="0.65" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.6"/>
+    </linearGradient>
+    <linearGradient id="collar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#232323"/>
+      <stop offset="1" stop-color="#101010"/>
+    </linearGradient>
+    <linearGradient id="visor" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#070707"/>
+      <stop offset="0.38" stop-color="#2c2c2c"/>
+      <stop offset="0.55" stop-color="#101010"/>
+      <stop offset="1" stop-color="#060606"/>
+    </linearGradient>
+    <linearGradient id="visorGloss" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="rimTop" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="0.6" stop-color="#ffffff" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="rimSide" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="eyeCore" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff1dc"/>
+      <stop offset="0.35" stop-color="#ffb35a"/>
+      <stop offset="1" stop-color="#f08a24"/>
+    </radialGradient>
+    <linearGradient id="strip" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffb35a"/>
+      <stop offset="0.5" stop-color="#f08a24"/>
+      <stop offset="1" stop-color="#f08a24" stop-opacity="0.2"/>
+    </linearGradient>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="9"/></filter>
+    <filter id="glowWide" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="26"/></filter>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="14"/></filter>
+    <clipPath id="headClip">
+      <path d="M512 176C640 176 722 272 722 428C722 588 654 700 512 704C370 700 302 588 302 428C302 272 384 176 512 176Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- torso -->
+  <g>
+    <path d="M40 1365V1150C40 1060 90 980 200 930L300 866L440 846C470 836 554 836 584 846L724 866L824 930C934 980 984 1060 984 1150V1365Z" fill="url(#bodyV)"/>
+    <path d="M40 1365V1150C40 1060 90 980 200 930L300 866L440 846C470 836 554 836 584 846L724 866L824 930C934 980 984 1060 984 1150V1365Z" fill="url(#bodyH)"/>
+    <!-- shoulder rim light -->
+    <path d="M56 1160C56 1070 106 990 210 940L312 876L440 856C470 846 554 846 584 856L712 876L814 940C918 990 968 1070 968 1160" fill="none" stroke="url(#rimSide)" stroke-width="4" stroke-linecap="round"/>
+    <!-- panel seams -->
+    <g fill="none" stroke="#ffffff" stroke-opacity="0.07" stroke-width="2">
+      <path d="M150 1365V1120C150 1040 180 970 230 930"/>
+      <path d="M874 1365V1120C874 1040 844 970 794 930"/>
+    </g>
+    <!-- chest plate -->
+    <path d="M380 1000H644C660 1000 672 1012 672 1028V1365H352V1028C352 1012 364 1000 380 1000Z" fill="#0b0b0b" stroke="#ffffff" stroke-opacity="0.06" stroke-width="2"/>
+    <!-- chest light strip -->
+    <rect x="503" y="1044" width="18" height="160" rx="9" fill="url(#strip)" filter="url(#glowWide)" opacity="0.7"/>
+    <rect x="507" y="1044" width="10" height="160" rx="5" fill="url(#strip)" filter="url(#glow)"/>
+    <rect x="509" y="1044" width="6" height="160" rx="3" fill="url(#strip)"/>
+  </g>
+
+  <!-- collar -->
+  <path d="M296 872C340 812 420 790 512 790C604 790 684 812 728 872C688 912 604 936 512 936C420 936 336 912 296 872Z" fill="url(#collar)"/>
+  <path d="M312 868C356 822 428 804 512 804C596 804 668 822 712 868" fill="none" stroke="url(#rimTop)" stroke-width="3"/>
+
+  <!-- neck -->
+  <g>
+    <rect x="436" y="640" width="152" height="200" rx="40" fill="url(#neckV)"/>
+    <rect x="436" y="640" width="152" height="200" rx="40" fill="url(#neckH)"/>
+    <g stroke="#ffffff" stroke-opacity="0.08" stroke-width="2">
+      <path d="M446 712H578"/>
+      <path d="M446 748H578"/>
+      <path d="M446 784H578"/>
+    </g>
+  </g>
+
+  <!-- head -->
+  <g>
+    <path d="M512 176C640 176 722 272 722 428C722 588 654 700 512 704C370 700 302 588 302 428C302 272 384 176 512 176Z" fill="url(#headShade)"/>
+    <!-- crown highlight -->
+    <ellipse cx="470" cy="262" rx="120" ry="52" fill="#ffffff" fill-opacity="0.10" filter="url(#soft)"/>
+    <!-- head rim light -->
+    <path d="M330 470C318 300 400 190 512 186C624 190 706 300 694 470" fill="none" stroke="url(#rimTop)" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- visor -->
+    <g clip-path="url(#headClip)">
+      <path d="M296 402C360 372 440 358 512 358C584 358 664 372 728 402V486C664 458 584 444 512 444C440 444 360 458 296 486Z" fill="url(#visor)"/>
+      <path d="M296 402C360 372 440 358 512 358C584 358 664 372 728 402V430C664 420 584 414 512 414C440 414 360 420 296 430Z" fill="url(#visorGloss)"/>
+      <path d="M300 402C364 372 442 358 512 358C582 358 660 372 724 402" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+      <path d="M300 486C364 458 442 444 512 444C582 444 660 458 724 486" fill="none" stroke="#000000" stroke-opacity="0.45" stroke-width="2"/>
+    </g>
+    <!-- eyes -->
+    <g>
+      <rect x="366" y="394" width="116" height="28" rx="14" fill="#f08a24" filter="url(#glowWide)" opacity="0.75"/>
+      <rect x="542" y="394" width="116" height="28" rx="14" fill="#f08a24" filter="url(#glowWide)" opacity="0.75"/>
+      <rect x="372" y="397" width="104" height="22" rx="11" fill="#ffb35a" filter="url(#glow)"/>
+      <rect x="548" y="397" width="104" height="22" rx="11" fill="#ffb35a" filter="url(#glow)"/>
+      <rect x="376" y="398" width="96" height="20" rx="10" fill="url(#eyeCore)"/>
+      <rect x="552" y="398" width="96" height="20" rx="10" fill="url(#eyeCore)"/>
+    </g>
+    <!-- chin seam + side vents -->
+    <path d="M404 596H620" fill="none" stroke="#ffffff" stroke-opacity="0.07" stroke-width="2"/>
+    <g stroke="#ffffff" stroke-opacity="0.09" stroke-width="2" stroke-linecap="round">
+      <path d="M318 500H344"/><path d="M322 526H346"/><path d="M330 552H350"/>
+      <path d="M680 500H706"/><path d="M678 526H702"/><path d="M674 552H694"/>
+    </g>
+  </g>
+</svg>

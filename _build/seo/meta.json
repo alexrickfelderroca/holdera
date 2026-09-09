@@ -1,0 +1,442 @@
+{
+  "_notes": [
+    "Fuente única de verdad de la capa SEO. La lee _build/seo-inject.js (cabeceras + JSON-LD) y _build/seo/build-sitemap.js (sitemap.xml + robots.txt).",
+    "{{SITE}} se sustituye por la constante SITE de _build/seo-inject.js: el dominio vive en UN sitio. TODO (Alex): confirmar holdera.com.",
+    "TODO (Alex): contactPoint / telephone / email NO están en Organization porque los datos de contacto no están confirmados. Cuando lo estén, añadir a shared.organization: contactPoint {\"@type\":\"ContactPoint\",\"contactType\":\"customer service\",\"email\":\"...\",\"telephone\":\"+34...\",\"availableLanguage\":\"es\"}.",
+    "TODO (Alex): sameAs (Instagram, LinkedIn...) NO está porque las redes no están confirmadas. Añadir a shared.organization cuando haya URLs reales.",
+    "TODO (Alex): aggregateRating / review NO se añaden hasta tener reseñas reales de Google (y solo con la cifra real).",
+    "TODO (Alex): la lista de partners (partners.html) no lleva ItemList en JSON-LD porque los ocho partners siguen sin confirmar; añadirla cuando se confirme la lista.",
+    "Títulos: <= 60 caracteres, palabra clave primero, marca al final. Descripciones: <= 155 caracteres, terminan con un motivo para hacer clic. Lo verifica _build/seo/validate-meta.js.",
+    "Las rutas canónicas usan .html porque así enlazan la nav y el footer (index.html, nosotros.html...). Si Alex quiere URLs limpias, cambiar enlaces y canónicas A LA VEZ."
+  ],
+  "site": {
+    "name": "Holdera",
+    "locale": "es_ES",
+    "lang": "es-ES",
+    "lastmod": "2026-09-08",
+    "twitterCard": "summary_large_image",
+    "icons": {
+      "apple": "assets/icons/apple-touch-icon.png",
+      "png32": "assets/icons/favicon-32.png",
+      "manifest": "site.webmanifest"
+    }
+  },
+  "shared": {
+    "organization": {
+      "@type": "Organization",
+      "@id": "{{SITE}}/#organization",
+      "name": "Holdera",
+      "url": "{{SITE}}/",
+      "logo": {
+        "@type": "ImageObject",
+        "@id": "{{SITE}}/#logo",
+        "url": "{{SITE}}/assets/logo/holdera-logo-full-dark.png",
+        "contentUrl": "{{SITE}}/assets/logo/holdera-logo-full-dark.png",
+        "width": 550,
+        "height": 600,
+        "caption": "Holdera"
+      },
+      "image": "{{SITE}}/assets/logo/holdera-logo-full-dark.png",
+      "description": "Estudio de Barcelona que diseña e integra sistemas con inteligencia artificial para automatizar procesos y reducir costes en empresas.",
+      "slogan": "Sistemas con IA que ahorran tiempo y reducen costes.",
+      "areaServed": [
+        { "@type": "City", "name": "Barcelona" },
+        { "@type": "Country", "name": "España" }
+      ],
+      "knowsAbout": [
+        "Automatización de procesos con inteligencia artificial",
+        "Integración de sistemas con IA",
+        "Transformación digital",
+        "Estrategia digital",
+        "Marketing digital",
+        "Diseño de webs",
+        "CRM a medida",
+        "SEO",
+        "Google Ads",
+        "Meta Ads",
+        "Ecommerce"
+      ],
+      "knowsLanguage": "es"
+    },
+    "website": {
+      "@type": "WebSite",
+      "@id": "{{SITE}}/#website",
+      "url": "{{SITE}}/",
+      "name": "Holdera",
+      "description": "Sistemas con inteligencia artificial que automatizan procesos y reducen costes en tu empresa. Barcelona.",
+      "publisher": { "@id": "{{SITE}}/#organization" },
+      "inLanguage": "es-ES"
+    }
+  },
+  "pages": [
+    {
+      "file": "index.html",
+      "path": "/",
+      "title": "Automatización con IA para empresas en Barcelona | Holdera",
+      "description": "Sistemas con IA que automatizan procesos y reducen costes en tu empresa. Más de 5 años de experiencia, sede en Barcelona. Cuéntanos qué quieres optimizar.",
+      "robots": "index, follow",
+      "sitemap": { "priority": "1.0" },
+      "og": {
+        "type": "website",
+        "title": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes",
+        "description": "Automatizamos procesos con inteligencia artificial y lo integramos en tu empresa. Más de 5 años de experiencia, con sede en Barcelona.",
+        "image": "{{SITE}}/assets/seo/og-default.png",
+        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.com, Barcelona."
+      },
+      "organization": {
+        "@type": ["Organization", "ProfessionalService"],
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Barcelona",
+          "addressRegion": "Barcelona",
+          "addressCountry": "ES"
+        }
+      },
+      "graph": [
+        {
+          "@type": "WebPage",
+          "@id": "{{SITE}}/#webpage",
+          "url": "{{SITE}}/",
+          "name": "Automatización con IA para empresas en Barcelona | Holdera",
+          "description": "Sistemas con IA que automatizan procesos y reducen costes en tu empresa. Más de 5 años de experiencia, sede en Barcelona. Cuéntanos qué quieres optimizar.",
+          "isPartOf": { "@id": "{{SITE}}/#website" },
+          "about": { "@id": "{{SITE}}/#organization" },
+          "mainEntity": { "@id": "{{SITE}}/#organization" },
+          "primaryImageOfPage": { "@type": "ImageObject", "url": "{{SITE}}/assets/seo/og-default.png", "width": 1200, "height": 630 },
+          "breadcrumb": { "@id": "{{SITE}}/#breadcrumb" },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "{{SITE}}/" }
+          ]
+        },
+        {
+          "@type": "Service",
+          "@id": "{{SITE}}/#servicio-asesorias",
+          "name": "Asesorías 1:1",
+          "serviceType": "Asesoría de automatización con IA",
+          "description": "Una sesión contigo para entender qué quieres automatizar y por dónde empezar. Te llevas un diagnóstico; el siguiente paso lo decides tú.",
+          "url": "{{SITE}}/#servicio-asesorias",
+          "provider": { "@id": "{{SITE}}/#organization" },
+          "areaServed": { "@type": "Country", "name": "España" }
+        },
+        {
+          "@type": "Service",
+          "@id": "{{SITE}}/#servicio-estrategia",
+          "name": "Estrategia digital",
+          "serviceType": "Estrategia digital",
+          "description": "Un plan antes de invertir: qué canales, qué arreglar y en qué orden. Te llevas una hoja de ruta que puedes ejecutar tú o con nosotros.",
+          "url": "{{SITE}}/#servicio-estrategia",
+          "provider": { "@id": "{{SITE}}/#organization" },
+          "areaServed": { "@type": "Country", "name": "España" }
+        },
+        {
+          "@type": "Service",
+          "@id": "{{SITE}}/#servicio-transformacion",
+          "name": "Transformación digital",
+          "serviceType": "Transformación digital e integración de sistemas",
+          "description": "Tus procesos, datos y panel dentro de un sistema, en vez de hojas sueltas. Lo conectamos a lo que ya usas o lo construimos de cero.",
+          "url": "{{SITE}}/#servicio-transformacion",
+          "provider": { "@id": "{{SITE}}/#organization" },
+          "areaServed": { "@type": "Country", "name": "España" }
+        },
+        {
+          "@type": "Service",
+          "@id": "{{SITE}}/#servicio-marketing",
+          "name": "Marketing digital",
+          "serviceType": "Marketing digital: Google Ads, Meta, SEO y web",
+          "description": "Que te encuentren y que convierta: Google Ads, Meta, SEO y mejoras en la web. Visitas que sirven, medidas y repetidas.",
+          "url": "{{SITE}}/#servicio-marketing",
+          "provider": { "@id": "{{SITE}}/#organization" },
+          "areaServed": { "@type": "Country", "name": "España" }
+        },
+        {
+          "@type": "Service",
+          "@id": "{{SITE}}/#servicio-ia",
+          "name": "Automatización con IA",
+          "serviceType": "Automatización de procesos con inteligencia artificial",
+          "description": "Tareas repetitivas que se hacen solas, conectadas a tu CRM, ERP, correo y WhatsApp. Menos tiempo, menos errores, menos coste.",
+          "url": "{{SITE}}/#servicio-ia",
+          "provider": { "@id": "{{SITE}}/#organization" },
+          "areaServed": { "@type": "Country", "name": "España" }
+        }
+      ]
+    },
+    {
+      "file": "nosotros.html",
+      "path": "/nosotros.html",
+      "title": "Nosotros: automatización con IA desde Barcelona | Holdera",
+      "description": "Holdera es un estudio de Barcelona que diseña e integra sistemas con IA: primero escuchamos, después construimos. Más de 5 años de experiencia. Conócenos.",
+      "robots": "index, follow",
+      "sitemap": { "priority": "0.7" },
+      "og": {
+        "type": "website",
+        "title": "Nosotros — Holdera, automatización con IA en Barcelona",
+        "description": "Primero escuchamos, después construimos. Un estudio de Barcelona con más de 5 años de experiencia integrando sistemas con IA en empresas.",
+        "image": "{{SITE}}/assets/seo/og-default.png",
+        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.com, Barcelona."
+      },
+      "graph": [
+        {
+          "@type": "AboutPage",
+          "@id": "{{SITE}}/nosotros.html#webpage",
+          "url": "{{SITE}}/nosotros.html",
+          "name": "Nosotros: automatización con IA desde Barcelona | Holdera",
+          "description": "Holdera es un estudio de Barcelona que diseña e integra sistemas con IA: primero escuchamos, después construimos. Más de 5 años de experiencia. Conócenos.",
+          "isPartOf": { "@id": "{{SITE}}/#website" },
+          "about": { "@id": "{{SITE}}/#organization" },
+          "mainEntity": { "@id": "{{SITE}}/#organization" },
+          "primaryImageOfPage": { "@type": "ImageObject", "url": "{{SITE}}/assets/seo/og-default.png", "width": 1200, "height": 630 },
+          "breadcrumb": { "@id": "{{SITE}}/nosotros.html#breadcrumb" },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/nosotros.html#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "{{SITE}}/" },
+            { "@type": "ListItem", "position": 2, "name": "Nosotros", "item": "{{SITE}}/nosotros.html" }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "partners.html",
+      "path": "/partners.html",
+      "title": "Partners y tecnologías que integramos | Holdera",
+      "description": "Las plataformas de IA, automatización y CRM con las que construimos tus sistemas. Descubre con qué tecnologías trabajamos y por qué las elegimos.",
+      "robots": "index, follow",
+      "sitemap": { "priority": "0.7" },
+      "og": {
+        "type": "website",
+        "title": "Partners tecnológicos — Holdera",
+        "description": "Las plataformas de IA, automatización y CRM con las que construimos tus sistemas. Descubre con qué tecnologías trabajamos y por qué.",
+        "image": "{{SITE}}/assets/seo/og-default.png",
+        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.com, Barcelona."
+      },
+      "graph": [
+        {
+          "@type": "WebPage",
+          "@id": "{{SITE}}/partners.html#webpage",
+          "url": "{{SITE}}/partners.html",
+          "name": "Partners y tecnologías que integramos | Holdera",
+          "description": "Las plataformas de IA, automatización y CRM con las que construimos tus sistemas. Descubre con qué tecnologías trabajamos y por qué las elegimos.",
+          "isPartOf": { "@id": "{{SITE}}/#website" },
+          "about": { "@id": "{{SITE}}/#organization" },
+          "primaryImageOfPage": { "@type": "ImageObject", "url": "{{SITE}}/assets/seo/og-default.png", "width": 1200, "height": 630 },
+          "breadcrumb": { "@id": "{{SITE}}/partners.html#breadcrumb" },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/partners.html#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "{{SITE}}/" },
+            { "@type": "ListItem", "position": 2, "name": "Partners", "item": "{{SITE}}/partners.html" }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "contacto.html",
+      "path": "/contacto.html",
+      "title": "Contacto: cuéntanos qué quieres automatizar | Holdera",
+      "description": "Cuéntanos qué proceso te quita tiempo: te decimos cómo lo automatizaríamos y cómo lo integraríamos en tu empresa. Sin compromiso, desde Barcelona.",
+      "robots": "index, follow",
+      "sitemap": { "priority": "0.8" },
+      "og": {
+        "type": "website",
+        "title": "Contacto — Cuéntanos qué quieres automatizar | Holdera",
+        "description": "Cuéntanos qué proceso te quita tiempo y te decimos cómo lo automatizaríamos y cómo lo integraríamos en tu empresa. Sin compromiso.",
+        "image": "{{SITE}}/assets/seo/og-default.png",
+        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.com, Barcelona."
+      },
+      "graph": [
+        {
+          "@type": "ContactPage",
+          "@id": "{{SITE}}/contacto.html#webpage",
+          "url": "{{SITE}}/contacto.html",
+          "name": "Contacto: cuéntanos qué quieres automatizar | Holdera",
+          "description": "Cuéntanos qué proceso te quita tiempo: te decimos cómo lo automatizaríamos y cómo lo integraríamos en tu empresa. Sin compromiso, desde Barcelona.",
+          "isPartOf": { "@id": "{{SITE}}/#website" },
+          "about": { "@id": "{{SITE}}/#organization" },
+          "primaryImageOfPage": { "@type": "ImageObject", "url": "{{SITE}}/assets/seo/og-default.png", "width": 1200, "height": 630 },
+          "breadcrumb": { "@id": "{{SITE}}/contacto.html#breadcrumb" },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/contacto.html#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "{{SITE}}/" },
+            { "@type": "ListItem", "position": 2, "name": "Contacto", "item": "{{SITE}}/contacto.html" }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "panel.html",
+      "path": "/panel.html",
+      "title": "Panel de control con IA para tu empresa (demo) | Holdera",
+      "description": "Así podría ser tu panel: una demo interactiva de cómo un sistema con IA reúne los procesos, tiempos y costes de tu empresa en un solo sitio. Pruébalo.",
+      "robots": "index, follow",
+      "sitemap": { "priority": "0.9" },
+      "og": {
+        "type": "website",
+        "title": "Así podría ser tu panel — Demo interactiva de Holdera",
+        "description": "Una demo interactiva de cómo un sistema con IA reúne los procesos, tiempos y costes de tu empresa en un solo sitio. Pruébalo.",
+        "image": "{{SITE}}/assets/seo/og-panel.png",
+        "imageAlt": "Así podría ser tu panel — demo interactiva de Holdera. holdera.com, Barcelona."
+      },
+      "graph": [
+        {
+          "@type": "WebPage",
+          "@id": "{{SITE}}/panel.html#webpage",
+          "url": "{{SITE}}/panel.html",
+          "name": "Panel de control con IA para tu empresa (demo) | Holdera",
+          "description": "Así podría ser tu panel: una demo interactiva de cómo un sistema con IA reúne los procesos, tiempos y costes de tu empresa en un solo sitio. Pruébalo.",
+          "isPartOf": { "@id": "{{SITE}}/#website" },
+          "about": { "@id": "{{SITE}}/#organization" },
+          "mainEntity": { "@id": "{{SITE}}/panel.html#app" },
+          "primaryImageOfPage": { "@type": "ImageObject", "url": "{{SITE}}/assets/seo/og-panel.png", "width": 1200, "height": 630 },
+          "breadcrumb": { "@id": "{{SITE}}/panel.html#breadcrumb" },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/panel.html#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "{{SITE}}/" },
+            { "@type": "ListItem", "position": 2, "name": "Panel demo", "item": "{{SITE}}/panel.html" }
+          ]
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "{{SITE}}/panel.html#app",
+          "name": "Panel demo de Holdera",
+          "alternateName": "Así podría ser tu panel",
+          "url": "{{SITE}}/panel.html",
+          "description": "Demo interactiva de un panel de control con IA: cómo un sistema a medida reúne los procesos, tiempos y costes de una empresa en un solo sitio. Datos de ejemplo, no reales.",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web",
+          "browserRequirements": "Requiere JavaScript",
+          "isAccessibleForFree": true,
+          "inLanguage": "es-ES",
+          "image": "{{SITE}}/assets/seo/og-panel.png",
+          "provider": { "@id": "{{SITE}}/#organization" },
+          "author": { "@id": "{{SITE}}/#organization" }
+        }
+      ]
+    },
+    {
+      "file": "aviso-legal.html",
+      "path": "/aviso-legal.html",
+      "title": "Aviso legal | Holdera",
+      "description": "Aviso legal de Holdera: titular del sitio, condiciones de uso y propiedad intelectual. Consulta los términos que rigen esta web antes de usarla.",
+      "robots": "index, follow",
+      "sitemap": { "priority": "0.3" },
+      "og": {
+        "type": "website",
+        "title": "Aviso legal — Holdera",
+        "description": "Titular del sitio, condiciones de uso y propiedad intelectual de holdera.com.",
+        "image": "{{SITE}}/assets/seo/og-default.png",
+        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.com, Barcelona."
+      },
+      "graph": [
+        {
+          "@type": "WebPage",
+          "@id": "{{SITE}}/aviso-legal.html#webpage",
+          "url": "{{SITE}}/aviso-legal.html",
+          "name": "Aviso legal | Holdera",
+          "description": "Aviso legal de Holdera: titular del sitio, condiciones de uso y propiedad intelectual. Consulta los términos que rigen esta web antes de usarla.",
+          "isPartOf": { "@id": "{{SITE}}/#website" },
+          "about": { "@id": "{{SITE}}/#organization" },
+          "breadcrumb": { "@id": "{{SITE}}/aviso-legal.html#breadcrumb" },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/aviso-legal.html#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "{{SITE}}/" },
+            { "@type": "ListItem", "position": 2, "name": "Aviso legal", "item": "{{SITE}}/aviso-legal.html" }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "privacidad.html",
+      "path": "/privacidad.html",
+      "title": "Política de privacidad | Holdera",
+      "description": "Política de privacidad de Holdera: qué datos recogemos en el formulario de contacto, con qué finalidad y cómo ejercer tus derechos según el RGPD.",
+      "robots": "index, follow",
+      "sitemap": { "priority": "0.3" },
+      "og": {
+        "type": "website",
+        "title": "Política de privacidad — Holdera",
+        "description": "Qué datos recogemos en el formulario de contacto, con qué finalidad y cómo ejercer tus derechos según el RGPD.",
+        "image": "{{SITE}}/assets/seo/og-default.png",
+        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.com, Barcelona."
+      },
+      "graph": [
+        {
+          "@type": "WebPage",
+          "@id": "{{SITE}}/privacidad.html#webpage",
+          "url": "{{SITE}}/privacidad.html",
+          "name": "Política de privacidad | Holdera",
+          "description": "Política de privacidad de Holdera: qué datos recogemos en el formulario de contacto, con qué finalidad y cómo ejercer tus derechos según el RGPD.",
+          "isPartOf": { "@id": "{{SITE}}/#website" },
+          "about": { "@id": "{{SITE}}/#organization" },
+          "breadcrumb": { "@id": "{{SITE}}/privacidad.html#breadcrumb" },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/privacidad.html#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "{{SITE}}/" },
+            { "@type": "ListItem", "position": 2, "name": "Política de privacidad", "item": "{{SITE}}/privacidad.html" }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "404.html",
+      "path": null,
+      "title": "Página no encontrada | Holdera",
+      "description": "La página que buscas no existe o ha cambiado de sitio. Vuelve al inicio de Holdera o cuéntanos qué quieres automatizar.",
+      "robots": "noindex, follow",
+      "sitemap": null,
+      "og": {
+        "type": "website",
+        "title": "Página no encontrada — Holdera",
+        "description": "La página que buscas no existe o ha cambiado de sitio. Vuelve al inicio de Holdera.",
+        "image": "{{SITE}}/assets/seo/og-default.png",
+        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.com, Barcelona."
+      },
+      "graph": [
+        {
+          "@type": "WebPage",
+          "@id": "{{SITE}}/404.html#webpage",
+          "url": "{{SITE}}/404.html",
+          "name": "Página no encontrada | Holdera",
+          "description": "La página que buscas no existe o ha cambiado de sitio. Vuelve al inicio de Holdera o cuéntanos qué quieres automatizar.",
+          "isPartOf": { "@id": "{{SITE}}/#website" },
+          "breadcrumb": { "@id": "{{SITE}}/404.html#breadcrumb" },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/404.html#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "{{SITE}}/" },
+            { "@type": "ListItem", "position": 2, "name": "Página no encontrada" }
+          ]
+        }
+      ]
+    }
+  ]
+}

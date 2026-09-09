@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Holdera — render del póster del cerebro</title>
+  <!-- brain.js fetches assets/model/* relative to the document, and this page
+       lives in _build/, so anchor every relative URL at the site root. -->
+  <base href="/">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* The canvas is laid out at its full poster size and simply overflows the
+       viewport: getBoundingClientRect() still reports 1024x1024, so the backing
+       store is 1024x1024 whatever the window happens to be. */
+    html, body { margin: 0; overflow: hidden; background: transparent; }
+    .hero-stage { position: fixed; top: 0; left: 0; width: 8px; height: 8px; }
+    .hero__figure { position: absolute; top: 0; left: 0; margin: 0; width: 1024px; height: 1024px; aspect-ratio: auto; max-width: none; }
+    .brain__canvas { position: absolute; inset: 0; width: 1024px; height: 1024px; display: block; opacity: 1; }
+  </style>
+</head>
+<body>
+  <!-- brain.js observes .hero-stage to pause off-screen, so it has to exist and
+       be on screen, and it must stay short enough that readProgress() sees no
+       runway and reports 0 (the neutral, un-scrolled pose). -->
+  <div class="hero-stage"></div>
+  <figure class="hero__figure">
+    <canvas class="brain__canvas" data-brain aria-hidden="true"></canvas>
+  </figure>
+  <!-- Claim the WebGL context first, with preserveDrawingBuffer. A second
+       getContext() call returns this same context and ignores its attributes,
+       so brain.js picks it up unchanged and production never pays for the flag
+       (without it the buffer is cleared on present and readback comes back
+       empty). This inline script must stay ahead of the deferred brain.js. -->
+  <script>
+    document.querySelector('.brain__canvas').getContext('webgl', {
+      alpha: true, antialias: true, depth: false,
+      premultipliedAlpha: true, preserveDrawingBuffer: true,
+    });
+  </script>
+  <script src="brain.js" defer></script>
+</body>
+</html>

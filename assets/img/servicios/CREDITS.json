@@ -1,0 +1,222 @@
+[
+  {
+    "file": "asesorias-bg.webp",
+    "service": "asesorias",
+    "role": "bg",
+    "pexels_photo_url": "https://www.pexels.com/photo/7255417/",
+    "photographer": "MART PRODUCTION",
+    "description": "Dos compañeros conversan en una oficina de ladrillo visto, con portátil, libreta y café sobre la mesa.",
+    "width": 1600,
+    "height": 1067,
+    "bytes": 95298
+  },
+  {
+    "file": "asesorias-a.webp",
+    "service": "asesorias",
+    "role": "a",
+    "pexels_photo_url": "https://www.pexels.com/photo/7654496/",
+    "photographer": "Pavel Danilyuk",
+    "description": "Una consultora explica una hoja de cálculo en el portátil a un cliente de pie junto a la mesa.",
+    "width": 694,
+    "height": 1040,
+    "bytes": 44614
+  },
+  {
+    "file": "asesorias-b.webp",
+    "service": "asesorias",
+    "role": "b",
+    "pexels_photo_url": "https://www.pexels.com/photo/8730981/",
+    "photographer": "Mikhail Nilov",
+    "description": "Primer plano de manos revisando documentos sobre una mesa de madera oscura durante una reunión.",
+    "width": 1040,
+    "height": 694,
+    "bytes": 28114
+  },
+  {
+    "file": "asesorias-c.webp",
+    "service": "asesorias",
+    "role": "c",
+    "pexels_photo_url": "https://www.pexels.com/photo/6016347/",
+    "photographer": "Arina Krasnikova",
+    "description": "Dos mujeres charlan y toman notas en una libreta, con portátil y taza, junto a una ventana.",
+    "width": 1040,
+    "height": 694,
+    "bytes": 30566
+  },
+  {
+    "file": "estrategia-bg.webp",
+    "service": "estrategia",
+    "role": "bg",
+    "pexels_photo_url": "https://www.pexels.com/photo/6804093/",
+    "photographer": "cottonbro studio",
+    "description": "Tablero kanban de notas adhesivas sobre una pared de ladrillo pintada de negro.",
+    "width": 1600,
+    "height": 1067,
+    "bytes": 88154
+  },
+  {
+    "file": "estrategia-a.webp",
+    "service": "estrategia",
+    "role": "a",
+    "pexels_photo_url": "https://www.pexels.com/photo/4623460/",
+    "photographer": "Ketut Subiyanto",
+    "description": "Un hombre señala una nota en un muro de planificación lleno de post-its mientras una compañera toma notas.",
+    "width": 1040,
+    "height": 692,
+    "bytes": 64864
+  },
+  {
+    "file": "estrategia-b.webp",
+    "service": "estrategia",
+    "role": "b",
+    "pexels_photo_url": "https://www.pexels.com/photo/6592358/",
+    "photographer": "Mikhail Nilov",
+    "description": "Una mano coloca una nota adhesiva en un panel de cristal con prioridades escritas a mano.",
+    "width": 693,
+    "height": 1040,
+    "bytes": 11402
+  },
+  {
+    "file": "estrategia-c.webp",
+    "service": "estrategia",
+    "role": "c",
+    "pexels_photo_url": "https://www.pexels.com/photo/8353837/",
+    "photographer": "Kampus Production",
+    "description": "Escritorio de oficina con dos monitores mostrando paneles de datos y gráficos.",
+    "width": 1040,
+    "height": 694,
+    "bytes": 54598
+  },
+  {
+    "file": "transformacion-bg.webp",
+    "service": "transformacion",
+    "role": "bg",
+    "pexels_photo_url": "https://www.pexels.com/photo/4508751/",
+    "photographer": "Brett Sayles",
+    "description": "Pasillo de un centro de datos con armarios de servidores y cableado ordenado.",
+    "width": 1600,
+    "height": 1067,
+    "bytes": 229278
+  },
+  {
+    "file": "transformacion-a.webp",
+    "service": "transformacion",
+    "role": "a",
+    "pexels_photo_url": "https://www.pexels.com/photo/36766877/",
+    "photographer": "Vitaly Gariev",
+    "description": "Un empleado consulta una tablet en una imprenta, entre rollos de vinilo de colores.",
+    "width": 1040,
+    "height": 585,
+    "bytes": 39174
+  },
+  {
+    "file": "transformacion-b.webp",
+    "service": "transformacion",
+    "role": "b",
+    "pexels_photo_url": "https://www.pexels.com/photo/7018656/",
+    "photographer": "cottonbro studio",
+    "description": "Una operaria revisa el inventario en una tablet entre estanterías de un almacén en penumbra.",
+    "width": 693,
+    "height": 1040,
+    "bytes": 20056
+  },
+  {
+    "file": "transformacion-c.webp",
+    "service": "transformacion",
+    "role": "c",
+    "pexels_photo_url": "https://www.pexels.com/photo/6804606/",
+    "photographer": "cottonbro studio",
+    "description": "Oficina industrial con varios monitores y código en pantalla bajo lámparas colgantes.",
+    "width": 693,
+    "height": 1040,
+    "bytes": 38040
+  },
+  {
+    "file": "marketing-bg.webp",
+    "service": "marketing",
+    "role": "bg",
+    "pexels_photo_url": "https://www.pexels.com/photo/12432698/",
+    "photographer": "Hanna Pad",
+    "description": "Rodaje de contenido en interior: una creadora graba con cámara y aro de luz junto a una ventana.",
+    "width": 1600,
+    "height": 1067,
+    "bytes": 90454
+  },
+  {
+    "file": "marketing-a.webp",
+    "service": "marketing",
+    "role": "a",
+    "pexels_photo_url": "https://www.pexels.com/photo/6963589/",
+    "photographer": "cottonbro studio",
+    "description": "Manos con uñas rojas navegando por una red social en el móvil.",
+    "width": 693,
+    "height": 1040,
+    "bytes": 19528
+  },
+  {
+    "file": "marketing-b.webp",
+    "service": "marketing",
+    "role": "b",
+    "pexels_photo_url": "https://www.pexels.com/photo/7675083/",
+    "photographer": "Pavel Danilyuk",
+    "description": "Un fotógrafo prepara una sesión de producto con cerámica sobre una mesa de mármol y softbox.",
+    "width": 694,
+    "height": 1040,
+    "bytes": 41212
+  },
+  {
+    "file": "marketing-c.webp",
+    "service": "marketing",
+    "role": "c",
+    "pexels_photo_url": "https://www.pexels.com/photo/35611165/",
+    "photographer": "Mina Başer",
+    "description": "Escaparate de una tienda de cerámica artesanal con lámpara y flores.",
+    "width": 693,
+    "height": 1040,
+    "bytes": 74908
+  },
+  {
+    "file": "ia-bg.webp",
+    "service": "ia",
+    "role": "bg",
+    "pexels_photo_url": "https://www.pexels.com/photo/34207359/",
+    "photographer": "Freek Wolsink",
+    "description": "Brazo robótico industrial amarillo trabajando en una célula de automatización de una nave.",
+    "width": 1600,
+    "height": 1067,
+    "bytes": 110376
+  },
+  {
+    "file": "ia-a.webp",
+    "service": "ia",
+    "role": "a",
+    "pexels_photo_url": "https://www.pexels.com/photo/3665442/",
+    "photographer": "Jeremy Waterhouse",
+    "description": "Macro de un microchip sobre una placa de circuito impreso en tonos cálidos.",
+    "width": 1040,
+    "height": 693,
+    "bytes": 92348
+  },
+  {
+    "file": "ia-b.webp",
+    "service": "ia",
+    "role": "b",
+    "pexels_photo_url": "https://www.pexels.com/photo/33349204/",
+    "photographer": "Jakub Zerdzicki",
+    "description": "Dos monitores con código de una red neuronal en Python bajo luz naranja.",
+    "width": 585,
+    "height": 1040,
+    "bytes": 45602
+  },
+  {
+    "file": "ia-c.webp",
+    "service": "ia",
+    "role": "c",
+    "pexels_photo_url": "https://www.pexels.com/photo/5354507/",
+    "photographer": "Brett Sayles",
+    "description": "Cables de fibra óptica conectados ordenadamente a un panel de conexiones en un centro de datos.",
+    "width": 1040,
+    "height": 692,
+    "bytes": 54778
+  }
+]

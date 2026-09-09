@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>OG default — Holdera (1200×630)</title>
+<!--
+  Tarjeta social por defecto (og:image / twitter:image). Se renderiza a PNG con
+  Chrome headless (ver _build/seo/build-og.js) y se optimiza con sharp.
+  Misma dirección de arte que el hero: suelo gris de estudio, Geist, un solo
+  uso del naranja (la barra del eyebrow), el logotipo completo en tinta.
+  Si no hay red, Geist no carga y cae a system-ui: el build lo avisa.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=block" rel="stylesheet">
+<style>
+  :root {
+    --bg: #e5e5e5;
+    --bg-3: #cbcbcb;
+    --text: #141414;
+    --text-muted: #666666;
+    --border: rgba(20, 20, 20, .12);
+    --ink: #101010;
+    --accent: #f08a24;
+    --font: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "Geist Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    position: relative;
+    font-family: var(--font);
+    color: var(--text);
+    background:
+      radial-gradient(120% 110% at 28% 18%, var(--bg) 0%, #dcdcdc 48%, var(--bg-3) 100%);
+    -webkit-font-smoothing: antialiased;
+  }
+  /* viñeta muy leve en las esquinas, como en el hero */
+  .vignette {
+    position: absolute; inset: 0;
+    background: radial-gradient(90% 90% at 50% 45%, transparent 55%, rgba(16, 16, 16, .08) 100%);
+  }
+  /* wordmark fantasma detrás, como el HOLDERA gigante del hero */
+  .ghost {
+    position: absolute; left: 50%; top: 54%;
+    transform: translate(-50%, -50%);
+    font-weight: 600; font-size: 300px; line-height: 1;
+    letter-spacing: -.02em; white-space: nowrap;
+    color: rgba(16, 16, 16, .028);
+    user-select: none;
+  }
+  .card {
+    position: absolute; inset: 0;
+    padding: 64px 72px 56px;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    grid-template-rows: auto 1fr auto;
+    column-gap: 56px;
+  }
+  .eyebrow {
+    grid-column: 1; grid-row: 1;
+    display: flex; align-items: center; gap: 14px;
+    font-family: var(--mono); font-size: 15px; font-weight: 500;
+    letter-spacing: .16em; text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .eyebrow__bar { display: block; width: 32px; height: 3px; background: var(--accent); border-radius: 2px; }
+  h1 {
+    grid-column: 1; grid-row: 2;
+    align-self: center;
+    font-weight: 600; font-size: 78px; line-height: 1.0;
+    letter-spacing: -.035em;
+    max-width: 760px;
+    text-wrap: balance;
+  }
+  h1 .fade { color: #5a5a5a; }
+  .logo {
+    grid-column: 2; grid-row: 1 / span 2;
+    align-self: center; justify-self: end;
+    width: 300px; height: 327px;
+    display: block;
+    /* el PNG lleva 24px de margen transparente: 300px de caja = ~274px de marca */
+  }
+  .foot {
+    grid-column: 1 / -1; grid-row: 3;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono); font-size: 17px; letter-spacing: .02em;
+    color: var(--text-muted);
+  }
+  .foot b { font-weight: 500; color: var(--text); }
+</style>
+</head>
+<body>
+  <div class="vignette"></div>
+  <div class="ghost" aria-hidden="true">HOLDERA</div>
+  <div class="card">
+    <p class="eyebrow"><span class="eyebrow__bar"></span>Automatización con IA</p>
+    <h1>Sistemas con IA que ahorran tiempo <span class="fade">y reducen costes.</span></h1>
+    <img class="logo" src="../../assets/logo/holdera-logo-full-dark.png" alt="Holdera">
+    <p class="foot"><span><b>holdera.com</b> · Barcelona</span><span>Sistemas con inteligencia artificial para empresas</span></p>
+  </div>
+</body>
+</html>

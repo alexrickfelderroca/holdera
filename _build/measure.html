@@ -1,0 +1,75 @@
+<!doctype html>
+<!-- HOLDERA — medidor de contraste sobre pixeles REALES.
+     Carga una captura de pantalla del sitio y mide la luminancia de una region.
+
+     Por que existe: el titulo del escaparate se lee sobre CINCO obras
+     distintas, una de ellas casi blanca, con un filtro brightness() y un
+     degradado de scrim por encima. Nada de eso se puede resolver leyendo
+     styles.css — hay que mirar el pixel que sale por la pantalla. Es la regla
+     de la casa (rules/sesiones-en-paralelo.md): el color compuesto se mide
+     pintando y leyendo, no a ojo ni a mano.
+
+     El metodo: se captura la pagina con el TEXTO del titulo en transparente,
+     asi cada pixel de su caja es fondo. Se busca el pixel MAS CLARO de esa
+     caja — el peor caso para un texto claro — y se compara con el color real
+     del titulo.
+
+     Uso (con node _build/serve.js 4177 levantado y las capturas ya hechas en
+     .screenshots/<tarea>/probe/):
+       await window.probe('/.screenshots/hero-waves-brain-showcase/probe/shot-ia.png',
+                          {x, y, w, h, vw, vh}, '#f5f3ef')
+
+     DOS TRAMPAS, las dos costaron una tanda de medidas:
+     1. La caja tiene que ser la de los GLIFOS (un Range sobre el nodo de
+        texto), no la celda de rejilla del titulo: la celda ocupa todo el ancho
+        del escenario y arrastra obra que las letras no tocan, lo que fabrica
+        un suspenso que no existe.
+     2. Mejor en coordenadas PROPORCIONALES que en pixeles CSS. Este Chrome se
+        comparte con otra sesion y el viewport cambio a mitad de captura (una
+        salio a 1440x780 en vez de 1440x900); con fracciones del alto de la
+        imagen la muestra sigue cayendo sobre el titulo. -->
+<meta charset="utf-8">
+<title>contrast probe</title>
+<style>body{margin:0;background:#111;color:#eee;font:12px system-ui}</style>
+<script>
+const lin = c => { c /= 255; return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+const L = (r, g, b) => 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+const ratio = (la, lb) => { const [h, l] = la > lb ? [la, lb] : [lb, la]; return (h + 0.05) / (l + 0.05); };
+
+window.probe = async function (src, box, fgHex) {
+  const img = await new Promise((res, rej) => {
+    const i = new Image();
+    i.onload = () => res(i);
+    i.onerror = () => rej('no se pudo cargar ' + src);
+    i.src = src;
+  });
+  const c = document.createElement('canvas');
+  c.width = img.naturalWidth; c.height = img.naturalHeight;
+  const ctx = c.getContext('2d', { willReadFrequently: true });
+  ctx.drawImage(img, 0, 0);
+
+  // la captura puede venir a otra escala que las coordenadas CSS
+  const sx = img.naturalWidth / box.vw, sy = img.naturalHeight / box.vh;
+  const x = Math.max(0, Math.round(box.x * sx));
+  const y = Math.max(0, Math.round(box.y * sy));
+  const w = Math.min(c.width - x, Math.round(box.w * sx));
+  const h = Math.min(c.height - y, Math.round(box.h * sy));
+  const d = ctx.getImageData(x, y, w, h).data;
+
+  let maxL = -1, maxPx = null, sum = 0, n = 0;
+  for (let i = 0; i < d.length; i += 4) {
+    const l = L(d[i], d[i + 1], d[i + 2]);
+    sum += l; n++;
+    if (l > maxL) { maxL = l; maxPx = [d[i], d[i + 1], d[i + 2]]; }
+  }
+  const fg = parseInt(fgHex.slice(1), 16);
+  const fl = L((fg >> 16) & 255, (fg >> 8) & 255, fg & 255);
+  return {
+    region: { x, y, w, h },
+    lightestPixel: maxPx,
+    worstRatio: +ratio(fl, maxL).toFixed(2),
+    meanRatio: +ratio(fl, sum / n).toFixed(2),
+  };
+};
+</script>
+<p>probe listo — usar window.probe(src, {x,y,w,h,vw,vh}, '#f5f3ef')</p>

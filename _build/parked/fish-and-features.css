@@ -1,0 +1,184 @@
+/* HOLDERA — CSS aparcado el 08-09-2026 junto con fish.js: la sección «Qué hacemos»
+   (peces + aros de texto), las tarjetas .feature con diagramas .viz y la terminal
+   .term ya no están en index.html. Se conserva para poder volver a montarlas;
+   sus tokens (--fish-*, --ring-*, --w-09, --w-40, --sh-surface-3) también se
+   retiraron de :root y habría que reponerlos. */
+
+/* --------------------------------------------------------------------------
+   Fish hologram — six fish circling a funnel of eight text rings
+
+   The fish are WebGL (fish.js); the rings are REAL TEXT in the DOM, placed with
+   CSS 3D. They line up because fish.js writes --persp and --u from the same
+   focal length the GL projection uses, so one world unit is the same distance
+   in both. Do not hardcode either value.
+
+     --u      pixels per world unit at z = 0
+     --persp  the CSS perspective that matches the GL camera
+     --pitch  the camera tilt (already negated for CSS's downward Y)
+     --ry     this ring's height, in world units, from fish-scene.json
+     --rr     this ring's radius, in world units
+     --spin   this ring's current rotation
+     --k/--n  which of n copies a word is, so they spread evenly
+
+   Without JS none of those exist, so every transform below is behind .has-js
+   and the rings fall back to a plain, readable list. That is the whole reason
+   the words are markup and not a canvas texture.
+   -------------------------------------------------------------------------- */
+.fscene-wrap { margin-top: clamp(48px, 6vw, 84px); }
+.fscene {
+  /* A COLUMN, not full bleed. The funnel is a tall narrow object; on a 1425px
+     stage it sat marooned in the middle of an empty band. The scale of the
+     scene comes from the HEIGHT (see setScene), so the width only controls how
+     much empty space frames it. */
+  position: relative; margin-inline: auto;
+  width: min(880px, 100%);
+  height: clamp(420px, 52vw, 660px);
+  perspective: var(--persp, 900px);
+  perspective-origin: 50% 50%;
+}
+.fscene__gl {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  display: block; opacity: 0; transition: opacity 900ms var(--ease);
+}
+[data-fish-scene].is-live .fscene__gl { opacity: 1; }
+
+/* ---- no-JS / pre-placement fallback: a plain list, fully readable ---- */
+.fscene__rings {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; height: 100%;
+  font-size: clamp(13px, 1.15vw, 16px); color: var(--sh-text-2);
+}
+.fring__hoop { display: none; }
+/* the second copy of each phrase is decorative; it only exists once the ring is
+   a ring, so it must not double the text in the fallback list */
+.fring__w + .fring__w { display: none; }
+
+/* ---- the 3D ring stack ---- */
+.has-js .fscene__rings {
+  position: absolute; inset: 0;
+  display: grid; place-items: center; gap: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--pitch, -17deg));
+  pointer-events: none;
+}
+.has-js .fring {
+  position: absolute;
+  transform-style: preserve-3d;
+  /* world Y is up, CSS Y is down */
+  transform: translateY(calc(var(--ry, 0) * var(--u, 180px) * -1)) rotateY(var(--spin, 0deg));
+  opacity: 0;
+  transition: opacity 700ms var(--ease);
+  transition-delay: calc(var(--i, 0) * 60ms);
+}
+[data-fish-scene].is-placed .fring { opacity: 1; }
+
+.has-js .fring__hoop {
+  display: block; position: absolute;
+  width: calc(var(--rr, 0.4) * var(--u, 180px) * 2);
+  height: calc(var(--rr, 0.4) * var(--u, 180px) * 2);
+  margin-left: calc(var(--rr, 0.4) * var(--u, 180px) * -1);
+  margin-top: calc(var(--rr, 0.4) * var(--u, 180px) * -1);
+  border: 1px solid var(--ring-line);
+  border-radius: 50%;
+  transform: rotateX(90deg);
+}
+.has-js .fring__w {
+  display: block; position: absolute;
+  white-space: nowrap;
+  /* place the word on the circle, tangential — text wrapped on a cylinder */
+  transform:
+    rotateY(calc(var(--k, 0) / var(--n, 2) * 360deg))
+    translateZ(calc(var(--rr, 0.4) * var(--u, 180px)));
+  /* the far half of every ring would otherwise show mirror-written text */
+  backface-visibility: hidden;
+  transform-origin: 50% 50%;
+  font-size: clamp(12px, 1.15vw, 17px);
+  letter-spacing: 0.04em;
+  color: var(--sh-text-2);
+  /* The fish pass BEHIND the words, so a single soft shadow is not enough to
+     keep a thin line of type legible when a lit fin slides under it. Three
+     stacked halos of the sheet colour carve a hole in whatever is behind. */
+  text-shadow: 0 0 4px var(--sh-bg), 0 0 12px var(--sh-bg), 0 1px 22px var(--sh-bg);
+}
+.has-js .fring__w + .fring__w { display: block; color: var(--ring-echo); }
+
+/* the accent belongs to the three phrases Alex named as the core offer */
+.has-js .fring:nth-child(6) .fring__w,
+.has-js .fring:nth-child(7) .fring__w,
+.has-js .fring:nth-child(1) .fring__w { color: var(--accent-ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .fscene__gl, .has-js .fring { transition: none; }
+}
+
+/* Features — asymmetric alternating cards (double-bezel) */
+.features { display: grid; gap: 24px; margin-top: clamp(56px, 7vw, 96px); }
+.feature {
+  display: grid; grid-template-columns: 1.15fr 1fr; gap: 6px; padding: 6px;
+  border-radius: var(--r-xl); background: var(--sh-tint); border: 1px solid var(--sh-border);
+  box-shadow: var(--shadow-sh);
+}
+.feature > * { border-radius: calc(var(--r-xl) - 6px); }
+.feature__visual {
+  position: relative; overflow: hidden; min-height: 320px;
+  background: radial-gradient(80% 60% at 50% 40%, var(--sh-surface), var(--sh-surface-3));
+  box-shadow: inset 0 0 0 1px var(--sh-border);
+}
+.feature--alt .feature__visual { order: 2; }
+.feature__body { padding: clamp(28px, 3.2vw, 44px); background: var(--sh-surface-2); box-shadow: var(--sh-bevel); display: flex; flex-direction: column; justify-content: center; }
+.feature__num { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; color: var(--accent-ink); margin-bottom: 16px; }
+.feature__body h3 { font-size: clamp(24px, 2.2vw, 32px); letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 16px; }
+.feature__body p { margin: 0; color: var(--sh-muted); font-size: 15px; line-height: 1.65; max-width: 44ch; }
+
+.viz { position: absolute; inset: 0; width: 100%; height: 100%; font-family: var(--font); }
+/* illustrations only animate while on screen (see script.js) */
+.has-js .feature__visual:not(.is-visible) *,
+.has-js .feature__visual.is-settled:not(:hover):not(:focus-within) * { animation-play-state: paused; }
+.viz__grid { stroke: var(--w-09); }
+.viz__path--2 { stroke: var(--w-40); }
+.viz__box { fill: var(--sh-bg-2); stroke: var(--sh-border-strong); }
+.viz__label { fill: var(--sh-text-2); font-size: 12px; }
+.viz__label--hi { fill: var(--on-ink-text); font-size: 11px; letter-spacing: 1.5px; }
+.viz__label--accent { fill: var(--accent); font-size: 11px; letter-spacing: 1.5px; }
+.viz__core { fill: var(--sh-bg); stroke: var(--accent); stroke-opacity: 0.95; }
+.viz__pulse, .viz__ring { stroke: var(--accent-ink); }
+.viz__spokes { stroke: var(--w-22); }
+.viz__hub { fill: var(--sh-bg); stroke: var(--accent); stroke-opacity: 1; }
+.viz__dot { fill: var(--accent-ink); }
+.viz__path { stroke-dasharray: 6 8; animation: viz-dash 2.4s linear infinite; }
+.viz__path--2 { animation-duration: 3.2s; animation-direction: reverse; }
+@keyframes viz-dash { to { stroke-dashoffset: -28; } }
+.viz__pulse { transform-origin: 260px 160px; animation: viz-pulse 3.2s var(--ease) infinite; }
+@keyframes viz-pulse { 0% { transform: scale(0.75); opacity: 0.8; } 100% { transform: scale(1.35); opacity: 0; } }
+.viz__ring { transform-origin: 260px 160px; animation: viz-pulse 3.6s var(--ease) infinite; }
+.viz__ring--2 { animation-delay: 1.8s; }
+.viz__dot--a { offset-path: path("M260 160L184 116"); animation: viz-travel 3s var(--ease) infinite; }
+.viz__dot--b { offset-path: path("M336 208L260 160"); animation: viz-travel 3s var(--ease) infinite 1.5s; }
+@keyframes viz-travel { 0% { offset-distance: 0%; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+
+.feature__visual--term { display: grid; place-items: center; padding: 28px; }
+.term {
+  width: min(100%, 440px); border-radius: var(--r-md); overflow: hidden;
+  background: var(--sh-bg); border: 1px solid var(--sh-border-strong); box-shadow: var(--shadow-dk);
+  font-family: var(--font-mono); font-size: 12.5px; line-height: 1.7; color: var(--on-ink-text-2);
+}
+.term__bar { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: var(--sh-bg-2); border-bottom: 1px solid var(--on-ink-border); }
+.term__bar i { width: 9px; height: 9px; border-radius: 50%; background: var(--on-ink-border-strong); }
+.term__bar i:first-child { background: var(--accent); }
+.term__bar span { margin-left: 8px; font-size: 11px; color: var(--on-ink-muted); }
+.term__lines { list-style: none; margin: 0; padding: 16px; }
+.term__lines li { opacity: 0; transform: translateX(-6px); transition: opacity var(--t-mid) var(--ease), transform var(--t-mid) var(--ease); transition-delay: calc(var(--i, 0) * 180ms + 300ms); }
+.is-in .term__lines li { opacity: 1; transform: none; }
+.term__lines li:nth-child(1) { --i: 0; } .term__lines li:nth-child(2) { --i: 1; } .term__lines li:nth-child(3) { --i: 2; }
+.term__lines li:nth-child(4) { --i: 3; } .term__lines li:nth-child(5) { --i: 4; } .term__lines li:nth-child(6) { --i: 5; } .term__lines li:nth-child(7) { --i: 6; }
+/* These two keep the BRIGHT --accent on purpose: the terminal is one of the
+   --on-ink surfaces, where #f08a24 measures 7.58:1. Do not "fix" them to
+   --accent-ink — that is the light-ground accent. Same for .viz__label--accent,
+   which sits inside the ink node. _build/contrast.js allowlists all three. */
+.term__prompt { color: var(--accent); }
+.term__muted { color: var(--on-ink-muted); }
+.term__ok { color: var(--accent); }
+.term__cursor { display: inline-block; width: 7px; height: 13px; vertical-align: -2px; background: var(--on-ink-text-2); animation: blink 1.1s steps(2, start) infinite; }
+@keyframes blink { to { visibility: hidden; } }
+

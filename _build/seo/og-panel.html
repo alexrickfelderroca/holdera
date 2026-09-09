@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>OG panel — Holdera (1200×630)</title>
+<!--
+  Tarjeta social de panel.html ("Así podría ser tu panel"). Mismo suelo y misma
+  tipografía que og-default.html; aquí la marca es el monograma sobre una
+  baldosa de tinta y a la derecha va una maqueta abstracta de panel (solo CSS,
+  sin naranja: el único naranja es la barra del eyebrow).
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=block" rel="stylesheet">
+<style>
+  :root {
+    --bg: #e5e5e5;
+    --bg-3: #cbcbcb;
+    --text: #141414;
+    --text-muted: #666666;
+    --border: rgba(20, 20, 20, .12);
+    --ink: #101010;
+    --ink-2: #1c1a17;
+    --on-ink: #f5f3ef;
+    --on-ink-muted: rgba(245, 243, 239, .55);
+    --on-ink-line: rgba(245, 243, 239, .10);
+    --accent: #f08a24;
+    --font: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "Geist Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    position: relative;
+    font-family: var(--font);
+    color: var(--text);
+    background: radial-gradient(120% 110% at 28% 18%, var(--bg) 0%, #dcdcdc 48%, var(--bg-3) 100%);
+    -webkit-font-smoothing: antialiased;
+  }
+  .vignette {
+    position: absolute; inset: 0;
+    background: radial-gradient(90% 90% at 50% 45%, transparent 55%, rgba(16, 16, 16, .08) 100%);
+  }
+  .card {
+    position: absolute; inset: 0;
+    padding: 64px 72px 56px;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    grid-template-rows: auto 1fr auto;
+    column-gap: 48px;
+  }
+  .brand {
+    grid-column: 1; grid-row: 1;
+    display: flex; align-items: center; gap: 18px;
+  }
+  .tile {
+    width: 64px; height: 64px; border-radius: 14px;
+    background: var(--ink);
+    display: grid; place-items: center;
+    box-shadow: 0 1px 0 rgba(255,255,255,.35), 0 8px 24px -8px rgba(16,16,16,.45);
+  }
+  .tile img { width: 19px; height: 40px; display: block; }
+  .eyebrow {
+    display: flex; align-items: center; gap: 14px;
+    font-family: var(--mono); font-size: 15px; font-weight: 500;
+    letter-spacing: .16em; text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .eyebrow__bar { display: block; width: 32px; height: 3px; background: var(--accent); border-radius: 2px; }
+  h1 {
+    grid-column: 1; grid-row: 2;
+    align-self: center;
+    font-weight: 600; font-size: 86px; line-height: 1.0;
+    letter-spacing: -.035em;
+    max-width: 640px;
+  }
+  h1 .fade { color: #5a5a5a; }
+  /* maqueta de panel: tinta, filas y barras — evoca la demo sin ser una captura */
+  .panel {
+    grid-column: 2; grid-row: 1 / span 2;
+    align-self: center; justify-self: end;
+    width: 380px; height: 400px;
+    background: var(--ink-2);
+    border-radius: 24px;
+    padding: 26px 28px;
+    color: var(--on-ink);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.08),
+      0 1px 0 rgba(255,255,255,.4),
+      0 24px 48px -16px rgba(16,16,16,.5),
+      0 8px 16px -8px rgba(16,16,16,.3);
+    display: flex; flex-direction: column; gap: 18px;
+  }
+  .panel__head { display: flex; justify-content: space-between; align-items: baseline; }
+  .panel__title { font-family: var(--mono); font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--on-ink-muted); }
+  .panel__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--on-ink-muted); }
+  .kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .kpi { border: 1px solid var(--on-ink-line); border-radius: 14px; padding: 14px 16px; }
+  .kpi small { display: block; font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--on-ink-muted); margin-bottom: 8px; }
+  .kpi b { font-weight: 600; font-size: 30px; letter-spacing: -.03em; line-height: 1; }
+  .bars { display: flex; align-items: flex-end; gap: 10px; height: 118px; padding-top: 6px; border-top: 1px solid var(--on-ink-line); }
+  .bars i { flex: 1; display: block; background: rgba(245,243,239,.22); border-radius: 6px 6px 3px 3px; }
+  .bars i:nth-child(1) { height: 36%; }
+  .bars i:nth-child(2) { height: 52%; }
+  .bars i:nth-child(3) { height: 44%; }
+  .bars i:nth-child(4) { height: 68%; }
+  .bars i:nth-child(5) { height: 60%; }
+  .bars i:nth-child(6) { height: 82%; }
+  .bars i:nth-child(7) { height: 74%; }
+  .bars i:nth-child(8) { height: 100%; background: rgba(245,243,239,.9); }
+  .rows { display: grid; gap: 10px; }
+  .row { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 13px; color: var(--on-ink-muted); }
+  .row b { color: var(--on-ink); font-weight: 500; }
+  .foot {
+    grid-column: 1 / -1; grid-row: 3;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono); font-size: 17px; letter-spacing: .02em;
+    color: var(--text-muted);
+  }
+  .foot b { font-weight: 500; color: var(--text); }
+</style>
+</head>
+<body>
+  <div class="vignette"></div>
+  <div class="card">
+    <div class="brand">
+      <span class="tile"><img src="../../assets/logo/holdera-monogram-white.png" alt="Holdera"></span>
+      <p class="eyebrow"><span class="eyebrow__bar"></span>Panel demo · interactivo</p>
+    </div>
+    <h1>Así podría ser<br><span class="fade">tu panel.</span></h1>
+    <div class="panel" aria-hidden="true">
+      <div class="panel__head"><span class="panel__title">Tu empresa · hoy</span><span class="panel__dot"></span></div>
+      <div class="kpis">
+        <div class="kpi"><small>Tiempo ahorrado</small><b><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></b></div>
+        <div class="kpi"><small>Costes</small><b><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></b></div>
+      </div>
+      <div class="bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="rows">
+        <div class="row"><span>Automatización</span><b>activa</b></div>
+        <div class="row"><span>Integración</span><b>CRM · correo</b></div>
+      </div>
+    </div>
+    <p class="foot"><span><b>holdera.com</b> · Barcelona</span><span>Sistemas con inteligencia artificial para empresas</span></p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,559 @@
+<!doctype html>
+<!-- HOLDERA — generador de la obra grafica de los cinco servicios.
+     Se abre en Chrome (servido por _build/serve.js) y pinta cada composicion
+     en un canvas; _build/service-art.js recoge los data URL y los escribe en
+     assets/img/servicios/.
+
+     POR QUE GENERADA Y NO DE BANCO DE IMAGENES:
+     este sitio es REAL, no una demo. No hay fotos de los servicios, y el
+     CLAUDE.md global antepone "arte SVG/CSS a medida" a la foto de stock y a
+     la imagen generada por IA cuando no hay material real. Ademas la
+     referencia que paso Alex (Grafixo) tampoco usa fotos: usa arte abstracto.
+     Cada servicio tiene aqui su propia familia visual, con la paleta de :root
+     y, en el caso de IA, con la nube de puntos del cerebro que el proyecto ya
+     posee (assets/model/brain-points.bin).
+
+     UNA SOLA MARCA DE COLOR, CINCO CLAVES TONALES:
+     el sistema de diseno de la casa permite UN acento por proyecto, asi que
+     los cinco servicios no se distinguen por color sino por CLAVE: marfil,
+     medio, tinta, calido y contraste. Es lo que hace que se reconozcan de un
+     vistazo sin meter una segunda marca de color.
+
+     Determinista a proposito: mulberry32 con semilla por composicion, para que
+     reconstruir no cambie el arte ya publicado. -->
+<meta charset="utf-8">
+<title>service art</title>
+<style>
+  body { margin: 0; background: #0b0a09; color: #f5f3ef; font: 12px system-ui; }
+  #out { text-align: center; }
+  canvas { display: inline-block; vertical-align: top; margin: 6px; max-width: 30vw; }
+</style>
+<div id="out"></div>
+<script>
+/* ------------------------------------------------------------------ *
+ * Paleta — los mismos valores que :root en styles.css                 *
+ * ------------------------------------------------------------------ */
+const P = {
+  bg: '#121110', deep: '#0c0b0a', surface: '#1c1a17', surface2: '#211e1b',
+  text: '#f5f3ef', text2: '#d2ccc2', muted: '#9c958b',
+  accent: '#f08a24', accentHi: '#ffb45f', accentDeep: '#a8530a',
+  bone: '#c9b9a4', ivory: '#e9e1d5', paper: '#f2ece2', ink: '#141210',
+};
+
+const rgba = (hex, a) => {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
+};
+
+function mulberry32(seed) {
+  return function () {
+    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/* ------------------------------------------------------------------ *
+ * Utilidades comunes                                                   *
+ * ------------------------------------------------------------------ */
+function fillGround(ctx, W, H, a, b, ang) {
+  const t = ang == null ? 0.35 : ang;
+  const g = ctx.createLinearGradient(0, 0, W * t, H);
+  g.addColorStop(0, a); g.addColorStop(1, b);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+}
+
+function blob(ctx, W, H, x, y, r, c, a) {
+  const rg = ctx.createRadialGradient(x * W, y * H, 0, x * W, y * H, r * Math.max(W, H));
+  rg.addColorStop(0, rgba(c, a));
+  rg.addColorStop(1, rgba(c, 0));
+  ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H);
+}
+
+/* TRAMPA, costo una tanda entera de 20 archivos:
+   `putImageData` NO respeta globalCompositeOperation ni globalAlpha — escribe
+   los pixeles tal cual. Pintar el grano asi no lo superponia: BORRABA la obra
+   entera y dejaba solo ruido casi transparente. Se noto porque los 20 archivos
+   pesaban en proporcion exacta a su numero de pixeles (ruido puro =
+   incompresible) y no a su contenido.
+   El grano va en un canvas aparte y entra por drawImage/createPattern, que si
+   componen. Y va como TESELA repetida: el ruido es lo mas caro que puede
+   tragar un webp, y una tesela de 160px se comprime una sola vez. */
+let GRAIN_TILE = null;
+function grainTile(rnd) {
+  if (GRAIN_TILE) return GRAIN_TILE;
+  const S = 160;
+  const c = document.createElement('canvas');
+  c.width = S; c.height = S;
+  const g = c.getContext('2d');
+  const img = g.createImageData(S, S);
+  const d = img.data;
+  for (let i = 0; i < d.length; i += 4) {
+    const v = 88 + ((rnd() * 80) | 0);
+    d[i] = d[i + 1] = d[i + 2] = v; d[i + 3] = 255;
+  }
+  g.putImageData(img, 0, 0);
+  GRAIN_TILE = c;
+  return c;
+}
+function grain(ctx, W, H, rnd, amount) {
+  ctx.save();
+  ctx.globalCompositeOperation = 'overlay';
+  ctx.globalAlpha = amount == null ? 0.05 : amount;
+  ctx.fillStyle = ctx.createPattern(grainTile(rnd), 'repeat');
+  ctx.fillRect(0, 0, W, H);
+  ctx.restore();
+}
+
+function vignette(ctx, W, H, s, c) {
+  const rg = ctx.createRadialGradient(W / 2, H * 0.46, Math.min(W, H) * 0.20, W / 2, H * 0.5, Math.max(W, H) * 0.80);
+  rg.addColorStop(0, rgba(c || '#060504', 0));
+  rg.addColorStop(1, rgba(c || '#060504', s));
+  ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H);
+}
+
+function blobPath(ctx, cx, cy, R, harm, squash) {
+  ctx.beginPath();
+  const N = 300;
+  for (let i = 0; i <= N; i++) {
+    const t = (i / N) * Math.PI * 2;
+    let r = R;
+    for (let k = 0; k < harm.length; k++) r += harm[k].a * R * Math.sin((k + 2) * t + harm[k].p);
+    const x = cx + Math.cos(t) * r, y = cy + Math.sin(t) * r * (squash || 1);
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+/* ------------------------------------------------------------------ *
+ * 1. ASESORIAS — clave MARFIL. Dos focos que se escuchan: dos sistemas *
+ *    de anillos concentricos y la interferencia donde se cruzan.       *
+ * ------------------------------------------------------------------ */
+function artAsesorias(ctx, W, H, rnd, dark) {
+  if (dark) {
+    fillGround(ctx, W, H, P.surface, P.deep);
+    blob(ctx, W, H, 0.28, 0.42, 0.62, P.bone, 0.10);
+    blob(ctx, W, H, 0.74, 0.58, 0.62, P.accent, 0.12);
+  } else {
+    fillGround(ctx, W, H, P.paper, '#cdc0ac', 0.6);
+    blob(ctx, W, H, 0.30, 0.36, 0.70, '#ffffff', 0.55);
+    blob(ctx, W, H, 0.78, 0.66, 0.62, P.accent, 0.20);
+  }
+
+  const lineC = dark ? P.text2 : P.ink;
+  const foci = [
+    { x: W * 0.30, y: H * 0.42, c: lineC, a: dark ? 0.26 : 0.34 },
+    { x: W * 0.73, y: H * 0.62, c: P.accentDeep, a: dark ? 0.30 : 0.46 },
+  ];
+  const maxR = Math.hypot(W, H) * 0.95;
+
+  ctx.save();
+  ctx.lineWidth = Math.max(1, W / 900);
+  foci.forEach((f, fi) => {
+    const N = 58, step = maxR / N;
+    for (let i = 1; i < N; i++) {
+      const r = i * step + (fi ? step * 0.5 : 0);
+      const fade = Math.pow(1 - i / N, 1.35);
+      ctx.strokeStyle = rgba(f.c, f.a * fade);
+      ctx.beginPath(); ctx.arc(f.x, f.y, r, 0, Math.PI * 2); ctx.stroke();
+    }
+  });
+  ctx.restore();
+
+  // la linea de escucha entre los dos focos
+  ctx.save();
+  ctx.strokeStyle = rgba(dark ? P.text : P.ink, dark ? 0.28 : 0.40);
+  ctx.setLineDash([W / 130, W / 95]);
+  ctx.lineWidth = Math.max(1.2, W / 1000);
+  ctx.beginPath(); ctx.moveTo(foci[0].x, foci[0].y); ctx.lineTo(foci[1].x, foci[1].y); ctx.stroke();
+  ctx.restore();
+
+  foci.forEach((f, i) => {
+    const R = W * 0.11;
+    const rg = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, R);
+    const c = i ? P.accent : (dark ? P.text : P.ink);
+    rg.addColorStop(0, rgba(c, i ? 0.80 : (dark ? 0.55 : 0.30)));
+    rg.addColorStop(1, rgba(c, 0));
+    ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(f.x, f.y, R, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = rgba(i ? P.accentDeep : (dark ? P.text : P.ink), 0.95);
+    ctx.beginPath(); ctx.arc(f.x, f.y, Math.max(3, W / 190), 0, Math.PI * 2); ctx.fill();
+  });
+
+  vignette(ctx, W, H, dark ? 0.5 : 0.30, dark ? '#060504' : '#6b5b45');
+  grain(ctx, W, H, rnd, dark ? 0.04 : 0.07);
+}
+
+/* ------------------------------------------------------------------ *
+ * 2. ESTRATEGIA — clave MEDIA. Mapa de curvas de nivel con bandas      *
+ *    sombreadas y una ruta trazada por encima.                         *
+ * ------------------------------------------------------------------ */
+function artEstrategia(ctx, W, H, rnd, dark) {
+  if (dark) {
+    fillGround(ctx, W, H, '#26211b', P.deep);
+    blob(ctx, W, H, 0.60, 0.30, 0.72, P.bone, 0.09);
+    blob(ctx, W, H, 0.22, 0.82, 0.60, P.accent, 0.10);
+  } else {
+    /* Las manchas de luz iban tan altas que aplanaban las curvas de nivel: el
+       relieve quedaba lavado. Bajadas, y el contraste lo pone la propia linea. */
+    fillGround(ctx, W, H, '#4a4038', '#1c1815', 0.5);
+    blob(ctx, W, H, 0.58, 0.28, 0.78, P.bone, 0.14);
+    blob(ctx, W, H, 0.20, 0.86, 0.62, P.accent, 0.16);
+  }
+
+  const cx = W * 0.54, cy = H * 0.5;
+  const harm = [0, 1, 2, 3].map(() => ({ a: 0.05 + rnd() * 0.09, p: rnd() * 6.28 }));
+  const base = Math.min(W, H) * 0.075;
+  const N = 26;
+
+  // bandas: rellena de fuera hacia dentro para dar masa al relieve
+  ctx.save();
+  for (let i = N; i >= 1; i--) {
+    const R = base * i * 0.62;
+    const t = i / N;
+    ctx.fillStyle = rgba(i < 8 ? P.accentDeep : P.bone, (dark ? 0.020 : 0.045) * (1 - t * 0.5));
+    blobPath(ctx, cx, cy, R, harm.map(h => ({ a: h.a * (0.5 + t * 0.9), p: h.p })), 0.78);
+    ctx.fill();
+  }
+  ctx.restore();
+
+  ctx.save();
+  ctx.lineWidth = Math.max(1, W / 1000);
+  for (let i = 1; i <= N; i++) {
+    const R = base * i * 0.62;
+    const t = i / N;
+    ctx.strokeStyle = i < 8 ? rgba(P.accentHi, (dark ? 0.34 : 0.78) - t * 0.16)
+                            : rgba(P.text2, (dark ? 0.26 : 0.62) - t * 0.30);
+    blobPath(ctx, cx, cy, R, harm.map(h => ({ a: h.a * (0.5 + t * 0.9), p: h.p })), 0.78);
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  const pts = [];
+  const n = 6;
+  for (let i = 0; i < n; i++) {
+    pts.push({
+      x: W * (0.10 + (0.80 * i) / (n - 1)) + (rnd() - 0.5) * W * 0.05,
+      y: H * (0.80 - 0.56 * Math.pow(i / (n - 1), 1.25)) + (rnd() - 0.5) * H * 0.07,
+    });
+  }
+  ctx.save();
+  ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  ctx.strokeStyle = rgba('#000000', 0.22);
+  ctx.lineWidth = Math.max(6, W / 78);
+  ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)); ctx.stroke();
+  ctx.strokeStyle = rgba(P.text, 0.95);
+  ctx.lineWidth = Math.max(2, W / 500);
+  ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)); ctx.stroke();
+  ctx.restore();
+
+  pts.forEach((p, i) => {
+    const last = i === pts.length - 1;
+    const r = Math.max(4, W / (last ? 110 : 180));
+    if (last) {
+      const rg = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 6);
+      rg.addColorStop(0, rgba(P.accentHi, 0.75));
+      rg.addColorStop(1, rgba(P.accent, 0));
+      ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(p.x, p.y, r * 6, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.fillStyle = last ? rgba(P.accentHi, 1) : rgba('#1a1714', 1);
+    ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill();
+    if (!last) {
+      ctx.strokeStyle = rgba(P.text, 0.9);
+      ctx.lineWidth = Math.max(1.6, W / 620);
+      ctx.stroke();
+    }
+  });
+
+  vignette(ctx, W, H, dark ? 0.46 : 0.34);
+  grain(ctx, W, H, rnd, 0.05);
+}
+
+/* ------------------------------------------------------------------ *
+ * 3. TRANSFORMACION — clave TINTA. Hojas sueltas a la izquierda que se *
+ *    ordenan en rejilla a la derecha: el desorden y el sistema.        *
+ * ------------------------------------------------------------------ */
+function artTransformacion(ctx, W, H, rnd, dark) {
+  if (dark) {
+    fillGround(ctx, W, H, '#1a1714', P.deep);
+    blob(ctx, W, H, 0.84, 0.62, 0.62, P.accent, 0.11);
+  } else {
+    fillGround(ctx, W, H, '#221e1a', '#0e0d0c', 0.55);
+    blob(ctx, W, H, 0.14, 0.28, 0.68, P.bone, 0.16);
+    blob(ctx, W, H, 0.86, 0.66, 0.62, P.accent, 0.30);
+  }
+
+  const cols = 7, rows = 9;
+  const padX = W * 0.10, padY = H * 0.09;
+  const cw = (W - padX * 2) / cols, ch = (H - padY * 2) / rows;
+  const tw = cw * 0.68, th = ch * 0.64;
+
+  // rejilla guia de la mitad ordenada, por debajo de las piezas
+  ctx.save();
+  ctx.strokeStyle = rgba(P.text, dark ? 0.06 : 0.10);
+  ctx.lineWidth = Math.max(1, W / 1500);
+  for (let r = 0; r <= rows; r++) {
+    const y = padY + ch * r;
+    ctx.beginPath(); ctx.moveTo(W * 0.50, y); ctx.lineTo(W - padX * 0.35, y); ctx.stroke();
+  }
+  for (let c = 4; c <= cols; c++) {
+    const x = padX + cw * c;
+    ctx.beginPath(); ctx.moveTo(x, padY); ctx.lineTo(x, H - padY); ctx.stroke();
+  }
+  ctx.restore();
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const gx = padX + cw * (c + 0.5), gy = padY + ch * (r + 0.5);
+      const order = Math.min(1, Math.max(0, (c / (cols - 1) - 0.06) / 0.80));
+      const chaos = 1 - order;
+      const jx = (rnd() - 0.5) * cw * 1.5 * chaos;
+      const jy = (rnd() - 0.5) * ch * 1.7 * chaos;
+      const rot = (rnd() - 0.5) * 0.95 * chaos;
+      const scale = 1 - 0.20 * chaos * rnd();
+      const warm = order > 0.66 && rnd() > 0.60;
+
+      ctx.save();
+      ctx.translate(gx + jx, gy + jy);
+      ctx.rotate(rot);
+      ctx.scale(scale, scale);
+      ctx.shadowColor = 'rgba(0,0,0,0.55)';
+      ctx.shadowBlur = W / 55 * (0.35 + order);
+      ctx.shadowOffsetY = W / 260;
+      ctx.fillStyle = warm ? rgba(P.accent, 0.42 + 0.55 * order)
+                           : rgba(P.bone, (dark ? 0.10 : 0.16) + (dark ? 0.30 : 0.52) * order);
+      const rr = Math.max(2, W / 340);
+      roundRect(ctx, -tw / 2, -th / 2, tw, th, rr);
+      ctx.fill();
+      ctx.shadowColor = 'transparent';
+      ctx.strokeStyle = warm ? rgba(P.accentHi, 0.75) : rgba(P.ivory, 0.16 + 0.34 * order);
+      ctx.lineWidth = Math.max(1, W / 1200);
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+
+  vignette(ctx, W, H, dark ? 0.52 : 0.42);
+  grain(ctx, W, H, rnd, 0.05);
+}
+
+/* ------------------------------------------------------------------ *
+ * 4. MARKETING — clave CALIDA. Alcance: un haz desde un origen fuera   *
+ *    de cuadro y anillos de puntos cuya densidad cae con la distancia. *
+ * ------------------------------------------------------------------ */
+function artMarketing(ctx, W, H, rnd, dark) {
+  if (dark) {
+    fillGround(ctx, W, H, '#2a1a0d', P.deep);
+    blob(ctx, W, H, 0.10, 0.88, 0.90, P.accent, 0.16);
+  } else {
+    fillGround(ctx, W, H, '#7c3f0c', '#1d1009', 0.75);
+    blob(ctx, W, H, 0.08, 0.90, 0.95, P.accentHi, 0.55);
+    blob(ctx, W, H, 0.74, 0.20, 0.55, P.bone, 0.10);
+  }
+
+  const ox = W * 0.06, oy = H * 0.95;
+  const R = Math.hypot(W, H) * 1.25;
+  /* El sector tiene que SALIRSE del lienzo por los dos lados. Con a1 casi
+     horizontal (-0.03pi) el borde del cono cruzaba el cuadro como una recta
+     diagonal y dejaba un triangulo muerto abajo a la derecha: se veia el
+     recorte geometrico, no un haz. Abriendo por debajo de la horizontal el
+     limite se va fuera de cuadro y solo queda la caida radial. */
+  const a0 = -Math.PI * 0.62, a1 = Math.PI * 0.10;
+
+  ctx.save();
+  const cone = ctx.createRadialGradient(ox, oy, 0, ox, oy, R);
+  cone.addColorStop(0, rgba(P.accentHi, dark ? 0.30 : 0.75));
+  cone.addColorStop(0.38, rgba(P.accent, dark ? 0.10 : 0.26));
+  cone.addColorStop(1, rgba(P.accent, 0));
+  ctx.fillStyle = cone;
+  ctx.beginPath(); ctx.moveTo(ox, oy); ctx.arc(ox, oy, R, a0, a1); ctx.closePath(); ctx.fill();
+  ctx.restore();
+
+  ctx.save();
+  ctx.lineWidth = Math.max(1, W / 1300);
+  for (let i = 0; i <= 30; i++) {
+    const a = a0 + ((a1 - a0) * i) / 30;
+    ctx.strokeStyle = rgba(i % 4 === 0 ? P.ivory : P.accentHi, (dark ? 0.07 : 0.16) + 0.16 * rnd());
+    ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(ox + Math.cos(a) * R, oy + Math.sin(a) * R); ctx.stroke();
+  }
+  ctx.restore();
+
+  for (let k = 1; k <= 10; k++) {
+    const r = (R * 0.12) * k;
+    const dots = Math.round(170 / k) + 22;
+    for (let i = 0; i < dots; i++) {
+      const a = a0 + ((a1 - a0) * i) / (dots - 1) + (rnd() - 0.5) * 0.018;
+      const rr = r + (rnd() - 0.5) * r * 0.05;
+      const x = ox + Math.cos(a) * rr, y = oy + Math.sin(a) * rr;
+      if (x < -20 || x > W + 20 || y < -20 || y > H + 20) continue;
+      const s = Math.max(1, (W / 420) * (1 - k / 14));
+      ctx.fillStyle = rgba(k < 4 ? P.paper : P.ivory, (dark ? 0.42 : 0.86) - k * 0.055);
+      ctx.beginPath(); ctx.arc(x, y, s, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+
+  // el arco de borde: donde llega el alcance
+  ctx.save();
+  ctx.strokeStyle = rgba(P.paper, dark ? 0.20 : 0.42);
+  ctx.lineWidth = Math.max(1.4, W / 800);
+  ctx.setLineDash([W / 60, W / 42]);
+  ctx.beginPath(); ctx.arc(ox, oy, R * 0.86, a0, a1); ctx.stroke();
+  ctx.restore();
+
+  const rg = ctx.createRadialGradient(ox, oy, 0, ox, oy, W * 0.20);
+  rg.addColorStop(0, rgba('#ffffff', dark ? 0.35 : 0.85));
+  rg.addColorStop(0.35, rgba(P.accentHi, dark ? 0.22 : 0.55));
+  rg.addColorStop(1, rgba(P.accent, 0));
+  ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(ox, oy, W * 0.20, 0, Math.PI * 2); ctx.fill();
+
+  vignette(ctx, W, H, dark ? 0.46 : 0.40, '#150b04');
+  grain(ctx, W, H, rnd, 0.05);
+}
+
+/* ------------------------------------------------------------------ *
+ * 5. AUTOMATIZACION CON IA — clave CONTRASTE. La nube de puntos REAL   *
+ *    del cerebro que ya tiene el proyecto, proyectada, con lineas de   *
+ *    flujo entre nodos encendidos.                                     *
+ * ------------------------------------------------------------------ */
+let BRAIN = null;
+async function loadBrain() {
+  if (BRAIN) return BRAIN;
+  const buf = await fetch('/assets/model/brain-points.bin').then(r => r.arrayBuffer());
+  const q = new Int16Array(buf);
+  const QUANT = 1.2 / 32767;
+  const n = (q.length / 3) | 0;
+  const pos = new Float32Array(n * 3);
+  for (let i = 0; i < n * 3; i++) pos[i] = q[i] * QUANT;
+  BRAIN = { pos, n };
+  return BRAIN;
+}
+
+function artIA(ctx, W, H, rnd, dark, o) {
+  o = o || {};
+  if (dark) {
+    fillGround(ctx, W, H, '#16130f', P.deep);
+    blob(ctx, W, H, 0.52, 0.44, 0.70, P.accent, 0.12);
+  } else {
+    fillGround(ctx, W, H, '#191512', '#080807', 0.5);
+    blob(ctx, W, H, 0.50, 0.44, 0.62, P.accent, 0.30);
+    blob(ctx, W, H, 0.50, 0.46, 0.34, P.bone, 0.14);
+  }
+
+  const yaw = o.yaw == null ? -0.5 : o.yaw, pitch = o.pitch == null ? 0.18 : o.pitch;
+  const cy = Math.cos(yaw), sy = Math.sin(yaw);
+  const cx = Math.cos(pitch), sx = Math.sin(pitch);
+  const S = Math.min(W, H) * (o.scale == null ? 0.62 : o.scale);
+  const ox = W * (o.ox == null ? 0.5 : o.ox), oy = H * (o.oy == null ? 0.48 : o.oy);
+
+  const proj = i => {
+    const x = BRAIN.pos[i * 3], y = BRAIN.pos[i * 3 + 1], z = BRAIN.pos[i * 3 + 2];
+    const x1 = cy * x + sy * z, z1 = -sy * x + cy * z;
+    const y2 = cx * y - sx * z1, z2 = sx * y + cx * z1;
+    // Y de pantalla invertida: en el modelo +Y sube, en canvas +Y baja
+    return { x: ox + x1 * S, y: oy - y2 * S, z: z2 };
+  };
+
+  const step = o.step || 1;
+  for (let i = 0; i < BRAIN.n; i += step) {
+    const p = proj(i);
+    const depth = Math.min(1, Math.max(0, (p.z + 1.05) / 2.1));
+    const hot = rnd() > 0.965;
+    const a = (dark ? 0.05 + 0.34 * depth : 0.10 + 0.72 * Math.pow(depth, 1.15));
+    const r = Math.max(0.6, (W / 820) * (0.65 + depth * 1.7));
+    ctx.fillStyle = hot ? rgba(P.accentHi, Math.min(1, a * 2.2)) : rgba(depth > 0.72 ? P.paper : P.bone, a);
+    ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill();
+  }
+
+  const nodes = [];
+  for (let k = 0; k < 10; k++) nodes.push(proj((rnd() * BRAIN.n) | 0));
+  ctx.save();
+  ctx.lineWidth = Math.max(1, W / 1000);
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      if (Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y) > W * 0.32) continue;
+      ctx.strokeStyle = rgba(P.accentHi, dark ? 0.22 : 0.42);
+      ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.stroke();
+    }
+  }
+  ctx.restore();
+  nodes.forEach(nd => {
+    const rr = Math.max(3, W / 220);
+    const rg = ctx.createRadialGradient(nd.x, nd.y, 0, nd.x, nd.y, rr * 4.5);
+    rg.addColorStop(0, rgba(P.accentHi, dark ? 0.5 : 0.85));
+    rg.addColorStop(1, rgba(P.accent, 0));
+    ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(nd.x, nd.y, rr * 4.5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = rgba(P.paper, 0.95);
+    ctx.beginPath(); ctx.arc(nd.x, nd.y, rr * 0.55, 0, Math.PI * 2); ctx.fill();
+  });
+
+  vignette(ctx, W, H, dark ? 0.5 : 0.44);
+  grain(ctx, W, H, rnd, 0.05);
+}
+
+/* ------------------------------------------------------------------ *
+ * Plan de renderizado                                                  *
+ * ------------------------------------------------------------------ */
+const ART = {
+  asesorias: artAsesorias,
+  estrategia: artEstrategia,
+  transformacion: artTransformacion,
+  marketing: artMarketing,
+  ia: artIA,
+};
+
+/* Tres proporciones fijas — apaisada, vertical y cuadrada — para que cada
+   pieza corresponda a su hueco de la rejilla y `cover` no recorte. */
+const TILE = [
+  { key: 'a', w: 1040, h: 780 },
+  { key: 'b', w: 780, h: 1040 },
+  { key: 'c', w: 880, h: 880 },
+];
+const BG = { w: 1600, h: 1000 };
+
+const SERVICES = ['asesorias', 'estrategia', 'transformacion', 'marketing', 'ia'];
+const SEED = { asesorias: 1021, estrategia: 2207, transformacion: 3313, marketing: 4409, ia: 5501 };
+
+const IA_VIEWS = [
+  { yaw: -0.5, pitch: 0.18, scale: 0.62, ox: 0.5, oy: 0.48, step: 1 },
+  { yaw: 1.15, pitch: -0.10, scale: 0.74, ox: 0.48, oy: 0.50, step: 1 },
+  { yaw: 2.60, pitch: 0.30, scale: 0.58, ox: 0.52, oy: 0.46, step: 1 },
+  { yaw: 0.35, pitch: 0.12, scale: 0.44, ox: 0.62, oy: 0.52, step: 2 },
+];
+
+async function renderAll(quality) {
+  await loadBrain();
+  const out = [];
+  const host = document.getElementById('out');
+  host.innerHTML = '';
+
+  const paint = (name, w, h, seed, dark, view) => {
+    const c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    const ctx = c.getContext('2d');
+    ART[name](ctx, w, h, mulberry32(seed), dark, view);
+    host.appendChild(c);
+    return c.toDataURL('image/webp', quality);
+  };
+
+  SERVICES.forEach(name => {
+    // El fondo a pantalla completa va MUCHO mas apagado: es el telon sobre el
+    // que se lee el titulo grande del servicio, no una pieza de galeria.
+    out.push({ file: name + '-bg.webp', data: paint(name, BG.w, BG.h, SEED[name], true, name === 'ia' ? IA_VIEWS[3] : null) });
+    TILE.forEach((t, ti) => {
+      out.push({ file: name + '-' + t.key + '.webp', data: paint(name, t.w, t.h, SEED[name] + 97 * (ti + 1), false, name === 'ia' ? IA_VIEWS[ti] : null) });
+    });
+  });
+  return out;
+}
+window.renderAll = renderAll;
+</script>

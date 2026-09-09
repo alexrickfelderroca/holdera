@@ -1,0 +1,8 @@
+{
+ "count": 10000,
+ "format": "int16 xyz, Y-up, centred, longest axis = 2.0",
+ "quantScale": 3.662221137119663e-05,
+ "source": "brain-hologram/source/Brain.fbx",
+ "sourceVerts": 220000,
+ "medianParticleRadius": 0.002481698989868164
+}
