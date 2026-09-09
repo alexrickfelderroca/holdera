@@ -1,0 +1,88 @@
+# holdera.es — configuracion de Apache/LiteSpeed
+#
+# 🔴 ESTE ARCHIVO VIVE EN EL REPOSITORIO. Nunca lo crees ni lo edites a mano
+#    desde el gestor de archivos de hPanel: un archivo creado a mano dentro de
+#    public_html hace que el `git pull` del despliegue aborte por conflicto, y
+#    el sitio se queda congelado en el commit viejo SIN avisar de nada.
+#    Se edita aqui, se hace commit, y el despliegue lo publica.
+#
+# Lo que NO esta aqui, porque Hostinger ya lo hace por su cuenta (verificado el
+# 09-09-2026 contra el sitio en vivo, no supuesto):
+#   - http -> https: ya devuelve 301.
+#   - compresion: ya sirve Brotli (Content-Encoding: br).
+#   - /.git/: ya devuelve 403.
+
+
+# ─────────────────────────────────────────────────────────── pagina de error
+# Apache NO usa 404.html por convencion de nombre; eso es GitHub Pages. Sin
+# esta linea, cualquier URL equivocada devuelve la pantalla generica gris del
+# hosting, sin cabecera, sin menu y sin camino de vuelta.
+# La pagina lleva <base href="/"> para que se vea bien servida desde cualquier
+# ruta, incluidas las anidadas.
+ErrorDocument 404 /404.html
+
+
+# ──────────────────────────────────────────────── nada de listar directorios
+Options -Indexes
+
+
+# ─────────────────────────────────────────── el utillaje interno, fuera de la web
+# El despliegue Git clona el repositorio ENTERO dentro de public_html, asi que
+# sin esto quedarian descargables _build/ (46 archivos de herramientas) y los
+# .md del proyecto. No son secretos, pero no pintan nada en una web comercial.
+# robots.txt solo pide a los rastreadores que no indexen: no impide servir.
+RedirectMatch 404 ^/_build(/|$)
+RedirectMatch 404 ^/.+\.md$
+
+
+# ───────────────────────────────────────────────────────── www -> sin www
+# Hoy www.holdera.es y holdera.es devuelven ambos 200: son dos URLs para el
+# mismo contenido, y el canonical apunta solo a la version sin www.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+
+# ──────────────────────────────────────────────────────────────────── cache
+# Por defecto el sitio se sirve con `no-store, no-cache, must-revalidate`, o
+# sea que cada visita vuelve a bajarselo todo. Las fuentes, las imagenes y los
+# modelos 3D no cambian nunca sin cambiar de nombre: pueden cachearse largo.
+# El HTML se revalida siempre, para que un despliegue se vea al instante.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html                     "access plus 0 seconds"
+  ExpiresByType text/css                      "access plus 7 days"
+  ExpiresByType text/javascript               "access plus 7 days"
+  ExpiresByType application/javascript        "access plus 7 days"
+  ExpiresByType image/webp                    "access plus 1 year"
+  ExpiresByType image/png                     "access plus 1 year"
+  ExpiresByType image/jpeg                    "access plus 1 year"
+  ExpiresByType image/svg+xml                 "access plus 1 year"
+  ExpiresByType font/woff2                    "access plus 1 year"
+  ExpiresByType application/octet-stream      "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(webp|png|jpe?g|svg|ico|woff2|bin)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+
+# ─────────────────────────────────────────────────────── tipos MIME propios
+# .bin son las nubes de puntos del cerebro y las mallas, que brain.js pide por
+# fetch + arrayBuffer. .webmanifest lo pide el navegador para el icono.
+<IfModule mod_mime.c>
+  AddType application/octet-stream .bin
+  AddType application/manifest+json .webmanifest
+  AddType image/webp .webp
+  AddType font/woff2 .woff2
+</IfModule>

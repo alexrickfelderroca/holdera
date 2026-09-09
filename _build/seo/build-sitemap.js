@@ -28,7 +28,7 @@ const sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n' +
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls.join('\n') + '\n</urlset>\n';
 
 const robots = [
-  '# holdera.com — robots.txt',
+  '# holdera.es — robots.txt',
   'User-agent: *',
   'Allow: /',
   '# Herramientas de build y fuentes de los modelos 3D: no son páginas.',

@@ -1,7 +1,7 @@
 {
   "_notes": [
     "Fuente única de verdad de la capa SEO. La lee _build/seo-inject.js (cabeceras + JSON-LD) y _build/seo/build-sitemap.js (sitemap.xml + robots.txt).",
-    "{{SITE}} se sustituye por la constante SITE de _build/seo-inject.js: el dominio vive en UN sitio. TODO (Alex): confirmar holdera.com.",
+    "{{SITE}} se sustituye por la constante SITE de _build/seo-inject.js: el dominio vive en UN sitio. TODO (Alex): confirmar holdera.es.",
     "TODO (Alex): contactPoint / telephone / email NO están en Organization porque los datos de contacto no están confirmados. Cuando lo estén, añadir a shared.organization: contactPoint {\"@type\":\"ContactPoint\",\"contactType\":\"customer service\",\"email\":\"...\",\"telephone\":\"+34...\",\"availableLanguage\":\"es\"}.",
     "TODO (Alex): sameAs (Instagram, LinkedIn...) NO está porque las redes no están confirmadas. Añadir a shared.organization cuando haya URLs reales.",
     "TODO (Alex): aggregateRating / review NO se añaden hasta tener reseñas reales de Google (y solo con la cifra real).",
@@ -81,7 +81,7 @@
         "title": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes",
         "description": "Automatizamos procesos con inteligencia artificial y lo integramos en tu empresa. Más de 5 años de experiencia, con sede en Barcelona.",
         "image": "{{SITE}}/assets/seo/og-default.png",
-        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.com, Barcelona."
+        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.es, Barcelona."
       },
       "organization": {
         "@type": ["Organization", "ProfessionalService"],
@@ -177,7 +177,7 @@
         "title": "Nosotros — Holdera, automatización con IA en Barcelona",
         "description": "Primero escuchamos, después construimos. Un estudio de Barcelona con más de 5 años de experiencia integrando sistemas con IA en empresas.",
         "image": "{{SITE}}/assets/seo/og-default.png",
-        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.com, Barcelona."
+        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.es, Barcelona."
       },
       "graph": [
         {
@@ -215,7 +215,7 @@
         "title": "Partners tecnológicos — Holdera",
         "description": "Las plataformas de IA, automatización y CRM con las que construimos tus sistemas. Descubre con qué tecnologías trabajamos y por qué.",
         "image": "{{SITE}}/assets/seo/og-default.png",
-        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.com, Barcelona."
+        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.es, Barcelona."
       },
       "graph": [
         {
@@ -252,7 +252,7 @@
         "title": "Contacto — Cuéntanos qué quieres automatizar | Holdera",
         "description": "Cuéntanos qué proceso te quita tiempo y te decimos cómo lo automatizaríamos y cómo lo integraríamos en tu empresa. Sin compromiso.",
         "image": "{{SITE}}/assets/seo/og-default.png",
-        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.com, Barcelona."
+        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.es, Barcelona."
       },
       "graph": [
         {
@@ -289,7 +289,7 @@
         "title": "Así podría ser tu panel — Demo interactiva de Holdera",
         "description": "Una demo interactiva de cómo un sistema con IA reúne los procesos, tiempos y costes de tu empresa en un solo sitio. Pruébalo.",
         "image": "{{SITE}}/assets/seo/og-panel.png",
-        "imageAlt": "Así podría ser tu panel — demo interactiva de Holdera. holdera.com, Barcelona."
+        "imageAlt": "Así podría ser tu panel — demo interactiva de Holdera. holdera.es, Barcelona."
       },
       "graph": [
         {
@@ -341,9 +341,9 @@
       "og": {
         "type": "website",
         "title": "Aviso legal — Holdera",
-        "description": "Titular del sitio, condiciones de uso y propiedad intelectual de holdera.com.",
+        "description": "Titular del sitio, condiciones de uso y propiedad intelectual de holdera.es.",
         "image": "{{SITE}}/assets/seo/og-default.png",
-        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.com, Barcelona."
+        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.es, Barcelona."
       },
       "graph": [
         {
@@ -379,7 +379,7 @@
         "title": "Política de privacidad — Holdera",
         "description": "Qué datos recogemos en el formulario de contacto, con qué finalidad y cómo ejercer tus derechos según el RGPD.",
         "image": "{{SITE}}/assets/seo/og-default.png",
-        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.com, Barcelona."
+        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.es, Barcelona."
       },
       "graph": [
         {
@@ -415,7 +415,7 @@
         "title": "Página no encontrada — Holdera",
         "description": "La página que buscas no existe o ha cambiado de sitio. Vuelve al inicio de Holdera.",
         "image": "{{SITE}}/assets/seo/og-default.png",
-        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.com, Barcelona."
+        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.es, Barcelona."
       },
       "graph": [
         {

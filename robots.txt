@@ -1,4 +1,4 @@
-# holdera.com — robots.txt
+# holdera.es — robots.txt
 User-agent: *
 Allow: /
 # Herramientas de build y fuentes de los modelos 3D: no son páginas.
@@ -9,4 +9,4 @@ Disallow: /hologram-gezegen/
 # Vídeos de referencia sueltos en la raíz (no son contenido del sitio).
 Disallow: /*.mp4$
 
-Sitemap: https://holdera.com/sitemap.xml
+Sitemap: https://holdera.es/sitemap.xml

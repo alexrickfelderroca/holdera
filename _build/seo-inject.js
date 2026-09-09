@@ -33,7 +33,7 @@ const fs = require('fs');
 const path = require('path');
 
 // TODO (Alex): confirmar el dominio. Es el ÚNICO sitio donde se escribe.
-const SITE = 'https://holdera.com';
+const SITE = 'https://holdera.es';
 const SITE_NAME = 'Holdera';
 const START = '<!-- seo:head -->';
 const END = '<!-- /seo:head -->';
