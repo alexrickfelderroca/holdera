@@ -38,7 +38,7 @@ fs.mkdirSync(path.dirname(out), { recursive: true });
 /* 1024px RGBA lands at ~368 KB. The cloud is only ink, burnt orange and greys,
    so a 768px palette PNG holds up visually at a tenth of that. sharp is not a
    dependency of this project — borrow it from a project that has it:
-     NODE_PATH=/c/Users/Rickfelder/Desktop/aplomo/site/node_modules node _build/save-poster.js ...
+     NODE_PATH=<ruta a un node_modules con sharp> node _build/save-poster.js ...
    Without sharp the raw capture is written instead, just larger. */
 let sharp = null;
 try { sharp = require('sharp'); } catch (e) { /* optional */ }

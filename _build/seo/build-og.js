@@ -27,7 +27,15 @@ const { spawnSync } = require('child_process');
 const ROOT = path.resolve(__dirname, '..', '..');
 const SRC = __dirname;
 const OUT = path.join(ROOT, 'assets', 'seo');
-const SHARP_PATH = 'C:/Users/Rickfelder/Desktop/aplomo/site/node_modules';
+/* sharp no esta instalado en este proyecto (no hay build). Se toma prestado
+   de otro proyecto del equipo: exporta HOLDERA_SHARP_PATH con la ruta a su
+   carpeta node_modules antes de ejecutar este script. Se lee del entorno y
+   no se escribe aqui porque este repositorio es publico. */
+const SHARP_PATH = process.env.HOLDERA_SHARP_PATH || process.env.NODE_PATH || '';
+if (!SHARP_PATH) {
+  console.error('Falta HOLDERA_SHARP_PATH: exporta la ruta a un node_modules que tenga sharp.');
+  process.exit(1);
+}
 const MAX_BYTES = 200 * 1024;
 const W = 1200, H = 630;
 

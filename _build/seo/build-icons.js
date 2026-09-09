@@ -23,7 +23,15 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const OUT = path.join(ROOT, 'assets', 'icons');
-const SHARP_PATH = 'C:/Users/Rickfelder/Desktop/aplomo/site/node_modules';
+/* sharp no esta instalado en este proyecto (no hay build). Se toma prestado
+   de otro proyecto del equipo: exporta HOLDERA_SHARP_PATH con la ruta a su
+   carpeta node_modules antes de ejecutar este script. Se lee del entorno y
+   no se escribe aqui porque este repositorio es publico. */
+const SHARP_PATH = process.env.HOLDERA_SHARP_PATH || process.env.NODE_PATH || '';
+if (!SHARP_PATH) {
+  console.error('Falta HOLDERA_SHARP_PATH: exporta la ruta a un node_modules que tenga sharp.');
+  process.exit(1);
+}
 const INK = '#101010';
 const MONO = path.join(ROOT, 'assets', 'logo', 'holdera-monogram-white.png');
 const FAVICON_SVG = path.join(ROOT, 'assets', 'logo', 'favicon.svg');

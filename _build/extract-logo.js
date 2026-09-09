@@ -1,6 +1,6 @@
 const sharp = require('sharp');
 const path = require('path');
-const src = 'c:/Users/Rickfelder/Desktop/pagina web holdera/';
+const src = path.resolve(__dirname, '..') + '/';
 const out = process.argv[2];
 const jobs = [
   ['WhatsApp Image 2026-09-02 at 18.36.36.jpeg', 'holdera-logo-full'],
