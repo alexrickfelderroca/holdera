@@ -8,3 +8,10 @@ node_modules/
 /hologram-gezegen/
 /*.mp4
 /WhatsApp Image *.jpeg
+
+# El instalador de simple-icons para _build/build-partner-logos.js. Se queda FUERA
+# del repo a proposito: es una herramienta de un solo uso y su package.json hacia
+# que el desplegador de Hostinger creyese que esto es un proyecto de Node y buscase
+# un entry file "index.js" que no existe. El comando para recrearlo esta en la
+# cabecera de _build/build-partner-logos.js.
+/_build/logos/

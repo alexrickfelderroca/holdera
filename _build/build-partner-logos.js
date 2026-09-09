@@ -8,6 +8,14 @@
 
      _build/logos/  ->  si-current (latest) + si-legacy (11)
 
+   Esa carpeta NO viaja en el repo (.gitignore): su package.json declaraba
+   main: index.js y hacia que el desplegador de Hostinger tratase el sitio como
+   un proyecto de Node y fallase buscando ese entry file. Para recrearla:
+
+     mkdir -p _build/logos && cd _build/logos && npm init -y \
+       && npm i si-current@npm:simple-icons@^16.30.0 \
+                si-legacy@npm:simple-icons@^11.15.0
+
    Run:  node _build/build-partner-logos.js          print the markup + tokens
          node _build/build-partner-logos.js --write  patch index.html in place
 
