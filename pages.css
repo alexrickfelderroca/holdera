@@ -399,6 +399,9 @@
   .person { grid-template-columns: 80px minmax(0, 1fr); }
   .person__tile { width: 80px; height: 80px; border-radius: var(--r-md); }
   .legal__toc { margin-bottom: 8px; }
+  /* el indice de aviso-legal y privacidad son las filas mas tocadas de esas dos
+     paginas y median 38px de alto: 6px por debajo del minimo comodo de 44 */
+  .legal__toc a { min-height: 44px; }
   .tech__label { padding-top: 0; }
 }
 

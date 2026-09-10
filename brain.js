@@ -410,8 +410,19 @@
    * choreography survives a dead CDN                                    *
    * ------------------------------------------------------------------ */
   let progress = 0;
+  /* 🔴 Sin puerta de escritorio (arreglado en el paso 8, movil).
+     Esto decia `if (!stage || !DESKTOP.matches) return 0;`, o sea que en movil
+     `progress` valia 0 SIEMPRE. Y `pose()` deriva de progress el descenso, el
+     giro (SPIN = 1,6 vueltas) y el escalado: los tres quedaban a cero. El
+     cerebro ocupa un tercio del hero y era lo unico que un usuario de movil
+     espera ver moverse; solo le quedaba el balanceo de reposo (±0,06 rad).
+     Era, literalmente, la queja de Alex: «nada de lo que se tiene que mover se
+     mueve, esta completamente estatica».
+     La formula ya funciona en movil sin cambios: por debajo de 901px el hero no
+     esta pineado y `.hero-stage` tiene `height: auto`, asi que offsetHeight es
+     el alto real del hero (1470px medidos a 390x844) y el rango sale 626px. */
   function readProgress() {
-    if (!stage || !DESKTOP.matches) return 0;
+    if (!stage) return 0;
     const range = stage.offsetHeight - window.innerHeight;
     if (range <= 4) return 0;
     return clamp(-stage.getBoundingClientRect().top / range, 0, 1);
@@ -587,11 +598,19 @@
     const idle = reduce ? 0 : 1;
     // Alex's brief: the page lifts, the brain sinks. Everything else in the hero
     // is tweened upward by GSAP; this is the only thing that travels down.
-    const drift = pe * 1.55;
+    /* Amplitudes distintas en movil, y no por gusto: la caja es mucho mas
+       corta (405px medidos contra los ~900 de escritorio) y `.hero` tiene
+       `overflow: hidden`. Un descenso de 1,55 unidades de mundo son ~217 css px
+       — con la nube midiendo 219px de alto, al final del scroll el cerebro se
+       habria salido casi entero por abajo. 0,62 son ~87px: baja de verdad, se
+       nota, y la nube sigue dentro del cuadro. El giro tambien se recorta: 1,6
+       vueltas en 626px de scroll se lee como un trompo, no como una deriva. */
+    const wide = DESKTOP.matches;
+    const drift = pe * (wide ? 1.55 : 0.62);
     const bob = Math.sin(tSec * 0.85) * 0.05 * idle;
-    const yaw = BASE_YAW + pe * SPIN + Math.sin(tSec * 0.28) * 0.06 * idle;
+    const yaw = BASE_YAW + pe * (wide ? SPIN : SPIN * 0.45) + Math.sin(tSec * 0.28) * 0.06 * idle;
     const pitch = BASE_PITCH + pe * 0.10;
-    const scale = 1 + pe * 0.10;
+    const scale = 1 + pe * (wide ? 0.10 : 0.06);
     return { yaw, pitch, tx: 0, ty: -drift + bob, tz: -CAM_Z, scale };
   }
 

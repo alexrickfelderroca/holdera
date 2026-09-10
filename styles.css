@@ -295,7 +295,12 @@
    Base
    -------------------------------------------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+/* scroll-padding-top existe porque la cabecera es FIJA (paso 6). Sin esto, un
+   salto de ancla deja el elemento a top:0 y la barra le tapa los primeros
+   --nav-h px: medido en movil, cada seccion perdia 64px justos y el rotulo
+   («SERVICIOS», «CONTACTO») quedaba cortado bajo el cristal. Afecta a las
+   siete paginas y tambien a escritorio, donde --nav-h es 76px. */
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--nav-h) + 12px); }
 html.is-locked { overflow: hidden; }
 body {
   margin: 0;
@@ -1147,7 +1152,26 @@ main {
     max-width: 58ch; padding: 6px 0 0; display: block; pointer-events: auto;
     text-align: left;   /* the desktop band is right-aligned; a plain paragraph is not */
   }
-  .orbit__gl { width: min(70vw, 380px); height: min(70vw, 380px); }
+  /* 🔴 EL PLANETA SALE DE DEBAJO DEL TEXTO.
+     .orbit__sky es `position: absolute; inset: 0` con el canvas centrado, y
+     .orbit__steps va encima. En escritorio funciona: los titulos miden hasta
+     108px y el planeta (620px) queda como telon de fondo por detras de letras
+     enormes. En movil la caja es corta y el planeta (273px) aterriza JUSTO
+     sobre los pasos 02 y 03.
+     Medido con _build/png-probe.js sobre los pixeles reales de una captura a
+     390x844: «Disenamos» 1,12:1 y su descripcion 1,00:1; «Integramos» 1,21:1 y
+     su descripcion 1,00:1. Un ratio de 1,00:1 significa que el texto y el
+     fondo tienen la MISMA luminancia — el texto es literalmente invisible.
+     Los pasos 01 y 04, fuera del disco, median 4,5:1 y 6,3:1.
+     Aqui el cielo deja de ser una capa absoluta y pasa a ser un bloque normal
+     POR ENCIMA de la lista: el planeta se ve entero como ilustracion de la
+     seccion y los cuatro pasos se leen sobre la hoja limpia. */
+  .orbit { display: flex; flex-direction: column; }
+  .orbit__sky {
+    position: static; inset: auto; order: -1;
+    margin-bottom: clamp(24px, 5vw, 40px);
+  }
+  .orbit__gl { width: min(62vw, 300px); height: min(62vw, 300px); }
   .ostep { padding: 14px 0; }
   /* ...and with no band, the desktop hover/focus colours (ink, for reading
      over the orange band) would paint the word ink on the near-black sheet:
@@ -1155,6 +1179,17 @@ main {
   .has-js .ostep:hover .ostep__title, .has-js .ostep:focus-within .ostep__title { color: var(--orbit-title); }
   .has-js .ostep:hover .ostep__title::before, .has-js .ostep:focus-within .ostep__title::before { color: var(--sh-text); }
   .has-js .ostep:hover .ostep__num, .has-js .ostep:focus-within .ostep__num { color: var(--accent-ink); }
+  /* 🔴 ...y por lo mismo, el ANILLO DE FOCO tambien cambia de color aqui.
+     El anillo base es `2px solid var(--ink)` y eso es correcto EN ESCRITORIO,
+     donde enfocar un paso abre su banda naranja y el aro se dibuja sobre ella
+     (--ink mide 7,58:1 sobre --accent). En movil no hay banda —las tres reglas
+     de aqui arriba la desactivan a proposito— asi que el aro de tinta #101010
+     se queda sobre la hoja #121110: medido, 1,01:1. O sea invisible.
+     Lo sufre quien navega con teclado externo, control por conmutadores o el
+     foco de VoiceOver/TalkBack, justo los cuatro <li tabindex="0"> del proceso.
+     --sh-text da 17,02:1. Misma especificidad (0,3,0) que la regla base y va
+     despues en el archivo, asi que solo pisa el color del contorno. */
+  .has-js .ostep:focus-visible { outline-color: var(--sh-text); }
 }
 
 .stats { display: flex; flex-wrap: wrap; gap: 32px 64px; margin-top: clamp(48px, 5vw, 72px); padding-top: 36px; border-top: 1px solid var(--sh-border); }
@@ -1383,6 +1418,12 @@ main {
 @media (max-width: 560px) { .svc-index a small { display: none; } }
 
 .deck { margin-top: clamp(32px, 4vw, 56px); }
+/* La fotografia de cada diapositiva es SOLO de movil. En escritorio el deck
+   vive dentro del escaparate de puntero del hero, que ya ensena esta misma
+   obra a pantalla completa; repetirla aqui seria verla dos veces. En movil ese
+   escaparate no existe (no hay puntero) y la diapositiva se quedaba con una
+   tabla, una palabra y ~600px de negro. Ver _build/migrations/patch-mobile-deck-art.js. */
+.deck__art { display: none; }
 .deck__slide { padding: clamp(32px, 5vw, 64px) 0; border-top: 1px solid var(--sh-border); }
 .deck__inner { width: min(1240px, 100% - 2 * var(--gutter)); margin-inline: auto; }
 .deck__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 clamp(24px, 4vw, 72px); }
@@ -1465,6 +1506,31 @@ main {
      title is overflow:hidden (the entrance mask), so at 390px anything above
      ~39px clips the word. 9.6vw is 37px there. */
   .deck__title { font-size: clamp(26px, 9.6vw, 84px); }
+
+  /* La diapositiva esta centrada verticalmente (`align-content: center`) dentro
+     de un viewport de 100dvh, asi que el hueco quedaba repartido arriba y
+     abajo del bloque. Al crecer el contenido con la foto, el centrado la
+     absorbe sola: no hace falta posicionar nada.
+     La altura va en dvh y no en px para que la foto no empuje la tabla fuera
+     de pantalla en un movil bajo (360x640: 26dvh = 166px). */
+  .deck__art {
+    display: block; margin: clamp(20px, 4vw, 32px) 0 0;
+    border-radius: var(--r-lg); overflow: hidden;
+    /* filete INTERIOR, no `border`: es el mismo recurso que .sc__img en el
+       escaparate de escritorio, y sobre una hoja casi negra un hilo blanco al
+       22% separa la foto del fondo sin dibujar una caja. */
+    box-shadow: inset 0 0 0 1px var(--w-22);
+  }
+  .deck__art img {
+    display: block; width: 100%;
+    height: clamp(150px, 26dvh, 250px);
+    /* center 45% y saturate(.9), igual que el escaparate: el punto focal alto
+       salva las caras al recortar (dos de los cinco paneles son verticales) y
+       la bajada de saturacion mete la foto en la paleta casi monocroma de la
+       hoja en vez de dejarla como un parche de color. */
+    object-fit: cover; object-position: center 45%;
+    filter: saturate(0.9);
+  }
 }
 
 .drawer__foot { margin-top: auto; display: flex; flex-direction: column; gap: 20px; }
@@ -1570,7 +1636,14 @@ main {
     padding: 0 var(--gutter); margin-top: 30px;
   }
   .hero__works-list a { font-size: 16px; }
-  .hero__scene { order: 3; position: relative; inset: auto; height: min(58dvh, 500px); margin-top: 4px; }
+  /* 48dvh, no 58dvh. Medido a 390x844 con _build/png-probe.js sobre una captura
+     con el cerebro aislado: en una caja de 490px la nube ocupaba 219px de alto
+     — el 45% — y dejaba 116px vacios por encima. El cerebro NO encoge al
+     recortar la caja: con FIT_ASPECT 0.88 en brain.js y una caja mas alta que
+     ancha, el encuadre esta limitado por el ANCHO (por debajo de ese aspecto el
+     fov se abre en vertical, que es justo lo que agrandaba el vacio). Asi que
+     esos px eran hueco puro. */
+  .hero__scene { order: 3; position: relative; inset: auto; height: min(48dvh, 410px); margin-top: 4px; }
   /* the canvas fills the scene box here: a square figure centred in a taller
      box left a dead band above and below the cloud */
   .hero__figure { height: 100%; width: 100%; max-width: none; max-height: 100%; aspect-ratio: auto; }
@@ -1594,6 +1667,51 @@ main {
   .cta { grid-template-columns: 1fr; }
   .form__shell { grid-template-columns: 1fr; }
   .drawer { grid-template-columns: 1fr; }
+
+  /* 🔴 16px, no 15px. iOS Safari HACE ZOOM a la pagina al enfocar un campo
+     cuyo font-size sea menor de 16px, y despues no vuelve solo: el usuario se
+     queda con la web ampliada y desplazada a media pantalla. Medido: los
+     cuatro campos de #contacto y los de contacto.html estaban a 15px. Es el
+     defecto movil mas visible de todo el formulario y no lo detecta Lighthouse.
+     En escritorio siguen a 15px: esta regla vive solo aqui. */
+  .form input, .form textarea, .form select { font-size: 16px; }
+
+  /* La casilla de consentimiento es OBLIGATORIA y su cuadro mide 18x18: un
+     objetivo diminuto para el unico control que bloquea el envio.
+     NO se agranda con un ::after sobre el <input>: un checkbox es un elemento
+     REEMPLAZADO y sus pseudo-elementos no se pintan — esa regla no haria nada.
+     Lo que se agranda es la ETIQUETA, que ya esta asociada por for/id, asi que
+     tocarla marca la casilla. 44px de alto de zona tactil, el dibujo intacto. */
+  .form__consent { align-items: center; gap: 14px; }
+  .form__consent label { min-height: 44px; display: flex; align-items: center; cursor: pointer; }
+
+  /* ------------------------------------------------------------------
+     Objetivos tactiles: 44x44 en todo lo que se toca con el dedo.
+     Matiz importante, para que nadie «arregle» esto al reves mas tarde:
+     Lighthouse movil ya daba a11y 100 y su auditoria `target-size` PASABA,
+     porque mide el minimo de WCAG 2.2 AA (24x24, criterio 2.5.8). O sea que
+     esto NO era una violacion WCAG. Es ergonomia: 44x44 es el minimo comodo
+     (Apple HIG y WCAG 2.5.5 AAA) y es la vara de una web de este nivel.
+     Medido a 390x844 antes de tocar nada: MENU 93x40, cerrar del drawer 40x40,
+     enlaces del pie 22px de alto, lista de servicios del hero 34px.
+     Todo crece por PADDING o min-height, nunca por font-size: el dibujo no se
+     mueve, solo el area que responde al dedo.
+     ------------------------------------------------------------------ */
+  .btn { min-height: 44px; }
+  .btn--sm { min-height: 44px; }
+  .btn--icon { width: 44px; height: 44px; }
+  .hero__works-list a { padding: 9px 0; }
+  .nav__brand { min-height: 44px; }
+  .skip-link { min-height: 44px; display: inline-flex; align-items: center; }
+  /* los cinco pills del indice de servicios: 39px -> 44px por padding */
+  .svc-index a { padding-block: 11px; }
+  .footer__nav, .footer__contact { gap: 2px; }
+  .footer__nav a, .footer__contact a,
+  .footer__contact [data-placeholder] {
+    display: flex; align-items: center; min-height: 44px;
+  }
+  .footer__legal { gap: 8px; }
+  .footer__legal a { display: flex; align-items: center; min-height: 44px; padding: 0 12px; margin: 0 -12px; }
 }
 
 @media (min-width: 601px) and (max-width: 900px) {
@@ -1621,4 +1739,30 @@ main {
   .has-js .hero [data-enter], .has-js .hero .hero__title .line > [data-enter], .has-js .hero .hero__figure[data-enter],
   .has-js .reveal, .term__lines li { opacity: 1 !important; transform: none !important; }
   .drawer__links a { opacity: 1; transform: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Movil + movimiento reducido — el ultimo bloque del archivo, a proposito
+   --------------------------------------------------------------------------
+   🔴 Choque de cascada real, no teorico. Dos reglas con la MISMA especificidad
+   (0,2,0) escriben la altura del escenario del deck:
+
+     @media (prefers-reduced-motion: reduce) { .has-js .deck__stage { height: auto } }
+     @media (max-width: 900px)               { .has-js .deck__stage { height: 420dvh } }
+
+   La segunda va DESPUES en el archivo, asi que gana. Resultado en un movil con
+   «Reducir movimiento» activado (Ajustes > Accesibilidad > Movimiento en iOS,
+   que mucha gente lleva puesto): las cinco diapositivas se vuelven bloques
+   estaticos —eso lo hacen otras reglas del bloque de arriba, todas con
+   !important, y esas SI se aplican— pero el escenario conserva sus 420dvh.
+   A 390x844 eso son 3.545px de escenario para ~1.810px de contenido: unos
+   1.735px de negro vacio que el usuario tiene que recorrer con el dedo.
+
+   Va al final y como consulta COMBINADA en vez de acotar el bloque movil con
+   `and (prefers-reduced-motion: no-preference)`, porque acotarlo se llevaria
+   por delante `.deck__grid { grid-template-columns: 1fr }` y el `9.6vw` del
+   titulo, que un movil con movimiento reducido sigue necesitando igual.
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) and (prefers-reduced-motion: reduce) {
+  .has-js .deck__stage { height: auto; }
 }

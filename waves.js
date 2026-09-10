@@ -284,9 +284,25 @@
     drawLines();
   }
 
+  /* Techo de fotogramas en movil.
+     El lienzo del hero mide 585x2256 px de buffer a 390 CSS de ancho: 1,32
+     millones de pixeles repintados en cada fotograma. Medido en vivo con el
+     hero en pantalla, el bucle corria a 144 fps en una pantalla de alto
+     refresco — o sea 190 Mpx/s de trabajo de canvas 2D para un tejido de
+     lineas que se mueve muy despacio. En un movil eso es bateria, no fluidez.
+     A 60 fps el tejido se ve exactamente igual (su velocidad de animacion va
+     por reloj, no por fotograma) y el trabajo se reduce a menos de la mitad.
+     En escritorio no se toca: FRAME_MS queda a 0 y el bucle va libre.
+     El bucle ya se detiene solo cuando el hero sale de pantalla (`running`),
+     verificado: los pixeles dejan de cambiar. Esto es lo otro. */
+  const FRAME_MS = window.matchMedia('(max-width: 900px)').matches ? 1000 / 60 : 0;
+  let lastPaint = -1e9;
+
   function frame(t) {
     raf = 0;
     if (!running) return;
+    if (FRAME_MS && t - lastPaint < FRAME_MS) { raf = requestAnimationFrame(frame); return; }
+    lastPaint = t;
     if (setSize()) setLines();
     step(t);
     raf = requestAnimationFrame(frame);
