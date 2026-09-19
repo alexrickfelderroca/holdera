@@ -208,9 +208,14 @@ const CHECKS = [
   ['focus ring on drawer',  ['.drawer :focus-visible', 'outline-color'], [PANEL], 3],
   ['text-field focus border', ['.form input:not([type="checkbox"]):focus', 'border-color'], [FORM], 3],
   // the hero: its background is a radial gradient, so the mid stop is named
-  // directly. --bg is the value under the star row and the partner strip.
-  ['hero star rating',      ['.stars', 'color'],             [{ token: '--bg' }], 3],
-  ['partner name',          ['.partners__grid li', 'color'],  [{ token: '--bg' }], 4.5],
+  // directly. --bg is the value under the aside column, where the trace card
+  // lives (the stars and the partner strip that used to be checked here are
+  // both gone: unsupported rating, and eight logos claiming integrations that
+  // do not exist).
+  ['trace card label',      ['.trace__label', 'color'],       [{ token: '--bg' }], 4.5],
+  ['trace step number',     ['.trace__n', 'color'],           [['.trace__list', 'background']], 4.5],
+  ['trace step name',       ['.trace__t', 'color'],           [['.trace__list', 'background']], 4.5],
+  ['trace card link',       ['.trace__link', 'color'],        [{ token: '--bg' }], 4.5],
   ['hero bar chip',         ['.hero__bar', 'color'],          [{ token: '--bar-a' }], 4.5],
   // the service list, on the DARKEST ground the light hero can produce
   ['services label',        ['.hero__works-label', 'color'],   HERO_LOW, 4.5],

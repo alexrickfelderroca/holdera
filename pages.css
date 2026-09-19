@@ -243,12 +243,13 @@
   transition: background-color var(--t-fast) var(--ease);
 }
 .tech__mark svg { width: 20px; height: 20px; fill: currentColor; color: var(--sh-text); transition: color var(--t-fast) var(--ease); }
-/* The landing tints the mark with its brand colour on hover. Two of those
-   colours (Anthropic, OpenAI) are near-black or deep violet and would vanish
-   on the dark sheet, so here the TILE lights up and the brand colour is drawn
-   on the light tile instead. */
+/* Estas baldosas ya no llevan logotipos de marca (paso 10: la pagina dejo de
+   nombrar marcas), asi que tampoco leen --brand: la baldosa se enciende y el
+   glifo se dibuja en tinta encima. Si se volviera a poner var(--brand, ...)
+   aqui sin que ninguna pagina declare --brand en linea, check-tokens.js lo
+   cantaria como "token usado pero nunca definido". */
 .tech__item:hover .tech__mark { background: var(--sh-text); }
-.tech__item:hover .tech__mark svg { color: var(--brand, var(--ink)); }
+.tech__item:hover .tech__mark svg { color: var(--ink); }
 .tech__item h3 { margin: 4px 0 6px; font-size: 19px; letter-spacing: -0.02em; line-height: 1.15; }
 .tech__item p { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--sh-muted); max-width: 38ch; }
 

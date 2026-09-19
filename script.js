@@ -146,17 +146,6 @@
     if (history.replaceState) history.replaceState(null, '', location.pathname + location.search);
   }));
 
-  /* ---------- Services sub-menu ---------- */
-  const subToggle = $('.nav__sub-toggle');
-  const subItem = subToggle && subToggle.closest('.nav__item');
-  if (subToggle && subItem) {
-    const setSub = open => { subItem.classList.toggle('is-open', open); subToggle.setAttribute('aria-expanded', String(open)); };
-    subToggle.addEventListener('click', () => setSub(!subItem.classList.contains('is-open')));
-    document.addEventListener('click', e => { if (!subItem.contains(e.target)) setSub(false); });
-    subItem.addEventListener('keydown', e => { if (e.key === 'Escape') { setSub(false); subToggle.focus(); } });
-    subItem.addEventListener('focusout', e => { if (!subItem.contains(e.relatedTarget)) setSub(false); });
-  }
-
   /* ---------- Side drawer ---------- */
   const drawer = $('#drawer');
   if (drawer) {
@@ -196,6 +185,17 @@
       }
     });
   }
+
+  /* ---------- Mobile deck artwork: designed error state ----------
+     .deck__art is a real <img>, so a missing file paints the browser's broken
+     image icon right in the middle of the card — the CSS background-images of
+     the showcase fail silently, this one does not. If the file is not there,
+     the figure is removed and the slide keeps its text, which is the content. */
+  $$('.deck__art img').forEach(img => {
+    const drop = () => { const f = img.closest('figure'); if (f) f.remove(); };
+    img.addEventListener('error', drop);
+    if (img.complete && img.naturalWidth === 0) drop();
+  });
 
   /* ---------- Contact form (front-end only; TODO wire a backend) ---------- */
   const form = $('.form');
@@ -655,13 +655,13 @@
   setTimeout(frame, 300);
   setTimeout(frame, 1200);
 
-  /* ---- deep links: #servicio-<x> lands ON that slide ----
+  /* ---- deep links: #producto-<x> lands ON that slide ----
      Every slide has an id, but with JS the five are stacked inside one sticky
      viewport, so a native hash jump lands on the stage and shows whichever
-     slide the scroll maths picks — for every link that was slide 0 ("Estrategia
-     digital" took you to Asesorías). The right place for slide k is the scroll
+     slide the scroll maths picks — for every link that was slide 0 ("Revenue y
+     reservas" took you to Hoy). The right place for slide k is the scroll
      position where frame() computes p = k, i.e. stage.top + travel * k/(n-1),
-     plus a hair so the swap has fully settled. Used by the nav submenu, the
+     plus a hair so the swap has fully settled. Used by the product index, the
      hero list, and the hash on load (a link from another page). */
   const slideTop = k => {
     const r = stage.getBoundingClientRect();
@@ -677,9 +677,9 @@
     window.scrollTo({ top: Math.max(0, slideTop(k)), behavior });
     if (behavior === 'instant') setTimeout(() => window.scrollTo({ top: Math.max(0, slideTop(k)), behavior: 'instant' }), 60);
   };
-  const indexOfHash = h => { const m = /^#servicio-/.test(h) ? slides.findIndex(s => '#' + s.id === h) : -1; return m; };
+  const indexOfHash = h => { const m = /^#producto-/.test(h) ? slides.findIndex(s => '#' + s.id === h) : -1; return m; };
   document.addEventListener('click', e => {
-    const a = e.target.closest('a[href*="#servicio-"]');
+    const a = e.target.closest('a[href*="#producto-"]');
     if (!a) return;
     const url = new URL(a.getAttribute('href'), location.href);
     if (url.pathname !== location.pathname) return;   // another page: let it navigate
@@ -709,7 +709,7 @@
       on pointerenter with pointerType === 'mouse' and never on keyboard focus.
       Blanking the H1 because somebody tabbed through five links would punish
       exactly the audience that cannot see the artwork. Keyboard gets a focus
-      ring, screen readers get five plain links to #servicios, and a phone gets
+      ring, screen readers get five plain links to #producto, and a phone gets
       the list with no showcase at all.
 
    2. THE IMAGES ARE NOT IN THE INITIAL LOAD. 20 files, ~805 KB, all of it
@@ -776,13 +776,6 @@
     clearTimeout(leaveTimer);
     if (!able.matches) return;
     arm();
-    // an open nav submenu over the dark veil looks like a leftover
-    const openSub = document.querySelector('.nav__item.is-open');
-    if (openSub) {
-      openSub.classList.remove('is-open');
-      const t = openSub.querySelector('.nav__sub-toggle');
-      if (t) t.setAttribute('aria-expanded', 'false');
-    }
     paint(key);
   }
 

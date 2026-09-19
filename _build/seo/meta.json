@@ -1,19 +1,23 @@
 {
   "_notes": [
     "Fuente única de verdad de la capa SEO. La lee _build/seo-inject.js (cabeceras + JSON-LD) y _build/seo/build-sitemap.js (sitemap.xml + robots.txt).",
-    "{{SITE}} se sustituye por la constante SITE de _build/seo-inject.js: el dominio vive en UN sitio. TODO (Alex): confirmar holdera.es.",
+    "{{SITE}} se sustituye por la constante SITE de _build/seo-inject.js: el dominio vive en UN sitio. Hoy es https://holdera.es (confirmado el 09-09-2026). holdera.com NO es de Alex.",
+    "PIVOTE (19-09-2026): Holdera deja de ser una agencia de automatización con IA y pasa a ser UN producto: software de operaciones para hoteles. Lo que se puede afirmar aquí está acotado: el producto LEE exports del PMS, no está conectado en vivo; no contiene IA de ninguna clase; no hay clientes, reseñas ni integraciones con marcas concretas que se puedan nombrar. Si una frase de este archivo no se puede sostener delante del producto, no va.",
+    "Por eso la home ya NO lleva los cinco nodos Service de la agencia (#servicio-asesorias … #servicio-ia): sus @id apuntaban a anclas que ya no existen en la página. En su lugar va UN SoftwareApplication (#software) que describe el producto y sus cinco pantallas, sin aggregateRating, sin review y sin offers. Las anclas vivas de la home son #producto, #producto-hoy, #producto-habitaciones, #producto-housekeeping, #producto-revenue, #producto-trazabilidad y #como-trabajamos.",
+    "OJO: ningún nodo de `graph` puede llevar claves de comentario (`_why`, `_nota`...): buildGraph() manda el nodo TAL CUAL al <script type=\"application/ld+json\"> de la página. Los comentarios van aquí, en _notes, o en `extraSitemap`, que no viaja al JSON-LD.",
     "TODO (Alex): contactPoint / telephone / email NO están en Organization porque los datos de contacto no están confirmados. Cuando lo estén, añadir a shared.organization: contactPoint {\"@type\":\"ContactPoint\",\"contactType\":\"customer service\",\"email\":\"...\",\"telephone\":\"+34...\",\"availableLanguage\":\"es\"}.",
     "TODO (Alex): sameAs (Instagram, LinkedIn...) NO está porque las redes no están confirmadas. Añadir a shared.organization cuando haya URLs reales.",
-    "TODO (Alex): aggregateRating / review NO se añaden hasta tener reseñas reales de Google (y solo con la cifra real).",
-    "TODO (Alex): la lista de partners (partners.html) no lleva ItemList en JSON-LD porque los ocho partners siguen sin confirmar; añadirla cuando se confirme la lista.",
-    "Títulos: <= 60 caracteres, palabra clave primero, marca al final. Descripciones: <= 155 caracteres, terminan con un motivo para hacer clic. Lo verifica _build/seo/validate-meta.js.",
+    "TODO (Alex): aggregateRating / review / offers NO se añaden. Una valoración inventada en datos estructurados es peor que no tener ninguna, y un precio en el JSON-LD es una oferta vinculante.",
+    "TODO (Alex): partners.html no lleva ItemList en JSON-LD. La página ya no afirma partnerships: explica qué exporta un PMS y qué lee Holdera. Nombrar un PMS, una OTA o un channel manager afirmaría una integración que no existe.",
+    "TODO (Alex): la tarjeta social assets/seo/og-default.png se regenera con node _build/seo/build-og.js desde _build/seo/og-default.html. Si cambia el titular del producto, hay que volver a generarla: el og:image:alt de este archivo describe la tarjeta NUEVA.",
+    "Títulos: <= 60 caracteres, palabra clave primero, marca al final (\"| Holdera\"). Descripciones: <= 155 caracteres, terminan con un motivo para hacer clic. Lo verifica _build/seo/validate-meta.js.",
     "Las rutas canónicas usan .html porque así enlazan la nav y el footer (index.html, nosotros.html...). Si Alex quiere URLs limpias, cambiar enlaces y canónicas A LA VEZ."
   ],
   "site": {
     "name": "Holdera",
     "locale": "es_ES",
     "lang": "es-ES",
-    "lastmod": "2026-09-08",
+    "lastmod": "2026-09-19",
     "twitterCard": "summary_large_image",
     "icons": {
       "apple": "assets/icons/apple-touch-icon.png",
@@ -37,8 +41,8 @@
         "caption": "Holdera"
       },
       "image": "{{SITE}}/assets/logo/holdera-logo-full-dark.png",
-      "description": "Estudio de Barcelona que diseña e integra sistemas con inteligencia artificial para automatizar procesos y reducir costes en empresas.",
-      "slogan": "Sistemas con IA que ahorran tiempo y reducen costes.",
+      "description": "Holdera es un producto de software para la operación diaria de un hotel, hecho en Barcelona: cada cifra queda unida al registro del que sale.",
+      "slogan": "Todo tu hotel en una pantalla. Cada cifra, con su origen.",
       "areaServed": [
         {
           "@type": "City",
@@ -50,17 +54,17 @@
         }
       ],
       "knowsAbout": [
-        "Automatización de procesos con inteligencia artificial",
-        "Integración de sistemas con IA",
-        "Transformación digital",
-        "Estrategia digital",
-        "Marketing digital",
-        "Diseño de webs",
-        "CRM a medida",
-        "SEO",
-        "Google Ads",
-        "Meta Ads",
-        "Ecommerce"
+        "Operaciones hoteleras",
+        "Housekeeping",
+        "Recepción y front office",
+        "Revenue management hotelero",
+        "Ocupación hotelera",
+        "ADR (tarifa media diaria)",
+        "RevPAR",
+        "TRevPAR (ingreso total por habitación disponible)",
+        "Pickup y pace de reservas",
+        "Trazabilidad de datos",
+        "Integración de exports de PMS"
       ],
       "knowsLanguage": "es"
     },
@@ -69,7 +73,7 @@
       "@id": "{{SITE}}/#website",
       "url": "{{SITE}}/",
       "name": "Holdera",
-      "description": "Sistemas con inteligencia artificial que automatizan procesos y reducen costes en tu empresa. Barcelona.",
+      "description": "Software de operaciones para hoteles. Cada cifra, unida al registro del que sale.",
       "publisher": {
         "@id": "{{SITE}}/#organization"
       },
@@ -78,7 +82,7 @@
   },
   "extraSitemap": [
     {
-      "_why": "El panel demo es el producto capturado en /panel/ (259 paginas estaticas). NO es una pagina del sitio: no lleva el bloque <!-- seo:head --> que reescribe seo-inject.js, asi que no puede ir en `pages` o el inyector intentaria escribir en ella. Solo build-sitemap.js lee esta lista. Las otras 258 paginas llevan noindex,follow.",
+      "_why": "El panel demo es el producto capturado en /panel/ (259 paginas estaticas, hotel ficticio de 100 habitaciones congelado el jueves 15 de enero de 2026 a las 14:30). NO es una pagina del sitio: no lleva el bloque <!-- seo:head --> que reescribe seo-inject.js, asi que no puede ir en `pages` o el inyector intentaria escribir en ella. Solo build-sitemap.js lee esta lista. Las otras 258 paginas llevan noindex,follow.",
       "path": "/panel/",
       "priority": "0.9",
       "lastmod": "2026-09-19"
@@ -88,18 +92,18 @@
     {
       "file": "index.html",
       "path": "/",
-      "title": "Automatización con IA para empresas en Barcelona | Holdera",
-      "description": "Sistemas con IA que automatizan procesos y reducen costes en tu empresa. Más de 5 años de experiencia, sede en Barcelona. Cuéntanos qué quieres optimizar.",
+      "title": "Software de operaciones para hoteles | Holdera",
+      "description": "Todo tu hotel en una pantalla: habitaciones, llegadas, housekeeping, revenue y reservas. Y cada cifra, unida al registro del que sale. Panel demo abierto.",
       "robots": "index, follow",
       "sitemap": {
         "priority": "1.0"
       },
       "og": {
         "type": "website",
-        "title": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes",
-        "description": "Automatizamos procesos con inteligencia artificial y lo integramos en tu empresa. Más de 5 años de experiencia, con sede en Barcelona.",
+        "title": "Holdera — Todo tu hotel en una pantalla, y cada cifra con su origen",
+        "description": "Habitaciones, llegadas, salidas y housekeeping sobre el plano del hotel; ocupación, ADR, RevPAR y TRevPAR con su calendario de reservas. Cada cifra se abre y enseña el registro del que sale.",
         "image": "{{SITE}}/assets/seo/og-default.png",
-        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.es, Barcelona."
+        "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
       "organization": {
         "@type": [
@@ -118,16 +122,16 @@
           "@type": "WebPage",
           "@id": "{{SITE}}/#webpage",
           "url": "{{SITE}}/",
-          "name": "Automatización con IA para empresas en Barcelona | Holdera",
-          "description": "Sistemas con IA que automatizan procesos y reducen costes en tu empresa. Más de 5 años de experiencia, sede en Barcelona. Cuéntanos qué quieres optimizar.",
+          "name": "Software de operaciones para hoteles | Holdera",
+          "description": "Todo tu hotel en una pantalla: habitaciones, llegadas, housekeeping, revenue y reservas. Y cada cifra, unida al registro del que sale. Panel demo abierto.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },
           "about": {
-            "@id": "{{SITE}}/#organization"
+            "@id": "{{SITE}}/#software"
           },
           "mainEntity": {
-            "@id": "{{SITE}}/#organization"
+            "@id": "{{SITE}}/#software"
           },
           "primaryImageOfPage": {
             "@type": "ImageObject",
@@ -153,78 +157,27 @@
           ]
         },
         {
-          "@type": "Service",
-          "@id": "{{SITE}}/#servicio-asesorias",
-          "name": "Asesorías 1:1",
-          "serviceType": "Asesoría de automatización con IA",
-          "description": "Una sesión contigo para entender qué quieres automatizar y por dónde empezar. Te llevas un diagnóstico; el siguiente paso lo decides tú.",
-          "url": "{{SITE}}/#servicio-asesorias",
-          "provider": {
+          "@type": "SoftwareApplication",
+          "@id": "{{SITE}}/#software",
+          "name": "Holdera",
+          "url": "{{SITE}}/#producto",
+          "applicationCategory": "BusinessApplication",
+          "applicationSubCategory": "Software de operaciones hoteleras",
+          "operatingSystem": "Web",
+          "description": "Software para la operación diaria de un hotel: habitaciones, llegadas y salidas, housekeeping, revenue y reservas en una sola pantalla. Parte de lo que tu PMS ya exporta y deja cada cifra unida al registro del que sale; lo que la fuente no trae, lo dice en lugar de enseñar un cero.",
+          "featureList": [
+            "Hoy: el estado del hotel a una hora concreta, con llegadas, salidas y habitaciones en casa.",
+            "Habitaciones: las habitaciones sobre el plano del edificio, planta a planta, y no en una tabla.",
+            "Housekeeping: Vacant Clean (VC), Vacant Dirty (VD), ocupadas y fuera de orden (OOO).",
+            "Revenue y reservas: ocupación, ADR, RevPAR y TRevPAR, con calendario de reservas mes a mes, pickup de los últimos siete días y pace contra el mismo momento del año pasado (STLY).",
+            "Trazabilidad: cualquier cifra se abre y enseña fórmula, hechos, registro de origen y dato en bruto."
+          ],
+          "inLanguage": "es-ES",
+          "publisher": {
             "@id": "{{SITE}}/#organization"
           },
-          "areaServed": {
-            "@type": "Country",
-            "name": "España"
-          }
-        },
-        {
-          "@type": "Service",
-          "@id": "{{SITE}}/#servicio-estrategia",
-          "name": "Estrategia digital",
-          "serviceType": "Estrategia digital",
-          "description": "Un plan antes de invertir: qué canales, qué arreglar y en qué orden. Te llevas una hoja de ruta que puedes ejecutar tú o con nosotros.",
-          "url": "{{SITE}}/#servicio-estrategia",
           "provider": {
             "@id": "{{SITE}}/#organization"
-          },
-          "areaServed": {
-            "@type": "Country",
-            "name": "España"
-          }
-        },
-        {
-          "@type": "Service",
-          "@id": "{{SITE}}/#servicio-transformacion",
-          "name": "Transformación digital",
-          "serviceType": "Transformación digital e integración de sistemas",
-          "description": "Tus procesos, datos y panel dentro de un sistema, en vez de hojas sueltas. Lo conectamos a lo que ya usas o lo construimos de cero.",
-          "url": "{{SITE}}/#servicio-transformacion",
-          "provider": {
-            "@id": "{{SITE}}/#organization"
-          },
-          "areaServed": {
-            "@type": "Country",
-            "name": "España"
-          }
-        },
-        {
-          "@type": "Service",
-          "@id": "{{SITE}}/#servicio-marketing",
-          "name": "Marketing digital",
-          "serviceType": "Marketing digital: Google Ads, Meta, SEO y web",
-          "description": "Que te encuentren y que convierta: Google Ads, Meta, SEO y mejoras en la web. Visitas que sirven, medidas y repetidas.",
-          "url": "{{SITE}}/#servicio-marketing",
-          "provider": {
-            "@id": "{{SITE}}/#organization"
-          },
-          "areaServed": {
-            "@type": "Country",
-            "name": "España"
-          }
-        },
-        {
-          "@type": "Service",
-          "@id": "{{SITE}}/#servicio-ia",
-          "name": "Automatización con IA",
-          "serviceType": "Automatización de procesos con inteligencia artificial",
-          "description": "Tareas repetitivas que se hacen solas, conectadas a tu CRM, ERP, correo y WhatsApp. Menos tiempo, menos errores, menos coste.",
-          "url": "{{SITE}}/#servicio-ia",
-          "provider": {
-            "@id": "{{SITE}}/#organization"
-          },
-          "areaServed": {
-            "@type": "Country",
-            "name": "España"
           }
         }
       ]
@@ -232,26 +185,26 @@
     {
       "file": "nosotros.html",
       "path": "/nosotros.html",
-      "title": "Nosotros: automatización con IA desde Barcelona | Holdera",
-      "description": "Holdera es un estudio de Barcelona que diseña e integra sistemas con IA: primero escuchamos, después construimos. Más de 5 años de experiencia. Conócenos.",
+      "title": "Nosotros: producto de operaciones hoteleras | Holdera",
+      "description": "Producto propio hecho en Barcelona para la operación diaria de un hotel: una cifra fiable vale más que diez plausibles. Más de 5 años de experiencia.",
       "robots": "index, follow",
       "sitemap": {
         "priority": "0.7"
       },
       "og": {
         "type": "website",
-        "title": "Nosotros — Holdera, automatización con IA en Barcelona",
-        "description": "Primero escuchamos, después construimos. Un estudio de Barcelona con más de 5 años de experiencia integrando sistemas con IA en empresas.",
+        "title": "Nosotros — Holdera, producto de operaciones hoteleras",
+        "description": "Una cifra fiable vale más que diez plausibles. Holdera es un producto propio, hecho en Barcelona, para la operación diaria de un hotel. Más de 5 años de experiencia.",
         "image": "{{SITE}}/assets/seo/og-default.png",
-        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.es, Barcelona."
+        "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
       "graph": [
         {
           "@type": "AboutPage",
           "@id": "{{SITE}}/nosotros.html#webpage",
           "url": "{{SITE}}/nosotros.html",
-          "name": "Nosotros: automatización con IA desde Barcelona | Holdera",
-          "description": "Holdera es un estudio de Barcelona que diseña e integra sistemas con IA: primero escuchamos, después construimos. Más de 5 años de experiencia. Conócenos.",
+          "name": "Nosotros: producto de operaciones hoteleras | Holdera",
+          "description": "Producto propio hecho en Barcelona para la operación diaria de un hotel: una cifra fiable vale más que diez plausibles. Más de 5 años de experiencia.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },
@@ -295,26 +248,26 @@
     {
       "file": "partners.html",
       "path": "/partners.html",
-      "title": "Partners y tecnologías que integramos | Holdera",
-      "description": "Las plataformas de IA, automatización y CRM con las que construimos tus sistemas. Descubre con qué tecnologías trabajamos y por qué las elegimos.",
+      "title": "Cómo se conecta Holdera con tu PMS | Holdera",
+      "description": "Holdera lee lo que tu PMS ya exporta: ocupación diaria, snapshots intradía y reservas por noche. Sin conexión en vivo y sin contraseñas de tus sistemas.",
       "robots": "index, follow",
       "sitemap": {
         "priority": "0.7"
       },
       "og": {
         "type": "website",
-        "title": "Partners tecnológicos — Holdera",
-        "description": "Las plataformas de IA, automatización y CRM con las que construimos tus sistemas. Descubre con qué tecnologías trabajamos y por qué.",
+        "title": "Cómo se conecta Holdera con tu PMS",
+        "description": "Holdera lee lo que tu PMS ya exporta: ocupación diaria, snapshots intradía y reservas por noche. Sin conexión en vivo y sin contraseñas de tus sistemas.",
         "image": "{{SITE}}/assets/seo/og-default.png",
-        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.es, Barcelona."
+        "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
       "graph": [
         {
           "@type": "WebPage",
           "@id": "{{SITE}}/partners.html#webpage",
           "url": "{{SITE}}/partners.html",
-          "name": "Partners y tecnologías que integramos | Holdera",
-          "description": "Las plataformas de IA, automatización y CRM con las que construimos tus sistemas. Descubre con qué tecnologías trabajamos y por qué las elegimos.",
+          "name": "Cómo se conecta Holdera con tu PMS | Holdera",
+          "description": "Holdera lee lo que tu PMS ya exporta: ocupación diaria, snapshots intradía y reservas por noche. Sin conexión en vivo y sin contraseñas de tus sistemas.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },
@@ -355,26 +308,26 @@
     {
       "file": "contacto.html",
       "path": "/contacto.html",
-      "title": "Contacto: cuéntanos qué quieres automatizar | Holdera",
-      "description": "Cuéntanos qué proceso te quita tiempo: te decimos cómo lo automatizaríamos y cómo lo integraríamos en tu empresa. Sin compromiso, desde Barcelona.",
+      "title": "Contacto — cuéntanos cómo es tu hotel | Holdera",
+      "description": "Cuéntanos cuántas habitaciones tiene tu hotel y qué exporta tu PMS. Te decimos qué se puede enseñar con eso y qué no. Sin compromiso, desde Barcelona.",
       "robots": "index, follow",
       "sitemap": {
         "priority": "0.8"
       },
       "og": {
         "type": "website",
-        "title": "Contacto — Cuéntanos qué quieres automatizar | Holdera",
-        "description": "Cuéntanos qué proceso te quita tiempo y te decimos cómo lo automatizaríamos y cómo lo integraríamos en tu empresa. Sin compromiso.",
+        "title": "Contacto — Cuéntanos cómo es tu hotel | Holdera",
+        "description": "Cuéntanos cuántas habitaciones tiene tu hotel y qué exporta tu PMS. Te decimos qué se puede enseñar con eso y qué no. Sin compromiso.",
         "image": "{{SITE}}/assets/seo/og-default.png",
-        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.es, Barcelona."
+        "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
       "graph": [
         {
           "@type": "ContactPage",
           "@id": "{{SITE}}/contacto.html#webpage",
           "url": "{{SITE}}/contacto.html",
-          "name": "Contacto: cuéntanos qué quieres automatizar | Holdera",
-          "description": "Cuéntanos qué proceso te quita tiempo: te decimos cómo lo automatizaríamos y cómo lo integraríamos en tu empresa. Sin compromiso, desde Barcelona.",
+          "name": "Contacto — cuéntanos cómo es tu hotel | Holdera",
+          "description": "Cuéntanos cuántas habitaciones tiene tu hotel y qué exporta tu PMS. Te decimos qué se puede enseñar con eso y qué no. Sin compromiso, desde Barcelona.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },
@@ -426,7 +379,7 @@
         "title": "Aviso legal — Holdera",
         "description": "Titular del sitio, condiciones de uso y propiedad intelectual de holdera.es.",
         "image": "{{SITE}}/assets/seo/og-default.png",
-        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.es, Barcelona."
+        "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
       "graph": [
         {
@@ -478,9 +431,9 @@
       "og": {
         "type": "website",
         "title": "Política de privacidad — Holdera",
-        "description": "Qué datos recogemos en el formulario de contacto, con qué finalidad y cómo ejercer tus derechos según el RGPD.",
+        "description": "Qué datos recogemos en el formulario de contacto, con qué finalidad y cómo ejercer tus derechos según el RGPD. El panel demo no guarda nada.",
         "image": "{{SITE}}/assets/seo/og-default.png",
-        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.es, Barcelona."
+        "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
       "graph": [
         {
@@ -524,7 +477,7 @@
       "file": "404.html",
       "path": null,
       "title": "Página no encontrada | Holdera",
-      "description": "La página que buscas no existe o ha cambiado de sitio. Vuelve al inicio de Holdera o cuéntanos qué quieres automatizar.",
+      "description": "La página que buscas no existe o ha cambiado de sitio. Vuelve al inicio de Holdera o abre el panel demo del hotel de ejemplo.",
       "robots": "noindex, follow",
       "sitemap": null,
       "og": {
@@ -532,7 +485,7 @@
         "title": "Página no encontrada — Holdera",
         "description": "La página que buscas no existe o ha cambiado de sitio. Vuelve al inicio de Holdera.",
         "image": "{{SITE}}/assets/seo/og-default.png",
-        "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.es, Barcelona."
+        "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
       "graph": [
         {
@@ -540,7 +493,7 @@
           "@id": "{{SITE}}/404.html#webpage",
           "url": "{{SITE}}/404.html",
           "name": "Página no encontrada | Holdera",
-          "description": "La página que buscas no existe o ha cambiado de sitio. Vuelve al inicio de Holdera o cuéntanos qué quieres automatizar.",
+          "description": "La página que buscas no existe o ha cambiado de sitio. Vuelve al inicio de Holdera o abre el panel demo del hotel de ejemplo.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },

@@ -82,16 +82,17 @@
      on #121110 — so it is lightened instead. Decorative accent (dots, halos,
      pulses, the fish rim) still uses --accent. */
   --accent-ink: #f59b45;
-  /* The accent as TEXT on the LIGHT HERO. .stars is the only consumer, and it
-     is why --accent-ink could not simply be flipped: one of its ten users was
-     never on the sheet. #f08a24 measures 2.42:1 on the hero grey; this is the
-     old --accent-ink value, 5.19:1, kept for exactly that job. */
-  /* Darkened from #a8530a on 08-09-2026, and the guard is why. #a8530a measures
-     4.27:1 on the hero grey — fine for .stars (decorative, 3:1) but NOT for the
-     service list's hover colour, which is 18px body text and owes 4.5:1.
-     #9c4c08 is 4.83:1 and improves both other consumers: the stars go 4.27 ->
-     4.83, and the white tick of the consent checkbox (which is drawn ON this
-     colour by accent-color) goes 5.38 -> 6.09. */
+  /* The accent as TEXT on the LIGHT HERO. It exists because --accent-ink could
+     not simply be flipped when the sheet went dark: one of its consumers was
+     never on the sheet at all. #f08a24 measures 2.42:1 on the hero grey; this
+     is the old --accent-ink value kept for exactly that job.
+     Darkened from #a8530a on 08-09-2026 because #a8530a is 4.27:1 on the hero
+     grey — enough for a decorative mark (3:1), not for body text. #9c4c08 is
+     4.83:1.
+     Since the pivot (19-09-2026) it has ONE consumer left: the white tick that
+     accent-color draws inside the consent checkbox, 6.09:1 on this fill. The
+     five hero stars that used to be the other one are gone — they announced a
+     rating nobody had confirmed. */
   --accent-hero: #9c4c08;
   --accent-soft: rgba(240, 138, 36, 0.18);
 
@@ -120,12 +121,20 @@
      light hero dark while a service is held: warm near-black, same family as
      the content sheet, never #000000. */
   --sc-veil: rgba(11, 10, 9, 0.93);
-  /* The big service title sits ON TOP of the artwork, and one of the five
-     families (Asesorías) is a near-white ivory panel. Without a scrim the
-     title would be #f5f3ef on #e9e1d5 — about 1.1:1. This is the shadow that
-     buys the title its contrast back wherever it lands. */
-  --sc-title-scrim: radial-gradient(58% 62% at 50% 50%,
-    rgba(8, 7, 6, 0.80) 0%, rgba(8, 7, 6, 0.62) 46%, rgba(8, 7, 6, 0) 100%);
+  /* The big title sits ON TOP of the artwork, so it has to survive whatever
+     lands under it. This is the shadow that buys it its contrast back.
+     Widened and deepened on 19-09-2026, and measured, not guessed: the art is
+     no longer five stock photographs but five screenshots of the panel, and
+     the panel is now a LIGHT interface. With the old 58%/62% core the ends of
+     a long word ("Revenue y reservas" is 634px of glyphs) fell outside the
+     dense part of the gradient and landed on rgb(186,186,185) — 1.75:1 against
+     #f5f3ef, where a 75px title owes 3:1. Measured with _build/png-probe.js on
+     the real pixels, with the title made transparent so the probe reads the
+     BACKGROUND and not the glyphs themselves. Four stops rather than three so
+     the edge of the scrim is not a visible disc. */
+  --sc-title-scrim: radial-gradient(86% 88% at 50% 50%,
+    rgba(8, 7, 6, 0.92) 0%, rgba(8, 7, 6, 0.86) 42%, rgba(8, 7, 6, 0.66) 68%,
+    rgba(8, 7, 6, 0.28) 86%, rgba(8, 7, 6, 0) 100%);
   /* There is no --sc-img-shadow either. clip-path clips an element's ENTIRE
      rendering, outer box-shadows included, and .sc__img is clipped by
      definition — even fully open, its polygon is exactly the border box. Two
@@ -166,16 +175,13 @@
   --brain-crown: #3a342c;
   --brain-sulcus: #0c0b0a;
 
-  /* partner brand marks — used only for the hover tint on the partners strip
-     (generated with the marks by _build/build-partner-logos.js) */
-  --brand-openai: #412991;
-  --brand-anthropic: #191919;
-  --brand-googlecloud: #4285F4;
-  --brand-azure: #0078D4;
-  --brand-n8n: #EA4B71;
-  --brand-make: #6D00CC;
-  --brand-hubspot: #FF7A59;
-  --brand-zapier: #FF4F00;
+  /* Ya no hay --brand-*. Eran los ocho colores de marca (OpenAI, Anthropic,
+     Google Cloud, Azure, n8n, Make, HubSpot, Zapier) que tintaban el logotipo
+     al pasar el ratón, y se fueron con la tira de logotipos en el pivote a
+     hoteles (19-09-2026): en un producto de operaciones hoteleras esos ocho
+     logotipos afirmaban integraciones que no existen, y dos de ellos afirmaban
+     IA que el producto no lleva. Los generaba _build/build-partner-logos.js
+     junto con el marcado; si alguna vez vuelven, vuelven desde ahí. */
 
   /* content sheet (DARK) — slides up over the light hero.
      Inverted 07-09-2026 on Alex's brief: the hero stays light grey, and from the
@@ -458,36 +464,17 @@ button { font: inherit; color: inherit; }
 }
 .nav__mark img { width: 11px; height: auto; }
 .nav__links { display: flex; align-items: center; gap: 28px; font-size: 13px; font-weight: 500; }
-.nav__links > a, .nav__sub-toggle {
+.nav__links > a {
   position: relative; display: inline-flex; align-items: center; gap: 8px;
   padding: 8px 0; color: var(--text-2); text-decoration: none; background: none; border: 0; cursor: pointer;
   transition: color var(--t-fast) var(--ease);
 }
-.nav__links > a:hover, .nav__sub-toggle:hover { color: var(--text); }
+.nav__links > a:hover { color: var(--text); }
 .nav__links .is-active { color: var(--text); }
 .nav__links .is-active::after {
   content: ""; position: absolute; left: 50%; bottom: -1px; width: 4px; height: 4px; border-radius: 50%;
   background: var(--text); transform: translateX(-50%);
 }
-.nav__item { position: relative; }
-.nav__sub-toggle svg { transition: transform var(--t-fast) var(--ease); }
-.nav__sub-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
-.nav__sub {
-  position: absolute; top: calc(100% + 8px); left: 50%; translate: -50% 0; width: 280px;
-  padding: 6px; border-radius: var(--r-lg);
-  background: var(--white-70); border: 1px solid var(--white-70); box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(20px) saturate(1.1); -webkit-backdrop-filter: blur(20px) saturate(1.1);
-  opacity: 0; visibility: hidden; transform: translateY(-8px);
-  transition: opacity var(--t-mid) var(--ease), transform var(--t-mid) var(--ease), visibility 0s linear var(--t-mid);
-}
-.nav__item.is-open .nav__sub { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
-.nav__sub a {
-  display: flex; flex-direction: column; gap: 2px; padding: 12px 16px; border-radius: calc(var(--r-lg) - 6px);
-  text-decoration: none; color: var(--text); font-size: 13px; font-weight: 500;
-  transition: background-color var(--t-fast) var(--ease);
-}
-.nav__sub a small { font-size: 11px; font-weight: 400; color: var(--text-muted); }
-.nav__sub a:hover { background: var(--white-70); }
 .nav__right { justify-self: end; display: flex; align-items: center; gap: 20px; }
 .nav__tz { display: flex; flex-direction: column; align-items: flex-end; line-height: 1.25; }
 .nav__tz-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--text-muted); }
@@ -539,8 +526,6 @@ button { font: inherit; color: inherit; }
 .hero__title .line:nth-child(2) > span { background-position: 0 50%; }
 .hero__title .line:nth-child(3) > span { background-position: 0 100%; }
 .hero__proof { display: flex; align-items: center; gap: 12px; margin: 0 0 32px; font-size: 13px; color: var(--text-2); }
-.stars { display: inline-flex; gap: 2px; color: var(--accent-hero); }
-.stars svg { fill: currentColor; }
 .hero__actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 
 /* Scene: wordmark, figure, bar */
@@ -608,7 +593,7 @@ html:not(.has-js) .brain__poster,
 }
 .hero__bar > * { display: inline-flex; align-items: center; min-width: 0; color: inherit; }
 
-/* Aside (right): widget + partners */
+/* Aside (right): la tarjeta del panel demo + la tarjeta de traza */
 .hero__aside {
   position: absolute; right: var(--gutter); top: clamp(152px, 21vh, 208px); z-index: 2;
   width: min(372px, 27vw);
@@ -646,7 +631,7 @@ html:not(.has-js) .brain__poster,
   /* position + overflow are load-bearing for the pixel reveal: .widget__alt and
      the pixel grid are absolutely positioned with inset, and without a
      positioned ancestor here they resolved against .hero__aside and spilled
-     down over the partners strip. */
+     down over whatever sits below in the column (hoy, la tarjeta de traza). */
   position: relative; overflow: hidden;
   display: block; padding: 6px; border-radius: var(--r-xl); text-decoration: none; color: inherit;
   background: var(--w-28); border: 1px solid var(--w-60);
@@ -730,21 +715,38 @@ html:not(.has-js) .brain__poster,
   .widget__pixels { display: none; }
 }
 
-.partners__label { margin: 0 0 16px; text-align: right; font-size: 12px; color: var(--text-muted); }
-.partners__grid {
-  list-style: none; margin: 0; padding: 0;
-  display: grid; grid-template-columns: repeat(4, auto); justify-content: space-between; gap: 16px 16px;
+/* --------------------------------------------------------------------------
+   Trace card — the evidence chain, in the hero's right column.
+
+   It took the slot of the eight technology logos. A logo strip on a hotel
+   operations product claims integrations that do not exist, so the slot now
+   carries the one claim the product can actually back: every figure opens and
+   shows the four things behind it. Built to read as a sibling of .widget —
+   same radius family, same hairline, same type scale, no new tokens.
+   -------------------------------------------------------------------------- */
+.trace__label { margin: 0 0 14px; text-align: right; font-size: 12px; color: var(--text-muted); }
+.trace__list {
+  list-style: none; margin: 0 0 14px; padding: 0;
+  border: 1px solid var(--border); border-radius: var(--r-md);
+  background: var(--surface-2); overflow: hidden;
 }
-.partners__grid li {
-  display: flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 600; letter-spacing: -0.01em;
-  color: var(--text-2); opacity: 0.85; white-space: nowrap;
-  transition: opacity var(--t-fast) var(--ease);
+.trace__list li { display: flex; align-items: baseline; gap: 10px; padding: 9px 14px; }
+.trace__list li + li { border-top: 1px solid var(--border); }
+.trace__n {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
 }
-.partners__grid li:hover { opacity: 1; }
-/* the real brand marks: monochrome at rest so the strip reads as one system,
-   each brand colour (--brand, set per item) on hover. */
-.partners__grid svg { width: 15px; height: 15px; flex: none; fill: currentColor; color: var(--text); transition: color var(--t-fast) var(--ease); }
-.partners__grid li:hover svg { color: var(--brand, var(--text)); }
+.trace__t { font-size: 13px; font-weight: 500; letter-spacing: -0.01em; color: var(--text-2); }
+.trace__link {
+  display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+  font-size: 12px; font-weight: 500; color: var(--text); text-decoration: none;
+}
+.trace__arrow {
+  display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%;
+  border: 1px solid var(--border-strong); color: var(--text);
+  transition: background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.trace__link:hover .trace__arrow { background: var(--ink); color: var(--white); transform: translate(2px, -1px); }
 
 /* --------------------------------------------------------------------------
    Service list + directional hover showcase
@@ -934,7 +936,6 @@ html:not(.has-js) .brain__poster,
    the sheet (is-over-sheet) share the on-ink palette. */
 .nav.is-veiled .nav__brand, .nav.is-over-sheet .nav__brand,
 .nav.is-veiled .nav__links > a, .nav.is-over-sheet .nav__links > a,
-.nav.is-veiled .nav__sub-toggle, .nav.is-over-sheet .nav__sub-toggle { color: var(--on-ink-text-2); }
 .nav.is-veiled .nav__links .is-active, .nav.is-over-sheet .nav__links .is-active { color: var(--on-ink-text); }
 .nav.is-veiled .nav__links .is-active::after, .nav.is-over-sheet .nav__links .is-active::after { background: var(--on-ink-text); }
 .nav.is-veiled .nav__tz-label, .nav.is-over-sheet .nav__tz-label { color: var(--on-ink-muted); }
@@ -942,7 +943,6 @@ html:not(.has-js) .brain__poster,
 .nav.is-veiled .nav__mark, .nav.is-over-sheet .nav__mark { background: var(--on-ink-hi); }
 .nav.is-veiled .nav__brand:hover, .nav.is-over-sheet .nav__brand:hover,
 .nav.is-veiled .nav__links > a:hover, .nav.is-over-sheet .nav__links > a:hover,
-.nav.is-veiled .nav__sub-toggle:hover, .nav.is-over-sheet .nav__sub-toggle:hover { color: var(--on-ink-text); }
 /* --sh-control-border, not --on-ink-border-strong: the MENÚ button is a ghost
    control whose ONLY affordance is its outline, so WCAG 1.4.11 asks 3:1.
    --on-ink-border-strong composites to 1.64:1 on the veil and the guard caught
@@ -954,7 +954,7 @@ html:not(.has-js) .brain__poster,
 .nav.is-veiled .btn--secondary:hover, .nav.is-over-sheet .btn--secondary:hover { background: var(--on-ink-hi); border-color: var(--on-ink-text-2); }
 .nav.is-veiled :focus-visible, .nav.is-over-sheet :focus-visible { outline-color: var(--on-ink-text); }
 .hero.is-showcase :focus-visible { outline-color: var(--on-ink-text); }
-.nav__brand, .nav__links > a, .nav__sub-toggle, .nav__tz-label, .nav__tz-time, .nav__mark {
+.nav__brand, .nav__links > a, .nav__tz-label, .nav__tz-time, .nav__mark {
   transition: color var(--t-mid) var(--ease), background-color var(--t-mid) var(--ease);
 }
 
@@ -1281,7 +1281,6 @@ main {
 .drawer__brand img { width: 11px; height: auto; }
 /* leaving states ease in */
 .drawer:not(.is-open) .drawer__panel { transition-timing-function: var(--ease-in); }
-.nav__item:not(.is-open) .nav__sub { transition-timing-function: var(--ease-in); }
 /* --------------------------------------------------------------------------
    Marquee menu rows — hovering a full-width menu link slides a contrasting band
    in from the NEAREST EDGE, filled with an endless marquee of words and rounded
@@ -1539,7 +1538,6 @@ main {
 @media (max-width: 1280px) {
   .hero__copy { width: min(520px, 44vw); }
   .hero__aside { width: min(340px, 30vw); }
-  .partners__grid { grid-template-columns: repeat(2, 1fr); }
   .widget__core { grid-template-columns: 72px 1fr; gap: 12px; min-height: 0; }
   .widget__mark { width: 72px; height: 72px; border-radius: var(--r-md); }
   .widget__text { font-size: 16px; padding-right: 24px; }
@@ -1651,8 +1649,11 @@ main {
   .hero__bar > * { justify-content: flex-start; }
   .hero__aside { order: 4; padding-top: 40px; padding-bottom: 40px; }
   .hero__aside-in { gap: 32px; }
-  .partners__grid { grid-template-columns: repeat(2, 1fr); }
-  .partners__label { text-align: left; }
+  .trace__label { text-align: left; }
+  /* 44px de zona táctil, como el resto de enlaces del hero desde el paso 8: en
+     escritorio mide 24px, que cumple WCAG 2.5.8 justo justo pero no es la
+     ergonomía de la casa. Se gana por min-height, sin tocar el tamaño de letra. */
+  .trace__link { justify-content: flex-start; min-height: 44px; }
   /* No radius here. Below 901px the sheet does not overlap the hero, so a
      rounded lid only exposed the dark body in two "ears" between the light
      hero and the light-grey start of the seam ramp. The seam IS the edge. */
@@ -1715,7 +1716,6 @@ main {
   .hero__scene { height: min(58dvh, 620px); }
   .hero__aside-in { flex-direction: row; align-items: flex-start; gap: 40px; }
   .hero__aside-in > * { flex: 1 1 0; min-width: 0; }
-  .partners__grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 560px) {

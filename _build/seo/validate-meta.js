@@ -39,6 +39,7 @@ const REQUIRED = {
   BreadcrumbList: ['itemListElement'],
   Service: ['name', 'description', 'provider', 'serviceType'],
   WebApplication: ['name', 'url', 'applicationCategory', 'operatingSystem'],
+  SoftwareApplication: ['name', 'url', 'applicationCategory', 'operatingSystem', 'description'],
   PostalAddress: ['addressLocality', 'addressRegion', 'addressCountry'],
   ImageObject: ['url'],
 };
@@ -179,11 +180,26 @@ function validate(meta, SITE, opts) {
       if (types(org).indexOf('ProfessionalService') < 0) err(tag + 'la Organization de la home debe ser también ProfessionalService');
       const a = org.address || {};
       if (a.addressLocality !== 'Barcelona' || a.addressCountry !== 'ES') err(tag + 'address debe ser Barcelona / ES');
-      const services = nodes.filter((n) => types(n).indexOf('Service') >= 0);
-      if (services.length !== 5) err(tag + 'la home debe llevar 5 Service (hay ' + services.length + ')');
-      services.forEach((s) => { if (!s.provider || s.provider['@id'] !== org['@id']) err(tag + 'Service ' + s.name + ' sin provider = organización'); });
+      // Pivote (19-09-2026): la home describe UN producto, no cinco servicios
+      // de agencia. Los cinco Service se fueron con sus anclas (#servicio-*),
+      // que ya no existen en la página. La regla no se relaja, se traslada:
+      // sigue exigiendo una forma concreta, la nueva.
+      const apps = nodes.filter((n) => types(n).indexOf('SoftwareApplication') >= 0);
+      if (apps.length !== 1) err(tag + 'la home debe llevar exactamente UN SoftwareApplication (hay ' + apps.length + ')');
+      apps.forEach((s) => {
+        if (!s.provider || s.provider['@id'] !== org['@id']) err(tag + 'SoftwareApplication ' + s.name + ' sin provider = organización');
+        if (!Array.isArray(s.featureList) || s.featureList.length !== 5) err(tag + 'SoftwareApplication.featureList debe nombrar las cinco pantallas del producto (Hoy, Habitaciones, Housekeeping, Revenue y reservas, Trazabilidad)');
+      });
     } else if (nodes[0].address) {
       warn(tag + 'address fuera de la home (no hace falta repetirla)');
+    }
+
+    // Ningún Service de agencia, en NINGUNA página. Estaba solo en la home y
+    // eso dejaba la puerta abierta justo por donde vuelven estas cosas: un
+    // nodo "Estrategia digital" reapareciendo en nosotros.html pasaba entero.
+    const strays = nodes.filter((n) => types(n).indexOf('Service') >= 0);
+    if (strays.length) {
+      err(tag + 'quedan ' + strays.length + ' nodo(s) Service de la agencia (' + strays.map((s) => s.name || s['@id']).join(', ') + '): el sitio describe un producto, no servicios sueltos');
     }
   }
   return { errors, warnings };
