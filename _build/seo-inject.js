@@ -6,7 +6,7 @@
  *   node _build/seo-inject.js                 escribe en las páginas del proyecto
  *   node _build/seo-inject.js --dry-run       solo informa, no escribe
  *   node _build/seo-inject.js --root <dir>    trabaja sobre copias (pruebas)
- *   node _build/seo-inject.js --only index.html,panel.html
+ *   node _build/seo-inject.js --only index.html,contacto.html
  *
  * Qué hace, por página de _build/seo/meta.json:
  *   1. Localiza <head>…</head>. NO toca nada fuera de ahí.

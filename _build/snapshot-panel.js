@@ -1,0 +1,616 @@
+/**
+ * snapshot-panel.js — congela el producto Holdera Hotel Operations (Next.js)
+ * en HTML estatico servible desde holdera.es, que NO tiene runtime de Node.
+ *
+ * Por que funciona: el producto es determinista y esta congelado en un instante
+ * fijo (jueves 15 enero 2026, 14:30 Europe/Madrid). Su HTML es siempre el mismo,
+ * asi que se captura una vez y se sirve como archivo. No se inventa nada: lo que
+ * se guarda es exactamente lo que el producto emite.
+ *
+ * Uso:
+ *   1. arranca el producto (preferible en produccion, assets minificados):
+ *        cd <producto> && npx next build && HOLDERA_RUNTIME=demo npx next start
+ *      (o `npm run demo` para dev; los bundles pesan ~10x mas)
+ *   2. node _build/snapshot-panel.js --out panel --mount /panel/
+ *
+ * Opciones:
+ *   --out <dir>     carpeta de salida, relativa a la raiz del sitio (def. panel)
+ *   --mount <ruta>  donde se monta en el sitio; reescribe /_next/ (def. /panel/)
+ *   --seeds a,b,c   rutas de arranque extra (las variantes con ?query)
+ *   --max <n>       tope de paginas, red de seguridad (def. 2000)
+ *   --no-crawl      solo las semillas, sin seguir enlaces
+ */
+
+const fs = require('fs');
+const path = require('path');
+const http = require('http');
+
+const ORIGIN = process.env.HOLDERA_PRODUCT_ORIGIN || 'http://localhost:3000';
+const ROOT = path.resolve(__dirname, '..');
+
+function arg(name, fallback) {
+  const hit = process.argv.find(a => a.startsWith(`--${name}=`));
+  if (hit) return hit.slice(name.length + 3);
+  const idx = process.argv.indexOf(`--${name}`);
+  if (idx !== -1 && process.argv[idx + 1] && !process.argv[idx + 1].startsWith('--')) {
+    return process.argv[idx + 1];
+  }
+  return fallback;
+}
+const flag = name => process.argv.includes(`--${name}`);
+
+const OUT_DIR = path.join(ROOT, arg('out', 'panel'));
+const MOUNT = (arg('mount', '/panel/') + '/').replace(/\/+$/, '/');
+const MAX = Number(arg('max', '2000'));
+
+/**
+ * Prefijo bajo el que el SERVIDOR de origen publica el producto.
+ *
+ * Tiene que coincidir con el `basePath` con el que se compilo. Sin basePath el
+ * cliente de Next deriva su ruta de `location.pathname` —`/panel/`—, no la
+ * reconoce y NO HIDRATA: los enlaces siguen yendo porque son <a> reales, pero
+ * nada con estado responde, y el boton «Trace» —la pieza que demuestra la
+ * trazabilidad— se queda muerto. Comprobado: en la raiz hidrata, bajo /panel/
+ * sin basePath no.
+ *
+ *   HOLDERA_BASE_PATH=/panel npx next build
+ *   HOLDERA_BASE_PATH=/panel HOLDERA_RUNTIME=demo npx next start
+ *   node _build/snapshot-panel.js --src-base /panel --mount /panel/
+ */
+const SRC_BASE = (arg('src-base', '') || '').replace(/\/+$/, '');
+
+/** Quita el prefijo del servidor de origen de una ruta absoluta. */
+function stripSrcBase(p) {
+  if (!SRC_BASE) return p;
+  if (p === SRC_BASE) return '/';
+  if (p.startsWith(SRC_BASE + '/')) return p.slice(SRC_BASE.length);
+  return p;
+}
+
+/**
+ * Con `trailingSlash` el producto emite `/rooms/`, pero por dentro tambien
+ * aparece `/rooms`. Son la MISMA pagina y acaban en el mismo archivo, asi que
+ * se canonizan SIN barra final (salvo la raiz) antes de encolarlas: si no, se
+ * capturan y reescriben dos veces. Medido: 377 paginas y 92 MB en vez de 259
+ * y 54 MB, para exactamente el mismo contenido.
+ */
+function canonicalRoute(route) {
+  const [p, query] = route.split('?');
+  const clean = p.length > 1 ? p.replace(/\/+$/, '') || '/' : '/';
+  return query ? `${clean}?${query}` : clean;
+}
+
+/**
+ * Git Bash en Windows convierte un argumento que empieza por '/' en ruta de
+ * disco ('C:/Program Files/Git/...'). Se normaliza para que funcione igual
+ * desde bash, PowerShell o cmd.
+ */
+function normalizeRoute(raw) {
+  let r = String(raw).trim();
+  if (!r) return null;
+  const msys = r.match(/^[A-Za-z]:[\\/](?:Program Files[\\/])?Git[\\/](.*)$/);
+  if (msys) r = msys[1];
+  r = r.replace(/\\/g, '/');
+  if (!r.startsWith('/')) r = '/' + r;
+  return r.replace(/\/{2,}/g, '/');
+}
+
+/**
+ * Con basePath, Next normaliza la barra final con un 308 (/panel/ -> /panel).
+ * Hay que seguir la redireccion o todo el crawl se queda en cuerpos vacios.
+ */
+function get(url, depth = 0) {
+  return new Promise((resolve, reject) => {
+    http.get(url, res => {
+      const { statusCode: status, headers } = res;
+      if ([301, 302, 307, 308].includes(status) && headers.location && depth < 5) {
+        res.resume();
+        const next = new URL(headers.location, url).href;
+        return resolve(get(next, depth + 1));
+      }
+      const chunks = [];
+      res.on('data', c => chunks.push(c));
+      res.on('end', () => resolve({
+        status,
+        type: headers['content-type'] || '',
+        body: Buffer.concat(chunks),
+      }));
+    }).on('error', reject);
+  });
+}
+
+function writeFile(rel, buf) {
+  const full = path.join(OUT_DIR, rel);
+  fs.mkdirSync(path.dirname(full), { recursive: true });
+  fs.writeFileSync(full, buf);
+}
+
+/**
+ * Ruta -> archivo en disco. Una ruta con query necesita nombre propio, porque
+ * un servidor estatico no ve la query: /overview?period=30d se guarda como
+ * overview/period-30d/index.html y el enlace se reescribe a esa carpeta.
+ */
+function routeToFile(route) {
+  const [pathPart, query] = route.split('?');
+  let clean = pathPart.replace(/^\/+|\/+$/g, '');
+  if (query) {
+    const slug = query
+      .split('&').sort().join('-')
+      .replace(/[^a-zA-Z0-9=-]/g, '-')
+      .replace(/=/g, '-')
+      .replace(/-+/g, '-')
+      .toLowerCase();
+    clean = clean ? `${clean}/${slug}` : slug;
+  }
+  return clean === '' ? 'index.html' : `${clean}/index.html`;
+}
+
+/**
+ * Slug de una query -> nombre de archivo. La MISMA funcion esta duplicada, a
+ * proposito, dentro del shim de fetch que se inyecta en el navegador: las dos
+ * orillas tienen que producir exactamente el mismo nombre o el shim pedira un
+ * archivo que no existe. Si tocas una, toca la otra.
+ *   date=2026-01-15&time=09:00  ->  date-2026-01-15-time-09-00
+ */
+function slugFromParams(params) {
+  return [...params.entries()]
+    .sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0))
+    .map(([k, v]) => `${k}-${v}`)
+    .join('-')
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, '-')
+    .replace(/-+/g, '-');
+}
+
+/** La URL publica de una ruta capturada, ya montada bajo MOUNT. */
+function routeToHref(route) {
+  const file = routeToFile(route);
+  return MOUNT + file.replace(/index\.html$/, '');
+}
+
+/**
+ * El conmutador de fecha/hora del producto (Wed 14 / Thu 15 / Fri 16 x
+ * Morning / Midday / Evening) es UN parametro en el servidor, pero en archivos
+ * estaticos es UN ARCHIVO POR COMBINACION. Seguir esos enlaces a ciegas explota:
+ * 60 fechas x 3 horas x 100 habitaciones son decenas de miles de copias casi
+ * identicas, y cada pagina pesa ~300 KB porque lleva el edificio SVG en linea.
+ * Medido: un crawl ingenuo encontro 8.060 URLs y 649 MB en solo 2.000 paginas.
+ *
+ * Por eso una ruta CON query solo se sigue si queryAllowed() la aprueba. El
+ * resto de paginas se capturan en su momento por defecto, que es el instante
+ * congelado de la demo.
+ *
+ * SWITCHER_DATES son las tres fechas que el conmutador del Today ofrece de
+ * verdad; el producto enlaza a las 60 del historico, pero capturar 60 x 3 horas
+ * x cada pantalla es justo la explosion que hay que evitar.
+ */
+const SWITCHER_DATES = new Set(['2026-01-14', '2026-01-15', '2026-01-16']);
+
+function queryAllowed(base, query) {
+  const params = new URLSearchParams(query);
+  const date = params.get('date');
+
+  switch (base) {
+    case '/':
+      // Solo las 9 combinaciones que el conmutador ofrece de verdad.
+      return !date || SWITCHER_DATES.has(date);
+    case '/rooms':
+      // La lente de housekeeping si; las 60 fechas no.
+      return !date;
+    case '/overview':
+      return true;              // ?period=30d|60d, son dos
+    case '/operations/occupancy':
+      return true;              // un dia cerrado por fecha: es el historico real
+    default:
+      return false;
+  }
+}
+
+/** Enlaces internos que aparecen en el HTML. */
+function extractLinks(html) {
+  const out = new Set();
+  for (const m of html.matchAll(/href="(\/[^"#]*)"/g)) {
+    const href = m[1];
+    if (href.startsWith('/_next/') || href.startsWith('/api/')) continue;
+    if (/\.(css|js|png|jpe?g|webp|svg|ico|woff2?|txt|xml|json)$/i.test(href)) continue;
+
+    const [rawPath, query] = href.split('?');
+    // El HTML ya viene con el prefijo del servidor (/panel/...): se quita para
+    // guardar la ruta LOGICA, que es como se indexa todo aqui dentro.
+    const logicalPath = stripSrcBase(rawPath);
+    const base = logicalPath.replace(/\/$/, '') || '/';
+    if (query && !queryAllowed(base, query)) {
+      out.add(canonicalRoute(logicalPath));   // la misma pagina, en su momento por defecto
+      continue;
+    }
+    out.add(canonicalRoute(query ? `${logicalPath}?${query}` : logicalPath));
+  }
+  return [...out];
+}
+
+/**
+ * El producto tiene su propia carcasa y NINGUN enlace de vuelta al sitio: quien
+ * entra en /panel/ se queda dentro. Se inyecta una pastilla fija, con los mismos
+ * tokens del sistema visual v3 del producto para que no parezca un injerto, que
+ * devuelve a holdera.es y repite en castellano que los datos son de demostracion
+ * (el producto ya lo dice en ingles en su propia chapa "Demo data").
+ *
+ * Va en position:fixed y fuera del flujo: no toca el layout de ninguna pantalla.
+ */
+/**
+ * Colores tomados del sistema visual v3 del producto para que no parezca un
+ * injerto. El borde es #7a766d y no el #3b3732 del producto porque ESTE control
+ * se identifica solo por su contorno —su fondo mide 1,24:1 contra el lienzo— y
+ * WCAG 1.4.11 pide 3:1. Medido: borde 3,54:1 sobre la pastilla y 4,40:1 sobre
+ * el lienzo; texto 13,48:1; la linea ambar 7,99:1.
+ *
+ * En escritorio se coloca en el hueco vacio de la barra lateral (232px de
+ * ancho; entre el final de la navegacion y el bloque "DATA SOURCE" hay 216px),
+ * asi que flota sin taparle nada a nadie. Por debajo de 900px la barra lateral
+ * se convierte en una tira horizontal y la pastilla se va abajo a la derecha,
+ * con hueco al final del body para no cubrir el ultimo contenido.
+ */
+const BACKLINK_STYLE = `
+<style data-holdera-chrome>
+  .holdera-site-back {
+    position: fixed; z-index: 9999;
+    left: 12px; bottom: 100px; width: 208px;
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 12px; min-height: 44px; box-sizing: border-box;
+    border: 1px solid #7a766d; border-radius: 10px;
+    background: #25211b; color: #f1ebdf;
+    font: 500 12px/1.3 system-ui, sans-serif; text-decoration: none;
+  }
+  .holdera-site-back b { font-weight: 500; }
+  .holdera-site-back em { font-style: normal; color: #f0a862; display: block; font-size: 11px; }
+  .holdera-site-back:hover { background: #2f2a22; }
+  .holdera-site-back:focus-visible { outline: 2px solid #f1ebdf; outline-offset: 2px; }
+
+  @media (max-width: 900px) {
+    body { padding-bottom: 76px; }
+    .holdera-site-back {
+      left: auto; right: 12px; bottom: 12px; width: auto;
+      border-radius: 999px;
+      box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 8px 24px rgba(0,0,0,.5);
+    }
+  }
+</style>`;
+
+/**
+ * El enlace de vuelta se crea DESDE JAVASCRIPT, despues de hidratar.
+ *
+ * En el App Router de Next, React hidrata el documento entero: cualquier nodo
+ * que se meta en el HTML dentro de su arbol —probado con la barra lateral— lo
+ * reconcilia y lo BORRA. En el HTML estaba y en pantalla no aparecia.
+ *
+ * Por eso se inyecta despues, y se vuelve a poner si desaparece: una navegacion
+ * del router puede rehacer el arbol. El observador se limita a `body` y no mira
+ * el subarbol, asi que no cuesta nada.
+ */
+const BACKLINK = `<script data-holdera-chrome>
+(function () {
+  var HTML = '<span aria-hidden="true">\\u2190</span>' +
+             '<span><b>Volver a holdera.es</b>' +
+             '<em>Datos de demostraci\\u00f3n</em></span>';
+  function mount() {
+    if (document.querySelector('.holdera-site-back')) return;
+    var a = document.createElement('a');
+    a.className = 'holdera-site-back';
+    a.href = '/';
+    a.setAttribute('data-holdera-chrome', '');
+    a.innerHTML = HTML;
+    document.body.appendChild(a);
+  }
+  function start() {
+    mount();
+    try {
+      new MutationObserver(mount).observe(document.body, { childList: true });
+    } catch (e) { setInterval(mount, 2000); }
+  }
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(start, 0);
+  } else {
+    document.addEventListener('DOMContentLoaded', start);
+  }
+})();
+</script>`;
+
+/**
+ * El producto pide dos APIs desde el navegador:
+ *   /api/today?date=&time=                 (RoomsStage, al cambiar de momento)
+ *   /api/explain/<metricId>?businessDate=  (LineageDrawer, o sea Evidence)
+ * En un sitio estatico no hay servidor que las responda. Este shim redirige
+ * cada llamada al JSON precalculado. Va ANTES que los scripts de Next, porque
+ * React puede pedirlas en cuanto hidrata.
+ *
+ * slug() es la copia en navegador de slugFromParams(): si cambia una, cambia
+ * la otra o el shim pedira archivos que no existen.
+ */
+function fetchShim() {
+  return `<script data-holdera-chrome>
+(function () {
+  var BASE = ${JSON.stringify(MOUNT)};
+  var orig = window.fetch;
+  function slug(params) {
+    var out = [];
+    params.forEach(function (v, k) { out.push(k + '-' + v); });
+    return out.sort().join('-').toLowerCase()
+      .replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
+  }
+  function toStatic(raw) {
+    var u;
+    try { u = new URL(raw, location.origin); } catch (e) { return null; }
+    if (u.pathname.indexOf('/api/') !== 0) return null;
+    var rest = u.pathname.slice(5).replace(/\\/$/, '');
+    var s = slug(u.searchParams);
+    return BASE + 'api/' + rest + (s ? '/' + s : '') + '.json';
+  }
+  window.fetch = function (input, init) {
+    var raw = typeof input === 'string' ? input
+            : (input && input.url) ? input.url : '';
+    var target = toStatic(raw);
+    if (target) return orig.call(this, target, init);
+    return orig.apply(this, arguments);
+  };
+})();
+</script>`;
+}
+
+/**
+ * Reescribe el HTML capturado para que funcione como archivo estatico bajo
+ * MOUNT: los assets de Next y todos los enlaces internos dejan de ser rutas
+ * absolutas del servidor y pasan a apuntar dentro del snapshot.
+ */
+/**
+ * SEO del panel. La ENTRADA (/panel/) se indexa: es la demo del producto y es
+ * la que se enseña. Las otras 258 no: son la misma demo vista desde dentro
+ * —"Room 407 · Holdera Demo Hotel"— en ingles, de un hotel que no existe. 258
+ * paginas asi diluyen un sitio que hoy va 100 en SEO, y leidas sueltas desde un
+ * buscador no se entienden. `follow` deja que el rastreador siga los enlaces.
+ *
+ * (La entrada se indexa a proposito: ponerle noindex a una pagina de marketing
+ * baja Lighthouse a SEO 66.)
+ */
+function robotsFor(route) {
+  const isEntry = route === '/' || route === '';
+  return isEntry
+    ? ''
+    : '\n<meta name="robots" content="noindex,follow" data-holdera-chrome>';
+}
+
+function rewrite(html, discovered, robots = '') {
+  // Assets de Next: /_next/... -> <MOUNT>_next/...
+  html = html.split('"/_next/').join(`"${MOUNT}_next/`);
+  html = html.split('(/_next/').join(`(${MOUNT}_next/`);
+
+  // Enlaces internos -> su carpeta dentro del snapshot.
+  //
+  // Una sola pasada sobre TODOS los href absolutos, no una sustitucion por ruta
+  // conocida: si no, un enlace con query que no se capturo —/intelligence/studio
+  // ?metric=adr, uno por cada una de las 57 metricas— no coincide con ninguna
+  // ruta, se queda absoluto y en el sitio publicado se va a un 404 de holdera.es.
+  // Cuando la combinacion exacta no existe, se cae a la pagina base.
+  const captured = new Set(discovered);
+  html = html.replace(/href="(\/[^"]*)"/g, (whole, href) => {
+    // Los assets de Next ya vienen con el prefijo correcto: no se tocan.
+    if (href.startsWith(`${SRC_BASE}/_next/`) || href.startsWith('/_next/')) return whole;
+
+    const [withQuery, hash] = href.split('#');
+    const suffix = hash ? '#' + hash : '';
+    const logical = stripSrcBase(withQuery);
+
+    const canon = canonicalRoute(logical);
+    if (captured.has(canon)) return `href="${routeToHref(canon)}${suffix}"`;
+
+    const bare = canonicalRoute(logical.split('?')[0]);
+    if (captured.has(bare)) return `href="${routeToHref(bare)}${suffix}"`;
+
+    // Rutas sin barra final que si existen con ella, y viceversa.
+    const alt = bare.endsWith('/') ? bare.slice(0, -1) : bare + '/';
+    if (captured.has(alt)) return `href="${routeToHref(alt)}${suffix}"`;
+
+    if (bare === '/icon.svg') {
+      const q = withQuery.includes('?') ? '?' + withQuery.split('?')[1] : '';
+      return `href="${MOUNT}icon.svg${q}"`;
+    }
+
+    // Nada coincide: al menos que no se salga del panel.
+    return `href="${MOUNT}"`;
+  });
+
+  // Enlace de vuelta al sitio. Va DENTRO de la barra lateral del producto,
+  // justo encima del bloque "DATA SOURCE": asi esta en el flujo y no puede
+  // tapar ningun control. Una pastilla flotante si llegaba a cubrir el boton
+  // "Trace the snapshot totals" de la ficha de habitacion.
+  const close = html.lastIndexOf('</body>');
+  if (close !== -1) {
+    html = html.slice(0, close) + BACKLINK + html.slice(close);
+  }
+
+  const headClose = html.indexOf('</head>');
+  if (headClose !== -1) {
+    html = html.slice(0, headClose) + BACKLINK_STYLE + robots + fetchShim() + html.slice(headClose);
+  }
+
+  return html;
+}
+
+async function main() {
+  const seeds = arg('seeds', '/').split(',').map(normalizeRoute).filter(Boolean).map(canonicalRoute);
+
+  console.log(`origen  : ${ORIGIN}`);
+  console.log(`salida  : ${OUT_DIR}`);
+  console.log(`montaje : ${MOUNT}`);
+  console.log(`semillas: ${seeds.length}${flag('no-crawl') ? ' (sin crawl)' : ''}`);
+  console.log('');
+
+  const queue = [...seeds];
+  const seen = new Set(seeds);
+  const pages = new Map();   // ruta -> html crudo
+  const assets = new Set();
+  const failed = [];
+
+  while (queue.length && pages.size < MAX) {
+    const route = queue.shift();
+    let res;
+    try {
+      res = await get(ORIGIN + SRC_BASE + route);
+    } catch (e) {
+      failed.push({ route, error: e.message });
+      continue;
+    }
+    if (res.status !== 200 || !res.type.includes('text/html')) {
+      failed.push({ route, status: res.status, type: res.type });
+      continue;
+    }
+
+    const html = res.body.toString('utf8');
+    pages.set(route, html);
+    // Con basePath los assets vienen como /panel/_next/...; sin el, como
+    // /_next/.... Se indexan siempre por su ruta LOGICA (sin prefijo).
+    for (const m of html.matchAll(/(?:href|src)="([^"]*\/_next\/[^"]+)"/g)) {
+      assets.add(stripSrcBase(m[1]));
+    }
+
+    if (!flag('no-crawl')) {
+      for (const link of extractLinks(html)) {
+        if (!seen.has(link)) { seen.add(link); queue.push(link); }
+      }
+    }
+
+    if (pages.size % 25 === 0) {
+      console.log(`  ${pages.size} paginas · ${queue.length} en cola`);
+    }
+  }
+
+  if (pages.size >= MAX) console.log(`  AVISO: tope de ${MAX} paginas alcanzado, quedaban ${queue.length} en cola`);
+
+  console.log('');
+  console.log(`paginas capturadas: ${pages.size}`);
+
+  // Segunda pasada: ahora que se conocen TODAS las rutas, reescribir enlaces.
+  let htmlBytes = 0;
+  for (const [route, html] of pages) {
+    const rewritten = rewrite(html, pages.keys(), robotsFor(route));
+    htmlBytes += Buffer.byteLength(rewritten);
+    writeFile(routeToFile(route), rewritten);
+  }
+
+  // Assets de Next, mas el favicon del producto (unica ruta suelta fuera de /_next/).
+  //
+  // OJO: las FUENTES no se referencian en el HTML, sino con url(...) DENTRO del
+  // CSS. Recoger solo href/src deja las cuatro IBM Plex en 404 y el producto se
+  // ve con la tipografia de respaldo — un fallo que no da error en consola de
+  // React y que en una captura pasa por bueno. Por eso, tras bajar cada hoja de
+  // estilo, se rastrean sus url() y se encolan.
+  assets.add('/icon.svg');
+  let assetBytes = 0;
+  const pending = [...assets];
+  const fetched = new Set();
+
+  while (pending.length) {
+    const a = pending.shift();
+    if (fetched.has(a)) continue;
+    fetched.add(a);
+
+    let res;
+    try { res = await get(ORIGIN + SRC_BASE + a); } catch { continue; }
+    if (res.status !== 200) { failed.push({ route: a, status: res.status }); continue; }
+
+    writeFile(a.replace(/^\//, ''), res.body);
+    assetBytes += res.body.length;
+
+    if (a.endsWith('.css')) {
+      const css = res.body.toString('utf8');
+      const dir = a.slice(0, a.lastIndexOf('/') + 1);   // /_next/static/chunks/
+      for (const m of css.matchAll(/url\(\s*["']?([^"')]+)["']?\s*\)/g)) {
+        const raw = m[1].trim();
+        // Las fuentes van con ruta RELATIVA (url(../media/...)); tambien hay
+        // url(#hs-stripes), que son filtros SVG del propio documento, y data:.
+        if (!raw || raw.startsWith('#') || raw.startsWith('data:') || /^https?:/.test(raw)) continue;
+        const abs = raw.startsWith('/')
+          ? raw
+          : new URL(raw, `http://x${dir}`).pathname;
+        const logical = stripSrcBase(abs);
+        if (!logical.startsWith('/_next/')) continue;
+        if (!fetched.has(logical)) { pending.push(logical); assets.add(logical); }
+      }
+    }
+  }
+
+  // Las APIs que el cliente pide EN CALIENTE, precalculadas a JSON estatico.
+  //
+  //   /api/today?date=&time=          -> RoomsStage, al cambiar de momento
+  //   /api/explain/<metricId>?businessDate=  -> LineageDrawer, o sea Evidence
+  //
+  // Sin esto el boton "Trace" —que es el diferenciador entero del producto—
+  // da 404 en el sitio publicado. El shim de fetch (abajo) redirige cada
+  // llamada a su archivo.
+  const apiSaved = [];
+  async function saveApi(rel, url) {
+    try {
+      const res = await get(ORIGIN + SRC_BASE + url);
+      if (res.status !== 200) return false;
+      writeFile(rel, res.body);
+      apiSaved.push({ url, bytes: res.body.length });
+      return true;
+    } catch { return false; }
+  }
+
+  await saveApi('api/today.json', '/api/today');
+  await saveApi('api/overview.json', '/api/overview');
+  await saveApi('api/occupancy.json', '/api/occupancy');
+
+  // /api/today para cada momento que el conmutador ofrece.
+  const TIMES = ['09:00', '14:30', '20:00'];
+  for (const date of SWITCHER_DATES) {
+    for (const time of TIMES) {
+      const params = new URLSearchParams({ date, time });
+      await saveApi(`api/today/${slugFromParams(params)}.json`, `/api/today?${params}`);
+    }
+  }
+
+  // /api/explain/<metricId> para cada dia del historico. Solo dos metricas
+  // tienen explicacion (las demas responden 404 en el propio producto), asi
+  // que se prueban y se guardan las que existen.
+  const businessDates = [...pages.keys()]
+    .map(r => (r.match(/businessDate=(\d{4}-\d{2}-\d{2})/) || [])[1])
+    .filter(Boolean);
+  const allDates = [...new Set(businessDates)];
+  let explained = 0;
+  for (const metricId of ['headline_occupancy', 'operational_occupancy']) {
+    for (const businessDate of allDates) {
+      const params = new URLSearchParams({ businessDate });
+      const ok = await saveApi(
+        `api/explain/${metricId}/${slugFromParams(params)}.json`,
+        `/api/explain/${metricId}?${params}`
+      );
+      if (ok) explained++;
+    }
+  }
+  console.log(`  explain precalculados: ${explained} (${allDates.length} fechas x 2 metricas)`);
+
+  console.log('');
+  console.log('resumen');
+  console.log(`  paginas  ${pages.size}`);
+  console.log(`  HTML     ${(htmlBytes / 1024 / 1024).toFixed(2)} MB`);
+  console.log(`  assets   ${(assetBytes / 1024 / 1024).toFixed(2)} MB  (${assets.size} archivos)`);
+  console.log(`  api      ${apiSaved.length} respuestas`);
+  if (failed.length) {
+    console.log(`  FALLOS   ${failed.length}`);
+    for (const f of failed.slice(0, 15)) console.log(`    ${f.status || f.error}  ${f.route}`);
+    if (failed.length > 15) console.log(`    ... y ${failed.length - 15} mas`);
+  }
+
+  fs.writeFileSync(
+    path.join(OUT_DIR, '_snapshot-report.json'),
+    JSON.stringify({
+      origin: ORIGIN, mount: MOUNT,
+      pages: [...pages.keys()], assets: [...assets], api: apiSaved, failed,
+    }, null, 2)
+  );
+
+  process.exit(failed.length ? 1 : 0);
+}
+
+main().catch(e => { console.error(e); process.exit(1); });

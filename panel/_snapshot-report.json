@@ -1,0 +1,824 @@
+{
+  "origin": "http://localhost:3001",
+  "mount": "/panel/",
+  "pages": [
+    "/",
+    "/rooms?layer=housekeeping",
+    "/overview?period=30d",
+    "/overview?period=60d",
+    "/?date=2026-01-14",
+    "/?date=2026-01-16",
+    "/?time=09%3A00",
+    "/?time=20%3A00",
+    "/rooms",
+    "/rooms/floor/F6",
+    "/rooms/floor/F5",
+    "/rooms/floor/F4",
+    "/rooms/floor/F3",
+    "/rooms/floor/F2",
+    "/operations",
+    "/operations/restaurant",
+    "/guests",
+    "/team",
+    "/revenue",
+    "/intelligence",
+    "/overview",
+    "/operations/occupancy?businessDate=2026-01-14",
+    "/metrics",
+    "/operations/occupancy?businessDate=2026-03-01",
+    "/operations/occupancy?businessDate=2026-01-31",
+    "/operations/occupancy?businessDate=2026-02-01",
+    "/operations/occupancy?businessDate=2026-02-02",
+    "/operations/occupancy?businessDate=2026-02-03",
+    "/operations/occupancy?businessDate=2026-02-04",
+    "/operations/occupancy?businessDate=2026-02-05",
+    "/operations/occupancy?businessDate=2026-02-06",
+    "/operations/occupancy?businessDate=2026-02-07",
+    "/operations/occupancy?businessDate=2026-02-08",
+    "/operations/occupancy?businessDate=2026-02-09",
+    "/operations/occupancy?businessDate=2026-02-10",
+    "/operations/occupancy?businessDate=2026-02-11",
+    "/operations/occupancy?businessDate=2026-02-12",
+    "/operations/occupancy?businessDate=2026-02-13",
+    "/operations/occupancy?businessDate=2026-02-14",
+    "/operations/occupancy?businessDate=2026-02-15",
+    "/operations/occupancy?businessDate=2026-02-16",
+    "/operations/occupancy?businessDate=2026-02-17",
+    "/operations/occupancy?businessDate=2026-02-18",
+    "/operations/occupancy?businessDate=2026-02-19",
+    "/operations/occupancy?businessDate=2026-02-20",
+    "/operations/occupancy?businessDate=2026-02-21",
+    "/operations/occupancy?businessDate=2026-02-22",
+    "/operations/occupancy?businessDate=2026-02-23",
+    "/operations/occupancy?businessDate=2026-02-24",
+    "/operations/occupancy?businessDate=2026-02-25",
+    "/operations/occupancy?businessDate=2026-02-26",
+    "/operations/occupancy?businessDate=2026-02-27",
+    "/operations/occupancy?businessDate=2026-02-28",
+    "/operations/occupancy?businessDate=2026-01-01",
+    "/operations/occupancy?businessDate=2026-01-02",
+    "/operations/occupancy?businessDate=2026-01-03",
+    "/operations/occupancy?businessDate=2026-01-04",
+    "/operations/occupancy?businessDate=2026-01-05",
+    "/operations/occupancy?businessDate=2026-01-06",
+    "/operations/occupancy?businessDate=2026-01-07",
+    "/operations/occupancy?businessDate=2026-01-08",
+    "/operations/occupancy?businessDate=2026-01-09",
+    "/operations/occupancy?businessDate=2026-01-10",
+    "/operations/occupancy?businessDate=2026-01-11",
+    "/operations/occupancy?businessDate=2026-01-12",
+    "/operations/occupancy?businessDate=2026-01-13",
+    "/operations/occupancy?businessDate=2026-01-15",
+    "/operations/occupancy?businessDate=2026-01-16",
+    "/operations/occupancy?businessDate=2026-01-17",
+    "/operations/occupancy?businessDate=2026-01-18",
+    "/operations/occupancy?businessDate=2026-01-19",
+    "/operations/occupancy?businessDate=2026-01-20",
+    "/operations/occupancy?businessDate=2026-01-21",
+    "/operations/occupancy?businessDate=2026-01-22",
+    "/operations/occupancy?businessDate=2026-01-23",
+    "/operations/occupancy?businessDate=2026-01-24",
+    "/operations/occupancy?businessDate=2026-01-25",
+    "/operations/occupancy?businessDate=2026-01-26",
+    "/operations/occupancy?businessDate=2026-01-27",
+    "/operations/occupancy?businessDate=2026-01-28",
+    "/operations/occupancy?businessDate=2026-01-29",
+    "/operations/occupancy?businessDate=2026-01-30",
+    "/?date=2026-01-14&amp;time=09%3A00",
+    "/?date=2026-01-14&amp;time=20%3A00",
+    "/?date=2026-01-16&amp;time=09%3A00",
+    "/?date=2026-01-16&amp;time=20%3A00",
+    "/rooms?time=09%3A00",
+    "/rooms?time=20%3A00",
+    "/rooms/601",
+    "/rooms/602",
+    "/rooms/603",
+    "/rooms/604",
+    "/rooms/605",
+    "/rooms/606",
+    "/rooms/607",
+    "/rooms/608",
+    "/rooms/609",
+    "/rooms/610",
+    "/rooms/611",
+    "/rooms/612",
+    "/rooms/613",
+    "/rooms/614",
+    "/rooms/615",
+    "/rooms/616",
+    "/rooms/617",
+    "/rooms/618",
+    "/rooms/619",
+    "/rooms/620",
+    "/rooms/501",
+    "/rooms/502",
+    "/rooms/503",
+    "/rooms/504",
+    "/rooms/505",
+    "/rooms/506",
+    "/rooms/507",
+    "/rooms/508",
+    "/rooms/509",
+    "/rooms/510",
+    "/rooms/511",
+    "/rooms/512",
+    "/rooms/513",
+    "/rooms/514",
+    "/rooms/515",
+    "/rooms/516",
+    "/rooms/517",
+    "/rooms/518",
+    "/rooms/519",
+    "/rooms/520",
+    "/rooms/401",
+    "/rooms/402",
+    "/rooms/403",
+    "/rooms/404",
+    "/rooms/405",
+    "/rooms/406",
+    "/rooms/407",
+    "/rooms/408",
+    "/rooms/409",
+    "/rooms/410",
+    "/rooms/411",
+    "/rooms/412",
+    "/rooms/413",
+    "/rooms/414",
+    "/rooms/415",
+    "/rooms/416",
+    "/rooms/417",
+    "/rooms/418",
+    "/rooms/419",
+    "/rooms/420",
+    "/rooms/301",
+    "/rooms/302",
+    "/rooms/303",
+    "/rooms/304",
+    "/rooms/305",
+    "/rooms/306",
+    "/rooms/307",
+    "/rooms/308",
+    "/rooms/309",
+    "/rooms/310",
+    "/rooms/311",
+    "/rooms/312",
+    "/rooms/313",
+    "/rooms/314",
+    "/rooms/315",
+    "/rooms/316",
+    "/rooms/317",
+    "/rooms/318",
+    "/rooms/319",
+    "/rooms/320",
+    "/rooms/201",
+    "/rooms/202",
+    "/rooms/203",
+    "/rooms/204",
+    "/rooms/205",
+    "/rooms/206",
+    "/rooms/207",
+    "/rooms/208",
+    "/rooms/209",
+    "/rooms/210",
+    "/rooms/211",
+    "/rooms/212",
+    "/rooms/213",
+    "/rooms/214",
+    "/rooms/215",
+    "/rooms/216",
+    "/rooms/217",
+    "/rooms/218",
+    "/rooms/219",
+    "/rooms/220",
+    "/operations/back-of-house",
+    "/operations/kitchen",
+    "/operations/spa",
+    "/operations/lobby",
+    "/operations/reception",
+    "/metrics/room_revenue",
+    "/metrics/occupancy_rate",
+    "/metrics/adr",
+    "/metrics/revpar",
+    "/metrics/total_revenue",
+    "/intelligence/studio",
+    "/intelligence/cases",
+    "/intelligence/cases/restaurant-support-2026-01-15",
+    "/intelligence/cases/deluxe-friday-rate-2026-01-16",
+    "/intelligence/cases/lobby-arrival-support-2026-01-08",
+    "/intelligence/cases/suite-rate-2026-01-09",
+    "/metrics/operational_occupancy",
+    "/metrics/trevpar",
+    "/metrics/revpor",
+    "/metrics/goppor",
+    "/metrics/goppar",
+    "/metrics/gross_profit_i_margin",
+    "/metrics/gross_profit_ii_margin",
+    "/metrics/gop_margin",
+    "/metrics/cpor",
+    "/metrics/cogs",
+    "/metrics/cogs_ratio",
+    "/metrics/departmental_revenue",
+    "/metrics/departmental_profit",
+    "/metrics/food_cost_percentage",
+    "/metrics/beverage_cost_percentage",
+    "/metrics/other_department_cogs_ratio",
+    "/metrics/revpash",
+    "/metrics/average_check",
+    "/metrics/table_turnover_rate",
+    "/metrics/prime_cost",
+    "/metrics/fnb_revpar",
+    "/metrics/mpi",
+    "/metrics/ari",
+    "/metrics/rgi",
+    "/metrics/pickup",
+    "/metrics/pace_vs_stly",
+    "/metrics/booking_window",
+    "/metrics/cancellation_rate",
+    "/metrics/no_show_rate",
+    "/metrics/direct_booking_ratio",
+    "/metrics/distribution_cost_percentage",
+    "/metrics/gds_wholesale_mix",
+    "/metrics/website_source_mix",
+    "/metrics/alos",
+    "/metrics/repeat_guest_ratio",
+    "/metrics/gss",
+    "/metrics/nps",
+    "/metrics/guest_wait_time",
+    "/metrics/ooo_rate",
+    "/metrics/maintenance_percentage",
+    "/metrics/labour_cost_ratio",
+    "/metrics/payroll_per_occupied_room",
+    "/metrics/utility_cost_per_occupied_room",
+    "/metrics/energy_intensity",
+    "/metrics/water_intensity",
+    "/metrics/marketing_cost_per_acquisition",
+    "/metrics/conversion_rate",
+    "/metrics/staff_productivity",
+    "/metrics/overtime_rate",
+    "/metrics/loyalty_member_share",
+    "/metrics/group_room_nights",
+    "/metrics/event_space_utilisation",
+    "/?date=2026-01-15",
+    "/rooms?time=09%3A00&amp;layer=housekeeping",
+    "/rooms?time=20%3A00&amp;layer=housekeeping"
+  ],
+  "assets": [
+    "/_next/static/chunks/3pc2k8dmo1fc9.css",
+    "/_next/static/chunks/310vm2bl3xxpt.js",
+    "/_next/static/chunks/16oub7wjreps8.js",
+    "/_next/static/chunks/27t_qfc-3_lzs.js",
+    "/_next/static/chunks/2t7d-dz5xncyk.js",
+    "/_next/static/chunks/turbopack-2ez2-8d6538cu.js",
+    "/_next/static/chunks/13csvvkuds5ry.js",
+    "/_next/static/chunks/1k8l9e_lp3qho.js",
+    "/_next/static/chunks/0cz1d0mv5g_q7.js",
+    "/_next/static/chunks/0s9djn1obxsfc.js",
+    "/_next/static/chunks/3-m9rz4x-7mtx.js",
+    "/_next/static/chunks/16vt0ja5ivmxd.js",
+    "/_next/static/chunks/0od8h3_1wz_s_.js",
+    "/_next/static/chunks/04ykl__ma0xb-.js",
+    "/_next/static/chunks/3j6x4w77akxju.js",
+    "/_next/static/chunks/3atgyukna8_j3.js",
+    "/_next/static/chunks/398yrub_ph3lc.js",
+    "/_next/static/chunks/01cw9zs-qk29x.js",
+    "/_next/static/chunks/1yimvymeee8rv.js",
+    "/_next/static/chunks/0ldcosh0t_1hi.js",
+    "/icon.svg",
+    "/_next/static/media/ibm_plex_sans_latin_400_normal-s.p.1xf5nwxyfigak.woff2",
+    "/_next/static/media/ibm_plex_sans_latin_500_normal-s.p.2i4a1iuj6lbvw.woff2",
+    "/_next/static/media/ibm_plex_sans_latin_600_normal-s.p.2ovda_azncp9b.woff2",
+    "/_next/static/media/ibm_plex_mono_latin_400_normal-s.p.3xdfs0-p_zi4c.woff2",
+    "/_next/static/media/ibm_plex_mono_latin_500_normal-s.p.11q3guvgd1r20.woff2"
+  ],
+  "api": [
+    {
+      "url": "/api/today",
+      "bytes": 22386
+    },
+    {
+      "url": "/api/overview",
+      "bytes": 42063
+    },
+    {
+      "url": "/api/occupancy",
+      "bytes": 5080
+    },
+    {
+      "url": "/api/today?date=2026-01-14&time=09%3A00",
+      "bytes": 21802
+    },
+    {
+      "url": "/api/today?date=2026-01-14&time=14%3A30",
+      "bytes": 22355
+    },
+    {
+      "url": "/api/today?date=2026-01-14&time=20%3A00",
+      "bytes": 22710
+    },
+    {
+      "url": "/api/today?date=2026-01-15&time=09%3A00",
+      "bytes": 21831
+    },
+    {
+      "url": "/api/today?date=2026-01-15&time=14%3A30",
+      "bytes": 22386
+    },
+    {
+      "url": "/api/today?date=2026-01-15&time=20%3A00",
+      "bytes": 22699
+    },
+    {
+      "url": "/api/today?date=2026-01-16&time=09%3A00",
+      "bytes": 21825
+    },
+    {
+      "url": "/api/today?date=2026-01-16&time=14%3A30",
+      "bytes": 22382
+    },
+    {
+      "url": "/api/today?date=2026-01-16&time=20%3A00",
+      "bytes": 22718
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-14",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-03-01",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-31",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-01",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-02",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-03",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-04",
+      "bytes": 1553
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-05",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-06",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-07",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-08",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-09",
+      "bytes": 1553
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-10",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-11",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-12",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-13",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-14",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-15",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-16",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-17",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-18",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-19",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-20",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-21",
+      "bytes": 1553
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-22",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-23",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-24",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-25",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-26",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-27",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-02-28",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-01",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-02",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-03",
+      "bytes": 1553
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-04",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-05",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-06",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-07",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-08",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-09",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-10",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-11",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-12",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-13",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-15",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-16",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-17",
+      "bytes": 1553
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-18",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-19",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-20",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-21",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-22",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-23",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-24",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-25",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-26",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-27",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-28",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-29",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/headline_occupancy?businessDate=2026-01-30",
+      "bytes": 1554
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-14",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-03-01",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-31",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-01",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-02",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-03",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-04",
+      "bytes": 1819
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-05",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-06",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-07",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-08",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-09",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-10",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-11",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-12",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-13",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-14",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-15",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-16",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-17",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-18",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-19",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-20",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-21",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-22",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-23",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-24",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-25",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-26",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-27",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-02-28",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-01",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-02",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-03",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-04",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-05",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-06",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-07",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-08",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-09",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-10",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-11",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-12",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-13",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-15",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-16",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-17",
+      "bytes": 1819
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-18",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-19",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-20",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-21",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-22",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-23",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-24",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-25",
+      "bytes": 1820
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-26",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-27",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-28",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-29",
+      "bytes": 1834
+    },
+    {
+      "url": "/api/explain/operational_occupancy?businessDate=2026-01-30",
+      "bytes": 1820
+    }
+  ],
+  "failed": []
+}

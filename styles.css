@@ -206,8 +206,6 @@
      that clears 3:1 against ALL FOUR sheet backgrounds: 3.24 / 3.27 / 3.27 /
      3.23. Do not lower it without re-running _build/contrast.js. */
   --sh-control-border: rgba(255, 250, 242, 0.36);
-  /* the deepest sheet surface and a 40% ivory stroke: both read by panel.css */
-  --sh-surface-3: #171513;
   --sh-tint: rgba(255, 250, 242, 0.035);
   /* On a dark surface a white inset bevel finally means something — it measured
      1.00:1 on the old near-white sheet and was removed. This is the light-source
@@ -231,7 +229,6 @@
   --w-84: rgba(255, 255, 255, 0.84);
   /* the inset hairline of the showcase panels */
   --w-22: rgba(255, 250, 242, 0.22);
-  --w-40: rgba(255, 250, 242, 0.40);
   --w-90: rgba(255, 255, 255, 0.90);
   --k-0: rgba(0, 0, 0, 0);
   --k-06: rgba(0, 0, 0, 0.06);
@@ -252,7 +249,6 @@
      dark once the sheet has reached it (paso 6) */
   --nav-glass-light: rgba(229, 229, 229, 0.82);
   --nav-glass: rgba(18, 17, 16, 0.80);
-  --scrim: rgba(6, 5, 4, 0.66);   /* read by panel.css (popover scrim); the drawer no longer has one */
   --panel: #23201c;
 
   /* shape, motion, layout */

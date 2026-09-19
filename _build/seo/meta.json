@@ -40,8 +40,14 @@
       "description": "Estudio de Barcelona que diseña e integra sistemas con inteligencia artificial para automatizar procesos y reducir costes en empresas.",
       "slogan": "Sistemas con IA que ahorran tiempo y reducen costes.",
       "areaServed": [
-        { "@type": "City", "name": "Barcelona" },
-        { "@type": "Country", "name": "España" }
+        {
+          "@type": "City",
+          "name": "Barcelona"
+        },
+        {
+          "@type": "Country",
+          "name": "España"
+        }
       ],
       "knowsAbout": [
         "Automatización de procesos con inteligencia artificial",
@@ -64,10 +70,20 @@
       "url": "{{SITE}}/",
       "name": "Holdera",
       "description": "Sistemas con inteligencia artificial que automatizan procesos y reducen costes en tu empresa. Barcelona.",
-      "publisher": { "@id": "{{SITE}}/#organization" },
+      "publisher": {
+        "@id": "{{SITE}}/#organization"
+      },
       "inLanguage": "es-ES"
     }
   },
+  "extraSitemap": [
+    {
+      "_why": "El panel demo es el producto capturado en /panel/ (259 paginas estaticas). NO es una pagina del sitio: no lleva el bloque <!-- seo:head --> que reescribe seo-inject.js, asi que no puede ir en `pages` o el inyector intentaria escribir en ella. Solo build-sitemap.js lee esta lista. Las otras 258 paginas llevan noindex,follow.",
+      "path": "/panel/",
+      "priority": "0.9",
+      "lastmod": "2026-09-19"
+    }
+  ],
   "pages": [
     {
       "file": "index.html",
@@ -75,7 +91,9 @@
       "title": "Automatización con IA para empresas en Barcelona | Holdera",
       "description": "Sistemas con IA que automatizan procesos y reducen costes en tu empresa. Más de 5 años de experiencia, sede en Barcelona. Cuéntanos qué quieres optimizar.",
       "robots": "index, follow",
-      "sitemap": { "priority": "1.0" },
+      "sitemap": {
+        "priority": "1.0"
+      },
       "og": {
         "type": "website",
         "title": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes",
@@ -84,7 +102,10 @@
         "imageAlt": "Holdera — Sistemas con IA que ahorran tiempo y reducen costes. holdera.es, Barcelona."
       },
       "organization": {
-        "@type": ["Organization", "ProfessionalService"],
+        "@type": [
+          "Organization",
+          "ProfessionalService"
+        ],
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Barcelona",
@@ -99,18 +120,36 @@
           "url": "{{SITE}}/",
           "name": "Automatización con IA para empresas en Barcelona | Holdera",
           "description": "Sistemas con IA que automatizan procesos y reducen costes en tu empresa. Más de 5 años de experiencia, sede en Barcelona. Cuéntanos qué quieres optimizar.",
-          "isPartOf": { "@id": "{{SITE}}/#website" },
-          "about": { "@id": "{{SITE}}/#organization" },
-          "mainEntity": { "@id": "{{SITE}}/#organization" },
-          "primaryImageOfPage": { "@type": "ImageObject", "url": "{{SITE}}/assets/seo/og-default.png", "width": 1200, "height": 630 },
-          "breadcrumb": { "@id": "{{SITE}}/#breadcrumb" },
+          "isPartOf": {
+            "@id": "{{SITE}}/#website"
+          },
+          "about": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "mainEntity": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "{{SITE}}/assets/seo/og-default.png",
+            "width": 1200,
+            "height": 630
+          },
+          "breadcrumb": {
+            "@id": "{{SITE}}/#breadcrumb"
+          },
           "inLanguage": "es-ES"
         },
         {
           "@type": "BreadcrumbList",
           "@id": "{{SITE}}/#breadcrumb",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "{{SITE}}/" }
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "{{SITE}}/"
+            }
           ]
         },
         {
@@ -120,8 +159,13 @@
           "serviceType": "Asesoría de automatización con IA",
           "description": "Una sesión contigo para entender qué quieres automatizar y por dónde empezar. Te llevas un diagnóstico; el siguiente paso lo decides tú.",
           "url": "{{SITE}}/#servicio-asesorias",
-          "provider": { "@id": "{{SITE}}/#organization" },
-          "areaServed": { "@type": "Country", "name": "España" }
+          "provider": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "España"
+          }
         },
         {
           "@type": "Service",
@@ -130,8 +174,13 @@
           "serviceType": "Estrategia digital",
           "description": "Un plan antes de invertir: qué canales, qué arreglar y en qué orden. Te llevas una hoja de ruta que puedes ejecutar tú o con nosotros.",
           "url": "{{SITE}}/#servicio-estrategia",
-          "provider": { "@id": "{{SITE}}/#organization" },
-          "areaServed": { "@type": "Country", "name": "España" }
+          "provider": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "España"
+          }
         },
         {
           "@type": "Service",
@@ -140,8 +189,13 @@
           "serviceType": "Transformación digital e integración de sistemas",
           "description": "Tus procesos, datos y panel dentro de un sistema, en vez de hojas sueltas. Lo conectamos a lo que ya usas o lo construimos de cero.",
           "url": "{{SITE}}/#servicio-transformacion",
-          "provider": { "@id": "{{SITE}}/#organization" },
-          "areaServed": { "@type": "Country", "name": "España" }
+          "provider": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "España"
+          }
         },
         {
           "@type": "Service",
@@ -150,8 +204,13 @@
           "serviceType": "Marketing digital: Google Ads, Meta, SEO y web",
           "description": "Que te encuentren y que convierta: Google Ads, Meta, SEO y mejoras en la web. Visitas que sirven, medidas y repetidas.",
           "url": "{{SITE}}/#servicio-marketing",
-          "provider": { "@id": "{{SITE}}/#organization" },
-          "areaServed": { "@type": "Country", "name": "España" }
+          "provider": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "España"
+          }
         },
         {
           "@type": "Service",
@@ -160,8 +219,13 @@
           "serviceType": "Automatización de procesos con inteligencia artificial",
           "description": "Tareas repetitivas que se hacen solas, conectadas a tu CRM, ERP, correo y WhatsApp. Menos tiempo, menos errores, menos coste.",
           "url": "{{SITE}}/#servicio-ia",
-          "provider": { "@id": "{{SITE}}/#organization" },
-          "areaServed": { "@type": "Country", "name": "España" }
+          "provider": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "España"
+          }
         }
       ]
     },
@@ -171,7 +235,9 @@
       "title": "Nosotros: automatización con IA desde Barcelona | Holdera",
       "description": "Holdera es un estudio de Barcelona que diseña e integra sistemas con IA: primero escuchamos, después construimos. Más de 5 años de experiencia. Conócenos.",
       "robots": "index, follow",
-      "sitemap": { "priority": "0.7" },
+      "sitemap": {
+        "priority": "0.7"
+      },
       "og": {
         "type": "website",
         "title": "Nosotros — Holdera, automatización con IA en Barcelona",
@@ -186,19 +252,42 @@
           "url": "{{SITE}}/nosotros.html",
           "name": "Nosotros: automatización con IA desde Barcelona | Holdera",
           "description": "Holdera es un estudio de Barcelona que diseña e integra sistemas con IA: primero escuchamos, después construimos. Más de 5 años de experiencia. Conócenos.",
-          "isPartOf": { "@id": "{{SITE}}/#website" },
-          "about": { "@id": "{{SITE}}/#organization" },
-          "mainEntity": { "@id": "{{SITE}}/#organization" },
-          "primaryImageOfPage": { "@type": "ImageObject", "url": "{{SITE}}/assets/seo/og-default.png", "width": 1200, "height": 630 },
-          "breadcrumb": { "@id": "{{SITE}}/nosotros.html#breadcrumb" },
+          "isPartOf": {
+            "@id": "{{SITE}}/#website"
+          },
+          "about": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "mainEntity": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "{{SITE}}/assets/seo/og-default.png",
+            "width": 1200,
+            "height": 630
+          },
+          "breadcrumb": {
+            "@id": "{{SITE}}/nosotros.html#breadcrumb"
+          },
           "inLanguage": "es-ES"
         },
         {
           "@type": "BreadcrumbList",
           "@id": "{{SITE}}/nosotros.html#breadcrumb",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "{{SITE}}/" },
-            { "@type": "ListItem", "position": 2, "name": "Nosotros", "item": "{{SITE}}/nosotros.html" }
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "{{SITE}}/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Nosotros",
+              "item": "{{SITE}}/nosotros.html"
+            }
           ]
         }
       ]
@@ -209,7 +298,9 @@
       "title": "Partners y tecnologías que integramos | Holdera",
       "description": "Las plataformas de IA, automatización y CRM con las que construimos tus sistemas. Descubre con qué tecnologías trabajamos y por qué las elegimos.",
       "robots": "index, follow",
-      "sitemap": { "priority": "0.7" },
+      "sitemap": {
+        "priority": "0.7"
+      },
       "og": {
         "type": "website",
         "title": "Partners tecnológicos — Holdera",
@@ -224,18 +315,39 @@
           "url": "{{SITE}}/partners.html",
           "name": "Partners y tecnologías que integramos | Holdera",
           "description": "Las plataformas de IA, automatización y CRM con las que construimos tus sistemas. Descubre con qué tecnologías trabajamos y por qué las elegimos.",
-          "isPartOf": { "@id": "{{SITE}}/#website" },
-          "about": { "@id": "{{SITE}}/#organization" },
-          "primaryImageOfPage": { "@type": "ImageObject", "url": "{{SITE}}/assets/seo/og-default.png", "width": 1200, "height": 630 },
-          "breadcrumb": { "@id": "{{SITE}}/partners.html#breadcrumb" },
+          "isPartOf": {
+            "@id": "{{SITE}}/#website"
+          },
+          "about": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "{{SITE}}/assets/seo/og-default.png",
+            "width": 1200,
+            "height": 630
+          },
+          "breadcrumb": {
+            "@id": "{{SITE}}/partners.html#breadcrumb"
+          },
           "inLanguage": "es-ES"
         },
         {
           "@type": "BreadcrumbList",
           "@id": "{{SITE}}/partners.html#breadcrumb",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "{{SITE}}/" },
-            { "@type": "ListItem", "position": 2, "name": "Partners", "item": "{{SITE}}/partners.html" }
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "{{SITE}}/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Partners",
+              "item": "{{SITE}}/partners.html"
+            }
           ]
         }
       ]
@@ -246,7 +358,9 @@
       "title": "Contacto: cuéntanos qué quieres automatizar | Holdera",
       "description": "Cuéntanos qué proceso te quita tiempo: te decimos cómo lo automatizaríamos y cómo lo integraríamos en tu empresa. Sin compromiso, desde Barcelona.",
       "robots": "index, follow",
-      "sitemap": { "priority": "0.8" },
+      "sitemap": {
+        "priority": "0.8"
+      },
       "og": {
         "type": "website",
         "title": "Contacto — Cuéntanos qué quieres automatizar | Holdera",
@@ -261,73 +375,40 @@
           "url": "{{SITE}}/contacto.html",
           "name": "Contacto: cuéntanos qué quieres automatizar | Holdera",
           "description": "Cuéntanos qué proceso te quita tiempo: te decimos cómo lo automatizaríamos y cómo lo integraríamos en tu empresa. Sin compromiso, desde Barcelona.",
-          "isPartOf": { "@id": "{{SITE}}/#website" },
-          "about": { "@id": "{{SITE}}/#organization" },
-          "primaryImageOfPage": { "@type": "ImageObject", "url": "{{SITE}}/assets/seo/og-default.png", "width": 1200, "height": 630 },
-          "breadcrumb": { "@id": "{{SITE}}/contacto.html#breadcrumb" },
+          "isPartOf": {
+            "@id": "{{SITE}}/#website"
+          },
+          "about": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "{{SITE}}/assets/seo/og-default.png",
+            "width": 1200,
+            "height": 630
+          },
+          "breadcrumb": {
+            "@id": "{{SITE}}/contacto.html#breadcrumb"
+          },
           "inLanguage": "es-ES"
         },
         {
           "@type": "BreadcrumbList",
           "@id": "{{SITE}}/contacto.html#breadcrumb",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "{{SITE}}/" },
-            { "@type": "ListItem", "position": 2, "name": "Contacto", "item": "{{SITE}}/contacto.html" }
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "{{SITE}}/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Contacto",
+              "item": "{{SITE}}/contacto.html"
+            }
           ]
-        }
-      ]
-    },
-    {
-      "file": "panel.html",
-      "path": "/panel.html",
-      "title": "Panel de control con IA para tu empresa (demo) | Holdera",
-      "description": "Así podría ser tu panel: una demo interactiva de cómo un sistema con IA reúne los procesos, tiempos y costes de tu empresa en un solo sitio. Pruébalo.",
-      "robots": "index, follow",
-      "sitemap": { "priority": "0.9" },
-      "og": {
-        "type": "website",
-        "title": "Así podría ser tu panel — Demo interactiva de Holdera",
-        "description": "Una demo interactiva de cómo un sistema con IA reúne los procesos, tiempos y costes de tu empresa en un solo sitio. Pruébalo.",
-        "image": "{{SITE}}/assets/seo/og-panel.png",
-        "imageAlt": "Así podría ser tu panel — demo interactiva de Holdera. holdera.es, Barcelona."
-      },
-      "graph": [
-        {
-          "@type": "WebPage",
-          "@id": "{{SITE}}/panel.html#webpage",
-          "url": "{{SITE}}/panel.html",
-          "name": "Panel de control con IA para tu empresa (demo) | Holdera",
-          "description": "Así podría ser tu panel: una demo interactiva de cómo un sistema con IA reúne los procesos, tiempos y costes de tu empresa en un solo sitio. Pruébalo.",
-          "isPartOf": { "@id": "{{SITE}}/#website" },
-          "about": { "@id": "{{SITE}}/#organization" },
-          "mainEntity": { "@id": "{{SITE}}/panel.html#app" },
-          "primaryImageOfPage": { "@type": "ImageObject", "url": "{{SITE}}/assets/seo/og-panel.png", "width": 1200, "height": 630 },
-          "breadcrumb": { "@id": "{{SITE}}/panel.html#breadcrumb" },
-          "inLanguage": "es-ES"
-        },
-        {
-          "@type": "BreadcrumbList",
-          "@id": "{{SITE}}/panel.html#breadcrumb",
-          "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "{{SITE}}/" },
-            { "@type": "ListItem", "position": 2, "name": "Panel demo", "item": "{{SITE}}/panel.html" }
-          ]
-        },
-        {
-          "@type": "WebApplication",
-          "@id": "{{SITE}}/panel.html#app",
-          "name": "Panel demo de Holdera",
-          "alternateName": "Así podría ser tu panel",
-          "url": "{{SITE}}/panel.html",
-          "description": "Demo interactiva de un panel de control con IA: cómo un sistema a medida reúne los procesos, tiempos y costes de una empresa en un solo sitio. Datos de ejemplo, no reales.",
-          "applicationCategory": "BusinessApplication",
-          "operatingSystem": "Web",
-          "browserRequirements": "Requiere JavaScript",
-          "isAccessibleForFree": true,
-          "inLanguage": "es-ES",
-          "image": "{{SITE}}/assets/seo/og-panel.png",
-          "provider": { "@id": "{{SITE}}/#organization" },
-          "author": { "@id": "{{SITE}}/#organization" }
         }
       ]
     },
@@ -337,7 +418,9 @@
       "title": "Aviso legal | Holdera",
       "description": "Aviso legal de Holdera: titular del sitio, condiciones de uso y propiedad intelectual. Consulta los términos que rigen esta web antes de usarla.",
       "robots": "index, follow",
-      "sitemap": { "priority": "0.3" },
+      "sitemap": {
+        "priority": "0.3"
+      },
       "og": {
         "type": "website",
         "title": "Aviso legal — Holdera",
@@ -352,17 +435,33 @@
           "url": "{{SITE}}/aviso-legal.html",
           "name": "Aviso legal | Holdera",
           "description": "Aviso legal de Holdera: titular del sitio, condiciones de uso y propiedad intelectual. Consulta los términos que rigen esta web antes de usarla.",
-          "isPartOf": { "@id": "{{SITE}}/#website" },
-          "about": { "@id": "{{SITE}}/#organization" },
-          "breadcrumb": { "@id": "{{SITE}}/aviso-legal.html#breadcrumb" },
+          "isPartOf": {
+            "@id": "{{SITE}}/#website"
+          },
+          "about": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "breadcrumb": {
+            "@id": "{{SITE}}/aviso-legal.html#breadcrumb"
+          },
           "inLanguage": "es-ES"
         },
         {
           "@type": "BreadcrumbList",
           "@id": "{{SITE}}/aviso-legal.html#breadcrumb",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "{{SITE}}/" },
-            { "@type": "ListItem", "position": 2, "name": "Aviso legal", "item": "{{SITE}}/aviso-legal.html" }
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "{{SITE}}/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Aviso legal",
+              "item": "{{SITE}}/aviso-legal.html"
+            }
           ]
         }
       ]
@@ -373,7 +472,9 @@
       "title": "Política de privacidad | Holdera",
       "description": "Política de privacidad de Holdera: qué datos recogemos en el formulario de contacto, con qué finalidad y cómo ejercer tus derechos según el RGPD.",
       "robots": "index, follow",
-      "sitemap": { "priority": "0.3" },
+      "sitemap": {
+        "priority": "0.3"
+      },
       "og": {
         "type": "website",
         "title": "Política de privacidad — Holdera",
@@ -388,17 +489,33 @@
           "url": "{{SITE}}/privacidad.html",
           "name": "Política de privacidad | Holdera",
           "description": "Política de privacidad de Holdera: qué datos recogemos en el formulario de contacto, con qué finalidad y cómo ejercer tus derechos según el RGPD.",
-          "isPartOf": { "@id": "{{SITE}}/#website" },
-          "about": { "@id": "{{SITE}}/#organization" },
-          "breadcrumb": { "@id": "{{SITE}}/privacidad.html#breadcrumb" },
+          "isPartOf": {
+            "@id": "{{SITE}}/#website"
+          },
+          "about": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "breadcrumb": {
+            "@id": "{{SITE}}/privacidad.html#breadcrumb"
+          },
           "inLanguage": "es-ES"
         },
         {
           "@type": "BreadcrumbList",
           "@id": "{{SITE}}/privacidad.html#breadcrumb",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "{{SITE}}/" },
-            { "@type": "ListItem", "position": 2, "name": "Política de privacidad", "item": "{{SITE}}/privacidad.html" }
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "{{SITE}}/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Política de privacidad",
+              "item": "{{SITE}}/privacidad.html"
+            }
           ]
         }
       ]
@@ -424,16 +541,29 @@
           "url": "{{SITE}}/404.html",
           "name": "Página no encontrada | Holdera",
           "description": "La página que buscas no existe o ha cambiado de sitio. Vuelve al inicio de Holdera o cuéntanos qué quieres automatizar.",
-          "isPartOf": { "@id": "{{SITE}}/#website" },
-          "breadcrumb": { "@id": "{{SITE}}/404.html#breadcrumb" },
+          "isPartOf": {
+            "@id": "{{SITE}}/#website"
+          },
+          "breadcrumb": {
+            "@id": "{{SITE}}/404.html#breadcrumb"
+          },
           "inLanguage": "es-ES"
         },
         {
           "@type": "BreadcrumbList",
           "@id": "{{SITE}}/404.html#breadcrumb",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "{{SITE}}/" },
-            { "@type": "ListItem", "position": 2, "name": "Página no encontrada" }
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "{{SITE}}/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Página no encontrada"
+            }
           ]
         }
       ]

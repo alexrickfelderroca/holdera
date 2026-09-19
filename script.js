@@ -34,7 +34,7 @@
 
   /* ---------- Hero load-in ---------- */
   const hero = $('.hero');
-  const nav = $('body > .nav');   // the fixed bar (paso 6); the panel has none
+  const nav = $('body > .nav');   // the fixed bar (paso 6)
   // pages without a hero show the bar at once; with a hero it joins the entrance below
   if (nav && !hero) requestAnimationFrame(() => nav.classList.add('is-ready'));
   const desktopMotion = window.matchMedia('(min-width: 901px)');

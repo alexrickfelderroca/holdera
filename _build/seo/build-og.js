@@ -41,7 +41,6 @@ const W = 1200, H = 630;
 
 const CARDS = [
   { html: 'og-default.html', png: 'og-default.png' },
-  { html: 'og-panel.html', png: 'og-panel.png' },
 ];
 
 const CHROME_CANDIDATES = [

@@ -15,3 +15,10 @@ node_modules/
 # un entry file "index.js" que no existe. El comando para recrearlo esta en la
 # cabecera de _build/build-partner-logos.js.
 /_build/logos/
+
+# El producto Holdera (app de operaciones hoteleras, Next.js) que subió Alex el
+# 19-09-2026. Vive aquí para poder leerlo desde la sesión, pero NO se publica:
+# este repo es público y despliega solo. Además lleva su propio package.json, y
+# Hostinger manda el repositorio entero al desplegador de Node.js en cuanto
+# encuentra uno — el mismo accidente que ya costó un despliegue con _build/logos/.
+/holdera-product-hotel-operations-v1/

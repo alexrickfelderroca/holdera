@@ -7,8 +7,8 @@
    node _build/check-tokens.js        exits 1 if anything is wrong
 
    Since step 5 the site is several pages and three stylesheets: styles.css
-   (site tokens), pages.css (inner pages, --pg-* tokens) and panel.css (the
-   demo panel, --pn-* tokens). Each may carry its own :root block; a token
+   (site tokens) and pages.css (inner pages, --pg-* tokens). Each may carry
+   its own :root block; a token
    defined in any of them counts as defined for all, and every *.html at the
    project root is scanned for inline colour. */
 const fs = require('fs');
@@ -21,12 +21,12 @@ const exists = f => fs.existsSync(path.join(root, f));
    7.58:1 on ink") is documentation, not a colour literal, and flagging it is
    the same false-positive failure mode that made the first contrast.js
    untrustworthy — a guard that cries wolf stops being read. */
-const CSS_FILES = ['styles.css', 'pages.css', 'panel.css'].filter(exists);
+const CSS_FILES = ['styles.css', 'pages.css'].filter(exists);
 const HTML_FILES = fs.readdirSync(root).filter(f => /\.html$/i.test(f) && !/\.bak$/i.test(f));
 /* Every script that can touch a token. Miss one and rule 1 turns into a liar:
    fish.js reads --fish-core and writes --persp, so leaving it out reported four
    perfectly-used tokens as orphans and four runtime properties as undefined. */
-const JS_FILES = ['brain.js', 'fish.js', 'planet.js', 'script.js', 'waves.js', 'panel.js', 'panel-data.js'].filter(exists);
+const JS_FILES = ['brain.js', 'fish.js', 'planet.js', 'script.js', 'waves.js'].filter(exists);
 
 const stripCss = s => s.replace(/\/\*[\s\S]*?\*\//g, '');
 const stripHtml = s => s.replace(/<!--[\s\S]*?-->/g, '');
@@ -38,7 +38,7 @@ HTML_FILES.forEach(f => { htmlBy[f] = stripHtml(fs.readFileSync(path.join(root, 
 const js = JS_FILES.map(f => fs.readFileSync(path.join(root, f), 'utf8')).join('\n');
 
 /* Split every stylesheet into its :root block(s) and the rest. A file may
-   declare :root more than once (panel.css keeps semantic tokens apart from
+   declare :root more than once (a stylesheet may keep semantic tokens apart from
    surface tokens); all of them are token blocks. */
 const rootBlocks = [];
 const restBy = {};
@@ -100,11 +100,11 @@ for (const m of js.matchAll(/['"`](--[a-z0-9-]+)['"`]/gi)) used.add(m[1]);
    viewport — so without this they are reported as "used but never defined". */
 for (const m of js.matchAll(/setProperty\(\s*['"`](--[a-z0-9-]+)/gi)) local.add(m[1]);
 /* Tokens can also be written from JS via a template of the form `--x: …` inside
-   a style string (the panel writes chart colours that way). */
+   a style string. */
 for (const m of js.matchAll(/['"`][^'"`]*?(--[a-z0-9-]+)\s*:/gi)) local.add(m[1]);
 
-/* A script may BUILD a token name from a prefix ('--pn-s' + i for the five
-   chart series). The literal '--pn-s' is then a reference to the family, not
+/* A script may BUILD a token name from a prefix ('--x-s' + i for a family of
+   numbered tokens). The literal prefix is then a reference to the family, not
    an undefined token: a used literal that is a strict prefix of a defined
    token, followed there by a digit, is accepted as that family. */
 const isFamilyPrefix = t => [...defined].some(d => d.startsWith(t) && /^\d/.test(d.slice(t.length)));

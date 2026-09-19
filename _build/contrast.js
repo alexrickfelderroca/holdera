@@ -26,7 +26,7 @@ const path = require('path');
 /* Since step 5 there are three stylesheets. They are parsed as ONE cascade
    (styles.css first, so a later file can override a rule and "last wins"
    still holds), and every :root block feeds the same token table. */
-const cssFiles = ['styles.css', 'pages.css', 'panel.css']
+const cssFiles = ['styles.css', 'pages.css']
   .map(f => path.join(__dirname, '..', f))
   .filter(p => fs.existsSync(p));
 const raw = cssFiles.map(p => fs.readFileSync(p, 'utf8')).join('\n');
@@ -262,10 +262,6 @@ for (const [label, fg, stack, need] of CHECKS) {
    not "fix" them to --accent-ink. */
 const ACCENT_ON_INK = new Set([
   '.drawer__links a:hover',
-  /* The demo panel (panel.css) is a dark app surface throughout — --sh-* only —
-     where #f08a24 measures 7.6:1. These four are decorative marks (a sparkline
-     dot, review stars, the diagram's packets and core node), never body text. */
-  '.viz__spark-dot', '.pn-stars i.is-on', '.pn-packet', '.pn-node--core .pn-node__bg',
   /* Both of these only ever apply under .hero.is-showcase — i.e. once the veil
      has turned the hero dark. They are checked as "service current on veil"
      above, and the guard caught them the moment they were written, which is

@@ -12,7 +12,7 @@ Lo automático ya está: cabeceras (`_build/seo-inject.js`), JSON-LD, `sitemap.x
 
 ## 2. Google
 - [ ] **Search Console**: verificar el dominio (registro TXT en DNS, cubre www y sin www) y **enviar `https://holdera.com/sitemap.xml`**.
-- [ ] Pedir indexación manual de la home y de `panel.html` el día del lanzamiento.
+- [ ] Pedir indexación manual de la home y de `/panel/` el día del lanzamiento.
 - [ ] **Google Business Profile**: crear la ficha (empresa de servicios con zona de cobertura Barcelona, sin dirección pública si no hay local abierto). Mismo nombre, misma categoría ("Consultora de informática" o "Agencia de marketing digital"), misma web. Sin ficha no hay pack local para "automatización con IA Barcelona".
 - [ ] Probar cada página en la **prueba de resultados enriquecidos** (search.google.com/test/rich-results) y en el validador de schema.org una vez publicada.
 - [ ] Comprobar las tarjetas sociales en los depuradores de Facebook/LinkedIn y en la vista previa de X, después de publicar (necesitan la URL en vivo).
@@ -33,10 +33,9 @@ La regla: una intención por página, la palabra clave principal en el `<title>`
 | `nosotros.html` | estudio de automatización con IA Barcelona | consultoría IA pymes · integración de sistemas con IA · transformación digital Barcelona |
 | `partners.html` | integración n8n Make Zapier | automatización con OpenAI · CRM HubSpot a medida · tecnologías de automatización |
 | `contacto.html` | asesoría automatización IA Barcelona | presupuesto automatización procesos · consultoría digital pymes Barcelona |
-| `panel.html` | panel de control con IA para empresas | dashboard a medida empresa · CRM a medida · demo panel IA |
 | `aviso-legal.html` / `privacidad.html` | (sin objetivo de tráfico) | — |
 
-- [ ] **Un solo `<h1>` por página**, con la principal. En `panel.html` el `<h1>` debería ser "Así podría ser tu panel" seguido de un `<h2>` con la palabra clave ("Un panel de control con IA para tu empresa").
+- [ ] **Un solo `<h1>` por página**, con la principal. `/panel/` es salida del producto capturada en estático: su `<h1>` lo escribe el producto, no `seo-inject`.
 - [ ] Cada slide de servicios de la home lleva su `id` (`servicio-asesorias` … `servicio-ia`): el JSON-LD ya enlaza `https://holdera.com/#servicio-…` y la nav también. **No cambiar esos ids** sin cambiar `meta.json`.
 - [ ] Cuando decidas listar el resto de servicios (webs, CRM, SEO, Ads, ecommerce), cada uno merece su propia página: `servicios/crm-a-medida.html`, etc. Añadirlas a `meta.json` y volver a ejecutar sitemap + inject.
 
@@ -46,7 +45,7 @@ La regla: una intención por página, la palabra clave principal en el `<title>`
 - [ ] Las tarjetas sociales (`assets/seo/og-*.png`) se regeneran con `node _build/seo/build-og.js` si cambia el titular. Necesita conexión (Geist se carga de Google Fonts).
 
 ## 6. Enlazado interno
-- [ ] Nav y footer ya enlazan las 7 páginas; la home enlaza los 5 servicios por ancla. Falta: desde `nosotros.html` un enlace en el texto a `contacto.html` y a `panel.html`; desde `panel.html` un CTA a `contacto.html`; desde `partners.html` un enlace a `index.html#servicio-ia`.
+- [ ] Nav y footer ya enlazan las 7 páginas; la home enlaza los 5 servicios por ancla. Falta: desde `nosotros.html` un enlace en el texto a `contacto.html` y a `/panel/`; desde `partners.html` un enlace a `index.html#servicio-ia`.
 - [ ] Anchor text descriptivo ("ver la demo del panel", no "clic aquí").
 - [ ] Las páginas legales se enlazan solo desde el footer y desde el formulario (ya previsto). No hace falta más.
 - [ ] Rutas: hoy todo enlaza a `nosotros.html` (con extensión) y las canónicas van igual. Si quieres URLs limpias (`/nosotros`), hay que cambiar **a la vez** todos los enlaces, `meta.json` (`path`) y regenerar. GitHub Pages sirve las dos formas, así que si no se hace todo junto habrá contenido duplicado.

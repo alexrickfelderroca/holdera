@@ -185,7 +185,6 @@ function validate(meta, SITE, opts) {
     } else if (nodes[0].address) {
       warn(tag + 'address fuera de la home (no hace falta repetirla)');
     }
-    if (page.file === 'panel.html' && !nodes.some((n) => types(n).indexOf('WebApplication') >= 0)) err(tag + 'panel.html debe llevar WebApplication');
   }
   return { errors, warnings };
 }

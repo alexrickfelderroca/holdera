@@ -24,6 +24,17 @@ const urls = meta.pages.filter((p) => p.sitemap && p.path !== null).map((p) => {
   return '  <url>\n    <loc>' + loc + '</loc>\n    <lastmod>' + (p.lastmod || lastmod) + '</lastmod>\n    <priority>' + p.sitemap.priority + '</priority>\n  </url>';
 });
 
+/* URLs que van al sitemap pero NO son paginas del sitio: hoy, la entrada del
+   panel (/panel/), que es el producto capturado en estatico y no lleva el
+   bloque <!-- seo:head --> que reescribe seo-inject.js. Sin esto, regenerar el
+   sitemap la borraba en silencio, porque solo miraba `meta.pages`. */
+for (const extra of meta.extraSitemap || []) {
+  urls.push(
+    '  <url>\n    <loc>' + SITE + extra.path + '</loc>\n    <lastmod>' +
+    (extra.lastmod || lastmod) + '</lastmod>\n    <priority>' + extra.priority + '</priority>\n  </url>'
+  );
+}
+
 const sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n' +
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls.join('\n') + '\n</urlset>\n';
 

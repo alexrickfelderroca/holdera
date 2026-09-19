@@ -32,7 +32,7 @@ const crypto = require('crypto');
 const ROOT = path.resolve(__dirname, '..');
 const PAGES = [
   'index.html', 'nosotros.html', 'partners.html', 'contacto.html',
-  'aviso-legal.html', 'privacidad.html', '404.html', 'panel.html',
+  'aviso-legal.html', 'privacidad.html', '404.html',
 ];
 
 const hashes = new Map();

@@ -45,6 +45,14 @@ RedirectMatch 404 ^/.+\.md$
 </IfModule>
 
 
+# ──────────────────────────────────────────────── panel.html -> /panel/ (paso 9)
+# El panel demo viejo vivio en /panel.html desde el paso 5, estuvo indexado y
+# salio en el sitemap durante diez dias. En el paso 9 lo sustituye el producto
+# real, capturado en la CARPETA /panel/. Sin esta regla, esa URL cae en el
+# ErrorDocument 404 y se pierde el enlace que ya tuviera fuera.
+Redirect 301 /panel.html /panel/
+
+
 # ──────────────────────────────────────────────────────────────────── cache
 # Por defecto el sitio se sirve con `no-store, no-cache, must-revalidate`, o
 # sea que cada visita vuelve a bajarselo todo. Las fuentes, las imagenes y los
