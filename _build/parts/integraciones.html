@@ -1,0 +1,253 @@
+<!-- ===========================================================================
+     HOLDERA · INTEGRACIONES — dos piezas, generadas por
+     node _build/integraciones/build-logos.js --part
+     NO EDITAR A MANO: se regenera desde _build/integraciones/integraciones.json.
+
+     (A) LA TIRA DEL HERO — sustituye por completo al <div class="hero__bar">
+         de index.html (el de los cuatro chips Hoy / Habitaciones / Revenue y
+         reservas / Trazabilidad). Conserva la clase .hero__bar a proposito:
+         de ella cuelgan la posicion, el z-index y la sombra que ya estaban en
+         styles.css, y ademas _build/hero-fit.js busca ese selector para
+         comprobar que la lista de servicios no invade la barra. Cambiarlo
+         dejaria esa comprobacion midiendo un nodo que no existe, que es la
+         peor forma de fallar: en silencio y en verde.
+
+     (B) EL BLOQUE DE LA NAV — pensado para el drawer (_build/shell/drawer.html)
+         y para un desplegable de escritorio. Va sobre superficie de tinta
+         (--panel / --on-ink-*).
+
+     🔴 Estas son las integraciones de HOTELGEST, no de Holdera. Que Holdera
+        comparta las mismas es lo que dijo Alex; no esta verificado contra
+        ninguna fuente. Ver procedencia.atribucion_a_holdera en el JSON.
+     =========================================================================== -->
+
+<!-- ======================= (A) TIRA DEL HERO =======================
+     Los marcadores part:tira / part:nav estan para poder recortar cada pieza
+     con un script sin equivocarse: este archivo MENCIONA <div class="hero__bar">
+     dentro de un comentario en prosa, y un recortador ingenuo que busque esa
+     cadena se lleva medio comentario por delante. Paso de verdad al verificar:
+     el trozo inyectado incluia el comentario, el navegador lo parseaba como un
+     DIV de verdad y aparecian DOS .hero__bar anidados — la de fuera sin la
+     clase --mrq, asi que la barra seguia midiendo 46px y parecia que el CSS no
+     se aplicaba. No era el CSS. Recorta SIEMPRE entre marcadores.
+     ================================================================= -->
+<!-- part:tira -->
+<!-- 41 marcas. La segunda pasada es un CLON exacto y va aria-hidden:
+     es lo que hace que el bucle no tenga costura (el track se desplaza -50%
+     y al llegar vuelve a 0, donde el dibujo es identico). Un lector de
+     pantalla lee la lista UNA vez.
+     Con "prefers-reduced-motion" la tira se para y el visor pasa a ser
+     desplazable con el dedo o la rueda; el clon se oculta. -->
+<div class="hero__bar hero__bar--mrq mrq" data-enter style="--d:700">
+  <p class="mrq__label" id="mrq-label">Nos integramos con</p>
+  <div class="mrq__viewport">
+    <div class="mrq__track">
+      <ul class="mrq__row" aria-labelledby="mrq-label">
+          <li class="mrq__item"><svg viewBox="0 0 85.91 24" role="img" aria-label="SiteMinder"><text x="0" y="17.6" textLength="85.91" lengthAdjust="spacingAndGlyphs">SiteMinder</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 89.17 24" role="img" aria-label="YieldPlanet"><text x="0" y="17.6" textLength="89.17" lengthAdjust="spacingAndGlyphs">YieldPlanet</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 68.69 24" role="img" aria-label="Channex"><text x="0" y="17.6" textLength="68.69" lengthAdjust="spacingAndGlyphs">Channex</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 103.01 24" role="img" aria-label="Neobookings"><text x="0" y="17.6" textLength="103.01" lengthAdjust="spacingAndGlyphs">Neobookings</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 65.44 24" role="img" aria-label="WuBook"><text x="0" y="17.6" textLength="65.44" lengthAdjust="spacingAndGlyphs">WuBook</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 65.5 24" role="img" aria-label="Prestige"><text x="0" y="17.6" textLength="65.5" lengthAdjust="spacingAndGlyphs">Prestige</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 90.45 24" role="img" aria-label="RoomCloud"><text x="0" y="17.6" textLength="90.45" lengthAdjust="spacingAndGlyphs">RoomCloud</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 77.67 24" role="img" aria-label="Paycomet"><text x="0" y="17.6" textLength="77.67" lengthAdjust="spacingAndGlyphs">Paycomet</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 47.57 24" role="img" aria-label="Monei"><text x="0" y="17.6" textLength="47.57" lengthAdjust="spacingAndGlyphs">Monei</text></svg></li>
+          <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Redsys"><path d="M11.626 24c-3.989-.108-7.476-2.03-9.89-5.873A10.9 10.9 0 0 1 .17 13.959a12.4 12.4 0 0 1 .239-4.996c.44-1.711 1.275-3.197 2.339-4.58.075-.099.169-.263.314-.174.098.061.023.207-.019.324-.473 1.36-.46 2.756.225 3.984.783 1.411 1.964 2.438 3.67 2.705 1.636.258 3.07-.211 4.21-1.317 1.378-1.34 1.95-2.99 1.415-4.946-.285-1.036-.768-1.922-1.612-2.578-1.092-.848-2.33-1.26-3.722-1.12-.098.01-.225.08-.267-.056s.103-.14.187-.178A11.9 11.9 0 0 1 12.071 0c1.74.01 3.427.384 5.006 1.125 2.152 1.008 3.91 2.498 5.133 4.552a12.4 12.4 0 0 1 1.688 4.93c.154 1.313.08 2.584-.188 3.863-.333 1.575-.942 3.028-1.875 4.34-.853 1.2-1.851 2.241-3.103 3.052-.998.647-2.025 1.177-3.16 1.538-1.115.356-2.245.544-3.946.595z"/></svg></li>
+          <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Stripe"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.594-7.305h.003z"/></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 66.9 24" role="img" aria-label="CashDro"><text x="0" y="17.6" textLength="66.9" lengthAdjust="spacingAndGlyphs">CashDro</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 56.66 24" role="img" aria-label="Dataria"><text x="0" y="17.6" textLength="56.66" lengthAdjust="spacingAndGlyphs">Dataria</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 78.11 24" role="img" aria-label="PriceLabs"><text x="0" y="17.6" textLength="78.11" lengthAdjust="spacingAndGlyphs">PriceLabs</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 95.9 24" role="img" aria-label="RevCtrlData"><text x="0" y="17.6" textLength="95.9" lengthAdjust="spacingAndGlyphs">RevCtrlData</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 58.66 24" role="img" aria-label="Revbell"><text x="0" y="17.6" textLength="58.66" lengthAdjust="spacingAndGlyphs">Revbell</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 60.37 24" role="img" aria-label="Revtool"><text x="0" y="17.6" textLength="60.37" lengthAdjust="spacingAndGlyphs">Revtool</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 123.78 24" role="img" aria-label="TheNetRevenue"><text x="0" y="17.6" textLength="123.78" lengthAdjust="spacingAndGlyphs">TheNetRevenue</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 130.07 24" role="img" aria-label="RoomPriceGenie"><text x="0" y="17.6" textLength="130.07" lengthAdjust="spacingAndGlyphs">RoomPriceGenie</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 36.06 24" role="img" aria-label="Tesa"><text x="0" y="17.6" textLength="36.06" lengthAdjust="spacingAndGlyphs">Tesa</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 66.13 24" role="img" aria-label="Salto KS"><text x="0" y="17.6" textLength="66.13" lengthAdjust="spacingAndGlyphs">Salto KS</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 98.56 24" role="img" aria-label="Yacan Smart"><text x="0" y="17.6" textLength="98.56" lengthAdjust="spacingAndGlyphs">Yacan Smart</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 73.88 24" role="img" aria-label="Danalock"><text x="0" y="17.6" textLength="73.88" lengthAdjust="spacingAndGlyphs">Danalock</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 56.85 24" role="img" aria-label="TTLock"><text x="0" y="17.6" textLength="56.85" lengthAdjust="spacingAndGlyphs">TTLock</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 46.28 24" role="img" aria-label="Agora"><text x="0" y="17.6" textLength="46.28" lengthAdjust="spacingAndGlyphs">Agora</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 38.93 24" role="img" aria-label="Revo"><text x="0" y="17.6" textLength="38.93" lengthAdjust="spacingAndGlyphs">Revo</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 54.39 24" role="img" aria-label="HioPos"><text x="0" y="17.6" textLength="54.39" lengthAdjust="spacingAndGlyphs">HioPos</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 68.42 24" role="img" aria-label="Spalopia"><text x="0" y="17.6" textLength="68.42" lengthAdjust="spacingAndGlyphs">Spalopia</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 50.92 24" role="img" aria-label="HiJiffy"><text x="0" y="17.6" textLength="50.92" lengthAdjust="spacingAndGlyphs">HiJiffy</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 65.79 24" role="img" aria-label="Clientify"><text x="0" y="17.6" textLength="65.79" lengthAdjust="spacingAndGlyphs">Clientify</text></svg></li>
+          <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Sage 50"><path d="M2.702 5.316C1.167 5.316 0 6.48 0 7.972c0 1.635 1.167 2.267 2.46 2.655 1.224.387 1.804.818 1.804 1.666 0 .86-.64 1.465-1.477 1.465-.84 0-1.566-.604-1.566-1.535 0-.516.242-.647.242-.934 0-.33-.227-.574-.599-.574-.423 0-.864.647-.864 1.566 0 1.48 1.266 2.57 2.787 2.57 1.535 0 2.701-1.163 2.701-2.656 0-1.623-1.166-2.267-2.472-2.655-1.209-.372-1.792-.818-1.792-1.666 0-.845.626-1.45 1.463-1.45.867 0 1.565.617 1.577 1.465.016.388.285.617.599.617a.592.592 0 0 0 .61-.647c-.027-1.48-1.263-2.543-2.771-2.543zm6.171 9.52c.683 0 1.21-.23 1.21-.69a.57.57 0 0 0-.557-.574c-.2 0-.341.085-.668.085-.882 0-1.577-.76-1.577-1.65 0-.962.71-1.725 1.608-1.725 1.009 0 1.65.775 1.65 1.895v2.054c0 .36.284.604.625.604.327 0 .61-.244.61-.604v-2.097c0-1.72-1.178-2.984-2.858-2.984-1.566 0-2.86 1.22-2.86 2.856 0 1.58 1.282 2.83 2.817 2.83zm6.257 3.848c1.535 0 2.701-1.163 2.701-2.656 0-1.635-1.166-2.267-2.472-2.655-1.209-.387-1.792-.818-1.792-1.666s.64-1.465 1.463-1.465c.84 0 1.577.604 1.577 1.535 0 .519-.241.647-.241.934 0 .33.226.574.583.574.441 0 .882-.647.882-1.566 0-1.48-1.278-2.57-2.801-2.57-1.535 0-2.687 1.163-2.687 2.656 0 1.623 1.152 2.267 2.46 2.655 1.224.372 1.804.818 1.804 1.666 0 .86-.64 1.45-1.462 1.45-.883 0-1.566-.601-1.578-1.465-.015-.388-.3-.604-.598-.604-.327 0-.626.216-.61.631.011 1.499 1.247 2.546 2.77 2.546zm6.171-3.849c.795 0 1.424-.229 1.862-.503.426-.272.595-.504.595-.76 0-.272-.2-.516-.568-.516-.441 0-.795.66-1.877.66-.952 0-1.707-.76-1.707-1.722 0-.95.725-1.724 1.635-1.724.982 0 1.508.647 1.508 1.062 0 .116-.085.174-.2.174h-1.194c-.326 0-.568.216-.568.503 0 .314.242.546.568.546h1.636c.625 0 1.009-.33 1.009-.89 0-1.408-1.194-2.512-2.774-2.512-1.566 0-2.83 1.263-2.83 2.84s1.312 2.842 2.905 2.842z"/></svg></li>
+          <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Sage 200"><path d="M2.702 5.316C1.167 5.316 0 6.48 0 7.972c0 1.635 1.167 2.267 2.46 2.655 1.224.387 1.804.818 1.804 1.666 0 .86-.64 1.465-1.477 1.465-.84 0-1.566-.604-1.566-1.535 0-.516.242-.647.242-.934 0-.33-.227-.574-.599-.574-.423 0-.864.647-.864 1.566 0 1.48 1.266 2.57 2.787 2.57 1.535 0 2.701-1.163 2.701-2.656 0-1.623-1.166-2.267-2.472-2.655-1.209-.372-1.792-.818-1.792-1.666 0-.845.626-1.45 1.463-1.45.867 0 1.565.617 1.577 1.465.016.388.285.617.599.617a.592.592 0 0 0 .61-.647c-.027-1.48-1.263-2.543-2.771-2.543zm6.171 9.52c.683 0 1.21-.23 1.21-.69a.57.57 0 0 0-.557-.574c-.2 0-.341.085-.668.085-.882 0-1.577-.76-1.577-1.65 0-.962.71-1.725 1.608-1.725 1.009 0 1.65.775 1.65 1.895v2.054c0 .36.284.604.625.604.327 0 .61-.244.61-.604v-2.097c0-1.72-1.178-2.984-2.858-2.984-1.566 0-2.86 1.22-2.86 2.856 0 1.58 1.282 2.83 2.817 2.83zm6.257 3.848c1.535 0 2.701-1.163 2.701-2.656 0-1.635-1.166-2.267-2.472-2.655-1.209-.387-1.792-.818-1.792-1.666s.64-1.465 1.463-1.465c.84 0 1.577.604 1.577 1.535 0 .519-.241.647-.241.934 0 .33.226.574.583.574.441 0 .882-.647.882-1.566 0-1.48-1.278-2.57-2.801-2.57-1.535 0-2.687 1.163-2.687 2.656 0 1.623 1.152 2.267 2.46 2.655 1.224.372 1.804.818 1.804 1.666 0 .86-.64 1.45-1.462 1.45-.883 0-1.566-.601-1.578-1.465-.015-.388-.3-.604-.598-.604-.327 0-.626.216-.61.631.011 1.499 1.247 2.546 2.77 2.546zm6.171-3.849c.795 0 1.424-.229 1.862-.503.426-.272.595-.504.595-.76 0-.272-.2-.516-.568-.516-.441 0-.795.66-1.877.66-.952 0-1.707-.76-1.707-1.722 0-.95.725-1.724 1.635-1.724.982 0 1.508.647 1.508 1.062 0 .116-.085.174-.2.174h-1.194c-.326 0-.568.216-.568.503 0 .314.242.546.568.546h1.636c.625 0 1.009-.33 1.009-.89 0-1.408-1.194-2.512-2.774-2.512-1.566 0-2.83 1.263-2.83 2.84s1.312 2.842 2.905 2.842z"/></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 72.74 24" role="img" aria-label="Clavecon"><text x="0" y="17.6" textLength="72.74" lengthAdjust="spacingAndGlyphs">Clavecon</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 69.45 24" role="img" aria-label="Asincorp"><text x="0" y="17.6" textLength="69.45" lengthAdjust="spacingAndGlyphs">Asincorp</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 55.54 24" role="img" aria-label="Holded"><text x="0" y="17.6" textLength="55.54" lengthAdjust="spacingAndGlyphs">Holded</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 21.12 24" role="img" aria-label="A3"><text x="0" y="17.6" textLength="21.12" lengthAdjust="spacingAndGlyphs">A3</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 39.23 24" role="img" aria-label="Siigo"><text x="0" y="17.6" textLength="39.23" lengthAdjust="spacingAndGlyphs">Siigo</text></svg></li>
+          <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="SAP"><path d="M0 6.064v11.872h12.13L24 6.064zm3.264 2.208h.005c.863.001 1.915.245 2.676.633l-.82 1.43c-.835-.404-1.255-.442-1.73-.467-.708-.038-1.064.215-1.069.488-.007.332.669.633 1.305.838.964.306 2.19.715 2.377 1.9L7.77 8.437h2.046l2.064 5.576-.007-5.575h2.37c2.257 0 3.318.764 3.318 2.519 0 1.575-1.09 2.514-2.936 2.514h-.763l-.01 2.094-3.588-.003-.25-.908c-.37.122-.787.189-1.23.189-.456 0-.885-.071-1.263-.2l-.358.919-2 .006.09-.462c-.029.025-.057.05-.087.074-.535.43-1.208.629-2.037.644l-.213.002a5.075 5.075 0 0 1-2.581-.675l.73-1.448c.79.467 1.286.572 1.956.558.347-.007.598-.07.761-.239a.557.557 0 0 0 .156-.369c.007-.376-.53-.553-1.185-.756-.531-.164-1.135-.389-1.606-.735-.559-.41-.825-.924-.812-1.65a1.99 1.99 0 0 1 .566-1.377c.519-.537 1.357-.863 2.363-.863zm10.597 1.67v1.904h.521c.694 0 1.247-.23 1.248-.964 0-.709-.554-.94-1.248-.94zm-5.087.767l-.748 2.362c.223.085.481.133.757.133.268 0 .52-.047.742-.126l-.736-2.37z"/></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 50.01 24" role="img" aria-label="Prinex"><text x="0" y="17.6" textLength="50.01" lengthAdjust="spacingAndGlyphs">Prinex</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 37.3 24" role="img" aria-label="Char"><text x="0" y="17.6" textLength="37.3" lengthAdjust="spacingAndGlyphs">Char</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 54.22 24" role="img" aria-label="HubOS"><text x="0" y="17.6" textLength="54.22" lengthAdjust="spacingAndGlyphs">HubOS</text></svg></li>
+      </ul>
+      <ul class="mrq__row" aria-hidden="true">
+          <li class="mrq__item"><svg viewBox="0 0 85.91 24" role="img" aria-label="SiteMinder"><text x="0" y="17.6" textLength="85.91" lengthAdjust="spacingAndGlyphs">SiteMinder</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 89.17 24" role="img" aria-label="YieldPlanet"><text x="0" y="17.6" textLength="89.17" lengthAdjust="spacingAndGlyphs">YieldPlanet</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 68.69 24" role="img" aria-label="Channex"><text x="0" y="17.6" textLength="68.69" lengthAdjust="spacingAndGlyphs">Channex</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 103.01 24" role="img" aria-label="Neobookings"><text x="0" y="17.6" textLength="103.01" lengthAdjust="spacingAndGlyphs">Neobookings</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 65.44 24" role="img" aria-label="WuBook"><text x="0" y="17.6" textLength="65.44" lengthAdjust="spacingAndGlyphs">WuBook</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 65.5 24" role="img" aria-label="Prestige"><text x="0" y="17.6" textLength="65.5" lengthAdjust="spacingAndGlyphs">Prestige</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 90.45 24" role="img" aria-label="RoomCloud"><text x="0" y="17.6" textLength="90.45" lengthAdjust="spacingAndGlyphs">RoomCloud</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 77.67 24" role="img" aria-label="Paycomet"><text x="0" y="17.6" textLength="77.67" lengthAdjust="spacingAndGlyphs">Paycomet</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 47.57 24" role="img" aria-label="Monei"><text x="0" y="17.6" textLength="47.57" lengthAdjust="spacingAndGlyphs">Monei</text></svg></li>
+          <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Redsys"><path d="M11.626 24c-3.989-.108-7.476-2.03-9.89-5.873A10.9 10.9 0 0 1 .17 13.959a12.4 12.4 0 0 1 .239-4.996c.44-1.711 1.275-3.197 2.339-4.58.075-.099.169-.263.314-.174.098.061.023.207-.019.324-.473 1.36-.46 2.756.225 3.984.783 1.411 1.964 2.438 3.67 2.705 1.636.258 3.07-.211 4.21-1.317 1.378-1.34 1.95-2.99 1.415-4.946-.285-1.036-.768-1.922-1.612-2.578-1.092-.848-2.33-1.26-3.722-1.12-.098.01-.225.08-.267-.056s.103-.14.187-.178A11.9 11.9 0 0 1 12.071 0c1.74.01 3.427.384 5.006 1.125 2.152 1.008 3.91 2.498 5.133 4.552a12.4 12.4 0 0 1 1.688 4.93c.154 1.313.08 2.584-.188 3.863-.333 1.575-.942 3.028-1.875 4.34-.853 1.2-1.851 2.241-3.103 3.052-.998.647-2.025 1.177-3.16 1.538-1.115.356-2.245.544-3.946.595z"/></svg></li>
+          <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Stripe"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.594-7.305h.003z"/></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 66.9 24" role="img" aria-label="CashDro"><text x="0" y="17.6" textLength="66.9" lengthAdjust="spacingAndGlyphs">CashDro</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 56.66 24" role="img" aria-label="Dataria"><text x="0" y="17.6" textLength="56.66" lengthAdjust="spacingAndGlyphs">Dataria</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 78.11 24" role="img" aria-label="PriceLabs"><text x="0" y="17.6" textLength="78.11" lengthAdjust="spacingAndGlyphs">PriceLabs</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 95.9 24" role="img" aria-label="RevCtrlData"><text x="0" y="17.6" textLength="95.9" lengthAdjust="spacingAndGlyphs">RevCtrlData</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 58.66 24" role="img" aria-label="Revbell"><text x="0" y="17.6" textLength="58.66" lengthAdjust="spacingAndGlyphs">Revbell</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 60.37 24" role="img" aria-label="Revtool"><text x="0" y="17.6" textLength="60.37" lengthAdjust="spacingAndGlyphs">Revtool</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 123.78 24" role="img" aria-label="TheNetRevenue"><text x="0" y="17.6" textLength="123.78" lengthAdjust="spacingAndGlyphs">TheNetRevenue</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 130.07 24" role="img" aria-label="RoomPriceGenie"><text x="0" y="17.6" textLength="130.07" lengthAdjust="spacingAndGlyphs">RoomPriceGenie</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 36.06 24" role="img" aria-label="Tesa"><text x="0" y="17.6" textLength="36.06" lengthAdjust="spacingAndGlyphs">Tesa</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 66.13 24" role="img" aria-label="Salto KS"><text x="0" y="17.6" textLength="66.13" lengthAdjust="spacingAndGlyphs">Salto KS</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 98.56 24" role="img" aria-label="Yacan Smart"><text x="0" y="17.6" textLength="98.56" lengthAdjust="spacingAndGlyphs">Yacan Smart</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 73.88 24" role="img" aria-label="Danalock"><text x="0" y="17.6" textLength="73.88" lengthAdjust="spacingAndGlyphs">Danalock</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 56.85 24" role="img" aria-label="TTLock"><text x="0" y="17.6" textLength="56.85" lengthAdjust="spacingAndGlyphs">TTLock</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 46.28 24" role="img" aria-label="Agora"><text x="0" y="17.6" textLength="46.28" lengthAdjust="spacingAndGlyphs">Agora</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 38.93 24" role="img" aria-label="Revo"><text x="0" y="17.6" textLength="38.93" lengthAdjust="spacingAndGlyphs">Revo</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 54.39 24" role="img" aria-label="HioPos"><text x="0" y="17.6" textLength="54.39" lengthAdjust="spacingAndGlyphs">HioPos</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 68.42 24" role="img" aria-label="Spalopia"><text x="0" y="17.6" textLength="68.42" lengthAdjust="spacingAndGlyphs">Spalopia</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 50.92 24" role="img" aria-label="HiJiffy"><text x="0" y="17.6" textLength="50.92" lengthAdjust="spacingAndGlyphs">HiJiffy</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 65.79 24" role="img" aria-label="Clientify"><text x="0" y="17.6" textLength="65.79" lengthAdjust="spacingAndGlyphs">Clientify</text></svg></li>
+          <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Sage 50"><path d="M2.702 5.316C1.167 5.316 0 6.48 0 7.972c0 1.635 1.167 2.267 2.46 2.655 1.224.387 1.804.818 1.804 1.666 0 .86-.64 1.465-1.477 1.465-.84 0-1.566-.604-1.566-1.535 0-.516.242-.647.242-.934 0-.33-.227-.574-.599-.574-.423 0-.864.647-.864 1.566 0 1.48 1.266 2.57 2.787 2.57 1.535 0 2.701-1.163 2.701-2.656 0-1.623-1.166-2.267-2.472-2.655-1.209-.372-1.792-.818-1.792-1.666 0-.845.626-1.45 1.463-1.45.867 0 1.565.617 1.577 1.465.016.388.285.617.599.617a.592.592 0 0 0 .61-.647c-.027-1.48-1.263-2.543-2.771-2.543zm6.171 9.52c.683 0 1.21-.23 1.21-.69a.57.57 0 0 0-.557-.574c-.2 0-.341.085-.668.085-.882 0-1.577-.76-1.577-1.65 0-.962.71-1.725 1.608-1.725 1.009 0 1.65.775 1.65 1.895v2.054c0 .36.284.604.625.604.327 0 .61-.244.61-.604v-2.097c0-1.72-1.178-2.984-2.858-2.984-1.566 0-2.86 1.22-2.86 2.856 0 1.58 1.282 2.83 2.817 2.83zm6.257 3.848c1.535 0 2.701-1.163 2.701-2.656 0-1.635-1.166-2.267-2.472-2.655-1.209-.387-1.792-.818-1.792-1.666s.64-1.465 1.463-1.465c.84 0 1.577.604 1.577 1.535 0 .519-.241.647-.241.934 0 .33.226.574.583.574.441 0 .882-.647.882-1.566 0-1.48-1.278-2.57-2.801-2.57-1.535 0-2.687 1.163-2.687 2.656 0 1.623 1.152 2.267 2.46 2.655 1.224.372 1.804.818 1.804 1.666 0 .86-.64 1.45-1.462 1.45-.883 0-1.566-.601-1.578-1.465-.015-.388-.3-.604-.598-.604-.327 0-.626.216-.61.631.011 1.499 1.247 2.546 2.77 2.546zm6.171-3.849c.795 0 1.424-.229 1.862-.503.426-.272.595-.504.595-.76 0-.272-.2-.516-.568-.516-.441 0-.795.66-1.877.66-.952 0-1.707-.76-1.707-1.722 0-.95.725-1.724 1.635-1.724.982 0 1.508.647 1.508 1.062 0 .116-.085.174-.2.174h-1.194c-.326 0-.568.216-.568.503 0 .314.242.546.568.546h1.636c.625 0 1.009-.33 1.009-.89 0-1.408-1.194-2.512-2.774-2.512-1.566 0-2.83 1.263-2.83 2.84s1.312 2.842 2.905 2.842z"/></svg></li>
+          <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Sage 200"><path d="M2.702 5.316C1.167 5.316 0 6.48 0 7.972c0 1.635 1.167 2.267 2.46 2.655 1.224.387 1.804.818 1.804 1.666 0 .86-.64 1.465-1.477 1.465-.84 0-1.566-.604-1.566-1.535 0-.516.242-.647.242-.934 0-.33-.227-.574-.599-.574-.423 0-.864.647-.864 1.566 0 1.48 1.266 2.57 2.787 2.57 1.535 0 2.701-1.163 2.701-2.656 0-1.623-1.166-2.267-2.472-2.655-1.209-.372-1.792-.818-1.792-1.666 0-.845.626-1.45 1.463-1.45.867 0 1.565.617 1.577 1.465.016.388.285.617.599.617a.592.592 0 0 0 .61-.647c-.027-1.48-1.263-2.543-2.771-2.543zm6.171 9.52c.683 0 1.21-.23 1.21-.69a.57.57 0 0 0-.557-.574c-.2 0-.341.085-.668.085-.882 0-1.577-.76-1.577-1.65 0-.962.71-1.725 1.608-1.725 1.009 0 1.65.775 1.65 1.895v2.054c0 .36.284.604.625.604.327 0 .61-.244.61-.604v-2.097c0-1.72-1.178-2.984-2.858-2.984-1.566 0-2.86 1.22-2.86 2.856 0 1.58 1.282 2.83 2.817 2.83zm6.257 3.848c1.535 0 2.701-1.163 2.701-2.656 0-1.635-1.166-2.267-2.472-2.655-1.209-.387-1.792-.818-1.792-1.666s.64-1.465 1.463-1.465c.84 0 1.577.604 1.577 1.535 0 .519-.241.647-.241.934 0 .33.226.574.583.574.441 0 .882-.647.882-1.566 0-1.48-1.278-2.57-2.801-2.57-1.535 0-2.687 1.163-2.687 2.656 0 1.623 1.152 2.267 2.46 2.655 1.224.372 1.804.818 1.804 1.666 0 .86-.64 1.45-1.462 1.45-.883 0-1.566-.601-1.578-1.465-.015-.388-.3-.604-.598-.604-.327 0-.626.216-.61.631.011 1.499 1.247 2.546 2.77 2.546zm6.171-3.849c.795 0 1.424-.229 1.862-.503.426-.272.595-.504.595-.76 0-.272-.2-.516-.568-.516-.441 0-.795.66-1.877.66-.952 0-1.707-.76-1.707-1.722 0-.95.725-1.724 1.635-1.724.982 0 1.508.647 1.508 1.062 0 .116-.085.174-.2.174h-1.194c-.326 0-.568.216-.568.503 0 .314.242.546.568.546h1.636c.625 0 1.009-.33 1.009-.89 0-1.408-1.194-2.512-2.774-2.512-1.566 0-2.83 1.263-2.83 2.84s1.312 2.842 2.905 2.842z"/></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 72.74 24" role="img" aria-label="Clavecon"><text x="0" y="17.6" textLength="72.74" lengthAdjust="spacingAndGlyphs">Clavecon</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 69.45 24" role="img" aria-label="Asincorp"><text x="0" y="17.6" textLength="69.45" lengthAdjust="spacingAndGlyphs">Asincorp</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 55.54 24" role="img" aria-label="Holded"><text x="0" y="17.6" textLength="55.54" lengthAdjust="spacingAndGlyphs">Holded</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 21.12 24" role="img" aria-label="A3"><text x="0" y="17.6" textLength="21.12" lengthAdjust="spacingAndGlyphs">A3</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 39.23 24" role="img" aria-label="Siigo"><text x="0" y="17.6" textLength="39.23" lengthAdjust="spacingAndGlyphs">Siigo</text></svg></li>
+          <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="SAP"><path d="M0 6.064v11.872h12.13L24 6.064zm3.264 2.208h.005c.863.001 1.915.245 2.676.633l-.82 1.43c-.835-.404-1.255-.442-1.73-.467-.708-.038-1.064.215-1.069.488-.007.332.669.633 1.305.838.964.306 2.19.715 2.377 1.9L7.77 8.437h2.046l2.064 5.576-.007-5.575h2.37c2.257 0 3.318.764 3.318 2.519 0 1.575-1.09 2.514-2.936 2.514h-.763l-.01 2.094-3.588-.003-.25-.908c-.37.122-.787.189-1.23.189-.456 0-.885-.071-1.263-.2l-.358.919-2 .006.09-.462c-.029.025-.057.05-.087.074-.535.43-1.208.629-2.037.644l-.213.002a5.075 5.075 0 0 1-2.581-.675l.73-1.448c.79.467 1.286.572 1.956.558.347-.007.598-.07.761-.239a.557.557 0 0 0 .156-.369c.007-.376-.53-.553-1.185-.756-.531-.164-1.135-.389-1.606-.735-.559-.41-.825-.924-.812-1.65a1.99 1.99 0 0 1 .566-1.377c.519-.537 1.357-.863 2.363-.863zm10.597 1.67v1.904h.521c.694 0 1.247-.23 1.248-.964 0-.709-.554-.94-1.248-.94zm-5.087.767l-.748 2.362c.223.085.481.133.757.133.268 0 .52-.047.742-.126l-.736-2.37z"/></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 50.01 24" role="img" aria-label="Prinex"><text x="0" y="17.6" textLength="50.01" lengthAdjust="spacingAndGlyphs">Prinex</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 37.3 24" role="img" aria-label="Char"><text x="0" y="17.6" textLength="37.3" lengthAdjust="spacingAndGlyphs">Char</text></svg></li>
+          <li class="mrq__item"><svg viewBox="0 0 54.22 24" role="img" aria-label="HubOS"><text x="0" y="17.6" textLength="54.22" lengthAdjust="spacingAndGlyphs">HubOS</text></svg></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- /part:tira -->
+
+
+<!-- ==================== (B) BLOQUE DE LA NAV ==================== -->
+<!-- part:nav -->
+<!-- 47 entradas en 10 grupos. Listas anidadas, no una rejilla de
+     tarjetas: los grupos tienen entre 2 y 9 miembros y una rejilla uniforme
+     de tres columnas esta prohibida por el CLAUDE.md global. El titulo de
+     grupo es un <p>, no un <h3>: este bloque se copia dentro del drawer y de
+     la nav, y un encabezado decorativo ahi rompe el esquema h1->h2 de la
+     pagina (trampa del paso 5). -->
+<div class="ints">
+  <p class="ints__eyebrow">Nos integramos con</p>
+  <ul class="ints__groups">
+        <li class="ints__group">
+          <p class="ints__cat">Channel manager</p>
+          <ul class="ints__items">
+            <li>SiteMinder</li>
+            <li>YieldPlanet</li>
+            <li>Channex</li>
+            <li>Neobookings</li>
+            <li>WuBook</li>
+            <li>Prestige</li>
+            <li>RoomCloud</li>
+          </ul>
+        </li>
+        <li class="ints__group">
+          <p class="ints__cat">Pasarelas de pago</p>
+          <ul class="ints__items">
+            <li>Paycomet</li>
+            <li>Monei</li>
+            <li>Redsys</li>
+            <li>Stripe</li>
+            <li>CashDro</li>
+          </ul>
+        </li>
+        <li class="ints__group">
+          <p class="ints__cat">Revenue management</p>
+          <ul class="ints__items">
+            <li>Dataria</li>
+            <li>PriceLabs</li>
+            <li>RevCtrlData</li>
+            <li>Revbell</li>
+            <li>Revtool</li>
+            <li>TheNetRevenue</li>
+            <li>RoomPriceGenie</li>
+          </ul>
+        </li>
+        <li class="ints__group">
+          <p class="ints__cat">Llaves y accesos</p>
+          <ul class="ints__items">
+            <li>Tesa</li>
+            <li>Salto KS</li>
+            <li>Yacan Smart</li>
+            <li>Danalock</li>
+            <li>TTLock</li>
+          </ul>
+        </li>
+        <li class="ints__group">
+          <p class="ints__cat">TPV, restauración y spa</p>
+          <ul class="ints__items">
+            <li>Agora</li>
+            <li>Revo</li>
+            <li>HioPos</li>
+            <li>Spalopia</li>
+          </ul>
+        </li>
+        <li class="ints__group">
+          <p class="ints__cat">CRM y huésped</p>
+          <ul class="ints__items">
+            <li>HiJiffy</li>
+            <li>Clientify</li>
+          </ul>
+        </li>
+        <li class="ints__group">
+          <p class="ints__cat">Contabilidad y ERP</p>
+          <ul class="ints__items">
+            <li>Sage 50</li>
+            <li>Sage 200</li>
+            <li>Clavecon</li>
+            <li>Asincorp</li>
+            <li>Holded</li>
+            <li>A3</li>
+            <li>Siigo</li>
+            <li>SAP</li>
+            <li>Prinex</li>
+          </ul>
+        </li>
+        <li class="ints__group">
+          <p class="ints__cat">Housekeeping y domótica</p>
+          <ul class="ints__items">
+            <li>Char</li>
+            <li>HubOS</li>
+          </ul>
+        </li>
+        <li class="ints__group">
+          <p class="ints__cat">Autoridades y normativa</p>
+          <ul class="ints__items">
+            <li>SES Hospedajes</li>
+            <li>Ertzaintza</li>
+            <li>Mossos d’Esquadra</li>
+            <li>MiDNI</li>
+            <li>TicketBAI</li>
+            <li>Verifactu</li>
+          </ul>
+        </li>
+        <li class="ints__group">
+          <p class="ints__cat">Módulos del propio PMS</p>
+          <ul class="ints__items">
+            <li>Check-in Online</li>
+            <li>WebApp del huésped</li>
+            <li>Motor de reservas</li>
+          </ul>
+        </li>
+  </ul>
+  <p class="ints__note">Las marcas pertenecen a sus respectivos titulares.</p>
+  <!-- TODO: confirmar con Alex que el producto de Holdera hereda de verdad
+       estas integraciones de Hotelgest antes de publicar este bloque. -->
+</div>
+<!-- /part:nav -->

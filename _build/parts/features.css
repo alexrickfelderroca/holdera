@@ -1,0 +1,315 @@
+/* ==========================================================================
+   BLOQUE: Funciones — raíl de tarjetas deslizable en horizontal
+   Markup: _build/parts/features.html
+   Va DESPUÉS de styles.css. Vive sobre la hoja OSCURA (--sh-bg #121110).
+
+   Reglas de la casa que cumple este archivo:
+   · Todo color vive en :root. Ni un literal fuera de este bloque.
+   · Espaciado en rejilla de 4/8 px.
+   · Micro-interacciones 150-250 ms, entrada con ease-out; prefers-reduced-motion
+     apaga el movimiento sin mover el layout.
+   · No es una rejilla de tres tarjetas iguales: es un raíl de ocho, con dos
+     anchos distintos, que se desliza con el dedo, la rueda o el tabulador.
+   · Sin JS funciona entero (scroll nativo + scroll-snap). Las flechas se
+     esconden hasta que existe .has-js porque sin JS no harían nada.
+
+   Contrastes medidos (composición real sobre el fondo de la tarjeta, no
+   supuestos) en la cabecera de cada grupo. El peor del bloque es 5,49:1.
+   ========================================================================== */
+
+:root {
+  /* --- superficies ------------------------------------------------------ */
+  /* Alias de los tokens de la hoja oscura: si la hoja cambia, esto la sigue. */
+  --ft-card-bg: var(--sh-surface);          /* #1c1a17 */
+  --ft-card-bg-hover: var(--sh-surface-2);  /* #211e1b */
+  --ft-border: var(--sh-border);
+  --ft-border-hover: var(--sh-border-strong);
+
+  /* --- texto ------------------------------------------------------------ */
+  --ft-title: var(--sh-text);      /* 15,67:1 sobre la tarjeta */
+  --ft-body: var(--sh-text-2);     /* 10,88:1 */
+  --ft-quiet: var(--sh-muted);     /*  5,86:1 */
+  --ft-accent: var(--accent-ink);  /*  7,98:1 — el acento seguro como TEXTO */
+  --ft-rule: var(--accent);        /* decorativo: filete, viñetas, barra superior */
+
+  /* --- el lavado de acento de las tarjetas anchas ------------------------
+     Es decoración, y aclara la esquina superior izquierda de la tarjeta —
+     justo donde está el «de 08» en gris apagado, que es el texto más flojo
+     del bloque. Medido compuesto, no supuesto: con 0.07 de --accent sobre
+     --ft-card-bg el fondo local pasa a rgb(43,34,24) y ese gris cae de 5,86
+     a 5,28:1. Sigue por encima del 4,5 de la casa. A 0.12 ya no. */
+  --ft-wash: radial-gradient(128% 96% at 6% 0%,
+    rgba(240, 138, 36, 0.07) 0%,
+    rgba(240, 138, 36, 0.03) 44%,
+    rgba(240, 138, 36, 0) 72%);
+
+  /* No hay token de degradado en el borde derecho, y es una decisión medida:
+     el fondo de la tarjeta (#1c1a17) y el de la hoja (#121110) están tan
+     cerca en valor que el degradado no se veía — pero sí tapaba el anillo de
+     foco de la última tarjeta y el final del raíl cuando llegas al tope. Lo
+     que dice "hay más a la derecha" es la tarjeta cortada, el rótulo y la
+     barra de scroll, que son tres avisos y ninguno estorba. */
+
+  /* --- barra de scroll del raíl ----------------------------------------- */
+  --ft-bar: var(--sh-border-strong);
+  --ft-bar-hover: var(--sh-control-border);
+  --ft-bar-track: var(--sh-tint);
+
+  /* --- elevación --------------------------------------------------------
+     En oscuro la elevación es un bisel arriba, no una sombra abajo: por eso
+     las dos sombras empiezan por el realce. Son apiladas, nunca de una capa. */
+  --ft-shadow: var(--shadow-sh);
+  --ft-shadow-hover:
+    inset 0 1px 0 rgba(255, 250, 242, 0.11),
+    0 2px 4px rgba(0, 0, 0, 0.44),
+    0 18px 38px -18px rgba(0, 0, 0, 0.66),
+    0 44px 84px -40px rgba(0, 0, 0, 0.58);
+
+  /* --- medidas ----------------------------------------------------------
+     La tarjeta ancha no es un capricho: con 8 tarjetas del mismo ancho el
+     raíl se lee como una rejilla tumbada. Y el ancho normal subió de 344 a
+     380 px después de medir la primera pasada — la tarjeta salía a 747 px de
+     alto porque el párrafo rompía en seis líneas; a 380 rompe en cinco. */
+  --ft-w: clamp(268px, 27vw, 380px);
+  --ft-w-wide: clamp(292px, 34vw, 464px);
+  --ft-gap: 20px;
+  --ft-pad: 28px;
+  /* El borde izquierdo del raíl tiene que caer exactamente donde cae el de
+     .container, que es min(1240px, 100% - 2*gutter) centrado. */
+  --ft-inset: max(var(--gutter), (100% - 1240px) / 2);
+}
+
+/* --------------------------------------------------------------------------
+   Cabecera del bloque
+   -------------------------------------------------------------------------- */
+.ft__head { margin-bottom: 40px; }
+.ft__head .sheet__lead { margin-bottom: 0; }
+
+.ft__ctrl {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+  margin-top: 28px;
+}
+.ft__hint {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ft-quiet);            /* 5,86:1 sobre --sh-bg: 6,36:1 */
+}
+/* Las flechas no aparecen hasta que EXISTE el JS que las mueve, y el aviso
+   lo da el propio JS poniendo data-ft-ready en la sección. No basta con
+   .has-js: si el bloque se publica sin ese trozo de script, .has-js está
+   igualmente y se quedan dos botones muertos en la página. */
+.ft__arrows { display: none; gap: 8px; }
+.ft[data-ft-ready] .ft__arrows { display: flex; }
+/* .btn--icon mide 40x40 y la casa pide 44 desde el paso 8. Se agranda la
+   caja, no el icono. */
+.ft__arrow { width: 44px; height: 44px; }
+.ft__arrow svg { display: block; }
+/* Una flecha que no lleva a ninguna parte se apaga pero sigue siendo
+   tabulable: quitarla del orden de foco mientras alguien está encima es peor.
+   Un control con aria-disabled queda exento de 1.4.3, igual que en el panel. */
+.ft__arrow[aria-disabled="true"] { opacity: 0.35; cursor: default; }
+.ft__arrow[aria-disabled="true"]:hover { background: transparent; border-color: var(--ft-border-hover); }
+
+/* --------------------------------------------------------------------------
+   El raíl
+   -------------------------------------------------------------------------- */
+.ft__viewport {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* Sitio para que la sombra y el desplazamiento de :hover no se corten. */
+  padding-block: 8px 24px;
+  /* 🔴 proximity, NO mandatory, y está medido. Con `x mandatory` Chrome se
+     niega a arrancar un scrollTo() SUAVE hacia atrás desde una posición ya
+     anclada: el destino se calcula bien (1284), la animación no empieza
+     (scrollLeft sigue en 1684 a los 120 ms) y hacen falta cuatro clics para
+     que se mueva uno. Hacia delante funciona; hacia atrás no. Medido en este
+     raíl, tres veces, y con dos controles: con behavior:'auto' va siempre, y
+     apagar el snap durante el salto NO lo arregla (al restaurarlo vuelve a
+     anclar). Con `proximity` los cinco pasos hacia atrás salen a la primera:
+     1684 · 1284 · 884 · 484 · 0. El dedo sigue anclando igual. */
+  scroll-snap-type: x proximity;
+  scroll-padding-inline-start: var(--ft-inset);
+  scrollbar-width: thin;
+  scrollbar-color: var(--ft-bar) var(--ft-bar-track);
+  overscroll-behavior-x: contain;
+}
+.ft__viewport:focus-visible {
+  outline: 2px solid var(--ft-title);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+.ft__viewport::-webkit-scrollbar { height: 8px; }
+.ft__viewport::-webkit-scrollbar-track { background: var(--ft-bar-track); border-radius: var(--r-pill); }
+.ft__viewport::-webkit-scrollbar-thumb { background: var(--ft-bar); border-radius: var(--r-pill); }
+.ft__viewport::-webkit-scrollbar-thumb:hover { background: var(--ft-bar-hover); }
+
+.ft__rail {
+  display: flex;
+  align-items: stretch;
+  gap: var(--ft-gap);
+  margin: 0;
+  padding: 0 var(--ft-inset);
+  list-style: none;
+}
+
+/* --------------------------------------------------------------------------
+   La tarjeta
+   -------------------------------------------------------------------------- */
+.ft-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 var(--ft-w);
+  padding: var(--ft-pad);
+  border: 1px solid var(--ft-border);
+  border-radius: var(--r-lg);
+  background: var(--ft-card-bg);
+  box-shadow: var(--ft-shadow);
+  scroll-snap-align: start;
+  transition:
+    transform var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    background-color var(--t-fast) var(--ease),
+    box-shadow var(--t-fast) var(--ease);
+}
+/* Dos anchos y un lavado: el raíl no puede leerse como ocho clones. */
+.ft-card--wide { flex-basis: var(--ft-w-wide); background-image: var(--ft-wash); }
+.ft-card--count { background-image: var(--ft-wash); }
+
+/* El filete superior: aparece al señalar la tarjeta, no está siempre. */
+.ft-card::before {
+  content: "";
+  position: absolute; inset: 0 auto auto 0;
+  width: 0; height: 2px;
+  border-radius: var(--r-pill);
+  background: var(--ft-rule);
+  transition: width var(--t-mid) var(--ease);
+}
+.ft-card:hover, .ft-card:focus-within {
+  transform: translateY(-4px);
+  border-color: var(--ft-border-hover);
+  background-color: var(--ft-card-bg-hover);
+  box-shadow: var(--ft-shadow-hover);
+}
+.ft-card:hover::before, .ft-card:focus-within::before { width: 56px; }
+
+/* Anillo de foco de la tarjeta entera cuando el enlace estirado recibe el
+   foco por teclado. :has() cubre Chrome 105+, Safari 15.4+, Firefox 121+;
+   donde no exista, el anillo del propio enlace (más abajo) sigue siendo
+   visible: abraza el título en vez de la tarjeta. */
+.ft-card:has(.ft-card__link:focus-visible) {
+  outline: 2px solid var(--ft-title);
+  outline-offset: 3px;
+}
+
+.ft-card__idx {
+  display: flex; align-items: baseline; gap: 8px;
+  margin: 0 0 16px;
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+}
+.ft-card__n { color: var(--ft-accent); }     /* 7,98:1 */
+.ft-card__of { color: var(--ft-quiet); }     /* 5,86:1 */
+
+.ft-card__kicker {
+  margin: 0 0 12px;
+  font-size: 15px; line-height: 1.5;
+  color: var(--ft-accent);                    /* 7,98:1 */
+}
+
+.ft-card__title {
+  margin: 0 0 16px;
+  font-size: clamp(20px, 1.55vw, 24px);
+  line-height: 1.18;
+  letter-spacing: -0.022em;
+  font-weight: 500;
+  color: var(--ft-title);                     /* 15,67:1 */
+}
+.ft-card__link { color: inherit; text-decoration: none; }
+/* Enlace estirado: toda la tarjeta es zona de clic y hay UNA sola parada de
+   tabulación. El ::after queda por debajo de nada, así que el texto de la
+   tarjeta sigue siendo seleccionable salvo en la zona vacía. */
+.ft-card__link::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.ft-card__link:focus-visible { outline: 2px solid var(--ft-title); outline-offset: 3px; border-radius: var(--r-sm); }
+
+.ft-card__body {
+  margin: 0 0 20px;
+  font-size: 15px; line-height: 1.62;
+  color: var(--ft-body);                      /* 10,88:1 */
+}
+
+.ft-card__qlabel {
+  margin: 0 0 12px; padding-top: 16px;
+  border-top: 1px solid var(--ft-border);
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ft-quiet);                     /* 5,86:1 */
+}
+
+.ft-card__q { margin: 0; padding: 0; list-style: none; }
+.ft-card__q li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 8px;
+  font-size: 15px; line-height: 1.55;
+  color: var(--ft-body);                      /* 10,88:1 */
+}
+.ft-card__q li:last-child { margin-bottom: 0; }
+.ft-card__q li::before {
+  content: "";
+  position: absolute; left: 0; top: 11px;
+  width: 10px; height: 1px;
+  background: var(--ft-rule);
+}
+
+.ft-card__foot {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap;
+  margin: auto 0 0; padding-top: 20px;
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+}
+.ft-card__screen { color: var(--ft-quiet); }  /* 5,86:1 */
+.ft-card__go { color: var(--ft-accent); }     /* 7,98:1 */
+.ft-card:hover .ft-card__go, .ft-card:focus-within .ft-card__go { text-decoration: underline; text-underline-offset: 3px; }
+
+.ft { position: relative; }
+
+.ft__note {
+  max-width: 68ch;
+  margin: 32px 0 0;
+  font-size: 14px; line-height: 1.6;
+  color: var(--ft-quiet);                     /* 6,36:1 sobre --sh-bg */
+}
+
+/* --------------------------------------------------------------------------
+   Móvil
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  :root {
+    --ft-w: min(82vw, 340px);
+    --ft-w-wide: min(86vw, 356px);
+    --ft-gap: 16px;
+    --ft-pad: 24px;
+  }
+  .ft__head { margin-bottom: 32px; }
+  .ft__ctrl { margin-top: 24px; }
+  /* El pulgar no llega a las flechas cómodamente y el gesto natural aquí es
+     deslizar: fuera. El raíl se sigue moviendo con el dedo. */
+  .ft[data-ft-ready] .ft__arrows { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Movimiento reducido
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ft__viewport { scroll-behavior: auto; scroll-snap-type: none; }
+  .ft-card,
+  .ft-card::before { transition: none; }
+  /* El desplazamiento se cambia por color, no se pierde la respuesta. */
+  .ft-card:hover, .ft-card:focus-within { transform: none; }
+  .ft-card:hover::before, .ft-card:focus-within::before { width: 56px; }
+}

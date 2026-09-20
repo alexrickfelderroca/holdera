@@ -11,7 +11,7 @@
   <meta property="og:description" content="Una cifra fiable vale más que diez plausibles. Holdera es un producto propio, hecho en Barcelona, para la operación diaria de un hotel. Más de 5 años de experiencia.">
   <meta property="og:locale" content="es_ES">
   <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=0fab7b99">
+  <link rel="stylesheet" href="styles.css?v=e9fd32ac">
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="pages.css?v=49a2fdfb">
   <script>document.documentElement.classList.add('has-js');</script>
@@ -77,7 +77,21 @@
           "Trazabilidad de datos",
           "Integración de exports de PMS"
         ],
-        "knowsLanguage": "es"
+        "knowsLanguage": "es",
+        "email": "info@holdera.es",
+        "telephone": "+34607836960",
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "contactType": "sales",
+            "email": "info@holdera.es",
+            "telephone": "+34607836960",
+            "areaServed": "ES",
+            "availableLanguage": [
+              "es"
+            ]
+          }
+        ]
       },
       {
         "@type": "WebSite",
@@ -153,7 +167,8 @@
 
         <nav class="nav__links" aria-label="Principal">
           <a href="index.html">Inicio</a>
-          <a href="index.html#como-trabajamos">Cómo trabajamos</a>
+          <a href="index.html#conectado">Cómo funciona</a>
+          <a href="index.html#integraciones">Integraciones</a>
           <a href="nosotros.html" class="is-active" aria-current="page">Nosotros</a>
           <a href="partners.html">Partners</a>
           <a href="panel/">Panel demo</a>
@@ -280,7 +295,7 @@
           <h2 id="ct-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Cuatro pasos, <span class="fade">siempre en este orden.</span></h2>
           <p class="sheet__lead reveal" data-reveal="up" style="--i:2">Es el mismo recorrido para una pantalla suelta y para el hotel entero. Lo que cambia es el tamaño de cada paso, no el orden.</p>
           <div class="sheet__actions reveal" data-reveal="up" style="--i:3">
-            <a class="btn btn--secondary" href="index.html#como-trabajamos">Ver el proceso en la portada</a>
+            <a class="btn btn--secondary" href="index.html#conectado">Ver el proceso en la portada</a>
           </div>
         </div>
         <ol class="steps4">
@@ -410,8 +425,9 @@
       <nav class="footer__nav" aria-label="Pie de página">
         <p class="footer__head">Holdera</p>
         <a href="index.html">Inicio</a>
-        <a href="index.html#producto">El producto</a>
-        <a href="index.html#como-trabajamos">Cómo trabajamos</a>
+        <a href="index.html#ha-recorrido">El producto</a>
+        <a href="index.html#conectado">Cómo funciona</a>
+        <a href="index.html#integraciones">Integraciones</a>
         <a href="nosotros.html">Nosotros</a>
         <a href="partners.html">Partners</a>
         <a href="panel/">Panel demo</a>
@@ -420,8 +436,8 @@
       <div class="footer__contact">
         <p class="footer__head">Contacto</p>
         <!-- TODO (Alex): datos de contacto reales. Cada [corchete] es un marcador: sustituir texto Y href. -->
-        <span data-placeholder="email">[email por confirmar]</span>
-        <span data-placeholder="telefono">[teléfono por confirmar]</span>
+        <a href="mailto:info@holdera.es">info@holdera.es</a>
+        <a href="tel:+34607836960">+34 607 83 69 60</a>
         <span data-placeholder="whatsapp">[WhatsApp por confirmar]</span>
         <span data-placeholder="instagram">[Instagram por confirmar]</span>
         <p class="footer__addr">Barcelona · España</p>
@@ -439,6 +455,8 @@
   <!-- Side menu -->
   <!-- Side menu -->
   <!-- Side menu -->
+  <!-- Side menu -->
+  <!-- Side menu -->
   <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Menú de navegación" aria-hidden="true" inert>
     <div class="drawer__panel">
       <div class="drawer__head">
@@ -452,13 +470,17 @@
           <span class="mrow__label">Inicio</span>
           <span class="mrow__band" aria-hidden="true"><span class="mrow__track"><span class="mrow__inner" aria-hidden="true"><span>Operaciones de hotel</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i><span>Todo el hotel, a la vez</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Cada cifra con su origen</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Barcelona</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i><span>Operaciones de hotel</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i><span>Todo el hotel, a la vez</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Cada cifra con su origen</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Barcelona</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i></span></span></span>
         </a>
-        <a class="mrow__link" href="index.html#producto" style="--i:1">
+        <a class="mrow__link" href="index.html#ha-recorrido" style="--i:1">
           <span class="mrow__label">El producto</span>
           <span class="mrow__band" aria-hidden="true"><span class="mrow__track"><span class="mrow__inner" aria-hidden="true"><span>Hoy</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i><span>Habitaciones y plantas</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Housekeeping</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Revenue y reservas</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i><span>Hoy</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i><span>Habitaciones y plantas</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Housekeeping</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Revenue y reservas</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i></span></span></span>
         </a>
-        <a class="mrow__link" href="index.html#como-trabajamos" style="--i:2">
-          <span class="mrow__label">Cómo trabajamos</span>
+        <a class="mrow__link" href="index.html#conectado" style="--i:2">
+          <span class="mrow__label">Cómo funciona</span>
           <span class="mrow__band" aria-hidden="true"><span class="mrow__track"><span class="mrow__inner" aria-hidden="true"><span>Conectamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Validamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Publicamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i><span>Trazamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i><span>Conectamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Validamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Publicamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i><span>Trazamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i></span></span></span>
+        </a>
+        <a class="mrow__link" href="index.html#integraciones" style="--i:3">
+          <span class="mrow__label">Integraciones</span>
+          <span class="mrow__band" aria-hidden="true"><span class="mrow__track"><span class="mrow__inner" aria-hidden="true"><span>Producto propio</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Más de 5 años</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Con sede en Barcelona</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i><span>En fase piloto</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i><span>Producto propio</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Más de 5 años</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Con sede en Barcelona</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i><span>En fase piloto</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i></span></span></span>
         </a>
         <a class="mrow__link" href="nosotros.html" style="--i:3">
           <span class="mrow__label">Nosotros</span>
@@ -485,6 +507,6 @@
   </div>
   <!-- /drawer -->
 
-  <script src="script.js?v=247b4b29" defer></script>
+  <script src="script.js?v=488f120c" defer></script>
 </body>
 </html>

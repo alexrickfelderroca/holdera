@@ -66,7 +66,21 @@
         "Trazabilidad de datos",
         "Integración de exports de PMS"
       ],
-      "knowsLanguage": "es"
+      "knowsLanguage": "es",
+      "email": "info@holdera.es",
+      "telephone": "+34607836960",
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "contactType": "sales",
+          "email": "info@holdera.es",
+          "telephone": "+34607836960",
+          "areaServed": "ES",
+          "availableLanguage": [
+            "es"
+          ]
+        }
+      ]
     },
     "website": {
       "@type": "WebSite",

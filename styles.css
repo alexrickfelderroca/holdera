@@ -143,8 +143,6 @@
 
   /* planet — --planet-* are read by planet.js, --orbit-title is the resting
      colour of a step title before the scroll wipe brightens it */
-  --planet-rim: #f0a24c;
-  --planet-cloud: #e8ded0;
   /* The resting colour of a step title, before the scroll wipe brings the
      bright copy in over it. It is the FALLBACK reading of the word, not a
      shadow: at 38-108px this is WCAG large text and owes 3:1. The first value
@@ -282,7 +280,14 @@
      the hairline is light so the sheet reads as a lid with a lit rim. */
   --shadow-sheet: 0 -1px 0 rgba(255, 250, 242, 0.10), 0 -14px 34px -14px rgba(20, 18, 16, 0.26), 0 -44px 110px -24px rgba(20, 18, 16, 0.22);
   --nav-h: 76px;
-  --bar-h: 46px;
+  /* 80px, no 46: la barra inferior dejo de ser cuatro chips de texto y es
+     la tira giratoria de integraciones, que necesita alto para los logos.
+     🔴 Se sube AQUI, en :root, y no dentro de .hero__bar--mrq. Motivo: la
+     linea 494 reserva el suelo de .hero__left con
+     calc(var(--bar-inset) + var(--bar-h) + 26px) leyendo la RAIZ. Si la
+     altura se reescribe solo en la barra, la columna izquierda sigue
+     reservando 46 y se mete 34px dentro de la tira. */
+  --bar-h: 80px;
   --bar-inset: 20px;
   --gutter: clamp(20px, 2.5vw, 36px);
   --z-nav: 30;   /* above the sheet (10) and the footer, below grain, drawer and skip link */
@@ -1573,6 +1578,22 @@ main {
   .hero__proof { margin-bottom: 22px; }
   .hero__works-label { margin-bottom: 8px; }
   .hero__works-list a { padding: 2px 0; font-size: clamp(14px, 1.05vw, 16px); }
+
+  /* --- aside vs tira ---
+     La columna DERECHA tambien tiene suelo, y hasta ahora no lo tenia: es
+     `position: absolute` con `top` y sin `bottom`, asi que crecia libremente
+     hacia abajo. Con la barra inferior a 46px de chips de texto no llegaba a
+     tocarla; con la tira de integraciones a 80px si. Medido a 1366x620 antes
+     de esto: el borde inferior del aside caia 49px POR DEBAJO del borde
+     superior de la tira, y la tira (z-index 4) pinta encima del aside
+     (z-index 2) — o sea, se comia la rejilla de marcas.
+     Es el mismo suelo que ya reservaba .hero__left en la linea ~494, con el
+     mismo calculo, para que las dos columnas se comporten igual. */
+  .hero__aside {
+    max-height: calc(100dvh - clamp(96px, 13vh, 190px) - var(--bar-inset) - var(--bar-h) - 26px);
+    overflow: visible;
+  }
+  .hero__aside-in { gap: clamp(16px, 2.6vh, 44px); }
 }
 @media (min-width: 901px) and (max-height: 760px) {
   .hero__left { top: clamp(84px, 11vh, 120px); }
@@ -1580,7 +1601,16 @@ main {
   .hero__title { font-size: clamp(34px, 3.6vw, 52px); }
   .hero__works-label { margin-bottom: 6px; }
   .hero__works-list a { padding: 1px 0; font-size: 14px; }
-  .hero__bar { --bar-h: 40px; font-size: 11px; }
+  /* El alto va en :root para que lo vea tambien la reserva de suelo de
+     .hero__left (linea ~494). Antes estaba en .hero__bar y no lo veia. */
+  :root { --bar-h: 62px; }
+  .hero__bar { font-size: 11px; }
+  /* El tope se recalcula con el top de ESTE escalon, no el del anterior. */
+  .hero__aside {
+    max-height: calc(100dvh - clamp(84px, 11vh, 120px) - var(--bar-inset) - var(--bar-h) - 26px);
+  }
+  .hints__item { min-height: 44px; }
+  .hints__link { min-height: 36px; }
 }
 
 /* nav has to give way before the centre column touches the right one */

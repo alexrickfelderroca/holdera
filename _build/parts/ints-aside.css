@@ -1,0 +1,148 @@
+/* ===========================================================================
+   INTEGRACIONES · rejilla de la columna derecha del hero (.hints)
+
+   Ocupa el hueco que dejo .trace (la cadena de evidencia 01-04). Vive sobre
+   el HERO CLARO, no sobre la hoja oscura: los colores salen de --text /
+   --text-muted / --border, no del grupo --sh-*.
+
+   Los nueve dibujos son <svg> en currentColor, asi que el color lo pone esta
+   hoja y no hay ni un literal dentro del marcado generado.
+   =========================================================================== */
+
+.hints {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hints__label {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+.hints__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  /* El filete de separacion es el propio hueco de la rejilla sobre un fondo
+     de borde: una sola linea de 1px entre celdas, sin dobles. */
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+.hints__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 10px 8px;
+  background: var(--w-60);
+  color: var(--text-muted);
+  transition: color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+
+.hints__item svg {
+  display: block;
+  width: auto;
+  height: 13px;
+  max-width: 100%;
+  color: inherit;
+  fill: currentColor;
+}
+/* Los wordmarks son <text> dentro del svg: heredan currentColor por fill. */
+.hints__item svg text {
+  fill: currentColor;
+  font-family: inherit;
+  font-size: 19px;
+  font-weight: 500;
+}
+
+.hints__item:hover {
+  color: var(--text);
+  background: var(--w-84);
+}
+
+.hints__link {
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  /* 44px de alto tactil sin tocar el tamano de letra (ergonomia del paso 8). */
+  min-height: 44px;
+  padding: 4px 0;
+  font-size: 13px;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.hints__link:hover { border-bottom-color: var(--text); }
+
+.hints__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-pill);
+  transition: transform var(--t-fast) var(--ease);
+}
+.hints__link:hover .hints__arrow { transform: translateX(3px); }
+
+@media (max-width: 900px) {
+  .hints__label { text-align: left; }
+  .hints__link { align-self: flex-start; }
+  .hints__item { min-height: 52px; }
+}
+
+/* ===========================================================================
+   El boton de pausa de la marquesina.
+
+   🔴 No es cosmetica: WCAG 2.2.2 «Pause, Stop, Hide» es NIVEL A y exige que
+   todo movimiento automatico de mas de cinco segundos se pueda parar. La tira
+   da una vuelta cada 112 s. El CSS la pausaba con :hover y :focus-within, pero
+   dentro de la tira no hay NI UN elemento enfocable, asi que :focus-within era
+   codigo muerto y solo el raton podia pararla: ni teclado, ni tactil, ni lector
+   de pantalla. Este boton es la unica via real, y por eso es un <button> de
+   verdad con aria-pressed y no un div con un icono.
+   =========================================================================== */
+
+.mrq__pause {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-left: 12px;
+  padding: 0;
+  border: 1px solid var(--on-ink-border);
+  border-radius: var(--r-pill);
+  background: none;
+  color: var(--w-84);
+  cursor: pointer;
+  transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.mrq__pause:hover { color: var(--w-90); border-color: var(--on-ink-hi); }
+.mrq__pause svg { display: block; width: 12px; height: 12px; fill: currentColor; }
+/* Dos glifos en el mismo boton: se ensena el que corresponde al estado. */
+.mrq__pause .mrq__ico-play { display: none; }
+.mrq__pause[aria-pressed="true"] .mrq__ico-play { display: block; }
+.mrq__pause[aria-pressed="true"] .mrq__ico-pause { display: none; }
+
+.hero__bar--mrq.is-paused .mrq__track { animation-play-state: paused; }
+
+@media (max-width: 900px) {
+  /* En movil la tira no se anima (se desliza con el dedo), asi que el boton
+     no tiene nada que pausar y estorba. */
+  .mrq__pause { display: none; }
+}

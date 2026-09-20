@@ -1,0 +1,352 @@
+[
+ {
+  "name": "SiteMinder",
+  "cat": "channel",
+  "type": "Channel Manager",
+  "img": "Sitemider.webp",
+  "description": "Channel Manager. 100% de conectividad. Envío de disponibilidad y restricciones. Descarga de reservas."
+ },
+ {
+  "name": "YieldPlanet",
+  "cat": "channel",
+  "type": "Channel Manager",
+  "img": "YieldPlanet.webp",
+  "description": "Channel Manager. 100% de conectividad. Envío de disponibilidad y restricciones. Descarga de reservas."
+ },
+ {
+  "name": "Channex",
+  "cat": "channel",
+  "type": "Channel Manager",
+  "img": "Channex.webp",
+  "description": "Channel Manager. 100% de conectividad. Envío de disponibilidad y restricciones. Descarga de reservas."
+ },
+ {
+  "name": "Neobookings",
+  "cat": "channel",
+  "type": "Motor y channel",
+  "img": "NeoBooking.webp",
+  "description": "Motor de reservas con posibilidad de añadir servicios de Channel Manager. Envío de disponibilidad y restricciones de PMS a su motor de reservas y Channel Manager. Descarga de reservas al PMS."
+ },
+ {
+  "name": "WuBook",
+  "cat": "channel",
+  "type": "Channel Manager",
+  "img": "Wubook.webp",
+  "description": "Channel Manager. 100% de conectividad. Envío de disponibilidad y restricciones. Descarga de reservas."
+ },
+ {
+  "name": "Prestige",
+  "cat": "channel",
+  "type": "Channel Manager",
+  "img": "Prestige.webp",
+  "description": "Channel Manager. Enviamos disponibilidad y recibimos reservas."
+ },
+ {
+  "name": "RoomCloud",
+  "cat": "channel",
+  "type": "Channel Manager",
+  "img": "RoomCloud.webp",
+  "description": "Channel Manager y motor de reservas, integrado con Channex, que amplía la conexión con más canales de venta y motores de reserva."
+ },
+ {
+  "name": "Paycomet",
+  "cat": "pasarelas",
+  "type": "Pasarela de pago",
+  "img": "Paycomet.webp",
+  "description": "Procesa pagos con tarjeta de crédito"
+ },
+ {
+  "name": "Monei",
+  "cat": "pasarelas",
+  "type": "Pasarela de pago",
+  "img": "Monei.webp",
+  "description": "Procesa pagos con tarjeta de crédito"
+ },
+ {
+  "name": "Redsys",
+  "cat": "pasarelas",
+  "type": "Pasarela de pago",
+  "img": "Redsys.webp",
+  "description": "Procesa pagos con tarjeta de crédito"
+ },
+ {
+  "name": "Stripe",
+  "cat": "pasarelas",
+  "type": "Pasarela de pago",
+  "img": "Stripe.webp",
+  "description": "Procesa pagos con tarjeta de crédito"
+ },
+ {
+  "name": "CashDro",
+  "cat": "pasarelas",
+  "type": "Pasarela de pago",
+  "img": "CashDro.webp",
+  "description": "Cobro y devolución automática en efectivo"
+ },
+ {
+  "name": "Dataria",
+  "cat": "revenue",
+  "type": "Revenue Management",
+  "img": "Dataria.webp",
+  "description": "Software RMS para el análisis y comparativa de competidores directamente desde el PMS. Además permite tener acceso a cientos de métricas e informes detallados."
+ },
+ {
+  "name": "PriceLabs",
+  "cat": "revenue",
+  "type": "Revenue Management",
+  "img": "Pricelabs.webp",
+  "description": "Precios dinámicos para alquiler vacacional y alojamientos turísticos, conectados a tu disponibilidad."
+ },
+ {
+  "name": "RevCtrlData",
+  "cat": "revenue",
+  "type": "Revenue Management",
+  "img": "RevCtrlData.webp",
+  "description": "RevCtrlData es un software de gestión de ingresos (RMS) que almacena todo el big data hotelero, filtrando y ordenando en tiempo real los datos que el Revenue Manager necesita analizar diariamente."
+ },
+ {
+  "name": "Revbell",
+  "cat": "revenue",
+  "type": "Revenue Management",
+  "img": "Revbell.webp",
+  "description": "RMS multisectorial — Pronósticos para anticipar la demanda futura en diversas granularidades de demanda."
+ },
+ {
+  "name": "Revtool",
+  "cat": "revenue",
+  "type": "Revenue Management",
+  "img": "RevTool.webp",
+  "description": "Herramienta de revenue, BI, y métricas para el revenue de tu alojamiento."
+ },
+ {
+  "name": "TheNetRevenue",
+  "cat": "revenue",
+  "type": "Revenue Management",
+  "img": "TheNetRevenue.webp",
+  "description": "Partner para llevar tu revenue a lo más alto. Empresa de revenue que analiza y te ejecuta tu estrategia de precios más correcta."
+ },
+ {
+  "name": "RoomPriceGenie",
+  "cat": "revenue",
+  "type": "Revenue Management",
+  "img": "RoomPriceGenie.webp",
+  "description": "Software RMS que ajusta automáticamente los precios de tu alojamiento según ocupación, demanda y mercado, sincronizado con el PMS."
+ },
+ {
+  "name": "Tesa",
+  "cat": "llaves",
+  "type": "Llaves electrónicas",
+  "img": "Tesa.webp",
+  "description": "Generación de llaves RFID, PIN y enlaces de abertura. Gracias a este partner puedes reducir costes de recepción y automatizar las entradas. Ideal para edificios, tanto hoteles como apartamentos."
+ },
+ {
+  "name": "Salto KS",
+  "cat": "llaves",
+  "type": "Llaves electrónicas",
+  "img": "Salto.webp",
+  "description": "Generación de llaves RFID. Permite comunicarse con SaltoKS y le pasa la información de llegada, salida y habitación, para así poder generar desde el mismo PMS las llaves de acceso."
+ },
+ {
+  "name": "Yacan Smart",
+  "cat": "llaves",
+  "type": "Llaves electrónicas",
+  "img": "Yacan.webp",
+  "description": "Sistemas de aperturas inteligentes, +34 622 167 782"
+ },
+ {
+  "name": "Danalock",
+  "cat": "llaves",
+  "type": "Llaves electrónicas",
+  "img": "Danalock.webp",
+  "description": "Generación de llaves electrónicas y enlaces de abertura. Gracias a este partner puedes reducir costes de recepción y automatizar las entradas. Ideal para apartamentos independientes."
+ },
+ {
+  "name": "TTLock",
+  "cat": "llaves",
+  "type": "Llaves electrónicas",
+  "img": "TTLock.webp",
+  "description": "Cerraduras electrónicas compatibles con tecnología PIN y enlace mágico."
+ },
+ {
+  "name": "Agora",
+  "cat": "pos",
+  "type": "POS Restaurante",
+  "img": "Agora.webp",
+  "description": "Software para la gestión de restaurantes. Recibe los clientes en el momento de hacer el check-in y llega a Hotelgest el pedido en el momento de generar un albarán."
+ },
+ {
+  "name": "Revo",
+  "cat": "pos",
+  "type": "POS Restaurante",
+  "img": "Revo.webp",
+  "description": "Software para la gestión de restaurantes. Recibe los clientes en el momento de hacer el check-in y llega a Hotelgest el pedido en el momento de añadir el pago con método Hotelgest."
+ },
+ {
+  "name": "HioPos",
+  "cat": "pos",
+  "type": "POS Restaurante",
+  "img": "HioPos.webp",
+  "description": "TPV para restauración conectado con Hotelgest: los pedidos y consumos del restaurante llegan como cargos a la reserva del huésped."
+ },
+ {
+  "name": "Spalopia",
+  "cat": "spa",
+  "type": "SPA",
+  "img": "Spalopia.webp",
+  "description": "Atrae y fideliza a los clientes del spa, organiza la recepción y mejora la gestión y operativa gracias a este software especializado en spas: agenda, motor de reservas, CRM, POS, página web y estadísticas avanzadas."
+ },
+ {
+  "name": "HiJiffy",
+  "cat": "crm",
+  "type": "CRM",
+  "img": "Hijiffy.webp",
+  "description": "Mensajería para hoteles: centraliza las consultas del huésped y automatiza las respuestas más repetidas."
+ },
+ {
+  "name": "Clientify",
+  "cat": "crm",
+  "type": "CRM",
+  "img": "Clientify.webp",
+  "description": "CRM para gestionar clientes y reservas"
+ },
+ {
+  "name": "Sage 50",
+  "cat": "contabilidad",
+  "type": "Contabilidad",
+  "img": "Sage.webp",
+  "description": "Permite exportar los artículos facturados por cuentas y categorías contables. Exporta el fichero, impórtalo y ya tienes toda tu contabilidad por periodos de fechas que definas."
+ },
+ {
+  "name": "Sage 200",
+  "cat": "contabilidad",
+  "type": "Contabilidad",
+  "img": "Sage.webp",
+  "description": "Permite exportar los artículos facturados por cuentas y categorías contables. Exporta el fichero, impórtalo y ya tienes toda tu contabilidad por periodos de fechas que definas."
+ },
+ {
+  "name": "Clavecon",
+  "cat": "contabilidad",
+  "type": "Contabilidad",
+  "img": "Clavecon.webp",
+  "description": "Permite exportar los artículos facturados por cuentas y categorías contables. Exporta el fichero, impórtalo y ya tienes toda tu contabilidad por periodos de fechas que definas."
+ },
+ {
+  "name": "Asincorp",
+  "cat": "contabilidad",
+  "type": "Contabilidad",
+  "img": "Asincorp.webp",
+  "description": "Permite exportar los artículos facturados por cuentas y categorías contables. Exporta el fichero, impórtalo y ya tienes toda tu contabilidad por periodos de fechas que definas."
+ },
+ {
+  "name": "Holded",
+  "cat": "contabilidad",
+  "type": "Contabilidad",
+  "img": "Holded.webp",
+  "description": "Permite exportar los artículos facturados por cuentas y categorías contables. Holded permite una contabilidad semi-automática, de manera que facilita mucho el trabajo y además tiene docenas de otras herramientas que facilitarán tu día a día."
+ },
+ {
+  "name": "A3",
+  "cat": "contabilidad",
+  "type": "Contabilidad",
+  "img": "A3.webp",
+  "description": "Permite exportar los artículos facturados por cuentas y categorías contables. Exporta el fichero, impórtalo y ya tienes toda tu contabilidad por periodos de fechas que definas."
+ },
+ {
+  "name": "Siigo",
+  "cat": "contabilidad",
+  "type": "Contabilidad",
+  "img": "Siigo.webp",
+  "description": "Permite exportar los artículos facturados por cuentas y categorías contables. Exporta el fichero, impórtalo y ya tienes toda tu contabilidad por periodos de fechas que definas."
+ },
+ {
+  "name": "SAP",
+  "cat": "contabilidad",
+  "type": "Contabilidad",
+  "img": "SAP.webp",
+  "description": "Permite exportar los artículos facturados por cuentas y categorías contables. Exporta el fichero, impórtalo y ya tienes toda tu contabilidad por periodos de fechas que definas."
+ },
+ {
+  "name": "Prinex",
+  "cat": "contabilidad",
+  "type": "Contabilidad",
+  "img": "Prinex.webp",
+  "description": "Permite exportar los artículos facturados por cuentas y categorías contables. Exporta el fichero, impórtalo y ya tienes toda tu contabilidad por periodos de fechas que definas."
+ },
+ {
+  "name": "Autoridad España SES",
+  "cat": "estatales",
+  "type": "Autoridad",
+  "img": "SES.webp",
+  "description": "Envía los datos de los huéspedes a la autoridad española"
+ },
+ {
+  "name": "Autoridad España Ertzaintza",
+  "cat": "estatales",
+  "type": "Autoridad",
+  "img": "Ertzaintza.webp",
+  "description": "Envía los datos de los huéspedes a la autoridad española"
+ },
+ {
+  "name": "Autoridad España Mossos",
+  "cat": "estatales",
+  "type": "Autoridad",
+  "img": "Mossos-esquadra.webp",
+  "description": "Envía los datos de los huéspedes a la autoridad española"
+ },
+ {
+  "name": "DNI Digital (MiDNI)",
+  "cat": "estatales",
+  "type": "Identificación",
+  "img": "miDNI.webp",
+  "description": "Acepta el DNI digital de los huéspedes mediante QR de la app MiDNI"
+ },
+ {
+  "name": "TicketBAI",
+  "cat": "firma",
+  "type": "Firma digital",
+  "img": "TicketBai.webp",
+  "description": "Firmar digitalmente facturas en España"
+ },
+ {
+  "name": "Verifactu",
+  "cat": "firma",
+  "type": "Firma digital",
+  "img": "Verifactu.webp",
+  "description": "Firmar digitalmente facturas en España"
+ },
+ {
+  "name": "Char",
+  "cat": "telefonia",
+  "type": "Telefonía y domótica",
+  "img": "Char.webp",
+  "description": "Sistemas de telefonía y domótica del hotel. Char es capaz de integrar terceros para la completa recepción y ejecución de acciones en momentos del checkin, checkout, movimientos de reservas, etc."
+ },
+ {
+  "name": "Check-in Online",
+  "cat": "huesped",
+  "type": "Check-in",
+  "img": "Hotelget.webp",
+  "description": "Captación de datos de cualquier documento, incluso carnets de conducir, validación biométrica con selfie y firma digital."
+ },
+ {
+  "name": "WebApp del huésped",
+  "cat": "huesped",
+  "type": "WebApp huésped",
+  "img": "Hotelget.webp",
+  "description": "App para el huésped, sin descargas: entra desde su móvil para pagar, hacer el check-in online, ver guías de la ciudad, abrir las puertas y mucho más."
+ },
+ {
+  "name": "HubOS",
+  "cat": "housekeeping",
+  "type": "Housekeeping",
+  "img": "HubOS.webp",
+  "description": "Software para la gestión de housekeeping, mantenimientos, partes de gobernanta y mucho más. Se integra perfectamente con Hotelgest y recibe el estado de la habitación."
+ },
+ {
+  "name": "Motor de reservas",
+  "cat": "otros",
+  "type": "Motor de reservas",
+  "img": "Hotelget.webp",
+  "description": "Motor de reservas de Hotelgest"
+ }
+]

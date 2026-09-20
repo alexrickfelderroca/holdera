@@ -1,0 +1,783 @@
+/* ============================================================================
+ * hotel-anim.css — el recorrido por el hotel, portado de animacion-hotel-holdera/
+ * con la PALETA INVERTIDA: papel claro y tinta, a juego con el hero de holdera.es.
+ *
+ * QUE CAMBIA RESPECTO AL ORIGINAL
+ *  1. Fuera la escena "hero" entera: el <video>, el poster, el H1 y el CTA. La
+ *     animacion se pega DEBAJO del hero de holdera.es, que ya tiene su titular y
+ *     su llamada. El recorrido empieza en la escena de confianza.
+ *  2. Fondo negro + linea blanca  ->  papel claro + linea de tinta. No es un
+ *     invert() global: cada capa tiene su decision. El scrim, que en el original
+ *     oscurecia el video, aqui es el PAPEL que se va aclarando; los degradados
+ *     de borde son papel que se desvanece; las 3946 lineas del plano pasan a
+ *     --ha-line y los cinco grupos de detalle de cada departamento se encienden
+ *     en --ha-line-focus (el acento de marca, 5,48:1 sobre el papel).
+ *  3. Fuera gtStandard y publishSerif (fuentes de pago de otra web). Todo a
+ *     Geist / Geist Mono, ya alojadas en assets/fonts/ y declaradas en styles.css.
+ *  4. Todo vive bajo la raiz .ha — ni un selector de elemento suelto (h1, body,
+ *     main, .container) que pueda derramarse sobre la pagina.
+ *  5. `.reveal` del original -> `.ha-reveal`: en holdera .reveal ya existe con
+ *     otra semantica (`[data-reveal]`, IntersectionObserver de script.js).
+ *  6. Sin JS, con `prefers-reduced-motion` o por debajo de 901px, el escenario
+ *     NO reserva 11 pantallas vacias: colapsa a `height: auto` y los cinco
+ *     departamentos se leen apilados. La clase `.is-armed` (la escribe
+ *     hotel-anim.js cuando los datos han llegado) es lo unico que enciende el
+ *     modo pineado, y ademas va dentro de su media query.
+ *
+ * TOKENS: todo color vive en el :root de este archivo, con el token de
+ * styles.css como valor y un literal solo como respaldo por si esta hoja se
+ * carga sola. Ni un hex fuera de :root.
+ * ========================================================================== */
+
+:root {
+  /* --- tipografia: las dos familias del sitio, ninguna nueva --- */
+  --ha-font: var(--font, "Geist", ui-sans-serif, system-ui, sans-serif);
+  --ha-font-mono: var(--font-mono, "Geist Mono", ui-monospace, Menlo, monospace);
+
+  /* --- el papel ---
+     Tres valores, no uno. El escenario ABRE en el mismo gris del hero (#e5e5e5)
+     para que la costura con el hero de holdera no exista, se aclara hasta el
+     papel del plano mientras dura el recorrido, y aterriza un punto mas claro
+     en la ultima escena. El original hacia el camino inverso (negro -> arena):
+     hotel-anim.js lee la curva medida y la reproyecta entre estos dos extremos. */
+  --ha-bg-a: var(--bg, #e5e5e5);
+  --ha-bg-b: #faf9f7;
+  --ha-paper: #f4f3f0;
+  /* Las dos paradas transparentes del papel y del gris del hero. Viven aqui y
+     no en la regla porque `transparent` interpola hacia negro en varios
+     motores y dejaria un halo sucio en el borde del degradado. */
+  --ha-paper-a0: rgba(244, 243, 240, 0);
+  --ha-bg-a0: rgba(229, 229, 229, 0);
+
+  /* --- la tinta ---
+     #55504a sobre el papel mide 7,19:1. El original era #969696 sobre negro:
+     7,10:1. Es la MISMA relacion figura/fondo, no un color elegido a ojo, y por
+     eso el plano pesa lo mismo que pesaba. */
+  --ha-line: #55504a;
+  /* Los cinco grupos de detalle (#1-front-of-house … #5-management) se encienden
+     en el acento cuando su departamento esta en pantalla. --accent puro mide
+     2,26:1 sobre el papel: vale para un punto decorativo, no para un dibujo que
+     hay que seguir. --accent-hero (el acento como TEXTO sobre fondo claro, ya
+     existente en styles.css) mide 5,48:1. */
+  --ha-line-focus: var(--accent-hero, #9c4c08);
+
+  --ha-text: var(--text, #141414);
+  --ha-text-2: var(--text-2, #3d3d3d);
+  --ha-text-muted: var(--text-muted, #666666);
+  --ha-border: var(--border, rgba(20, 20, 20, 0.10));
+  --ha-border-strong: var(--border-strong, rgba(20, 20, 20, 0.22));
+
+  /* --- la tarjeta de departamento ---
+     En oscuro era un cristal sucio (blanco al 12 %) con una sombra negra debajo.
+     En claro una sombra plana no existe: la elevacion se construye por capas
+     (hairline + contacto + difusa), nunca con una sola sombra. */
+  --ha-card-bg: rgba(255, 255, 255, 0.74);
+  --ha-card-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.90),
+    0 1px 2px rgba(28, 25, 22, 0.08),
+    0 12px 24px -12px rgba(28, 25, 22, 0.16),
+    0 32px 56px -28px rgba(28, 25, 22, 0.20);
+  /* El filete giratorio del original era un conic BLANCO sobre negro. Invertido
+     es un conic de tinta a muy baja alfa: se lee como un reflejo recorriendo el
+     canto de la tarjeta, no como un borde de color. */
+  --ha-card-ring-a: rgba(28, 25, 22, 0.34);
+  --ha-card-ring-b: rgba(28, 25, 22, 0.05);
+  --ha-card-ring-c: rgba(28, 25, 22, 0.22);
+
+  /* --- los lottie ---
+     Los cinco JSON son line-art BLANCO sobre negro y llevan 16 PNG incrustados
+     (product-1) y 1 (product-5). Comprobado descodificando los PNG: son glifos
+     blancos puros sobre alfa 0 — `invert()` les cambia el RGB y no toca el alfa,
+     asi que pasan a glifos de tinta sobre transparente, que es exactamente lo
+     que queremos. El JSON NO se toca.
+     El invert va acompañado de una compresion de tono para que el blanco puro no
+     caiga en #000000 (prohibido) sino en ~#131313, y el negro puro no suba a
+     #ffffff sino a ~#fbfbfb, que sobre la tarjeta sigue siendo un panel visible. */
+  --ha-lottie-filter: invert(1) contrast(0.86) brightness(1.06);
+  --ha-media-bg: rgba(255, 255, 255, 0.62);
+
+  /* --- controles que flotan SOBRE el dibujo ---
+     Medido con _build/png-probe.js sobre los pixeles reales: "Saltar el
+     recorrido" en --ha-text-muted caia a 1,07:1 contra rgb(101,97,90) cuando
+     la camara ponia una linea de tinta a plena opacidad justo debajo. Un
+     control que flota sobre obra grafica necesita su propia superficie: con
+     ella el texto vuelve a leerse contra papel (5,17:1) y ademas el control se
+     identifica como control, que es lo que pide WCAG 1.4.11. */
+  --ha-chip-bg: rgba(244, 243, 240, 0.94);
+  --ha-chip-border: rgba(20, 20, 20, 0.34);
+  --ha-chip-shadow:
+    0 1px 2px rgba(28, 25, 22, 0.10),
+    0 8px 20px -10px rgba(28, 25, 22, 0.22);
+
+  /* --- la costura con la hoja oscura ---
+     La animacion se pega dentro de <main>, que es la hoja casi negra. Un corte
+     recto claro/oscuro esta prohibido por la casa (>=3 paradas o >=120 px de
+     solape): estas rampas son 180 px con cuatro paradas a cada lado. Se apagan
+     quitando la clase .ha--seam del <section>. */
+  --ha-seam-h: 180px;
+  --ha-seam-0: var(--sh-bg, #121110);
+  --ha-seam-1: #4a453f;
+  --ha-seam-2: #9b958c;
+  --ha-seam-3: var(--bg, #e5e5e5);
+
+  /* --- geometria y ritmo --- */
+  --ha-gutter: var(--gutter, clamp(20px, 2.5vw, 36px));
+  --ha-maxw: 1240px;
+  /* Solo es la tinta de una MASCARA (el recorte del filete de la tarjeta), no
+     un color que se vea; vive aqui igualmente para no dejar ni un literal
+     suelto fuera de :root. */
+  --ha-mask-ink: #fff;
+  --ha-r-card: var(--r-md, 16px);
+  --ha-r-media: 8px;
+  --ha-ease: var(--ease, cubic-bezier(0.32, 0.72, 0, 1));
+  --ha-ease-io: cubic-bezier(0.45, 0, 0.55, 1);
+  --ha-t-fast: var(--t-fast, 200ms);
+  /* Coreografia portada tal cual: el cuerpo viejo se va (280 ms) -> el marco se
+     redimensiona (400 ms) -> el cuerpo nuevo entra (280 ms, a los 680 ms). */
+  --ha-t-swap: 280ms;
+  --ha-t-resize: 400ms;
+
+  /* Alto del escenario. El original reservaba 12 pantallas para 4 escenas; sin
+     la escena hero (que ocupaba p<0,0404, o sea 0,44 pantallas de recorrido)
+     quedan 11,55. Es un token a proposito: subirlo alarga el recorrido, bajarlo
+     lo acelera, y hotel-anim.js reparte el progreso sobre lo que haya. */
+  --ha-scroll-h: calc(100svh * 11.55);
+}
+
+/* ──────────────────────────────────────────────────────── raiz y andamiaje */
+
+.ha {
+  position: relative;
+  isolation: isolate;
+  font-family: var(--ha-font);
+  color: var(--ha-text);
+  background: var(--ha-bg-b);
+  /* La hoja de holdera es oscura y define color-scheme dark en su contexto:
+     este bloque vuelve a ser claro, y los controles nativos (foco, seleccion)
+     tienen que saberlo. */
+  color-scheme: light;
+}
+
+.ha *,
+.ha *::before,
+.ha *::after { box-sizing: border-box; }
+
+/* 🔴 El reset va envuelto en :where() y NO es cosmetica.
+ *
+ * Escrito como `.ha button` la regla pesa (0,1,1) — una clase y un tipo — y le
+ * GANA a `.ha-tab`, que pesa (0,1,0). Resultado medido antes de esto: las
+ * pestanas de departamento se pintaban en rgb(20,20,20) a 15px en vez de
+ * --ha-text-muted a 14px, porque `color: inherit` y `font: inherit` del reset
+ * mataban la regla del componente. Lo mismo hacian `.ha p` y `.ha h2,.ha h3`
+ * con los margenes del modo APILADO, que es justo el que ven el movil, el
+ * no-JS y el movimiento reducido: cuatro margenes declarados salian a 0.
+ *
+ * :where() aporta CERO especificidad, asi que esto queda en (0,0,0): sigue
+ * ganando a los valores por defecto del navegador (que es para lo que existe)
+ * y pierde contra cualquier regla de componente, que es lo que se quiere de
+ * un reset. No cambiar por `.ha button` "porque es mas corto". */
+:where(.ha) :where(p) { margin: 0; }
+:where(.ha) :where(h2, h3) { margin: 0; font-weight: 500; }
+:where(.ha) :where(ol, ul) { margin: 0; padding: 0; list-style: none; }
+:where(.ha) :where(button) {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.ha :focus-visible {
+  outline: 2px solid var(--ha-text);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.ha-wrap {
+  width: min(var(--ha-maxw), 100% - 2 * var(--ha-gutter));
+  margin-inline: auto;
+}
+
+/* Las dos rampas de costura. Van por encima del escenario pineado (z 30) porque
+   su trabajo es justamente fundir el borde de ese escenario con la hoja. */
+.ha--seam::before,
+.ha--seam::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  height: var(--ha-seam-h);
+  pointer-events: none;
+}
+.ha--seam::before {
+  top: 0;
+  background: linear-gradient(180deg,
+    var(--ha-seam-0) 0%, var(--ha-seam-1) 32%,
+    var(--ha-seam-2) 64%, var(--ha-seam-3) 92%, var(--ha-bg-a0) 100%);
+}
+.ha--seam::after {
+  bottom: 0;
+  background: linear-gradient(0deg,
+    var(--ha-seam-0) 0%, var(--ha-seam-1) 32%,
+    var(--ha-seam-2) 64%, var(--ha-seam-3) 92%, var(--ha-bg-a0) 100%);
+}
+
+/* ─────────────────────────────────────────────── escenario: reposo (sin JS) */
+/* Este es el estado POR DEFECTO, y es el que tiene que ser legible: sin JS, con
+   movimiento reducido y en movil. Nada de 11 pantallas en blanco. */
+
+.ha-stage-section {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.ha-pin {
+  position: relative;
+  width: 100%;
+  height: auto;
+  background: var(--ha-paper);
+}
+
+.ha-layer,
+.ha-grad { display: none; }
+
+.ha-stage {
+  position: relative;
+  width: 100%;
+  padding-block: clamp(64px, 9vw, 120px);
+}
+
+.ha-stage--trust { background: var(--ha-bg-a); padding-top: clamp(96px, 12vw, 168px); }
+/* La rampa de costura es OPACA en sus primeros 180 px. En modo apilado el
+   contenido empieza arriba del todo, asi que sin esto la rampa se come el
+   eyebrow y la primera linea del titular — medido a 390 px: solo se leia
+   "le toca.". En modo pineado no pasa: la escena esta centrada en el alto. */
+.ha--seam .ha-stage--trust { padding-top: calc(var(--ha-seam-h) + clamp(32px, 7vw, 80px)); }
+.ha--seam .ha-stage--outcomes { padding-bottom: calc(var(--ha-seam-h) + clamp(24px, 5vw, 56px)); }
+/* Los dos escalones de fondo del modo apilado se dan con rampa, no con linea
+   recta: la casa pide >=3 paradas o >=120 px de solape en cualquier cambio de
+   color entre secciones, y da igual que el salto sea pequeno (229 -> 244). */
+.ha-stage--tour {
+  background: linear-gradient(180deg,
+    var(--ha-bg-a) 0, var(--ha-paper) 160px, var(--ha-paper) 100%);
+}
+.ha-stage--outcomes {
+  background: linear-gradient(180deg,
+    var(--ha-paper) 0, var(--ha-bg-b) 160px, var(--ha-bg-b) 100%);
+}
+
+/* ───────────────────────────────────────────────── escena 1 — la confianza */
+
+.ha-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 20px;
+  font-family: var(--ha-font-mono);
+  font-size: clamp(11px, 0.9vw, 13px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ha-text-muted);
+}
+.ha-eyebrow__bar {
+  width: 1px;
+  height: 14px;
+  background: var(--ha-text-muted);
+}
+
+.ha-lead {
+  max-width: 20ch;
+  font-size: clamp(26px, 3.6vw, 46px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--ha-text);
+}
+
+.ha-types-block { margin-top: clamp(40px, 6vw, 72px); }
+
+.ha-types__label {
+  margin: 0 0 16px;
+  font-family: var(--ha-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ha-text-muted);
+}
+
+.ha-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px clamp(32px, 6vw, 96px);
+}
+.ha-types li {
+  padding-top: 10px;
+  border-top: 1px solid var(--ha-border-strong);
+  font-family: var(--ha-font-mono);
+  font-size: 11px;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ha-text-muted);
+  white-space: nowrap;
+}
+
+/* El plano dibujado de una sola vez, para cuando no hay recorrido pineado. */
+.ha-map-static {
+  position: relative;
+  height: clamp(180px, 34vw, 320px);
+  margin-top: clamp(40px, 6vw, 72px);
+  overflow: hidden;
+}
+.ha-map-static svg { display: block; width: 100%; height: 100%; }
+.ha-map-static:empty { display: none; }
+
+/* ─────────────────────────────────────────── escena 2 — los departamentos */
+/* En reposo: una lista editorial. Texto a la izquierda, escena a la derecha a
+   partir de 900 px. No es una rejilla de tarjetas iguales: son filas con una
+   linea de separacion, que es como se lee un indice. */
+
+.ha-list { display: grid; gap: 0; }
+
+.ha-item {
+  display: grid;
+  gap: 20px 40px;
+  padding: clamp(28px, 4vw, 44px) 0;
+  border-top: 1px solid var(--ha-border);
+}
+.ha-item:first-child { border-top: 0; padding-top: 0; }
+
+.ha-item__num {
+  font-family: var(--ha-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--ha-text-muted);
+}
+.ha-item__title {
+  margin: 6px 0 10px;
+  font-size: clamp(22px, 2.6vw, 30px);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  color: var(--ha-text);
+}
+.ha-item__text {
+  max-width: 54ch;
+  font-size: clamp(14px, 1.1vw, 16px);
+  line-height: 1.55;
+  color: var(--ha-text-2);
+}
+
+/* La caja se reserva SIEMPRE con su proporcion (nada de saltos de layout
+   cuando el lottie aterriza), asi que tiene que leerse como un marco y no como
+   un hueco: el filete interior es lo que la convierte en una pieza. */
+.ha-media {
+  position: relative;
+  width: 100%;
+  border-radius: var(--ha-r-media);
+  background: var(--ha-media-bg);
+  box-shadow: inset 0 0 0 1px var(--ha-border);
+  overflow: hidden;
+}
+/* El filtro va sobre el SVG que inyecta lottie, no sobre el contenedor: asi el
+   fondo del contenedor NO se invierte con el dibujo. */
+/* Sin JS la caja NO se puede llenar nunca: cinco marcos vacios se leen como un
+   fallo. Se oculta conservando su hueco, para que al llegar .is-js no haya
+   salto de layout. */
+.ha:not(.is-js) .ha-media { visibility: hidden; }
+
+/* Escenas apagadas (el estado por defecto, ver la cabecera de hotel-anim.js):
+   la caja no se reserva siquiera, y la fila pasa a una sola columna con una
+   medida de lectura comoda en vez de dejar media rejilla vacia. */
+.ha--no-scenes .ha-media { display: none; }
+@media (min-width: 900px) {
+  .ha--no-scenes .ha-item { display: block; }
+  .ha--no-scenes .ha-item__text { max-width: 62ch; }
+}
+
+.ha-media svg {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  filter: var(--ha-lottie-filter);
+}
+
+@media (min-width: 900px) {
+  .ha-item {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+    align-items: start;
+  }
+}
+
+.ha-hud,
+.ha-skip { display: none; }
+
+/* ──────────────────────────────────────────────── escena 3 — lo que medimos */
+
+.ha-outcomes {
+  display: grid;
+  gap: clamp(32px, 5vw, 56px);
+}
+.ha-outcomes__intro h2 {
+  margin-bottom: 12px;
+  font-size: clamp(26px, 3.2vw, 42px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--ha-text);
+}
+.ha-outcomes__intro p {
+  max-width: 42ch;
+  font-size: clamp(14px, 1.1vw, 16px);
+  line-height: 1.55;
+  color: var(--ha-text-muted);
+}
+
+.ha-stat {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--ha-border-strong);
+}
+.ha-stat:first-child { padding-top: 0; }
+.ha-stat__metric {
+  font-size: clamp(28px, 3.6vw, 54px);
+  line-height: 1.02;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  color: var(--ha-text);
+}
+.ha-stat__label {
+  margin-top: 6px;
+  font-size: clamp(14px, 1.05vw, 15px);
+  line-height: 1.45;
+  color: var(--ha-text-2);
+}
+
+@media (min-width: 900px) {
+  .ha-outcomes { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; }
+}
+
+/* ───────────────────────────────── revelados (equivalente local de .reveal) */
+/* Renombrado a .ha-reveal: en holdera `.reveal[data-reveal]` ya existe y lo
+   gobierna script.js. Dos semanticas con el mismo nombre de clase en la misma
+   pagina es un accidente esperando. El estado oculto esta detras de .is-js para
+   que sin JavaScript el contenido este visible, nunca al reves. */
+.ha.is-js .ha-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 700ms var(--ha-ease), transform 700ms var(--ha-ease);
+}
+.ha.is-js .ha-reveal.is-visible { opacity: 1; transform: none; }
+.ha.is-js .ha-reveal[data-ha-delay="1"] { transition-delay: 80ms; }
+.ha.is-js .ha-reveal[data-ha-delay="2"] { transition-delay: 160ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ha.is-js .ha-reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+ * MODO PINEADO — solo con .is-armed, y solo dentro de esta media query.
+ * hotel-anim.js pone .is-armed cuando: hay JS, hay >=901 px, no hay
+ * `prefers-reduced-motion` y los datos medidos han llegado. La media query esta
+ * repetida aqui a proposito (cinturon y tirantes): si un dia .is-armed se
+ * quedara pegada por error, el movil seguiria colapsando el escenario.
+ * ══════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 901px) and (prefers-reduced-motion: no-preference) {
+
+  .ha.is-armed .ha-stage-section { height: var(--ha-scroll-h); }
+
+  .ha.is-armed .ha-pin {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: hidden;
+    background: var(--ha-bg-a);
+  }
+
+  /* Capas compartidas, mismo apilamiento que el original menos el video:
+     scrim z2 · plano z3 · degradados de borde z10 · contenido z20. */
+  .ha.is-armed .ha-layer {
+    display: block;
+    position: absolute;
+    inset: 0;
+  }
+  .ha.is-armed .ha-scrim { z-index: 2; pointer-events: none; }
+  .ha.is-armed .ha-map {
+    z-index: 3;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .ha.is-armed .ha-map__svg { position: absolute; inset: 0; }
+  .ha.is-armed .ha-map__svg svg { display: block; width: 100%; height: 100%; }
+
+  .ha.is-armed .ha-grad {
+    display: block;
+    position: absolute;
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0;
+  }
+  .ha.is-armed .ha-grad--left {
+    inset: 0 auto 0 0;
+    width: min(800px, calc(800 / 1512 * 100vw));
+    background: linear-gradient(to right in oklab, var(--ha-paper) 0%, var(--ha-paper-a0) 100%);
+  }
+  .ha.is-armed .ha-grad--top {
+    inset: 0 0 auto 0;
+    height: min(719px, calc(719 / 1512 * 100vw));
+    background: linear-gradient(to bottom in oklab, var(--ha-paper) 0%, var(--ha-paper-a0) 100%);
+  }
+
+  .ha.is-armed .ha-stage {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    width: 100%;
+    height: 100%;
+    padding-block: 0;
+    background: none;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .ha.is-armed .ha-stage.is-active { opacity: 1; visibility: visible; pointer-events: auto; }
+
+  /* escena 1 */
+  .ha.is-armed .ha-stage--trust {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 44px;
+  }
+  .ha.is-armed .ha-lead { max-width: 24ch; font-size: clamp(30px, 2.8vw, 40px); }
+  .ha.is-armed .ha-map-static { display: none; }
+  .ha.is-armed .ha-types-block {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 40px;
+    margin-top: 0;
+    padding-inline: var(--ha-gutter);
+  }
+  .ha.is-armed .ha-types__label { margin-bottom: 12px; }
+  .ha.is-armed .ha-types { flex-wrap: nowrap; }
+
+  /* escena 2 — el HUD pineado sustituye a la lista */
+  .ha.is-armed .ha-stage--tour { display: flex; align-items: center; }
+  .ha.is-armed .ha-list { display: none; }
+
+  .ha.is-armed .ha-hud {
+    position: absolute;
+    z-index: 1;
+    left: var(--ha-gutter);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 36px;
+  }
+
+  .ha.is-armed .ha-tabs-wrap { position: relative; flex-shrink: 0; padding-right: 36px; }
+
+  .ha-dash {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 16px;
+    height: 1px;
+    background: var(--ha-text);
+    transition: transform 500ms ease-in-out;
+  }
+
+  .ha.is-armed .ha-tabs { display: flex; flex-direction: column; gap: 4px; width: 148px; }
+
+  .ha-tab {
+    display: block;
+    padding: 6px 0;
+    text-align: left;
+    white-space: nowrap;
+    font-size: 14px;
+    line-height: 21px;
+    color: var(--ha-text-muted);
+    transition: color var(--ha-t-fast) var(--ha-ease), transform 500ms ease-in-out;
+  }
+  .ha-tab:hover { color: var(--ha-text-2); }
+  /* El activo se desplaza 24 px, igual que el original, y la rayita lo persigue.
+     El original marcaba el estado SOLO con opacidad (0,4 -> 0,6): dos textos
+     grises que no llegaban a 4,5:1 ninguno de los dos. Aqui el inactivo es
+     --text-muted (5,17:1 sobre el papel) y el activo --text (16,60:1). */
+  .ha-tab.is-active { color: var(--ha-text); transform: translateX(24px); }
+
+  /* la tarjeta */
+  .ha.is-armed .ha-card {
+    position: relative;
+    flex-shrink: 0;
+    overflow: hidden;
+    width: 357px;
+    height: 354px;
+    border-radius: var(--ha-r-card);
+    background: var(--ha-card-bg);
+    box-shadow: var(--ha-card-shadow);
+  }
+  .ha-card__blur {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    pointer-events: none;
+  }
+  .ha-card__ring {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    overflow: hidden;
+    opacity: 0.7;
+    pointer-events: none;
+    -webkit-mask: linear-gradient(var(--ha-mask-ink) 0 0) content-box, linear-gradient(var(--ha-mask-ink) 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(var(--ha-mask-ink) 0 0) content-box exclude, linear-gradient(var(--ha-mask-ink) 0 0);
+  }
+  .ha-card__spin {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 220%;
+    aspect-ratio: 1;
+    background: conic-gradient(
+      var(--ha-card-ring-a) 0deg, var(--ha-card-ring-b) 90deg,
+      var(--ha-card-ring-c) 180deg, var(--ha-card-ring-b) 270deg,
+      var(--ha-card-ring-a) 360deg);
+    animation: ha-ring-spin 10s linear infinite;
+  }
+
+  .ha-card__panel {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 22px 18px 18px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--ha-t-swap) var(--ha-ease-io);
+  }
+  .ha-card__panel.is-active { opacity: 1; pointer-events: auto; }
+
+  .ha-card__panel .ha-item__num { display: none; }
+  .ha-card__panel .ha-item__title {
+    margin: 0 0 6px;
+    font-size: 26px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  .ha-card__panel .ha-item__text {
+    max-width: none;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--ha-border);
+    font-size: 14px;
+    line-height: 1.35;
+    color: var(--ha-text-2);
+  }
+  .ha-card__panel .ha-media {
+    margin-top: 18px;
+    width: var(--ha-lottie-w);
+    height: var(--ha-lottie-h);
+    max-width: 100%;
+    aspect-ratio: auto;
+    border-radius: 6px;
+  }
+
+  .ha.is-armed .ha-skip {
+    display: inline-flex;
+    align-items: center;
+    position: absolute;
+    z-index: 1;
+    right: var(--ha-gutter);
+    bottom: 40px;
+    min-height: 44px;
+    padding: 12px 20px;
+    border-radius: var(--r-pill, 999px);
+    background: var(--ha-chip-bg);
+    box-shadow: inset 0 0 0 1px var(--ha-chip-border), var(--ha-chip-shadow);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--ha-text-muted);
+    transition: color var(--ha-t-fast) var(--ha-ease), background-color var(--ha-t-fast) var(--ha-ease);
+  }
+  .ha.is-armed .ha-skip:hover { color: var(--ha-text); background: var(--ha-paper); }
+
+  /* escena 3 */
+  .ha.is-armed .ha-stage--outcomes { display: flex; align-items: center; }
+
+  /* Pantallas anchas pero bajas: el HUD en columna, como hacia el original
+     entre 641 y 1100 px. Aqui el corte de abajo es 901. */
+  @media (max-width: 1180px) {
+    .ha.is-armed .ha-hud {
+      top: 104px;
+      bottom: 28px;
+      left: var(--ha-gutter);
+      right: var(--ha-gutter);
+      transform: none;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .ha.is-armed .ha-tabs-wrap { padding-right: 0; }
+  }
+}
+
+@keyframes ha-ring-spin {
+  from { transform: translate(-50%, -50%) rotate(0); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* ────────────────────────────────────────────── motion / contadores / etc. */
+
+.ha.is-js .ha-stat {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 700ms ease, transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ha.is-js .ha-stat:nth-child(2) { transition-delay: 160ms; }
+.ha.is-js .ha-stat:nth-child(3) { transition-delay: 320ms; }
+.ha.is-js .ha-stats.is-counting .ha-stat { opacity: 1; transform: none; }
+
+/* ────────────────────────────────────────────────────── movimiento reducido */
+/* Va al FINAL del archivo a proposito. A igualdad de especificidad gana la
+   ultima regla del archivo, y es exactamente la trampa del paso 8: un bloque de
+   movimiento reducido escrito ANTES del bloque movil se lo comia el movil. */
+
+@media (prefers-reduced-motion: reduce) {
+  .ha *,
+  .ha *::before,
+  .ha *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* El escenario NO puede quedarse con 11 pantallas reservadas: sin scrub no hay
+     nada que ver en ellas. `height: auto` y contenido apilado. */
+  .ha .ha-stage-section { height: auto; }
+  .ha .ha-pin { position: relative; height: auto; overflow: visible; }
+  .ha .ha-stage {
+    position: relative;
+    inset: auto;
+    height: auto;
+    padding-block: clamp(64px, 9vw, 120px);
+    overflow: visible;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  .ha .ha-list { display: grid; }
+  .ha .ha-hud,
+  .ha .ha-skip,
+  .ha .ha-layer,
+  .ha .ha-grad { display: none; }
+  .ha.is-js .ha-stat { opacity: 1; transform: none; }
+}

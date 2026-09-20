@@ -1,0 +1,1245 @@
+/* ==========================================================================
+   BLOQUE: «Todo tu hotel, conectado»
+   Markup: _build/parts/opera.html
+   Va DESPUÉS de styles.css. Vive sobre la hoja OSCURA (--sh-bg #121110).
+
+   · Todo color vive en :root. Ni un literal fuera de este bloque.
+   · Dos columnas que NO son iguales a propósito, porque no dicen lo mismo:
+     a la izquierda cuatro paneles elevados (lo que ya entra); a la derecha
+     un libro de cuentas de filas finas (lo que falta). Que la columna de lo
+     que falta sea más pobre visualmente es la idea, no un descuido.
+   · Nada de rejilla de tres tarjetas iguales.
+
+   Contrastes medidos sobre el fondo real de cada elemento:
+     nombre de fuente 15,67:1 · qué entra 10,88:1 · etiqueta «Enciende» 7,98:1
+     bloque «Sin esto» 11,82:1 · etiqueta «Sin esto» 6,36:1
+     nombre del hueco 17,02:1 · texto del hueco 11,82:1 · cifra 8,67:1
+     nota final 6,36:1 · enlaces 8,67:1
+   ========================================================================== */
+
+:root {
+  /* --- superficies ------------------------------------------------------ */
+  --op-panel: var(--sh-surface);     /* el panel de una fuente que ya entra */
+  --op-inset: var(--sh-bg);          /* el hueco rehundido del «Sin esto» */
+  --op-line: var(--sh-border);
+  /* El contorno que IDENTIFICA algo (no decora): 3:1 contra los cuatro
+     fondos de la hoja. Lo usa el punto de la columna de lo que falta. */
+  --op-line-control: var(--sh-control-border);
+
+  /* --- texto ------------------------------------------------------------ */
+  --op-strong: var(--sh-text);       /* 15,67:1 sobre el panel */
+  --op-body: var(--sh-text-2);       /* 10,88:1 sobre el panel */
+  --op-quiet: var(--sh-muted);       /*  5,86:1 sobre el panel */
+  --op-accent: var(--accent-ink);    /*  7,98:1 sobre el panel */
+  --op-rule: var(--accent);          /* decorativo: filetes y puntos */
+
+  /* --- elevación --------------------------------------------------------
+     En oscuro se eleva con un bisel arriba, no con una sombra abajo. */
+  --op-shadow: var(--shadow-sh);
+
+  /* --- medidas ---------------------------------------------------------- */
+  --op-gap-col: clamp(40px, 4.5vw, 72px);
+  --op-pad: 28px;
+}
+
+/* --------------------------------------------------------------------------
+   Rejilla del bloque
+   -------------------------------------------------------------------------- */
+.op__grid { display: grid; gap: 56px; margin-top: 56px; }
+
+@media (min-width: 1080px) {
+  .op__grid {
+    grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+    gap: var(--op-gap-col);
+    align-items: start;
+  }
+}
+
+/* Cabecera de columna ---------------------------------------------------- */
+.op__ch {
+  display: flex; align-items: center; gap: 12px;
+  margin: 0 0 12px;
+  font-size: clamp(19px, 1.5vw, 22px);
+  line-height: 1.24; letter-spacing: -0.02em; font-weight: 500;
+  color: var(--op-strong);            /* 17,02:1 sobre --sh-bg */
+}
+.op__ch-dot {
+  flex: none; width: 9px; height: 9px; border-radius: var(--r-pill);
+  background: var(--op-rule);
+}
+.op__ch-dot--out {
+  background: none;
+  box-shadow: inset 0 0 0 1px var(--op-line-control);
+}
+.op__cnote {
+  max-width: 48ch;
+  margin: 0 0 32px;
+  font-size: 15px; line-height: 1.6;
+  color: var(--op-quiet);             /* 6,36:1 sobre --sh-bg */
+}
+
+/* --------------------------------------------------------------------------
+   Columna izquierda — las cuatro fuentes que ya entran
+   -------------------------------------------------------------------------- */
+.op__srcs {
+  display: grid; gap: 16px;
+  margin: 0; padding: 0; list-style: none;
+  counter-reset: none;
+}
+
+.op-src {
+  position: relative;
+  padding: var(--op-pad);
+  border: 1px solid var(--op-line);
+  border-radius: var(--r-md);
+  background: var(--op-panel);
+  box-shadow: var(--op-shadow);
+}
+.op-src__n {
+  margin: 0 0 8px;
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.18em;
+  color: var(--op-accent);            /* 7,98:1 */
+}
+.op-src__name {
+  margin: 0 0 12px;
+  font-size: 18px; line-height: 1.3; letter-spacing: -0.015em; font-weight: 500;
+  color: var(--op-strong);            /* 15,67:1 */
+}
+.op-src__what {
+  margin: 0 0 20px;
+  font-size: 15px; line-height: 1.62;
+  color: var(--op-body);              /* 10,88:1 */
+}
+
+.op-src__on,
+.op-src__off {
+  margin: 0;
+  font-size: 14px; line-height: 1.6;
+}
+.op-src__on { color: var(--op-body); margin-bottom: 16px; }
+
+/* El «Sin esto» es el ángulo honesto del producto, así que se rehunde y se
+   marca con un filete: se lee como una nota al pie del panel, no como más
+   texto de venta. El fondo BAJA un escalón (--sh-bg bajo --sh-surface), que
+   en oscuro es como se hunde algo. */
+.op-src__off {
+  padding: 16px 16px 16px 20px;
+  border-left: 2px solid var(--op-rule);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  background: var(--op-inset);
+  color: var(--op-body);              /* 11,82:1 sobre --sh-bg */
+}
+.op-src__off em { font-style: normal; color: var(--op-accent); }
+
+.op-src__lab {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+}
+.op-src__on .op-src__lab { color: var(--op-accent); }   /* 7,98:1 */
+.op-src__off .op-src__lab { color: var(--op-quiet); }   /* 6,36:1 sobre --sh-bg */
+
+.op__live {
+  max-width: 62ch;
+  margin: 28px 0 0;
+  font-size: 14px; line-height: 1.66;
+  color: var(--op-quiet);             /* 6,36:1 sobre --sh-bg */
+}
+
+/* --------------------------------------------------------------------------
+   Columna derecha — el libro de lo que falta
+   -------------------------------------------------------------------------- */
+.op__gaps { margin: 0; border-top: 1px solid var(--op-line); }
+
+.op-gap {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--op-line);
+}
+.op-gap__k {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+  margin: 0 0 8px;
+}
+.op-gap__name {
+  font-size: 16px; line-height: 1.3; letter-spacing: -0.012em; font-weight: 500;
+  color: var(--op-strong);            /* 17,02:1 sobre --sh-bg */
+}
+.op-gap__n {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--op-quiet);             /* 6,36:1 */
+}
+.op-gap__n b {
+  font-size: 18px; font-weight: 500; letter-spacing: -0.01em;
+  color: var(--op-accent);            /* 8,67:1 sobre --sh-bg */
+}
+.op-gap__v {
+  margin: 0;
+  font-size: 15px; line-height: 1.62;
+  color: var(--op-body);              /* 11,82:1 sobre --sh-bg */
+}
+.op-gap__v strong { color: var(--op-strong); font-weight: 500; }
+
+/* La fila de «pagos y cerraduras» no tiene cifra porque no hay ninguna
+   métrica esperando: se apaga en vez de fingir un número. */
+.op-gap--none .op-gap__name { color: var(--op-body); }
+.op-gap--none .op-gap__n { color: var(--op-quiet); }
+
+.op__foot {
+  max-width: 62ch;
+  margin: 24px 0 0;
+  font-size: 14px; line-height: 1.66;
+  color: var(--op-quiet);             /* 6,36:1 */
+}
+
+/* Enlaces del bloque ----------------------------------------------------- */
+.op__link {
+  color: var(--op-accent);            /* 8,67:1 sobre --sh-bg */
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color var(--t-fast) var(--ease);
+}
+.op__link:hover { color: var(--op-strong); }
+.op__link:focus-visible { outline: 2px solid var(--op-strong); outline-offset: 3px; border-radius: 2px; }
+
+/* --------------------------------------------------------------------------
+   Móvil
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  :root { --op-pad: 20px; }
+  .op__grid { gap: 48px; margin-top: 40px; }
+  .op__cnote { margin-bottom: 24px; }
+  .op-src__off { padding: 14px 14px 14px 16px; }
+  .op-gap__k { gap: 8px; }
+}
+
+/* --------------------------------------------------------------------------
+   Movimiento reducido
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .op__link { transition: none; }
+}
+/* ==========================================================================
+   BLOQUE: Funciones — raíl de tarjetas deslizable en horizontal
+   Markup: _build/parts/features.html
+   Va DESPUÉS de styles.css. Vive sobre la hoja OSCURA (--sh-bg #121110).
+
+   Reglas de la casa que cumple este archivo:
+   · Todo color vive en :root. Ni un literal fuera de este bloque.
+   · Espaciado en rejilla de 4/8 px.
+   · Micro-interacciones 150-250 ms, entrada con ease-out; prefers-reduced-motion
+     apaga el movimiento sin mover el layout.
+   · No es una rejilla de tres tarjetas iguales: es un raíl de ocho, con dos
+     anchos distintos, que se desliza con el dedo, la rueda o el tabulador.
+   · Sin JS funciona entero (scroll nativo + scroll-snap). Las flechas se
+     esconden hasta que existe .has-js porque sin JS no harían nada.
+
+   Contrastes medidos (composición real sobre el fondo de la tarjeta, no
+   supuestos) en la cabecera de cada grupo. El peor del bloque es 5,49:1.
+   ========================================================================== */
+
+:root {
+  /* --- superficies ------------------------------------------------------ */
+  /* Alias de los tokens de la hoja oscura: si la hoja cambia, esto la sigue. */
+  --ft-card-bg: var(--sh-surface);          /* #1c1a17 */
+  --ft-card-bg-hover: var(--sh-surface-2);  /* #211e1b */
+  --ft-border: var(--sh-border);
+  --ft-border-hover: var(--sh-border-strong);
+
+  /* --- texto ------------------------------------------------------------ */
+  --ft-title: var(--sh-text);      /* 15,67:1 sobre la tarjeta */
+  --ft-body: var(--sh-text-2);     /* 10,88:1 */
+  --ft-quiet: var(--sh-muted);     /*  5,86:1 */
+  --ft-accent: var(--accent-ink);  /*  7,98:1 — el acento seguro como TEXTO */
+  --ft-rule: var(--accent);        /* decorativo: filete, viñetas, barra superior */
+
+  /* --- el lavado de acento de las tarjetas anchas ------------------------
+     Es decoración, y aclara la esquina superior izquierda de la tarjeta —
+     justo donde está el «de 08» en gris apagado, que es el texto más flojo
+     del bloque. Medido compuesto, no supuesto: con 0.07 de --accent sobre
+     --ft-card-bg el fondo local pasa a rgb(43,34,24) y ese gris cae de 5,86
+     a 5,28:1. Sigue por encima del 4,5 de la casa. A 0.12 ya no. */
+  --ft-wash: radial-gradient(128% 96% at 6% 0%,
+    rgba(240, 138, 36, 0.07) 0%,
+    rgba(240, 138, 36, 0.03) 44%,
+    rgba(240, 138, 36, 0) 72%);
+
+  /* No hay token de degradado en el borde derecho, y es una decisión medida:
+     el fondo de la tarjeta (#1c1a17) y el de la hoja (#121110) están tan
+     cerca en valor que el degradado no se veía — pero sí tapaba el anillo de
+     foco de la última tarjeta y el final del raíl cuando llegas al tope. Lo
+     que dice "hay más a la derecha" es la tarjeta cortada, el rótulo y la
+     barra de scroll, que son tres avisos y ninguno estorba. */
+
+  /* --- barra de scroll del raíl ----------------------------------------- */
+  --ft-bar: var(--sh-border-strong);
+  --ft-bar-hover: var(--sh-control-border);
+  --ft-bar-track: var(--sh-tint);
+
+  /* --- elevación --------------------------------------------------------
+     En oscuro la elevación es un bisel arriba, no una sombra abajo: por eso
+     las dos sombras empiezan por el realce. Son apiladas, nunca de una capa. */
+  --ft-shadow: var(--shadow-sh);
+  --ft-shadow-hover:
+    inset 0 1px 0 rgba(255, 250, 242, 0.11),
+    0 2px 4px rgba(0, 0, 0, 0.44),
+    0 18px 38px -18px rgba(0, 0, 0, 0.66),
+    0 44px 84px -40px rgba(0, 0, 0, 0.58);
+
+  /* --- medidas ----------------------------------------------------------
+     La tarjeta ancha no es un capricho: con 8 tarjetas del mismo ancho el
+     raíl se lee como una rejilla tumbada. Y el ancho normal subió de 344 a
+     380 px después de medir la primera pasada — la tarjeta salía a 747 px de
+     alto porque el párrafo rompía en seis líneas; a 380 rompe en cinco. */
+  --ft-w: clamp(268px, 27vw, 380px);
+  --ft-w-wide: clamp(292px, 34vw, 464px);
+  --ft-gap: 20px;
+  --ft-pad: 28px;
+  /* El borde izquierdo del raíl tiene que caer exactamente donde cae el de
+     .container, que es min(1240px, 100% - 2*gutter) centrado. */
+  --ft-inset: max(var(--gutter), (100% - 1240px) / 2);
+}
+
+/* --------------------------------------------------------------------------
+   Cabecera del bloque
+   -------------------------------------------------------------------------- */
+.ft__head { margin-bottom: 40px; }
+.ft__head .sheet__lead { margin-bottom: 0; }
+
+.ft__ctrl {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+  margin-top: 28px;
+}
+.ft__hint {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ft-quiet);            /* 5,86:1 sobre --sh-bg: 6,36:1 */
+}
+/* Las flechas no aparecen hasta que EXISTE el JS que las mueve, y el aviso
+   lo da el propio JS poniendo data-ft-ready en la sección. No basta con
+   .has-js: si el bloque se publica sin ese trozo de script, .has-js está
+   igualmente y se quedan dos botones muertos en la página. */
+.ft__arrows { display: none; gap: 8px; }
+.ft[data-ft-ready] .ft__arrows { display: flex; }
+/* .btn--icon mide 40x40 y la casa pide 44 desde el paso 8. Se agranda la
+   caja, no el icono. */
+.ft__arrow { width: 44px; height: 44px; }
+.ft__arrow svg { display: block; }
+/* Una flecha que no lleva a ninguna parte se apaga pero sigue siendo
+   tabulable: quitarla del orden de foco mientras alguien está encima es peor.
+   Un control con aria-disabled queda exento de 1.4.3, igual que en el panel. */
+.ft__arrow[aria-disabled="true"] { opacity: 0.35; cursor: default; }
+.ft__arrow[aria-disabled="true"]:hover { background: transparent; border-color: var(--ft-border-hover); }
+
+/* --------------------------------------------------------------------------
+   El raíl
+   -------------------------------------------------------------------------- */
+.ft__viewport {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* Sitio para que la sombra y el desplazamiento de :hover no se corten. */
+  padding-block: 8px 24px;
+  /* 🔴 proximity, NO mandatory, y está medido. Con `x mandatory` Chrome se
+     niega a arrancar un scrollTo() SUAVE hacia atrás desde una posición ya
+     anclada: el destino se calcula bien (1284), la animación no empieza
+     (scrollLeft sigue en 1684 a los 120 ms) y hacen falta cuatro clics para
+     que se mueva uno. Hacia delante funciona; hacia atrás no. Medido en este
+     raíl, tres veces, y con dos controles: con behavior:'auto' va siempre, y
+     apagar el snap durante el salto NO lo arregla (al restaurarlo vuelve a
+     anclar). Con `proximity` los cinco pasos hacia atrás salen a la primera:
+     1684 · 1284 · 884 · 484 · 0. El dedo sigue anclando igual. */
+  scroll-snap-type: x proximity;
+  scroll-padding-inline-start: var(--ft-inset);
+  scrollbar-width: thin;
+  scrollbar-color: var(--ft-bar) var(--ft-bar-track);
+  overscroll-behavior-x: contain;
+}
+.ft__viewport:focus-visible {
+  outline: 2px solid var(--ft-title);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+.ft__viewport::-webkit-scrollbar { height: 8px; }
+.ft__viewport::-webkit-scrollbar-track { background: var(--ft-bar-track); border-radius: var(--r-pill); }
+.ft__viewport::-webkit-scrollbar-thumb { background: var(--ft-bar); border-radius: var(--r-pill); }
+.ft__viewport::-webkit-scrollbar-thumb:hover { background: var(--ft-bar-hover); }
+
+.ft__rail {
+  display: flex;
+  align-items: stretch;
+  gap: var(--ft-gap);
+  margin: 0;
+  padding: 0 var(--ft-inset);
+  list-style: none;
+}
+
+/* --------------------------------------------------------------------------
+   La tarjeta
+   -------------------------------------------------------------------------- */
+.ft-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 var(--ft-w);
+  padding: var(--ft-pad);
+  border: 1px solid var(--ft-border);
+  border-radius: var(--r-lg);
+  background: var(--ft-card-bg);
+  box-shadow: var(--ft-shadow);
+  scroll-snap-align: start;
+  transition:
+    transform var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    background-color var(--t-fast) var(--ease),
+    box-shadow var(--t-fast) var(--ease);
+}
+/* Dos anchos y un lavado: el raíl no puede leerse como ocho clones. */
+.ft-card--wide { flex-basis: var(--ft-w-wide); background-image: var(--ft-wash); }
+.ft-card--count { background-image: var(--ft-wash); }
+
+/* El filete superior: aparece al señalar la tarjeta, no está siempre. */
+.ft-card::before {
+  content: "";
+  position: absolute; inset: 0 auto auto 0;
+  width: 0; height: 2px;
+  border-radius: var(--r-pill);
+  background: var(--ft-rule);
+  transition: width var(--t-mid) var(--ease);
+}
+.ft-card:hover, .ft-card:focus-within {
+  transform: translateY(-4px);
+  border-color: var(--ft-border-hover);
+  background-color: var(--ft-card-bg-hover);
+  box-shadow: var(--ft-shadow-hover);
+}
+.ft-card:hover::before, .ft-card:focus-within::before { width: 56px; }
+
+/* Anillo de foco de la tarjeta entera cuando el enlace estirado recibe el
+   foco por teclado. :has() cubre Chrome 105+, Safari 15.4+, Firefox 121+;
+   donde no exista, el anillo del propio enlace (más abajo) sigue siendo
+   visible: abraza el título en vez de la tarjeta. */
+.ft-card:has(.ft-card__link:focus-visible) {
+  outline: 2px solid var(--ft-title);
+  outline-offset: 3px;
+}
+
+.ft-card__idx {
+  display: flex; align-items: baseline; gap: 8px;
+  margin: 0 0 16px;
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+}
+.ft-card__n { color: var(--ft-accent); }     /* 7,98:1 */
+.ft-card__of { color: var(--ft-quiet); }     /* 5,86:1 */
+
+.ft-card__kicker {
+  margin: 0 0 12px;
+  font-size: 15px; line-height: 1.5;
+  color: var(--ft-accent);                    /* 7,98:1 */
+}
+
+.ft-card__title {
+  margin: 0 0 16px;
+  font-size: clamp(20px, 1.55vw, 24px);
+  line-height: 1.18;
+  letter-spacing: -0.022em;
+  font-weight: 500;
+  color: var(--ft-title);                     /* 15,67:1 */
+}
+.ft-card__link { color: inherit; text-decoration: none; }
+/* Enlace estirado: toda la tarjeta es zona de clic y hay UNA sola parada de
+   tabulación. El ::after queda por debajo de nada, así que el texto de la
+   tarjeta sigue siendo seleccionable salvo en la zona vacía. */
+.ft-card__link::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.ft-card__link:focus-visible { outline: 2px solid var(--ft-title); outline-offset: 3px; border-radius: var(--r-sm); }
+
+.ft-card__body {
+  margin: 0 0 20px;
+  font-size: 15px; line-height: 1.62;
+  color: var(--ft-body);                      /* 10,88:1 */
+}
+
+.ft-card__qlabel {
+  margin: 0 0 12px; padding-top: 16px;
+  border-top: 1px solid var(--ft-border);
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ft-quiet);                     /* 5,86:1 */
+}
+
+.ft-card__q { margin: 0; padding: 0; list-style: none; }
+.ft-card__q li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 8px;
+  font-size: 15px; line-height: 1.55;
+  color: var(--ft-body);                      /* 10,88:1 */
+}
+.ft-card__q li:last-child { margin-bottom: 0; }
+.ft-card__q li::before {
+  content: "";
+  position: absolute; left: 0; top: 11px;
+  width: 10px; height: 1px;
+  background: var(--ft-rule);
+}
+
+.ft-card__foot {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap;
+  margin: auto 0 0; padding-top: 20px;
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+}
+.ft-card__screen { color: var(--ft-quiet); }  /* 5,86:1 */
+.ft-card__go { color: var(--ft-accent); }     /* 7,98:1 */
+.ft-card:hover .ft-card__go, .ft-card:focus-within .ft-card__go { text-decoration: underline; text-underline-offset: 3px; }
+
+.ft { position: relative; }
+
+.ft__note {
+  max-width: 68ch;
+  margin: 32px 0 0;
+  font-size: 14px; line-height: 1.6;
+  color: var(--ft-quiet);                     /* 6,36:1 sobre --sh-bg */
+}
+
+/* --------------------------------------------------------------------------
+   Móvil
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  :root {
+    --ft-w: min(82vw, 340px);
+    --ft-w-wide: min(86vw, 356px);
+    --ft-gap: 16px;
+    --ft-pad: 24px;
+  }
+  .ft__head { margin-bottom: 32px; }
+  .ft__ctrl { margin-top: 24px; }
+  /* El pulgar no llega a las flechas cómodamente y el gesto natural aquí es
+     deslizar: fuera. El raíl se sigue moviendo con el dedo. */
+  .ft[data-ft-ready] .ft__arrows { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Movimiento reducido
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ft__viewport { scroll-behavior: auto; scroll-snap-type: none; }
+  .ft-card,
+  .ft-card::before { transition: none; }
+  /* El desplazamiento se cambia por color, no se pierde la respuesta. */
+  .ft-card:hover, .ft-card:focus-within { transform: none; }
+  .ft-card:hover::before, .ft-card:focus-within::before { width: 56px; }
+}
+/* ==========================================================================
+   BLOQUE: Preguntas frecuentes
+   Markup: _build/parts/faq.html
+   Va DESPUÉS de styles.css. Vive sobre la hoja OSCURA (--sh-bg #121110).
+
+   · Todo color vive en :root. Ni un literal fuera de este bloque.
+   · <details>/<summary> nativo: sin JavaScript abre, cierra y es accesible
+     con teclado de serie. Lo único que se cambia es el aspecto del marcador.
+   · Dos columnas editoriales, no una rejilla de tarjetas: a la izquierda la
+     entradilla, que se queda pegada mientras lees; a la derecha la lista.
+   · Los marcadores «[… por confirmar]» van en mono, con subrayado
+     discontinuo y en el gris apagado del sitio. NO se les da aspecto de dato
+     real: es la misma convención que los datos de contacto del pie.
+
+   Contrastes medidos sobre el fondo real de cada elemento:
+     pregunta 17,02:1 · pregunta abierta 15,67:1 · respuesta 10,88:1
+     marcador 5,86:1 · entradilla 11,82:1 · etiqueta mono 6,36:1
+   ========================================================================== */
+
+:root {
+  /* --- superficies ------------------------------------------------------ */
+  --faq-line: var(--sh-border);
+  --faq-line-hover: var(--sh-border-strong);
+  /* Una pregunta abierta se separa del fondo subiendo un escalón, no con una
+     sombra: en oscuro la sombra bajo una superficie casi negra no existe. */
+  --faq-open-bg: var(--sh-surface);
+  --faq-bevel: var(--sh-bevel);
+
+  /* --- texto ------------------------------------------------------------ */
+  --faq-q: var(--sh-text);        /* 17,02:1 cerrada · 15,67:1 abierta */
+  --faq-a: var(--sh-text-2);      /* 10,88:1 sobre la abierta */
+  --faq-quiet: var(--sh-muted);   /*  5,86:1 */
+  --faq-ring: var(--sh-text);
+
+  /* --- el signo + / × ---------------------------------------------------
+     Se dibuja con dos barras de 1px para que herede el color del texto y no
+     dependa de ninguna fuente de iconos. */
+  --faq-sign: var(--sh-text-2);
+  --faq-sign-box: 24px;
+
+  /* --- medidas ---------------------------------------------------------- */
+  --faq-gap-col: clamp(40px, 5vw, 80px);
+  --faq-pad-y: 24px;
+  --faq-pad-x: 20px;
+}
+
+/* --------------------------------------------------------------------------
+   Rejilla del bloque
+   -------------------------------------------------------------------------- */
+.faq__grid { display: grid; gap: 48px; }
+
+@media (min-width: 1024px) {
+  .faq__grid {
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+    gap: var(--faq-gap-col);
+    align-items: start;
+  }
+  .faq__intro {
+    position: sticky;
+    /* la cabecera es fija: 64px compacta + aire */
+    top: 104px;
+  }
+}
+
+.faq__intro .sheet__title { max-width: 13ch; }
+.faq__intro .sheet__lead { max-width: 42ch; }
+
+.faq__legend {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
+  max-width: 46ch;
+  margin: 28px 0 0; padding-top: 24px;
+  border-top: 1px solid var(--faq-line);
+  font-size: 14px; line-height: 1.6;
+  color: var(--faq-quiet);          /* 6,36:1 sobre --sh-bg */
+}
+.faq__legend-sample { flex: none; }
+
+/* --------------------------------------------------------------------------
+   La lista
+   -------------------------------------------------------------------------- */
+.faq__list { border-top: 1px solid var(--faq-line); }
+
+.faq__item {
+  border-bottom: 1px solid var(--faq-line);
+  border-radius: var(--r-sm);
+  transition: background-color var(--t-fast) var(--ease);
+}
+.faq__item:hover { border-bottom-color: var(--faq-line-hover); }
+.faq__item[open] {
+  background: var(--faq-open-bg);
+  box-shadow: var(--faq-bevel);
+}
+
+/* La pregunta ---------------------------------------------------------- */
+.faq__q {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 20px;
+  /* 24+25+24 = 73px de zona táctil, muy por encima de los 44 de la casa */
+  padding: var(--faq-pad-y) var(--faq-pad-x);
+  font-size: clamp(17px, 1.35vw, 19px);
+  line-height: 1.38;
+  letter-spacing: -0.012em;
+  font-weight: 500;
+  color: var(--faq-q);
+  cursor: pointer;
+  list-style: none;
+}
+.faq__q::-webkit-details-marker { display: none; }
+.faq__q:focus-visible { outline: 2px solid var(--faq-ring); outline-offset: -2px; border-radius: var(--r-sm); }
+
+/* El signo: + cerrado, × abierto. Dos barras de 1px giradas. */
+.faq__sign {
+  position: relative; flex: none;
+  width: var(--faq-sign-box); height: var(--faq-sign-box);
+  margin-top: 2px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--faq-line);
+  transition: border-color var(--t-fast) var(--ease), transform var(--t-mid) var(--ease);
+}
+.faq__sign::before,
+.faq__sign::after {
+  content: "";
+  position: absolute; top: 50%; left: 50%;
+  width: 10px; height: 1px;
+  background: var(--faq-sign);
+  transform: translate(-50%, -50%);
+  transition: opacity var(--t-fast) var(--ease);
+}
+.faq__sign::after { transform: translate(-50%, -50%) rotate(90deg); }
+.faq__item:hover .faq__sign { border-color: var(--faq-line-hover); }
+.faq__item[open] .faq__sign { transform: rotate(45deg); border-color: var(--faq-line-hover); }
+
+/* La respuesta --------------------------------------------------------- */
+.faq__a {
+  padding: 0 var(--faq-pad-x) var(--faq-pad-y);
+  /* deja la respuesta alineada con la pregunta y lejos del signo */
+  max-width: 72ch;
+}
+.faq__a p {
+  margin: 0;
+  font-size: 16px; line-height: 1.68;
+  color: var(--faq-a);
+}
+/* Sin `both` a propósito. Con animation-fill-mode: both, el estado de la
+   respuesta lo fija la animación, y el día que esa animación no llegue a
+   correr —subárbol con content-visibility, una pintura saltada— la respuesta
+   se queda en opacity 0 PARA SIEMPRE. Es la regla de la casa sobre revelados:
+   nada puede quedarse invisible de manera permanente. Sin fill-mode, el
+   estado en reposo del CSS ya es visible y la animación solo manda mientras
+   dura. */
+.faq__item[open] .faq__a { animation: faq-in 240ms var(--ease); }
+@keyframes faq-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* El marcador de lo que falta ------------------------------------------
+   Aquí NO se declara ni la fuente, ni el tamaño, ni el color, ni el
+   subrayado: styles.css ya tiene una regla global para [data-placeholder]
+   (mono 12,5px, --sh-muted, borde inferior discontinuo) que es la que visten
+   los datos de contacto pendientes del pie y de las siete páginas. Volver a
+   pintarlo aquí crearía un SEGUNDO aspecto de marcador en el mismo sitio, y
+   el objetivo del marcador es justo el contrario: que se reconozca a la
+   primera y en cualquier página. Lo único que se añade es el aire que
+   necesita cuando parte una línea a la mitad. */
+.faq__todo { line-height: 1.9; }
+.faq__legend-sample { line-height: 1.9; }
+
+/* --------------------------------------------------------------------------
+   Móvil
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  :root { --faq-pad-x: 12px; --faq-pad-y: 20px; }
+  .faq__grid { gap: 40px; }
+  .faq__intro .sheet__title { max-width: none; }
+  .faq__q { font-size: 17px; gap: 16px; }
+  .faq__a p { font-size: 16px; }
+}
+
+/* --------------------------------------------------------------------------
+   Movimiento reducido
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .faq__item,
+  .faq__sign,
+  .faq__sign::before,
+  .faq__sign::after { transition: none; }
+  .faq__item[open] .faq__a { animation: none; }
+  /* El signo sigue girando porque es estado, no decoración: sin el giro no
+     hay forma de saber si está abierta. Lo que se quita es el tiempo. */
+  .faq__item[open] .faq__sign { transform: rotate(45deg); }
+}
+/* ===========================================================================
+   HOLDERA · INTEGRACIONES — estilos de las dos piezas de integraciones.html
+
+   COMO SE INTEGRA (leer antes de pegar)
+   -------------------------------------
+   Lo mas sencillo y lo que menos toca: APENDAR este archivo entero AL FINAL de
+   styles.css. Razon concreta, no estetica: `_build/check-tokens.js` y
+   `_build/contrast.js` llevan la lista de hojas ESCRITA A MANO
+   (`['styles.css', 'pages.css']`), asi que un tercer archivo .css no lo mira
+   ningun guardia — pasaria las cinco puertas sin que nadie haya comprobado ni
+   sus tokens ni su contraste, que es justo la clase de verde mentiroso que
+   este proyecto ya ha pagado dos veces. Si se prefiere archivo aparte, hay que
+   anadirlo a esas dos listas Y al <link> de las paginas que lo usen.
+
+   POR QUE SE PUEDE APENDAR AL FINAL SIN ROMPER NADA
+   ------------------------------------------------
+   1. Todas las reglas de la tira son (0,2,0) — `.hero__bar.hero__bar--mrq` —
+      frente a las (0,1,0) de `.hero__bar` que ya hay en styles.css. Ganan por
+      especificidad, no por orden, asi que da igual donde acaben.
+   2. El bloque de "prefers-reduced-motion" que cierra styles.css apaga la
+      animacion con `*, *::before, *::after { animation: none !important }`.
+      El !important le gana a esta hoja aunque vaya despues: la marquesina se
+      para sola y no hace falta repetirlo. Lo que SI se dice aqui abajo es lo
+      que ese bloque no puede saber — que el visor pase a ser desplazable y
+      que el clon sobre.
+   3. El orden INTERNO de este archivo si importa, y es el de la casa:
+      base -> movil -> movimiento reducido -> (movil Y movimiento reducido).
+      El ultimo bloque existe por la trampa del paso 8: dos @media con la
+      misma especificidad, gana la que va despues en el archivo.
+
+   QUE SUSTITUYE
+   -------------
+   Al <div class="hero__bar"> de los cuatro chips. La tira conserva la clase
+   .hero__bar para heredar posicion, z-index y sombra, y para que
+   `_build/hero-fit.js` siga encontrando el nodo que mide.
+
+   LA BARRA CRECE DE 46px A 80px. Medido, no supuesto: eso NO descuadra nada.
+   Ver la nota al pie del archivo, que trae los numeros de los once viewports
+   que se comprobaron y una pega heredada que conviene conocer.
+   =========================================================================== */
+
+:root {
+  /* Alto de la tira. 80px: dentro del objetivo (76-88), multiplo de 8 y
+     suficiente para una caja de mayusculas de ~14px con aire arriba y abajo.
+     La barra anterior media 46px MEDIDOS (no 56: se comprobo en el navegador,
+     `--bar-h` vale 46px y el rect devuelve 46). */
+
+  /* Alto de dibujo de cada marca. El wordmark va en una caja de 24 cuya caja
+     de mayusculas ocupa ~11,5 (0,72em de un cuerpo 16), asi que a 30px de alto
+     las mayusculas miden 14,4px. Un simbolo lleno a 14,4px se leeria enano: a
+     20px queda en 1,39x la altura de mayuscula, que es la proporcion habitual
+     entre un logotipo y el texto que lo acompana. */
+  --mrq-mark: 30px;
+  --mrq-mark-icon: 20px;
+  --mrq-mark-sm: 24px;
+  --mrq-mark-icon-sm: 17px;
+
+  --mrq-gap: clamp(32px, 3.4vw, 56px);
+
+  /* Duracion de una vuelta completa. Una pasada mide ~4.900px, asi que 112s
+     son ~44px/s: se lee sin perseguirlo y no marea en una pagina que ademas
+     tiene una nube de puntos girando. Se toca AQUI, no en el @keyframes. */
+  --mrq-speed: 112s;
+
+  /* El desvanecido de los dos extremos del visor, para que las marcas no
+     aparezcan y desaparezcan de golpe contra el borde de la barra. Vive en
+     :root porque es color (dos paradas de negro con alfa) y en esta casa
+     ningun literal de color puede quedar fuera de :root — mismo motivo por el
+     que --wave-mask esta aqui arriba y no dentro de su regla. */
+  --mrq-mask: linear-gradient(90deg,
+    rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 40px,
+    rgba(0, 0, 0, 1) calc(100% - 56px), rgba(0, 0, 0, 0) 100%);
+  --mrq-mask-sm: linear-gradient(90deg,
+    rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 20px,
+    rgba(0, 0, 0, 1) calc(100% - 28px), rgba(0, 0, 0, 0) 100%);
+}
+
+/* ---------------------------------------------------------------------------
+   (A) LA TIRA DEL HERO
+--------------------------------------------------------------------------- */
+
+/* La rejilla de cuatro chips pasa a ser dos columnas: rotulo fijo + visor.
+   `--bar-h` se reescribe en vez de tocar `height`, asi la regla
+   `height: var(--bar-h)` que ya hay en styles.css resuelve sola. */
+.hero__bar.hero__bar--mrq {
+  /* --bar-h ya NO se toca aqui: vive en :root de styles.css. Ver la nota
+     de _build/migrations/patch-integraciones.js. */
+  /* TRES columnas, no dos: rotulo · cinta · boton de pausa. Con dos, el
+     boton no cabia en la rejilla y Grid lo mandaba a una segunda fila
+     implicita, donde se veia debajo del rotulo en lugar de a la derecha. */
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  justify-content: stretch;
+  gap: 0;
+  padding: 0 clamp(12px, 1.2vw, 18px) 0 clamp(20px, 2.4vw, 32px);
+  overflow: hidden;                 /* el radio de 16px recorta la tira */
+}
+
+.hero__bar--mrq .mrq__label {
+  margin: 0;
+  padding-right: clamp(16px, 1.6vw, 24px);
+  border-right: 1px solid var(--on-ink-border-strong);
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: var(--w-60);               /* 5,43:1 sobre el extremo claro del degradado */
+  white-space: nowrap;
+}
+
+/* El visor recorta y desvanece; el track es lo que se mueve. Son dos cajas
+   distintas a proposito: animar el que tambien recorta obliga al navegador a
+   recalcular el clip en cada frame. */
+.hero__bar--mrq .mrq__viewport {
+  overflow: hidden;
+  -webkit-mask-image: var(--mrq-mask);
+          mask-image: var(--mrq-mask);
+}
+
+.hero__bar--mrq .mrq__track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: mrq-scroll var(--mrq-speed) linear infinite;
+}
+
+/* Al -50% el track ha avanzado exactamente una pasada, y como la segunda es
+   un clon el dibujo es identico al del 0%: el salto no se ve. Por eso las dos
+   <ul> tienen que medir lo mismo — si alguien anade una marca a una sola, la
+   costura aparece. */
+@keyframes mrq-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+/* Cortesia: se para al pasar el raton o al tabular dentro, para poder leer una
+   marca concreta sin perseguirla. */
+.hero__bar--mrq:hover .mrq__track,
+.hero__bar--mrq:focus-within .mrq__track { animation-play-state: paused; }
+
+.hero__bar--mrq .mrq__row {
+  display: flex;
+  align-items: center;
+  gap: var(--mrq-gap);
+  margin: 0;
+  padding: 0 0 0 var(--mrq-gap);
+  list-style: none;
+}
+
+.hero__bar--mrq .mrq__item {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.hero__bar--mrq .mrq__item svg {
+  display: block;
+  height: var(--mrq-mark);
+  width: auto;
+  fill: currentColor;
+  color: var(--w-84);               /* 8,9:1 en el peor suelo de la barra */
+  transition: color var(--t-fast) var(--ease);
+}
+
+/* Los cuatro atributos de tipografia que el generador NO repite en cada uno de
+   los 82 <svg> incrustados: se dicen una vez, aqui. El .svg suelto de
+   assets/img/integraciones/ si los lleva dentro, porque nadie le aplica esta
+   hoja. Los numeros son los mismos con los que se midieron los anchos
+   (_build/integraciones/wordmark-widths.json), y tienen que seguir siendolo:
+   si cambian aqui y no alli, el textLength deforma los nombres. */
+.hero__bar--mrq .mrq__item text {
+  font-family: var(--font);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.hero__bar--mrq .mrq__item[data-mark="icon"] svg { height: var(--mrq-mark-icon); }
+
+.hero__bar--mrq .mrq__item:hover svg { color: var(--w-90); }
+
+/* ---------------------------------------------------------------------------
+   (B) EL BLOQUE DE LA NAV (drawer + desplegable de escritorio)
+   Va sobre superficie de tinta: --panel en el drawer, el mismo grupo
+   --on-ink-* en la nav. No usa --sh-* : ese grupo es el de la hoja.
+--------------------------------------------------------------------------- */
+
+.ints { color: var(--on-ink-text-2); }
+
+.ints__eyebrow {
+  margin: 0 0 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--on-ink-muted);       /* 4,96:1 sobre --panel */
+}
+
+/* Columnas de flujo, no una rejilla de tarjetas: los nueve grupos tienen
+   entre 2 y 9 miembros y una rejilla uniforme de tres columnas esta prohibida
+   por el CLAUDE.md global. Con `columns` cada grupo ocupa lo que mide y el
+   bloque queda desigual, que es como se lee un indice de verdad. */
+.ints__groups {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  /* Ancho de columna, no numero de columnas: el bloque tiene que servir en el
+     drawer (326px de panel) y en un desplegable de escritorio (~1.350px), y
+     con `columns: 3` fijas lo segundo daba columnas de 448px con nombres de
+     80px dentro — tres islas perdidas en un campo vacio. Con el ancho fijado,
+     el navegador pone las que quepan: 1 en el drawer, 6 en el desplegable.
+     `break-inside: avoid` en el grupo impide que una categoria se parta. */
+  columns: 200px;
+  column-gap: 32px;
+}
+
+.ints__group {
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  margin: 0 0 24px;
+}
+
+.ints__cat {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--on-ink-text);        /* 14,6:1 sobre --panel */
+}
+
+.ints__items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ints__items li {
+  font-size: 14px;
+  line-height: 1.6;                 /* dentro del 1,5-1,7 de la casa */
+  color: var(--on-ink-text-2);      /* 9,7:1 sobre --panel */
+}
+
+.ints__note {
+  margin: 8px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--on-ink-border);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--on-ink-muted);
+}
+
+/* ---------------------------------------------------------------------------
+   MOVIL (<=900px)
+   El hero deja de estar pineado y la barra pasa a ser un bloque normal. El
+   rotulo se va ARRIBA en vez de al lado: a 390px, un rotulo de 118px al lado
+   del visor deja 220px de tira, que no da para dos marcas.
+--------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .hero__bar.hero__bar--mrq {
+    --mrq-gap: 28px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+    padding: 12px 0;
+  }
+
+  .hero__bar--mrq .mrq__label {
+    padding: 0 16px;
+    border-right: 0;
+    font-size: 11px;
+  }
+
+  .hero__bar--mrq .mrq__viewport {
+    -webkit-mask-image: var(--mrq-mask-sm);
+            mask-image: var(--mrq-mask-sm);
+  }
+
+  .hero__bar--mrq .mrq__item svg { height: var(--mrq-mark-sm); }
+  .hero__bar--mrq .mrq__item[data-mark="icon"] svg { height: var(--mrq-mark-icon-sm); }
+
+  /* DOS columnas en el movil, no una. Medido: a una sola columna el bloque
+     mide 1.757px dentro del drawer — 47 nombres en fila india que hay que
+     recorrer enteros con el dedo. A dos baja a la mitad y sigue cabiendo: la
+     columna mas ancha del drawer (326px de panel, 20px de canal) son 153px y
+     el nombre mas largo, "RoomPriceGenie", mide 114px a 14px. */
+  .ints__groups { columns: 2; column-gap: 20px; }
+  .ints__group { margin-bottom: 20px; }
+}
+
+/* ---------------------------------------------------------------------------
+   MOVIMIENTO REDUCIDO
+   La animacion ya la apaga el bloque final de styles.css con
+   `animation: none !important`. Lo que falta es lo que ese bloque no puede
+   saber: sin movimiento, una tira recortada esconde 39 de 41 marcas para
+   siempre. El visor pasa a desplazarse a mano y el clon sobra — 41 logotipos
+   repetidos no aportan nada cuando no hay bucle que disimular.
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .hero__bar--mrq .mrq__viewport {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .hero__bar--mrq .mrq__viewport::-webkit-scrollbar { display: none; }
+  .hero__bar--mrq .mrq__track { width: auto; }
+  .hero__bar--mrq .mrq__row[aria-hidden="true"] { display: none; }
+  .hero__bar--mrq .mrq__item svg { transition: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   MOVIL **Y** MOVIMIENTO REDUCIDO — el ultimo bloque, a proposito
+   Trampa del paso 8, literal: dos @media con la misma especificidad y gana la
+   que va despues en el ARCHIVO. El bloque movil de arriba deja el visor con
+   `overflow: hidden` heredado de la base; si se dejara ahi, un movil con
+   «Reducir movimiento» (que mucha gente lleva puesto en iOS) veria una tira
+   congelada mostrando dos marcas y sin forma de ver las otras 39. Va
+   combinado y al final en vez de acotar el bloque movil con
+   `and (prefers-reduced-motion: no-preference)`, porque acotarlo se llevaria
+   por delante el rotulo de 11px y la altura de marca reducida, que ese movil
+   necesita igual.
+--------------------------------------------------------------------------- */
+@media (max-width: 900px) and (prefers-reduced-motion: reduce) {
+  .hero__bar--mrq .mrq__viewport { overflow-x: auto; }
+  .hero__bar--mrq .mrq__row { padding-right: var(--mrq-gap); }
+}
+
+/* ===========================================================================
+   NOTA PARA QUIEN INTEGRE — el encaje del hero, y un guardia que esta muerto
+   ===========================================================================
+   LO QUE SE TEMIA. Que 34px mas de barra (46 -> 80) empujasen la columna
+   izquierda del hero hasta cruzarla con la tira. Es el bug del paso 4: cuando
+   se cruzan, lo de arriba (z-index 4) se come los clics de los dos botones.
+
+   LO QUE PASA DE VERDAD. No se cruzan en ningun viewport probado. El hueco
+   entre el final del copy y el borde de la tira, con la tira ya a 80px:
+
+       1920x1080  388px      1366x600   129px
+       1440x900   229px      1366x560    89px
+       1366x768   254px      1280x520    59px
+       1280x700   239px      1024x600   166px
+       1366x620   149px      1024x1366  738px   (tablet en vertical)
+       901x700    274px      390x844    323px   (ahi la tira mide 73px)
+
+   En los once: `overflowX` 0, y `elementFromPoint` sobre los cinco puntos de
+   CADA boton del hero devuelve el boton. Ninguno se queda sin margen.
+
+   El motivo de que sobre tanto sitio es que la columna izquierda ya no es lo
+   que era: la lista de cinco servicios que se cruzaba con la barra
+   DESAPARECIO en el pivote a hoteles. Hoy `.hero__left` solo lleva `.hero__copy`.
+   Por eso NO hay que tocar el `@media (max-height: 895px)` de styles.css: su
+   derivacion (top + copy + gap + lista + fondo <= H) incluye un termino
+   "lista" que ya no existe, asi que sigue sobrando altura por todos lados.
+
+   🔴 PERO, DE PASO: `_build/hero-fit.js` ESTA MUERTO Y NADIE LO SABE.
+   Busca `[data-works]`, y ese atributo se fue de index.html con la lista de
+   servicios. Hoy devuelve {skipped:'mobile layout or missing nodes'} en TODOS
+   los viewports — o sea que la comprobacion que existe justamente para que no
+   se repita el bug del paso 4 lleva sin comprobar nada desde el pivote, y
+   ademas sale en verde. Es el patron que este proyecto ya ha pagado dos veces
+   (`.filter(existsSync)` escondiendo listas muertas en el paso 9). Arreglo:
+   cambiar `[data-works]` por `.hero__copy` y medir contra `.hero__bar`, que es
+   lo que se ha hecho a mano para escribir la tabla de arriba. No se toca aqui
+   porque hero-fit.js no es de esta tarea.
+   =========================================================================== */
+/* ===========================================================================
+   INTEGRACIONES · rejilla de la columna derecha del hero (.hints)
+
+   Ocupa el hueco que dejo .trace (la cadena de evidencia 01-04). Vive sobre
+   el HERO CLARO, no sobre la hoja oscura: los colores salen de --text /
+   --text-muted / --border, no del grupo --sh-*.
+
+   Los nueve dibujos son <svg> en currentColor, asi que el color lo pone esta
+   hoja y no hay ni un literal dentro del marcado generado.
+   =========================================================================== */
+
+.hints {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hints__label {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+.hints__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  /* El filete de separacion es el propio hueco de la rejilla sobre un fondo
+     de borde: una sola linea de 1px entre celdas, sin dobles. */
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+.hints__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 10px 8px;
+  background: var(--w-60);
+  color: var(--text-muted);
+  transition: color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+
+.hints__item svg {
+  display: block;
+  width: auto;
+  height: 13px;
+  max-width: 100%;
+  color: inherit;
+  fill: currentColor;
+}
+/* Los wordmarks son <text> dentro del svg: heredan currentColor por fill. */
+.hints__item svg text {
+  fill: currentColor;
+  font-family: inherit;
+  font-size: 19px;
+  font-weight: 500;
+}
+
+.hints__item:hover {
+  color: var(--text);
+  background: var(--w-84);
+}
+
+.hints__link {
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  /* 44px de alto tactil sin tocar el tamano de letra (ergonomia del paso 8). */
+  min-height: 44px;
+  padding: 4px 0;
+  font-size: 13px;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.hints__link:hover { border-bottom-color: var(--text); }
+
+.hints__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-pill);
+  transition: transform var(--t-fast) var(--ease);
+}
+.hints__link:hover .hints__arrow { transform: translateX(3px); }
+
+@media (max-width: 900px) {
+  .hints__label { text-align: left; }
+  .hints__link { align-self: flex-start; }
+  .hints__item { min-height: 52px; }
+}
+
+/* ===========================================================================
+   El boton de pausa de la marquesina.
+
+   🔴 No es cosmetica: WCAG 2.2.2 «Pause, Stop, Hide» es NIVEL A y exige que
+   todo movimiento automatico de mas de cinco segundos se pueda parar. La tira
+   da una vuelta cada 112 s. El CSS la pausaba con :hover y :focus-within, pero
+   dentro de la tira no hay NI UN elemento enfocable, asi que :focus-within era
+   codigo muerto y solo el raton podia pararla: ni teclado, ni tactil, ni lector
+   de pantalla. Este boton es la unica via real, y por eso es un <button> de
+   verdad con aria-pressed y no un div con un icono.
+   =========================================================================== */
+
+.mrq__pause {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-left: 12px;
+  padding: 0;
+  border: 1px solid var(--on-ink-border);
+  border-radius: var(--r-pill);
+  background: none;
+  color: var(--w-84);
+  cursor: pointer;
+  transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.mrq__pause:hover { color: var(--w-90); border-color: var(--on-ink-hi); }
+.mrq__pause svg { display: block; width: 12px; height: 12px; fill: currentColor; }
+/* Dos glifos en el mismo boton: se ensena el que corresponde al estado. */
+.mrq__pause .mrq__ico-play { display: none; }
+.mrq__pause[aria-pressed="true"] .mrq__ico-play { display: block; }
+.mrq__pause[aria-pressed="true"] .mrq__ico-pause { display: none; }
+
+.hero__bar--mrq.is-paused .mrq__track { animation-play-state: paused; }
+
+@media (max-width: 900px) {
+  /* En movil la tira no se anima (se desliza con el dedo), asi que el boton
+     no tiene nada que pausar y estorba. */
+  .mrq__pause { display: none; }
+}

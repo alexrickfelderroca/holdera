@@ -1,0 +1,162 @@
+<!-- ==========================================================================
+     BLOQUE: Funciones — tarjetas deslizables en horizontal
+     Fuente de contenido: _build/contenido/features.json
+     Hoja: OSCURA (va dentro de <main>, sobre --sh-bg).
+     CSS: _build/parts/features.css  (tokens --ft-*)
+
+     Sin JavaScript el bloque funciona entero: el raíl es scroll horizontal
+     nativo con scroll-snap, y cada tarjeta es un enlace real a su pantalla
+     del panel demo. Los dos botones de flecha están ocultos hasta que
+     .has-js existe, porque sin JS no harían nada (ver la nota de integración).
+
+     Los ocho enlaces se han comprobado contra el panel capturado: los ocho
+     devuelven 200. No inventes rutas nuevas aquí sin volver a comprobarlas.
+
+     data-feature-page lleva el slug de la futura página /features/<slug>.html.
+     Esas páginas todavía NO existen: cuando se publiquen, el orquestador
+     puede convertir ese atributo en el href principal y bajar el enlace al
+     panel a un segundo enlace dentro de la tarjeta.
+     ========================================================================== -->
+<section class="sheet ft" id="funciones" aria-labelledby="ft-title">
+  <div class="container ft__head">
+    <p class="tag reveal" data-reveal="up">Qué hace</p>
+    <h2 id="ft-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Ocho cosas que hace hoy. <span class="fade">Ninguna a base de estimar.</span></h2>
+    <p class="sheet__lead reveal" data-reveal="up" style="--i:2">Cada tarjeta abre la pantalla de verdad en el panel de demostración: un hotel ficticio de cien habitaciones, congelado a propósito el jueves 15 de enero de 2026 a las 14:30. Puedes abrirlo, mirar una cifra y abrir esa cifra.</p>
+
+    <!-- Controles del raíl. Solo con JS: sin él, el raíl se desliza igual
+         con el dedo, la rueda, la barra de scroll o el tabulador. -->
+    <div class="ft__ctrl reveal" data-reveal="up" style="--i:3">
+      <p class="ft__hint">Desliza para ver las ocho</p>
+      <div class="ft__arrows">
+        <button class="btn btn--on-dark btn--secondary btn--icon ft__arrow" type="button" data-ft-prev aria-controls="ft-rail" aria-label="Ver las funciones anteriores">
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M10 2.5 4.5 8l5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="btn btn--on-dark btn--secondary btn--icon ft__arrow" type="button" data-ft-next aria-controls="ft-rail" aria-label="Ver las funciones siguientes">
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M6 2.5 11.5 8 6 13.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ft__viewport" id="ft-rail" tabindex="0" role="region" aria-label="Funciones de Holdera, lista deslizable en horizontal" data-ft-viewport>
+    <ul class="ft__rail">
+
+      <li class="ft-card ft-card--wide" id="funcion-hoy">
+        <p class="ft-card__idx"><span class="ft-card__n">01</span><span class="ft-card__of">de 08</span></p>
+        <p class="ft-card__kicker">No el cierre de ayer: el hotel a las 14:30.</p>
+        <h3 class="ft-card__title"><a class="ft-card__link" href="/panel/" data-feature-page="operacion-diaria-hotel">El día de hoy, tal como está a esta hora</a></h3>
+        <p class="ft-card__body">Llegadas, salidas, habitaciones en casa y habitaciones listas, leídas de la foto intradía que tu PMS deja a una hora concreta. Cada pantalla lleva escrito de cuándo es el dato que estás mirando, y lo que todavía no ha cerrado sale marcado como no cerrado en vez de redondeado.</p>
+        <p class="ft-card__qlabel">Qué contesta</p>
+        <ul class="ft-card__q">
+          <li>¿Cuántas llegadas me quedan por entrar esta tarde?</li>
+          <li>¿Tengo habitaciones listas suficientes para las que faltan?</li>
+          <li>¿Cuántas habitaciones espero esta noche, y eso es un hecho o una proyección?</li>
+        </ul>
+        <p class="ft-card__foot"><span class="ft-card__screen">Panel demo · Hoy</span><span class="ft-card__go" aria-hidden="true">Abrir</span></p>
+      </li>
+
+      <li class="ft-card" id="funcion-habitaciones">
+        <p class="ft-card__idx"><span class="ft-card__n">02</span><span class="ft-card__of">de 08</span></p>
+        <p class="ft-card__kicker">Planta por planta, y qué pasa en cada una.</p>
+        <h3 class="ft-card__title"><a class="ft-card__link" href="/panel/rooms/" data-feature-page="estado-de-habitaciones-por-planta">El edificio, no una tabla de cien filas</a></h3>
+        <p class="ft-card__body">Las habitaciones se miran donde están. El panel dibuja el hotel planta a planta con el reparto de estados de cada una, y separa lo que es dato del PMS de lo que es configuración del edificio: en la demo lo dice en pantalla, con esas palabras.</p>
+        <p class="ft-card__qlabel">Qué contesta</p>
+        <ul class="ft-card__q">
+          <li>¿Qué planta va retrasada respecto a las demás?</li>
+          <li>¿Cuántas habitaciones hay en cada estado, planta por planta?</li>
+          <li>¿Cuántas tengo fuera de orden y qué me cuestan en ocupación?</li>
+        </ul>
+        <p class="ft-card__foot"><span class="ft-card__screen">Panel demo · Habitaciones</span><span class="ft-card__go" aria-hidden="true">Abrir</span></p>
+      </li>
+
+      <li class="ft-card" id="funcion-housekeeping">
+        <p class="ft-card__idx"><span class="ft-card__n">03</span><span class="ft-card__of">de 08</span></p>
+        <p class="ft-card__kicker">Vacante limpia no es lo mismo que vacante.</p>
+        <h3 class="ft-card__title"><a class="ft-card__link" href="/panel/rooms/layer-housekeeping/" data-feature-page="housekeeping-hotel">Housekeeping con el nombre exacto de cada estado</a></h3>
+        <p class="ft-card__body">Holdera separa Vacant Clean (VC), Cleaning (IP) y Vacant Dirty (VD) de las que están fuera de orden (OOO) o fuera de servicio (OOS), y cuenta si las limpias cubren de verdad las llegadas que faltan por entrar. Una habitación sin estado sale como sin estado, nunca como limpia.</p>
+        <p class="ft-card__qlabel">Qué contesta</p>
+        <ul class="ft-card__q">
+          <li>¿Cuántas habitaciones están listas de verdad, no solo vacías?</li>
+          <li>¿Cubren las llegadas que todavía tengo pendientes?</li>
+          <li>¿Qué planta lleva más trabajo por delante en este turno?</li>
+        </ul>
+        <p class="ft-card__foot"><span class="ft-card__screen">Panel demo · Housekeeping</span><span class="ft-card__go" aria-hidden="true">Abrir</span></p>
+      </li>
+
+      <li class="ft-card" id="funcion-revenue">
+        <p class="ft-card__idx"><span class="ft-card__n">04</span><span class="ft-card__of">de 08</span></p>
+        <p class="ft-card__kicker">Ocupación, ADR, RevPAR y TRevPAR a la vez.</p>
+        <h3 class="ft-card__title"><a class="ft-card__link" href="/panel/revenue/" data-feature-page="revenue-adr-revpar-trevpar">Cómo vendes, contra el mismo momento del año pasado</a></h3>
+        <p class="ft-card__body">Esta noche, el mes en curso y las treinta noches que vienen, cada cifra leída contra el mismo punto de la curva de reserva del año pasado. Cómo acabó aquel año va aparte y etiquetado: un libro que todavía se está llenando siempre parece un desplome contra un año ya cerrado.</p>
+        <p class="ft-card__qlabel">Qué contesta</p>
+        <ul class="ft-card__q">
+          <li>¿Voy mejor o peor que el año pasado, comparando lo comparable?</li>
+          <li>¿Cuánto de mi ingreso no es la habitación?</li>
+          <li>¿De dónde sale exactamente este ADR?</li>
+        </ul>
+        <p class="ft-card__foot"><span class="ft-card__screen">Panel demo · Revenue</span><span class="ft-card__go" aria-hidden="true">Abrir</span></p>
+      </li>
+
+      <li class="ft-card" id="funcion-reservas">
+        <p class="ft-card__idx"><span class="ft-card__n">05</span><span class="ft-card__of">de 08</span></p>
+        <p class="ft-card__kicker">Ocho meses, y el pickup de los últimos siete días.</p>
+        <h3 class="ft-card__title"><a class="ft-card__link" href="/panel/revenue/bookings/" data-feature-page="calendario-de-reservas-pickup-pace">El calendario de reservas, noche a noche</a></h3>
+        <p class="ft-card__body">Un calendario mes a mes con la ocupación, la tarifa y las habitaciones on the books de cada noche, más lo que ha entrado esta semana y cómo va el ritmo de venta contra el año pasado. La línea de este año termina hoy: Holdera no dibuja el futuro.</p>
+        <p class="ft-card__qlabel">Qué contesta</p>
+        <ul class="ft-card__q">
+          <li>¿Qué noches se me están quedando vacías?</li>
+          <li>¿Qué ha entrado esta semana, y a qué tarifa?</li>
+          <li>¿Voy por delante o por detrás del ritmo del año pasado?</li>
+        </ul>
+        <p class="ft-card__foot"><span class="ft-card__screen">Panel demo · Reservas</span><span class="ft-card__go" aria-hidden="true">Abrir</span></p>
+      </li>
+
+      <li class="ft-card ft-card--wide" id="funcion-trazabilidad">
+        <p class="ft-card__idx"><span class="ft-card__n">06</span><span class="ft-card__of">de 08</span></p>
+        <p class="ft-card__kicker">Fórmula, entradas, registro y dato en bruto.</p>
+        <h3 class="ft-card__title"><a class="ft-card__link" href="/panel/operations/occupancy/businessdate-2026-01-14/" data-feature-page="trazabilidad-de-cifras">Cualquier cifra se abre hasta el registro que la produjo</a></h3>
+        <p class="ft-card__body">Detrás de cada número hay cuatro pasos: la fórmula, el valor que tomó cada entrada, el registro ya normalizado y la fila tal como entró, con su identificador de origen y su huella de contenido. El último paso no es un resumen de la fuente: es la fuente.</p>
+        <p class="ft-card__qlabel">Qué contesta</p>
+        <ul class="ft-card__q">
+          <li>¿De dónde sale este número, exactamente?</li>
+          <li>¿Qué valor tomó cada entrada de la fórmula?</li>
+          <li>¿Este dato es definitivo o todavía puede cambiar?</li>
+        </ul>
+        <p class="ft-card__foot"><span class="ft-card__screen">Panel demo · Un día trazado</span><span class="ft-card__go" aria-hidden="true">Abrir</span></p>
+      </li>
+
+      <li class="ft-card" id="funcion-definiciones">
+        <p class="ft-card__idx"><span class="ft-card__n">07</span><span class="ft-card__of">de 08</span></p>
+        <p class="ft-card__kicker">Tu convención de OOO y OOS, no la nuestra.</p>
+        <h3 class="ft-card__title"><a class="ft-card__link" href="/panel/metrics/occupancy_rate/" data-feature-page="definiciones-acordadas">Primero acordamos qué significa cada cosa</a></h3>
+        <p class="ft-card__body">Ocupación sobre las habitaciones físicas y ocupación sobre las que están en operación no son la misma cifra, y la diferencia son tus habitaciones fuera de orden. Holdera enseña las dos, escribe la fórmula de cada una y las marca como pendientes de validar hasta que confirmas cuál es la convención de tu hotel.</p>
+        <p class="ft-card__qlabel">Qué contesta</p>
+        <ul class="ft-card__q">
+          <li>¿Las fuera de orden entran o no entran en el denominador?</li>
+          <li>¿Por qué mi ocupación no coincide con la que da mi PMS?</li>
+          <li>¿Quién decide la definición, tu hotel o el software?</li>
+        </ul>
+        <p class="ft-card__foot"><span class="ft-card__screen">Panel demo · Métricas · Ocupación</span><span class="ft-card__go" aria-hidden="true">Abrir</span></p>
+      </li>
+
+      <li class="ft-card ft-card--count" id="funcion-catalogo">
+        <p class="ft-card__idx"><span class="ft-card__n">08</span><span class="ft-card__of">de 08</span></p>
+        <p class="ft-card__kicker">Lo que falta se dice que falta, con nombre.</p>
+        <h3 class="ft-card__title"><a class="ft-card__link" href="/panel/metrics/" data-feature-page="catalogo-de-metricas-hoteleras">Un catálogo de 57 métricas que dice cuáles no puede calcular</a></h3>
+        <p class="ft-card__body">El catálogo trae 57 KPIs hoteleros con su fórmula. En el hotel de la demo, 13 tienen valor y las otras 44 salen sin cifra y con lo que les falta escrito al lado: 18 nombran la contabilidad, 9 el POS y 3 una fuente de mercado. Ninguna se rellena con una estimación.</p>
+        <p class="ft-card__qlabel">Qué contesta</p>
+        <ul class="ft-card__q">
+          <li>¿Qué puedo medir hoy con lo que ya exporto?</li>
+          <li>¿Qué tendría que conectar para llegar al GOPPAR?</li>
+          <li>¿Por qué esta casilla está vacía?</li>
+        </ul>
+        <p class="ft-card__foot"><span class="ft-card__screen">Panel demo · Métricas</span><span class="ft-card__go" aria-hidden="true">Abrir</span></p>
+      </li>
+
+    </ul>
+  </div>
+
+  <div class="container">
+    <p class="ft__note reveal" data-reveal="up">Las cifras de estas tarjetas son las del hotel de demostración: cien habitaciones, cinco plantas y sesenta días de histórico, todo ficticio. Holdera todavía no tiene clientes publicables, así que no verás aquí los resultados de nadie.</p>
+  </div>
+</section>

@@ -1,0 +1,126 @@
+<!-- ==========================================================================
+     BLOQUE: «Todo tu hotel, conectado» — qué entra, qué enciende y qué se
+     queda a oscuras sin ello.
+     CSS: _build/parts/opera.css  (tokens --op-*)
+     Hoja: OSCURA (va dentro de <main>, sobre --sh-bg).
+
+     COHERENCIA CON partners.html — leerlo antes de tocar esto:
+       · Las cuatro fuentes de la columna «lo que ya entra» son literalmente
+         las cuatro de partners.html, con los mismos nombres. Allí se dice
+         «cuatro fuentes, ni una más»: aquí no se puede añadir una quinta a
+         esa lista sin contradecir la página que ya está publicada.
+       · Todo lo demás (contabilidad, POS por ticket, distribución, nóminas,
+         contadores, encuestas, pagos, cerraduras) va en la segunda columna,
+         que es la de lo que NO se lee hoy.
+       · Sin conexión en vivo y sin contraseñas de tus sistemas: eso también
+         está publicado allí y aquí se repite igual.
+
+     Las cuentas de la columna derecha salen del catálogo de métricas del
+     panel: 57 definidas, 13 con valor en el hotel de la demo, 44 sin valor.
+     Los 18 / 9 / 5 / 3 / 3 / 3 / 2 son el recuento de las fuentes que nombra
+     cada una de esas 44 — y se solapan, porque hay métricas que esperan a dos
+     sitios a la vez. Está dicho en la nota del final del bloque.
+     ========================================================================== -->
+<section class="sheet op" id="conectado" aria-labelledby="op-title">
+  <div class="container">
+    <p class="tag reveal" data-reveal="up">Todo tu hotel</p>
+    <h2 id="op-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Conectado hasta donde llega. <span class="fade">Y dicho hasta dónde llega.</span></h2>
+    <p class="sheet__lead reveal" data-reveal="up" style="--i:2">Cualquiera puede dibujar un esquema con veinte cajas conectadas. Esto es el de verdad: las cuatro cosas que Holdera lee hoy, qué se enciende con cada una y qué pantalla se queda apagada si falta — y al lado, sin adornos, todo lo que todavía no lee y cuántas métricas están esperando a eso.</p>
+  </div>
+
+  <div class="container op__grid">
+
+    <!-- ------------------------------------------------ lo que ya entra -->
+    <div class="op__col op__col--in reveal" data-reveal="up">
+      <h3 class="op__ch"><span class="op__ch-dot" aria-hidden="true"></span>Lo que ya entra</h3>
+      <p class="op__cnote">Cuatro archivos que tu hotel ya sabe generar. Ninguno es un sistema nuevo que tu equipo tenga que aprender.</p>
+
+      <ol class="op__srcs">
+        <li class="op-src">
+          <p class="op-src__n" aria-hidden="true">01</p>
+          <h4 class="op-src__name">PMS · el cierre del día</h4>
+          <p class="op-src__what">Una fila por noche cerrada: habitaciones físicas, vendidas, ocupadas, fuera de orden y fuera de servicio, y el ingreso de alojamiento de esa noche.</p>
+          <p class="op-src__on"><span class="op-src__lab">Enciende</span>Ocupación, ADR y RevPAR de cada noche cerrada, y el histórico contra el que se compara el mes.</p>
+          <p class="op-src__off"><span class="op-src__lab">Sin esto</span>No hay histórico: ni medias, ni comparación con el año pasado. Se dice en pantalla en vez de enseñar un cero.</p>
+        </li>
+
+        <li class="op-src">
+          <p class="op-src__n" aria-hidden="true">02</p>
+          <h4 class="op-src__name">PMS · la foto intradía</h4>
+          <p class="op-src__what">El estado del hotel a una hora concreta: llegadas, salidas, habitaciones en casa y el estado de limpieza de las vacías.</p>
+          <p class="op-src__on"><span class="op-src__lab">Enciende</span>El hotel de hoy planta por planta, el housekeeping y las llegadas que todavía no tienen habitación lista.</p>
+          <p class="op-src__off"><span class="op-src__lab">Sin esto</span>El día de hoy no existe: solo se pueden enseñar noches ya cerradas, y Holdera lo advierte.</p>
+        </li>
+
+        <li class="op-src">
+          <p class="op-src__n" aria-hidden="true">03</p>
+          <h4 class="op-src__name">Reservas · las noches futuras</h4>
+          <p class="op-src__what">Las habitaciones on the books de cada noche que aún no ha llegado, por tipo, con la fecha en que se tomó la lectura. Dos lecturas separadas en el tiempo son lo que hace posible el pickup.</p>
+          <p class="op-src__on"><span class="op-src__lab">Enciende</span>El calendario mes a mes, el pickup de los últimos siete días y el ritmo de venta contra el año pasado.</p>
+          <p class="op-src__off"><span class="op-src__lab">Sin esto</span>El calendario se queda en histórico: ni pickup, ni pace. No se estima; se dice que no está.</p>
+        </li>
+
+        <li class="op-src">
+          <p class="op-src__n" aria-hidden="true">04</p>
+          <h4 class="op-src__name">Otros departamentos</h4>
+          <p class="op-src__what">El ingreso que no es alojamiento —restauración, spa, parking, lavandería— como total por día y por departamento, cerrado con la misma fecha que tu PMS usa para el día.</p>
+          <p class="op-src__on"><span class="op-src__lab">Enciende</span>El TRevPAR de verdad: el ingreso total del hotel por habitación disponible, no solo la cama.</p>
+          <p class="op-src__off"><span class="op-src__lab">Sin esto</span>Se enseña el RevPAR y el TRevPAR queda marcado como incompleto. En el panel de demostración esos importes van <em>modelados</em> desde supuestos declarados, y cada supuesto está impreso detrás de la cifra.</p>
+        </li>
+      </ol>
+
+      <p class="op__live">Y nada de esto se queda conectado. Holdera lee el archivo que tu hotel exporta, lo procesa y lo publica; entre un export y el siguiente la pantalla sigue diciendo lo mismo, y por eso cada pantalla lleva escrito de cuándo es su dato. <a class="op__link" href="partners.html">Las cuatro vías por las que puede llegarnos ese archivo</a>.</p>
+    </div>
+
+    <!-- --------------------------------------- lo que todavía no entra -->
+    <div class="op__col op__col--out reveal" data-reveal="up" style="--i:2">
+      <h3 class="op__ch op__ch--out"><span class="op__ch-dot op__ch-dot--out" aria-hidden="true"></span>Lo que todavía no entra</h3>
+      <p class="op__cnote">Del catálogo de 57 métricas, en el hotel de la demo 13 tienen valor y 44 salen sin cifra. Cada una dice a qué está esperando. Estos son los huecos grandes.</p>
+
+      <dl class="op__gaps">
+        <div class="op-gap">
+          <dt class="op-gap__k"><span class="op-gap__name">Contabilidad · el libro mayor</span><span class="op-gap__n"><b>18</b> métricas</span></dt>
+          <dd class="op-gap__v">Holdera llega hoy hasta el <strong>ingreso</strong>. El beneficio no: sin el mapeo de cuentas validado no hay GOP, ni GOPPAR, ni GOPPOR, ni coste por habitación ocupada, ni márgenes. Es el hueco más grande del catálogo, y con diferencia.</dd>
+        </div>
+
+        <div class="op-gap">
+          <dt class="op-gap__k"><span class="op-gap__name">POS · el ticket, no el total</span><span class="op-gap__n"><b>9</b> métricas</span></dt>
+          <dd class="op-gap__v">Con el total del día por departamento sale el TRevPAR. Lo que no sale es lo que pasa dentro del restaurante: ticket medio, ingreso por asiento y hora, coste de comida y de bebida. Para eso hacen falta los tickets y el inventario, no una suma.</dd>
+        </div>
+
+        <div class="op-gap">
+          <dt class="op-gap__k"><span class="op-gap__name">Distribución · canales y comisiones</span><span class="op-gap__n"><b>2</b> métricas</span></dt>
+          <dd class="op-gap__v">Si tu libro de reservas trae el canal, la mezcla por canal y el peso de la venta directa se ven. Lo que ese canal te cuesta, no: el coste de distribución necesita las comisiones, y esas viven entre tu channel manager y tu contabilidad. El reparto de GDS y turoperación tampoco sale sin el detalle de distribución.</dd>
+        </div>
+
+        <div class="op-gap">
+          <dt class="op-gap__k"><span class="op-gap__name">Mercado · tu comp set</span><span class="op-gap__n"><b>3</b> métricas</span></dt>
+          <dd class="op-gap__v">MPI, ARI y RGI comparan tu hotel con su competencia, y esa competencia no está en ningún archivo tuyo. Sin una fuente de mercado contratada, esas tres casillas se quedan vacías y dicen por qué.</dd>
+        </div>
+
+        <div class="op-gap">
+          <dt class="op-gap__k"><span class="op-gap__name">Personas · nóminas y fichajes</span><span class="op-gap__n"><b>5</b> métricas</span></dt>
+          <dd class="op-gap__v">Productividad, coste de personal sobre ingreso, horas extra, coste de plantilla por habitación ocupada. Hoy Holdera ve cuánta gente hay desplegada en la demo, no cuánto cuesta.</dd>
+        </div>
+
+        <div class="op-gap">
+          <dt class="op-gap__k"><span class="op-gap__name">Huésped · encuestas y CRM</span><span class="op-gap__n"><b>3</b> métricas</span></dt>
+          <dd class="op-gap__v">NPS, satisfacción y repetición salen de preguntarle al huésped y de un histórico de clientes. Ninguna de las dos cosas se puede deducir de un export de habitaciones, y no se van a estimar.</dd>
+        </div>
+
+        <div class="op-gap">
+          <dt class="op-gap__k"><span class="op-gap__name">Edificio · contadores de luz y agua</span><span class="op-gap__n"><b>3</b> métricas</span></dt>
+          <dd class="op-gap__v">Consumo por habitación ocupada e intensidad energética e hídrica. Hace falta el contador o la factura; no hay manera honesta de repartir un consumo que nadie ha medido.</dd>
+        </div>
+
+        <div class="op-gap op-gap--none">
+          <dt class="op-gap__k"><span class="op-gap__name">Pagos y cerraduras</span><span class="op-gap__n">ninguna</span></dt>
+          <dd class="op-gap__v">No se conectan, y hoy no hacen falta. Holdera no cobra, no concilia cobros y no abre puertas: del dinero solo necesita el ingreso del día, que ya viene en el cierre del PMS, y de las entradas se queda con lo que registra el PMS, no con lo que registra la cerradura.</dd>
+        </div>
+      </dl>
+
+      <p class="op__foot">Los números no suman 44 a propósito: hay métricas que esperan a dos sitios a la vez y aparecen en los dos. La lista completa, con el nombre de cada una y lo que le falta, está abierta en el panel — <a class="op__link" href="/panel/metrics/">el catálogo de las 57</a>.</p>
+    </div>
+
+  </div>
+</section>

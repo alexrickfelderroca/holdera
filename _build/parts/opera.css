@@ -1,0 +1,225 @@
+/* ==========================================================================
+   BLOQUE: «Todo tu hotel, conectado»
+   Markup: _build/parts/opera.html
+   Va DESPUÉS de styles.css. Vive sobre la hoja OSCURA (--sh-bg #121110).
+
+   · Todo color vive en :root. Ni un literal fuera de este bloque.
+   · Dos columnas que NO son iguales a propósito, porque no dicen lo mismo:
+     a la izquierda cuatro paneles elevados (lo que ya entra); a la derecha
+     un libro de cuentas de filas finas (lo que falta). Que la columna de lo
+     que falta sea más pobre visualmente es la idea, no un descuido.
+   · Nada de rejilla de tres tarjetas iguales.
+
+   Contrastes medidos sobre el fondo real de cada elemento:
+     nombre de fuente 15,67:1 · qué entra 10,88:1 · etiqueta «Enciende» 7,98:1
+     bloque «Sin esto» 11,82:1 · etiqueta «Sin esto» 6,36:1
+     nombre del hueco 17,02:1 · texto del hueco 11,82:1 · cifra 8,67:1
+     nota final 6,36:1 · enlaces 8,67:1
+   ========================================================================== */
+
+:root {
+  /* --- superficies ------------------------------------------------------ */
+  --op-panel: var(--sh-surface);     /* el panel de una fuente que ya entra */
+  --op-inset: var(--sh-bg);          /* el hueco rehundido del «Sin esto» */
+  --op-line: var(--sh-border);
+  /* El contorno que IDENTIFICA algo (no decora): 3:1 contra los cuatro
+     fondos de la hoja. Lo usa el punto de la columna de lo que falta. */
+  --op-line-control: var(--sh-control-border);
+
+  /* --- texto ------------------------------------------------------------ */
+  --op-strong: var(--sh-text);       /* 15,67:1 sobre el panel */
+  --op-body: var(--sh-text-2);       /* 10,88:1 sobre el panel */
+  --op-quiet: var(--sh-muted);       /*  5,86:1 sobre el panel */
+  --op-accent: var(--accent-ink);    /*  7,98:1 sobre el panel */
+  --op-rule: var(--accent);          /* decorativo: filetes y puntos */
+
+  /* --- elevación --------------------------------------------------------
+     En oscuro se eleva con un bisel arriba, no con una sombra abajo. */
+  --op-shadow: var(--shadow-sh);
+
+  /* --- medidas ---------------------------------------------------------- */
+  --op-gap-col: clamp(40px, 4.5vw, 72px);
+  --op-pad: 28px;
+}
+
+/* --------------------------------------------------------------------------
+   Rejilla del bloque
+   -------------------------------------------------------------------------- */
+.op__grid { display: grid; gap: 56px; margin-top: 56px; }
+
+@media (min-width: 1080px) {
+  .op__grid {
+    grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+    gap: var(--op-gap-col);
+    align-items: start;
+  }
+}
+
+/* Cabecera de columna ---------------------------------------------------- */
+.op__ch {
+  display: flex; align-items: center; gap: 12px;
+  margin: 0 0 12px;
+  font-size: clamp(19px, 1.5vw, 22px);
+  line-height: 1.24; letter-spacing: -0.02em; font-weight: 500;
+  color: var(--op-strong);            /* 17,02:1 sobre --sh-bg */
+}
+.op__ch-dot {
+  flex: none; width: 9px; height: 9px; border-radius: var(--r-pill);
+  background: var(--op-rule);
+}
+.op__ch-dot--out {
+  background: none;
+  box-shadow: inset 0 0 0 1px var(--op-line-control);
+}
+.op__cnote {
+  max-width: 48ch;
+  margin: 0 0 32px;
+  font-size: 15px; line-height: 1.6;
+  color: var(--op-quiet);             /* 6,36:1 sobre --sh-bg */
+}
+
+/* --------------------------------------------------------------------------
+   Columna izquierda — las cuatro fuentes que ya entran
+   -------------------------------------------------------------------------- */
+.op__srcs {
+  display: grid; gap: 16px;
+  margin: 0; padding: 0; list-style: none;
+  counter-reset: none;
+}
+
+.op-src {
+  position: relative;
+  padding: var(--op-pad);
+  border: 1px solid var(--op-line);
+  border-radius: var(--r-md);
+  background: var(--op-panel);
+  box-shadow: var(--op-shadow);
+}
+.op-src__n {
+  margin: 0 0 8px;
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.18em;
+  color: var(--op-accent);            /* 7,98:1 */
+}
+.op-src__name {
+  margin: 0 0 12px;
+  font-size: 18px; line-height: 1.3; letter-spacing: -0.015em; font-weight: 500;
+  color: var(--op-strong);            /* 15,67:1 */
+}
+.op-src__what {
+  margin: 0 0 20px;
+  font-size: 15px; line-height: 1.62;
+  color: var(--op-body);              /* 10,88:1 */
+}
+
+.op-src__on,
+.op-src__off {
+  margin: 0;
+  font-size: 14px; line-height: 1.6;
+}
+.op-src__on { color: var(--op-body); margin-bottom: 16px; }
+
+/* El «Sin esto» es el ángulo honesto del producto, así que se rehunde y se
+   marca con un filete: se lee como una nota al pie del panel, no como más
+   texto de venta. El fondo BAJA un escalón (--sh-bg bajo --sh-surface), que
+   en oscuro es como se hunde algo. */
+.op-src__off {
+  padding: 16px 16px 16px 20px;
+  border-left: 2px solid var(--op-rule);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  background: var(--op-inset);
+  color: var(--op-body);              /* 11,82:1 sobre --sh-bg */
+}
+.op-src__off em { font-style: normal; color: var(--op-accent); }
+
+.op-src__lab {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+}
+.op-src__on .op-src__lab { color: var(--op-accent); }   /* 7,98:1 */
+.op-src__off .op-src__lab { color: var(--op-quiet); }   /* 6,36:1 sobre --sh-bg */
+
+.op__live {
+  max-width: 62ch;
+  margin: 28px 0 0;
+  font-size: 14px; line-height: 1.66;
+  color: var(--op-quiet);             /* 6,36:1 sobre --sh-bg */
+}
+
+/* --------------------------------------------------------------------------
+   Columna derecha — el libro de lo que falta
+   -------------------------------------------------------------------------- */
+.op__gaps { margin: 0; border-top: 1px solid var(--op-line); }
+
+.op-gap {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--op-line);
+}
+.op-gap__k {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+  margin: 0 0 8px;
+}
+.op-gap__name {
+  font-size: 16px; line-height: 1.3; letter-spacing: -0.012em; font-weight: 500;
+  color: var(--op-strong);            /* 17,02:1 sobre --sh-bg */
+}
+.op-gap__n {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--op-quiet);             /* 6,36:1 */
+}
+.op-gap__n b {
+  font-size: 18px; font-weight: 500; letter-spacing: -0.01em;
+  color: var(--op-accent);            /* 8,67:1 sobre --sh-bg */
+}
+.op-gap__v {
+  margin: 0;
+  font-size: 15px; line-height: 1.62;
+  color: var(--op-body);              /* 11,82:1 sobre --sh-bg */
+}
+.op-gap__v strong { color: var(--op-strong); font-weight: 500; }
+
+/* La fila de «pagos y cerraduras» no tiene cifra porque no hay ninguna
+   métrica esperando: se apaga en vez de fingir un número. */
+.op-gap--none .op-gap__name { color: var(--op-body); }
+.op-gap--none .op-gap__n { color: var(--op-quiet); }
+
+.op__foot {
+  max-width: 62ch;
+  margin: 24px 0 0;
+  font-size: 14px; line-height: 1.66;
+  color: var(--op-quiet);             /* 6,36:1 */
+}
+
+/* Enlaces del bloque ----------------------------------------------------- */
+.op__link {
+  color: var(--op-accent);            /* 8,67:1 sobre --sh-bg */
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color var(--t-fast) var(--ease);
+}
+.op__link:hover { color: var(--op-strong); }
+.op__link:focus-visible { outline: 2px solid var(--op-strong); outline-offset: 3px; border-radius: 2px; }
+
+/* --------------------------------------------------------------------------
+   Móvil
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  :root { --op-pad: 20px; }
+  .op__grid { gap: 48px; margin-top: 40px; }
+  .op__cnote { margin-bottom: 24px; }
+  .op-src__off { padding: 14px 14px 14px 16px; }
+  .op-gap__k { gap: 8px; }
+}
+
+/* --------------------------------------------------------------------------
+   Movimiento reducido
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .op__link { transition: none; }
+}

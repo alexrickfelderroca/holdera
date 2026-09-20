@@ -1,0 +1,192 @@
+/* ==========================================================================
+   BLOQUE: Preguntas frecuentes
+   Markup: _build/parts/faq.html
+   Va DESPUÉS de styles.css. Vive sobre la hoja OSCURA (--sh-bg #121110).
+
+   · Todo color vive en :root. Ni un literal fuera de este bloque.
+   · <details>/<summary> nativo: sin JavaScript abre, cierra y es accesible
+     con teclado de serie. Lo único que se cambia es el aspecto del marcador.
+   · Dos columnas editoriales, no una rejilla de tarjetas: a la izquierda la
+     entradilla, que se queda pegada mientras lees; a la derecha la lista.
+   · Los marcadores «[… por confirmar]» van en mono, con subrayado
+     discontinuo y en el gris apagado del sitio. NO se les da aspecto de dato
+     real: es la misma convención que los datos de contacto del pie.
+
+   Contrastes medidos sobre el fondo real de cada elemento:
+     pregunta 17,02:1 · pregunta abierta 15,67:1 · respuesta 10,88:1
+     marcador 5,86:1 · entradilla 11,82:1 · etiqueta mono 6,36:1
+   ========================================================================== */
+
+:root {
+  /* --- superficies ------------------------------------------------------ */
+  --faq-line: var(--sh-border);
+  --faq-line-hover: var(--sh-border-strong);
+  /* Una pregunta abierta se separa del fondo subiendo un escalón, no con una
+     sombra: en oscuro la sombra bajo una superficie casi negra no existe. */
+  --faq-open-bg: var(--sh-surface);
+  --faq-bevel: var(--sh-bevel);
+
+  /* --- texto ------------------------------------------------------------ */
+  --faq-q: var(--sh-text);        /* 17,02:1 cerrada · 15,67:1 abierta */
+  --faq-a: var(--sh-text-2);      /* 10,88:1 sobre la abierta */
+  --faq-quiet: var(--sh-muted);   /*  5,86:1 */
+  --faq-ring: var(--sh-text);
+
+  /* --- el signo + / × ---------------------------------------------------
+     Se dibuja con dos barras de 1px para que herede el color del texto y no
+     dependa de ninguna fuente de iconos. */
+  --faq-sign: var(--sh-text-2);
+  --faq-sign-box: 24px;
+
+  /* --- medidas ---------------------------------------------------------- */
+  --faq-gap-col: clamp(40px, 5vw, 80px);
+  --faq-pad-y: 24px;
+  --faq-pad-x: 20px;
+}
+
+/* --------------------------------------------------------------------------
+   Rejilla del bloque
+   -------------------------------------------------------------------------- */
+.faq__grid { display: grid; gap: 48px; }
+
+@media (min-width: 1024px) {
+  .faq__grid {
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+    gap: var(--faq-gap-col);
+    align-items: start;
+  }
+  .faq__intro {
+    position: sticky;
+    /* la cabecera es fija: 64px compacta + aire */
+    top: 104px;
+  }
+}
+
+.faq__intro .sheet__title { max-width: 13ch; }
+.faq__intro .sheet__lead { max-width: 42ch; }
+
+.faq__legend {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
+  max-width: 46ch;
+  margin: 28px 0 0; padding-top: 24px;
+  border-top: 1px solid var(--faq-line);
+  font-size: 14px; line-height: 1.6;
+  color: var(--faq-quiet);          /* 6,36:1 sobre --sh-bg */
+}
+.faq__legend-sample { flex: none; }
+
+/* --------------------------------------------------------------------------
+   La lista
+   -------------------------------------------------------------------------- */
+.faq__list { border-top: 1px solid var(--faq-line); }
+
+.faq__item {
+  border-bottom: 1px solid var(--faq-line);
+  border-radius: var(--r-sm);
+  transition: background-color var(--t-fast) var(--ease);
+}
+.faq__item:hover { border-bottom-color: var(--faq-line-hover); }
+.faq__item[open] {
+  background: var(--faq-open-bg);
+  box-shadow: var(--faq-bevel);
+}
+
+/* La pregunta ---------------------------------------------------------- */
+.faq__q {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 20px;
+  /* 24+25+24 = 73px de zona táctil, muy por encima de los 44 de la casa */
+  padding: var(--faq-pad-y) var(--faq-pad-x);
+  font-size: clamp(17px, 1.35vw, 19px);
+  line-height: 1.38;
+  letter-spacing: -0.012em;
+  font-weight: 500;
+  color: var(--faq-q);
+  cursor: pointer;
+  list-style: none;
+}
+.faq__q::-webkit-details-marker { display: none; }
+.faq__q:focus-visible { outline: 2px solid var(--faq-ring); outline-offset: -2px; border-radius: var(--r-sm); }
+
+/* El signo: + cerrado, × abierto. Dos barras de 1px giradas. */
+.faq__sign {
+  position: relative; flex: none;
+  width: var(--faq-sign-box); height: var(--faq-sign-box);
+  margin-top: 2px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--faq-line);
+  transition: border-color var(--t-fast) var(--ease), transform var(--t-mid) var(--ease);
+}
+.faq__sign::before,
+.faq__sign::after {
+  content: "";
+  position: absolute; top: 50%; left: 50%;
+  width: 10px; height: 1px;
+  background: var(--faq-sign);
+  transform: translate(-50%, -50%);
+  transition: opacity var(--t-fast) var(--ease);
+}
+.faq__sign::after { transform: translate(-50%, -50%) rotate(90deg); }
+.faq__item:hover .faq__sign { border-color: var(--faq-line-hover); }
+.faq__item[open] .faq__sign { transform: rotate(45deg); border-color: var(--faq-line-hover); }
+
+/* La respuesta --------------------------------------------------------- */
+.faq__a {
+  padding: 0 var(--faq-pad-x) var(--faq-pad-y);
+  /* deja la respuesta alineada con la pregunta y lejos del signo */
+  max-width: 72ch;
+}
+.faq__a p {
+  margin: 0;
+  font-size: 16px; line-height: 1.68;
+  color: var(--faq-a);
+}
+/* Sin `both` a propósito. Con animation-fill-mode: both, el estado de la
+   respuesta lo fija la animación, y el día que esa animación no llegue a
+   correr —subárbol con content-visibility, una pintura saltada— la respuesta
+   se queda en opacity 0 PARA SIEMPRE. Es la regla de la casa sobre revelados:
+   nada puede quedarse invisible de manera permanente. Sin fill-mode, el
+   estado en reposo del CSS ya es visible y la animación solo manda mientras
+   dura. */
+.faq__item[open] .faq__a { animation: faq-in 240ms var(--ease); }
+@keyframes faq-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* El marcador de lo que falta ------------------------------------------
+   Aquí NO se declara ni la fuente, ni el tamaño, ni el color, ni el
+   subrayado: styles.css ya tiene una regla global para [data-placeholder]
+   (mono 12,5px, --sh-muted, borde inferior discontinuo) que es la que visten
+   los datos de contacto pendientes del pie y de las siete páginas. Volver a
+   pintarlo aquí crearía un SEGUNDO aspecto de marcador en el mismo sitio, y
+   el objetivo del marcador es justo el contrario: que se reconozca a la
+   primera y en cualquier página. Lo único que se añade es el aire que
+   necesita cuando parte una línea a la mitad. */
+.faq__todo { line-height: 1.9; }
+.faq__legend-sample { line-height: 1.9; }
+
+/* --------------------------------------------------------------------------
+   Móvil
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  :root { --faq-pad-x: 12px; --faq-pad-y: 20px; }
+  .faq__grid { gap: 40px; }
+  .faq__intro .sheet__title { max-width: none; }
+  .faq__q { font-size: 17px; gap: 16px; }
+  .faq__a p { font-size: 16px; }
+}
+
+/* --------------------------------------------------------------------------
+   Movimiento reducido
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .faq__item,
+  .faq__sign,
+  .faq__sign::before,
+  .faq__sign::after { transition: none; }
+  .faq__item[open] .faq__a { animation: none; }
+  /* El signo sigue girando porque es estado, no decoración: sin el giro no
+     hay forma de saber si está abierta. Lo que se quita es el tiempo. */
+  .faq__item[open] .faq__sign { transform: rotate(45deg); }
+}

@@ -26,3 +26,9 @@ node_modules/
 # Capturas en bruto del panel, la materia prima de la obra del escaparate. Las
 # convierte _build/producto-art.js; lo que se publica son los .webp de al lado.
 /assets/img/producto/_raw/
+
+# La extraccion original de la animacion: fuentes GT Standard y Publish Serif
+# (de pago, de otra web) y hero-v4.mp4 (metraje de terceros). El repo es
+# PUBLICO y ademas se despliega tal cual a holdera.es. Lo que se usa del
+# recorrido esta portado en hotel-anim.* y assets/anim/, sin nada de eso.
+/animacion-hotel-holdera/

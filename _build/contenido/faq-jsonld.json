@@ -1,0 +1,92 @@
+{
+  "_meta": {
+    "fuente": "_build/contenido/faq.json — GENERADO por _build/contenido/build-faq-jsonld.js, no editar a mano",
+    "regla": "Solo entran las preguntas cuya respuesta NO lleva marcador. Hoy: 8 de 12.",
+    "excluidas": [
+      "faq-donde-se-guardan",
+      "faq-precio",
+      "faq-permanencia",
+      "faq-varios-hoteles"
+    ],
+    "uso": "Va al <head> de la página que publique el bloque FAQ, dentro del @graph que ya escribe _build/seo-inject.js. El texto de cada acceptedAnswer es IDÉNTICO al que se ve en pantalla: si cambia faq.json o faq.html, vuelve a generarlo.",
+    "generado": "2026-09-20"
+  },
+  "jsonld": {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": "https://holdera.es/#faq",
+    "inLanguage": "es-ES",
+    "isPartOf": {
+      "@id": "https://holdera.es/#website"
+    },
+    "about": {
+      "@id": "https://holdera.es/#organization"
+    },
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Holdera sustituye a mi PMS o se conecta con él?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Se conecta, y en una sola dirección: lee. Holdera no gestiona reservas, no bloquea habitaciones, no cobra y no escribe nada en tus sistemas. Tu PMS sigue siendo donde ocurre la operación; Holdera es donde la ves junta y con su origen al lado. Si un día dejas de usarlo, tu PMS se queda exactamente como estaba."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Con qué PMS funciona?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "La pregunta que decide no es la marca, es qué informes sabe sacar. Holdera necesita cuatro cosas: el cierre del día, la foto intradía, las noches ya vendidas por delante y el ingreso de los departamentos que no son alojamiento. Si tu PMS puede generar eso, aunque sea en un CSV, funciona. No publicamos una lista de PMS «certificados» porque no la tenemos: mándanos un informe de ejemplo y te decimos qué pantallas se encienden con él y cuáles no."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Y si mi PMS no exporta uno de esos datos?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Entonces esa parte no se enciende, y la pantalla lo dice. Sin la foto intradía no hay «hoy»: solo noches ya cerradas. Sin las noches futuras no hay pickup ni ritmo de venta. Sin el ingreso de restauración y spa se enseña el RevPAR y el TRevPAR queda marcado como incompleto, que es la cifra que más se falsea cuando solo se cuentan las habitaciones. Lo que no se hace nunca es estimar el hueco y enseñarlo como si fuera un dato."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cuánto tarda en estar funcionando?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Depende de por dónde entre el dato, y hay cuatro vías. Por la más simple —descargas el informe de tu PMS y nos lo pasas— ver tus propios números en pantalla es cuestión de días y no hace falta que nadie toque tu sistema. Lo demás (que el export salga solo cada noche, repasar contigo las definiciones) depende de tu PMS y de quién lo administre, así que la fecha te la damos después de ver tu export, no antes de verlo."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué datos salen exactamente de mi hotel?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Cifras de habitaciones y de dinero por día, no expedientes. Del cierre diario: habitaciones físicas, vendidas, ocupadas, fuera de orden, fuera de servicio y el ingreso de alojamiento de esa noche. De la foto intradía: llegadas, salidas y el estado de limpieza de las habitaciones. De las noches futuras: habitaciones on the books por noche y por tipo, con la fecha en que se tomó la lectura. Y de los otros departamentos, el total por día. Nada de eso necesita el nombre de nadie."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué pasa con los datos personales de los huéspedes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Holdera trabaja con agregados: cuántas habitaciones, en qué estado y por cuánto. Para calcular ocupación, ADR, RevPAR o pickup no hace falta ni un nombre, y por defecto no se piden. En el panel de demostración hay una pantalla de huéspedes con algo de detalle individual —lo justo para atender a alguien que está esperando en recepción, y con la inicial del apellido—; si en tu hotel ese detalle sobra, esa pantalla sencillamente no se enciende, porque sin la fuente no hay pantalla. La parte legal y de custodia está en la pregunta anterior, que es la que todavía tiene decisiones abiertas."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Y si una cifra no me cuadra?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Se abre. Cada número lleva detrás la fórmula, el valor que tomó cada entrada, el registro ya normalizado y la fila en bruto tal como entró, con su identificador de origen. Casi nunca el desacuerdo es un error de cálculo: es una definición distinta —tú cuentas las fuera de orden dentro del denominador y la pantalla las cuenta fuera, o tu día cierra a otra hora—. Eso se corrige en la definición y el histórico se vuelve a calcular con ella. Y mientras una definición no esté validada contigo, la cifra sale marcada como pendiente de validar en vez de pasar por definitiva."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Esto es inteligencia artificial? ¿Decide algo por su cuenta?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No decide nada y no actúa fuera del panel: no cambia tarifas, no escribe en tu PMS y no manda correos. Hay una pantalla que cruza señales del propio hotel y propone algo —en la demo, que hay trece minutos de espera en el restaurante mientras una planta tiene capacidad libre— y lo enseña por etapas: qué observa, cómo lo explica, qué recomienda y qué pasaría si se hiciera. Decides tú. El caso queda registrado y, cuando se cierra, se compara lo que se predijo con lo que acabó pasando."
+        }
+      }
+    ]
+  }
+}

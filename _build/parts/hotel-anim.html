@@ -1,0 +1,177 @@
+<!-- ===========================================================================
+     EL RECORRIDO POR EL HOTEL — marcado listo para pegar DENTRO de <main>,
+     entre dos <section class="sheet"> cualesquiera.
+
+     Depende de:  <link rel="stylesheet" href="hotel-anim.css">   (tras styles.css)
+                  <script src="hotel-anim.js" defer></script>
+
+     Todos los id llevan prefijo "ha-" porque index.html ya usa #producto,
+     #inicio, #contacto, #como-trabajamos y cinco #producto-*.
+     La clase .reveal del original es aqui .ha-reveal: en holdera .reveal ya
+     existe con otra semantica y la gobierna script.js.
+
+     .ha--seam pinta las dos rampas de 180 px que funden este bloque claro con
+     la hoja oscura de arriba y de abajo. Si el bloque acabara entre dos
+     secciones claras, se quita esa clase y ya esta.
+
+     🔴 data-ha-scenes="off": las cinco escenas lottie del original NO se
+     cargan. No es un fallo tecnico —la inversion por CSS las deja perfectamente
+     legibles— sino de CONTENIDO: estan en ingles, el chat lo firma "Lance
+     Agent" (nombre de producto de otra empresa) y la quinta ensena cifras
+     inventadas en dolares (98% CURRENT OCCUPANCY, $428K REVENUE THIS MO,
+     $186 REVPAR). Con la obra sustituida o aprobada por Alex se encienden
+     poniendo data-ha-scenes="on".
+
+     data-ha-assets es la raiz de los assets pesados (SVG del plano, lottie y
+     la libreria). Se pide todo en diferido y solo cuando hace falta.
+     =========================================================================== -->
+
+<section class="ha ha--seam" id="ha-recorrido" data-ha-scenes="off" data-ha-assets="assets/anim/" aria-labelledby="ha-title">
+  <div class="ha-stage-section" id="ha-stage-section">
+    <div class="ha-pin" id="ha-pin">
+
+      <!-- Capas de fondo. Mismo apilamiento que el original menos el video:
+           papel z2 · plano z3 · degradados de borde z10 · contenido z20.
+           Solo existen en el modo pineado; hotel-anim.js escribe su opacidad y
+           su color desde las curvas medidas. -->
+      <div class="ha-layer ha-scrim" id="ha-scrim" aria-hidden="true"></div>
+      <div class="ha-layer ha-map" id="ha-mapLayer" aria-hidden="true">
+        <div class="ha-map__svg" id="ha-map"></div>
+      </div>
+      <div class="ha-grad ha-grad--left" id="ha-gradL" aria-hidden="true"></div>
+      <div class="ha-grad ha-grad--top" id="ha-gradT" aria-hidden="true"></div>
+
+      <!-- ─────────────────────────────────────────── escena 1 · la apertura -->
+      <div class="ha-stage ha-stage--trust" id="ha-stageTrust">
+        <div class="ha-wrap">
+          <p class="ha-eyebrow ha-reveal">
+            <span class="ha-eyebrow__bar" aria-hidden="true"></span>El recorrido
+          </p>
+          <h2 class="ha-lead ha-reveal" data-ha-delay="1" id="ha-title">
+            Un mismo sistema, y cada equipo del hotel viendo lo que le toca.
+          </h2>
+
+          <!-- El plano dibujandose de una vez, para cuando no hay recorrido
+               pineado (movil, movimiento reducido, sin datos). Lo rellena
+               hotel-anim.js; vacio no ocupa nada. -->
+          <div class="ha-map-static" id="ha-mapStatic" aria-hidden="true"></div>
+
+          <div class="ha-types-block">
+            <p class="ha-types__label">Pensado para</p>
+            <ul class="ha-types">
+              <li>Hoteles independientes</li>
+              <li>Cadenas hoteleras</li>
+              <li>Hoteles de lujo</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ──────────────────────────────────── escena 2 · los departamentos -->
+      <div class="ha-stage ha-stage--tour" id="ha-stageTour">
+
+        <!-- El HUD pineado. Los paneles de la tarjeta los crea hotel-anim.js
+             MOVIENDO los nodos de la lista de abajo: un solo juego de
+             contenido, ni duplicado en el DOM ni tabulable invisible. -->
+        <div class="ha-hud" id="ha-hud">
+          <div class="ha-tabs-wrap">
+            <span class="ha-dash" id="ha-dash" aria-hidden="true"></span>
+            <div class="ha-tabs" id="ha-tabs" aria-label="Departamentos del hotel">
+              <button type="button" class="ha-tab" id="ha-tab-front" data-dept="front">Recepción</button>
+              <button type="button" class="ha-tab" id="ha-tab-back" data-dept="back">Operaciones</button>
+              <button type="button" class="ha-tab" id="ha-tab-sales" data-dept="sales">Ventas</button>
+              <button type="button" class="ha-tab" id="ha-tab-food" data-dept="food">Restauración</button>
+              <button type="button" class="ha-tab" id="ha-tab-mgmt" data-dept="mgmt">Dirección</button>
+            </div>
+          </div>
+          <div class="ha-card" id="ha-card">
+            <div class="ha-card__blur" aria-hidden="true"></div>
+            <div class="ha-card__ring" aria-hidden="true"><div class="ha-card__spin"></div></div>
+          </div>
+        </div>
+
+        <button type="button" class="ha-skip" id="ha-skip">Saltar el recorrido</button>
+
+        <!-- EL CONTENIDO REAL. Siempre en el DOM, siempre indexable. En modo
+             pineado sus nodos viven dentro de la tarjeta; fuera de el, es esta
+             lista la que se lee. -->
+        <ol class="ha-list ha-wrap" id="ha-list">
+          <li class="ha-item" data-dept="front">
+            <div class="ha-item__body">
+              <p class="ha-item__num">01</p>
+              <h3 class="ha-item__title">Recepción</h3>
+              <p class="ha-item__text">Llegadas, salidas y qué habitaciones están listas para entrar. Lo que pasa hoy, en una sola pantalla.</p>
+            </div>
+            <div class="ha-media" data-dept="front" data-lottie="lottie/product-1.json"
+                 style="--ha-lottie-w:321px; --ha-lottie-h:184px; aspect-ratio: 321 / 184;" aria-hidden="true"></div>
+          </li>
+
+          <li class="ha-item" data-dept="back">
+            <div class="ha-item__body">
+              <p class="ha-item__num">02</p>
+              <h3 class="ha-item__title">Operaciones</h3>
+              <p class="ha-item__text">El estado de cada habitación, planta a planta: limpia, sucia, en limpieza, ocupada o fuera de servicio.</p>
+            </div>
+            <div class="ha-media" data-dept="back" data-lottie="lottie/product-2.json"
+                 style="--ha-lottie-w:306px; --ha-lottie-h:128px; aspect-ratio: 306 / 128;" aria-hidden="true"></div>
+          </li>
+
+          <li class="ha-item" data-dept="sales">
+            <div class="ha-item__body">
+              <p class="ha-item__num">03</p>
+              <h3 class="ha-item__title">Ventas</h3>
+              <p class="ha-item__text">Ocupación, ADR y RevPAR, y el ritmo de reservas comparado con el mismo momento del año pasado.</p>
+            </div>
+            <div class="ha-media" data-dept="sales" data-lottie="lottie/product-3.json"
+                 style="--ha-lottie-w:304px; --ha-lottie-h:205px; aspect-ratio: 304 / 205;" aria-hidden="true"></div>
+          </li>
+
+          <li class="ha-item" data-dept="food">
+            <div class="ha-item__body">
+              <p class="ha-item__num">04</p>
+              <h3 class="ha-item__title">Restauración</h3>
+              <p class="ha-item__text">Lo que aporta cada departamento más allá de la habitación, con los supuestos del cálculo a la vista.</p>
+            </div>
+            <div class="ha-media" data-dept="food" data-lottie="lottie/product-4.json"
+                 style="--ha-lottie-w:324px; --ha-lottie-h:152px; aspect-ratio: 324 / 152;" aria-hidden="true"></div>
+          </li>
+
+          <li class="ha-item" data-dept="mgmt">
+            <div class="ha-item__body">
+              <p class="ha-item__num">05</p>
+              <h3 class="ha-item__title">Dirección</h3>
+              <p class="ha-item__text">Cada indicador con su fórmula, sus entradas y el registro en bruto del que sale. Y cuando el dato no está, lo dice.</p>
+            </div>
+            <div class="ha-media" data-dept="mgmt" data-lottie="lottie/product-5.json"
+                 style="--ha-lottie-w:306px; --ha-lottie-h:65px; aspect-ratio: 306 / 65;" aria-hidden="true"></div>
+          </li>
+        </ol>
+      </div>
+
+      <!-- ──────────────────────────────────────── escena 3 · lo que medimos -->
+      <div class="ha-stage ha-stage--outcomes" id="ha-stageOutcomes">
+        <div class="ha-wrap ha-outcomes">
+          <div class="ha-outcomes__intro">
+            <h2>Medimos lo que importa</h2>
+            <p>Definimos contigo qué significa mejorar y medimos el sistema sobre objetivos reales de tu hotel.</p>
+          </div>
+          <div class="ha-stats" id="ha-stats">
+            <div class="ha-stat">
+              <p class="ha-stat__metric">Tiempo de respuesta</p>
+              <p class="ha-stat__label">Cuánto tarda cada solicitud en llegar a la persona o a la pantalla adecuada.</p>
+            </div>
+            <div class="ha-stat">
+              <p class="ha-stat__metric">Carga operativa</p>
+              <p class="ha-stat__label">Qué tareas repetitivas deja de hacer tu equipo y cuánto tiempo recupera.</p>
+            </div>
+            <div class="ha-stat">
+              <p class="ha-stat__metric">Calidad del dato</p>
+              <p class="ha-stat__label">Cuántos indicadores puedes trazar hasta su registro de origen, y cuáles siguen sin fuente.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

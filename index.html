@@ -11,7 +11,11 @@
   <meta property="og:description" content="Habitaciones, llegadas, salidas y housekeeping sobre el plano del hotel; ocupación, ADR, RevPAR y TRevPAR con su calendario de reservas. Cada cifra se abre y enseña el registro del que sale.">
   <meta property="og:locale" content="es_ES">
   <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=0fab7b99">
+  <link rel="stylesheet" href="styles.css?v=e9fd32ac">
+  <!-- El recorrido del hotel. Va DESPUES de styles.css: lee sus tokens del :root. -->
+  <link rel="stylesheet" href="hotel-anim.css?v=8b1c1268">
+  <!-- Las tres secciones nuevas (conectado · funciones · preguntas). -->
+  <link rel="stylesheet" href="sections.css?v=bc28eef0">
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
   <script>document.documentElement.classList.add('has-js');</script>
   <!-- seo:head -->
@@ -80,6 +84,20 @@
           "Integración de exports de PMS"
         ],
         "knowsLanguage": "es",
+        "email": "info@holdera.es",
+        "telephone": "+34607836960",
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "contactType": "sales",
+            "email": "info@holdera.es",
+            "telephone": "+34607836960",
+            "areaServed": "ES",
+            "availableLanguage": [
+              "es"
+            ]
+          }
+        ],
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Barcelona",
@@ -179,7 +197,8 @@
 
         <nav class="nav__links" aria-label="Principal">
           <a href="#inicio" class="is-active" aria-current="page">Inicio</a>
-          <a href="#como-trabajamos">Cómo trabajamos</a>
+          <a href="#conectado">Cómo funciona</a>
+          <a href="#integraciones">Integraciones</a>
           <a href="nosotros.html">Nosotros</a>
           <a href="partners.html">Partners</a>
           <a href="panel/">Panel demo</a>
@@ -197,7 +216,6 @@
           </button>
         </div>
       </header>
-
 
   <!-- ============ HERO (sticky stage: the dark sheet slides over it on scroll) ============ -->
   <div class="hero-stage">
@@ -245,27 +263,11 @@
             <span>Ver el panel demo</span>
             <span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
           </a>
-          <a class="btn btn--secondary" href="#producto">Cómo funciona</a>
+          <a class="btn btn--secondary" href="#ha-recorrido">Cómo funciona</a>
         </div>
        </div>
       </div>
 
-      <!-- La lista va aquí, justo detrás del copy, y no al final de la sección:
-           el orden del DOM tiene que coincidir con el orden visual. En móvil la
-           columna se despliega con `display: contents` y la lista queda segunda,
-           que es donde se ve. Estando al final, tabular desde los botones
-           saltaba ~800px abajo hasta la tarjeta de contacto y luego volvía ~700px
-           arriba a la lista. -->
-      <nav class="hero__works" data-works aria-label="El producto" data-enter style="--d:640">
-        <p class="hero__works-label">El producto</p>
-        <ul class="hero__works-list">
-          <li><a href="#producto-hoy" data-work="hoy">Hoy</a></li>
-          <li><a href="#producto-habitaciones" data-work="habitaciones">Habitaciones</a></li>
-          <li><a href="#producto-housekeeping" data-work="housekeeping">Housekeeping</a></li>
-          <li><a href="#producto-revenue" data-work="revenue">Revenue y reservas</a></li>
-          <li><a href="#producto-trazabilidad" data-work="trazabilidad">Trazabilidad</a></li>
-        </ul>
-      </nav>
       </div>
 
       <div class="hero__scene">
@@ -280,11 +282,108 @@
             <canvas class="brain__canvas" data-brain aria-hidden="true"></canvas>
           </figure>
         </div>
-        <div class="hero__bar" data-enter style="--d:700">
-          <span>Hoy</span>
-          <span>Habitaciones</span>
-          <span>Revenue y reservas</span>
-          <span>Trazabilidad</span>
+        <!-- 41 marcas. La segunda pasada es un CLON exacto y va aria-hidden:
+             es lo que hace que el bucle no tenga costura (el track se desplaza -50%
+             y al llegar vuelve a 0, donde el dibujo es identico). Un lector de
+             pantalla lee la lista UNA vez.
+             Con "prefers-reduced-motion" la tira se para y el visor pasa a ser
+             desplazable con el dedo o la rueda; el clon se oculta. -->
+        <div class="hero__bar hero__bar--mrq mrq" data-enter style="--d:700">
+          <p class="mrq__label" id="mrq-label">Nos integramos con</p>
+          <div class="mrq__viewport">
+            <div class="mrq__track">
+              <ul class="mrq__row" aria-labelledby="mrq-label">
+                  <li class="mrq__item"><svg viewBox="0 0 85.91 24" role="img" aria-label="SiteMinder"><text x="0" y="17.6" textLength="85.91" lengthAdjust="spacingAndGlyphs">SiteMinder</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 89.17 24" role="img" aria-label="YieldPlanet"><text x="0" y="17.6" textLength="89.17" lengthAdjust="spacingAndGlyphs">YieldPlanet</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 68.69 24" role="img" aria-label="Channex"><text x="0" y="17.6" textLength="68.69" lengthAdjust="spacingAndGlyphs">Channex</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 103.01 24" role="img" aria-label="Neobookings"><text x="0" y="17.6" textLength="103.01" lengthAdjust="spacingAndGlyphs">Neobookings</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 65.44 24" role="img" aria-label="WuBook"><text x="0" y="17.6" textLength="65.44" lengthAdjust="spacingAndGlyphs">WuBook</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 65.5 24" role="img" aria-label="Prestige"><text x="0" y="17.6" textLength="65.5" lengthAdjust="spacingAndGlyphs">Prestige</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 90.45 24" role="img" aria-label="RoomCloud"><text x="0" y="17.6" textLength="90.45" lengthAdjust="spacingAndGlyphs">RoomCloud</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 77.67 24" role="img" aria-label="Paycomet"><text x="0" y="17.6" textLength="77.67" lengthAdjust="spacingAndGlyphs">Paycomet</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 47.57 24" role="img" aria-label="Monei"><text x="0" y="17.6" textLength="47.57" lengthAdjust="spacingAndGlyphs">Monei</text></svg></li>
+                  <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Redsys"><path d="M11.626 24c-3.989-.108-7.476-2.03-9.89-5.873A10.9 10.9 0 0 1 .17 13.959a12.4 12.4 0 0 1 .239-4.996c.44-1.711 1.275-3.197 2.339-4.58.075-.099.169-.263.314-.174.098.061.023.207-.019.324-.473 1.36-.46 2.756.225 3.984.783 1.411 1.964 2.438 3.67 2.705 1.636.258 3.07-.211 4.21-1.317 1.378-1.34 1.95-2.99 1.415-4.946-.285-1.036-.768-1.922-1.612-2.578-1.092-.848-2.33-1.26-3.722-1.12-.098.01-.225.08-.267-.056s.103-.14.187-.178A11.9 11.9 0 0 1 12.071 0c1.74.01 3.427.384 5.006 1.125 2.152 1.008 3.91 2.498 5.133 4.552a12.4 12.4 0 0 1 1.688 4.93c.154 1.313.08 2.584-.188 3.863-.333 1.575-.942 3.028-1.875 4.34-.853 1.2-1.851 2.241-3.103 3.052-.998.647-2.025 1.177-3.16 1.538-1.115.356-2.245.544-3.946.595z"/></svg></li>
+                  <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Stripe"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.594-7.305h.003z"/></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 66.9 24" role="img" aria-label="CashDro"><text x="0" y="17.6" textLength="66.9" lengthAdjust="spacingAndGlyphs">CashDro</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 56.66 24" role="img" aria-label="Dataria"><text x="0" y="17.6" textLength="56.66" lengthAdjust="spacingAndGlyphs">Dataria</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 78.11 24" role="img" aria-label="PriceLabs"><text x="0" y="17.6" textLength="78.11" lengthAdjust="spacingAndGlyphs">PriceLabs</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 95.9 24" role="img" aria-label="RevCtrlData"><text x="0" y="17.6" textLength="95.9" lengthAdjust="spacingAndGlyphs">RevCtrlData</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 58.66 24" role="img" aria-label="Revbell"><text x="0" y="17.6" textLength="58.66" lengthAdjust="spacingAndGlyphs">Revbell</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 60.37 24" role="img" aria-label="Revtool"><text x="0" y="17.6" textLength="60.37" lengthAdjust="spacingAndGlyphs">Revtool</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 123.78 24" role="img" aria-label="TheNetRevenue"><text x="0" y="17.6" textLength="123.78" lengthAdjust="spacingAndGlyphs">TheNetRevenue</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 130.07 24" role="img" aria-label="RoomPriceGenie"><text x="0" y="17.6" textLength="130.07" lengthAdjust="spacingAndGlyphs">RoomPriceGenie</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 36.06 24" role="img" aria-label="Tesa"><text x="0" y="17.6" textLength="36.06" lengthAdjust="spacingAndGlyphs">Tesa</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 66.13 24" role="img" aria-label="Salto KS"><text x="0" y="17.6" textLength="66.13" lengthAdjust="spacingAndGlyphs">Salto KS</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 98.56 24" role="img" aria-label="Yacan Smart"><text x="0" y="17.6" textLength="98.56" lengthAdjust="spacingAndGlyphs">Yacan Smart</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 73.88 24" role="img" aria-label="Danalock"><text x="0" y="17.6" textLength="73.88" lengthAdjust="spacingAndGlyphs">Danalock</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 56.85 24" role="img" aria-label="TTLock"><text x="0" y="17.6" textLength="56.85" lengthAdjust="spacingAndGlyphs">TTLock</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 46.28 24" role="img" aria-label="Agora"><text x="0" y="17.6" textLength="46.28" lengthAdjust="spacingAndGlyphs">Agora</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 38.93 24" role="img" aria-label="Revo"><text x="0" y="17.6" textLength="38.93" lengthAdjust="spacingAndGlyphs">Revo</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 54.39 24" role="img" aria-label="HioPos"><text x="0" y="17.6" textLength="54.39" lengthAdjust="spacingAndGlyphs">HioPos</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 68.42 24" role="img" aria-label="Spalopia"><text x="0" y="17.6" textLength="68.42" lengthAdjust="spacingAndGlyphs">Spalopia</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 50.92 24" role="img" aria-label="HiJiffy"><text x="0" y="17.6" textLength="50.92" lengthAdjust="spacingAndGlyphs">HiJiffy</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 65.79 24" role="img" aria-label="Clientify"><text x="0" y="17.6" textLength="65.79" lengthAdjust="spacingAndGlyphs">Clientify</text></svg></li>
+                  <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Sage 50"><path d="M2.702 5.316C1.167 5.316 0 6.48 0 7.972c0 1.635 1.167 2.267 2.46 2.655 1.224.387 1.804.818 1.804 1.666 0 .86-.64 1.465-1.477 1.465-.84 0-1.566-.604-1.566-1.535 0-.516.242-.647.242-.934 0-.33-.227-.574-.599-.574-.423 0-.864.647-.864 1.566 0 1.48 1.266 2.57 2.787 2.57 1.535 0 2.701-1.163 2.701-2.656 0-1.623-1.166-2.267-2.472-2.655-1.209-.372-1.792-.818-1.792-1.666 0-.845.626-1.45 1.463-1.45.867 0 1.565.617 1.577 1.465.016.388.285.617.599.617a.592.592 0 0 0 .61-.647c-.027-1.48-1.263-2.543-2.771-2.543zm6.171 9.52c.683 0 1.21-.23 1.21-.69a.57.57 0 0 0-.557-.574c-.2 0-.341.085-.668.085-.882 0-1.577-.76-1.577-1.65 0-.962.71-1.725 1.608-1.725 1.009 0 1.65.775 1.65 1.895v2.054c0 .36.284.604.625.604.327 0 .61-.244.61-.604v-2.097c0-1.72-1.178-2.984-2.858-2.984-1.566 0-2.86 1.22-2.86 2.856 0 1.58 1.282 2.83 2.817 2.83zm6.257 3.848c1.535 0 2.701-1.163 2.701-2.656 0-1.635-1.166-2.267-2.472-2.655-1.209-.387-1.792-.818-1.792-1.666s.64-1.465 1.463-1.465c.84 0 1.577.604 1.577 1.535 0 .519-.241.647-.241.934 0 .33.226.574.583.574.441 0 .882-.647.882-1.566 0-1.48-1.278-2.57-2.801-2.57-1.535 0-2.687 1.163-2.687 2.656 0 1.623 1.152 2.267 2.46 2.655 1.224.372 1.804.818 1.804 1.666 0 .86-.64 1.45-1.462 1.45-.883 0-1.566-.601-1.578-1.465-.015-.388-.3-.604-.598-.604-.327 0-.626.216-.61.631.011 1.499 1.247 2.546 2.77 2.546zm6.171-3.849c.795 0 1.424-.229 1.862-.503.426-.272.595-.504.595-.76 0-.272-.2-.516-.568-.516-.441 0-.795.66-1.877.66-.952 0-1.707-.76-1.707-1.722 0-.95.725-1.724 1.635-1.724.982 0 1.508.647 1.508 1.062 0 .116-.085.174-.2.174h-1.194c-.326 0-.568.216-.568.503 0 .314.242.546.568.546h1.636c.625 0 1.009-.33 1.009-.89 0-1.408-1.194-2.512-2.774-2.512-1.566 0-2.83 1.263-2.83 2.84s1.312 2.842 2.905 2.842z"/></svg></li>
+                  <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Sage 200"><path d="M2.702 5.316C1.167 5.316 0 6.48 0 7.972c0 1.635 1.167 2.267 2.46 2.655 1.224.387 1.804.818 1.804 1.666 0 .86-.64 1.465-1.477 1.465-.84 0-1.566-.604-1.566-1.535 0-.516.242-.647.242-.934 0-.33-.227-.574-.599-.574-.423 0-.864.647-.864 1.566 0 1.48 1.266 2.57 2.787 2.57 1.535 0 2.701-1.163 2.701-2.656 0-1.623-1.166-2.267-2.472-2.655-1.209-.372-1.792-.818-1.792-1.666 0-.845.626-1.45 1.463-1.45.867 0 1.565.617 1.577 1.465.016.388.285.617.599.617a.592.592 0 0 0 .61-.647c-.027-1.48-1.263-2.543-2.771-2.543zm6.171 9.52c.683 0 1.21-.23 1.21-.69a.57.57 0 0 0-.557-.574c-.2 0-.341.085-.668.085-.882 0-1.577-.76-1.577-1.65 0-.962.71-1.725 1.608-1.725 1.009 0 1.65.775 1.65 1.895v2.054c0 .36.284.604.625.604.327 0 .61-.244.61-.604v-2.097c0-1.72-1.178-2.984-2.858-2.984-1.566 0-2.86 1.22-2.86 2.856 0 1.58 1.282 2.83 2.817 2.83zm6.257 3.848c1.535 0 2.701-1.163 2.701-2.656 0-1.635-1.166-2.267-2.472-2.655-1.209-.387-1.792-.818-1.792-1.666s.64-1.465 1.463-1.465c.84 0 1.577.604 1.577 1.535 0 .519-.241.647-.241.934 0 .33.226.574.583.574.441 0 .882-.647.882-1.566 0-1.48-1.278-2.57-2.801-2.57-1.535 0-2.687 1.163-2.687 2.656 0 1.623 1.152 2.267 2.46 2.655 1.224.372 1.804.818 1.804 1.666 0 .86-.64 1.45-1.462 1.45-.883 0-1.566-.601-1.578-1.465-.015-.388-.3-.604-.598-.604-.327 0-.626.216-.61.631.011 1.499 1.247 2.546 2.77 2.546zm6.171-3.849c.795 0 1.424-.229 1.862-.503.426-.272.595-.504.595-.76 0-.272-.2-.516-.568-.516-.441 0-.795.66-1.877.66-.952 0-1.707-.76-1.707-1.722 0-.95.725-1.724 1.635-1.724.982 0 1.508.647 1.508 1.062 0 .116-.085.174-.2.174h-1.194c-.326 0-.568.216-.568.503 0 .314.242.546.568.546h1.636c.625 0 1.009-.33 1.009-.89 0-1.408-1.194-2.512-2.774-2.512-1.566 0-2.83 1.263-2.83 2.84s1.312 2.842 2.905 2.842z"/></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 72.74 24" role="img" aria-label="Clavecon"><text x="0" y="17.6" textLength="72.74" lengthAdjust="spacingAndGlyphs">Clavecon</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 69.45 24" role="img" aria-label="Asincorp"><text x="0" y="17.6" textLength="69.45" lengthAdjust="spacingAndGlyphs">Asincorp</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 55.54 24" role="img" aria-label="Holded"><text x="0" y="17.6" textLength="55.54" lengthAdjust="spacingAndGlyphs">Holded</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 21.12 24" role="img" aria-label="A3"><text x="0" y="17.6" textLength="21.12" lengthAdjust="spacingAndGlyphs">A3</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 39.23 24" role="img" aria-label="Siigo"><text x="0" y="17.6" textLength="39.23" lengthAdjust="spacingAndGlyphs">Siigo</text></svg></li>
+                  <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="SAP"><path d="M0 6.064v11.872h12.13L24 6.064zm3.264 2.208h.005c.863.001 1.915.245 2.676.633l-.82 1.43c-.835-.404-1.255-.442-1.73-.467-.708-.038-1.064.215-1.069.488-.007.332.669.633 1.305.838.964.306 2.19.715 2.377 1.9L7.77 8.437h2.046l2.064 5.576-.007-5.575h2.37c2.257 0 3.318.764 3.318 2.519 0 1.575-1.09 2.514-2.936 2.514h-.763l-.01 2.094-3.588-.003-.25-.908c-.37.122-.787.189-1.23.189-.456 0-.885-.071-1.263-.2l-.358.919-2 .006.09-.462c-.029.025-.057.05-.087.074-.535.43-1.208.629-2.037.644l-.213.002a5.075 5.075 0 0 1-2.581-.675l.73-1.448c.79.467 1.286.572 1.956.558.347-.007.598-.07.761-.239a.557.557 0 0 0 .156-.369c.007-.376-.53-.553-1.185-.756-.531-.164-1.135-.389-1.606-.735-.559-.41-.825-.924-.812-1.65a1.99 1.99 0 0 1 .566-1.377c.519-.537 1.357-.863 2.363-.863zm10.597 1.67v1.904h.521c.694 0 1.247-.23 1.248-.964 0-.709-.554-.94-1.248-.94zm-5.087.767l-.748 2.362c.223.085.481.133.757.133.268 0 .52-.047.742-.126l-.736-2.37z"/></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 50.01 24" role="img" aria-label="Prinex"><text x="0" y="17.6" textLength="50.01" lengthAdjust="spacingAndGlyphs">Prinex</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 37.3 24" role="img" aria-label="Char"><text x="0" y="17.6" textLength="37.3" lengthAdjust="spacingAndGlyphs">Char</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 54.22 24" role="img" aria-label="HubOS"><text x="0" y="17.6" textLength="54.22" lengthAdjust="spacingAndGlyphs">HubOS</text></svg></li>
+              </ul>
+              <ul class="mrq__row" aria-hidden="true">
+                  <li class="mrq__item"><svg viewBox="0 0 85.91 24" role="img" aria-label="SiteMinder"><text x="0" y="17.6" textLength="85.91" lengthAdjust="spacingAndGlyphs">SiteMinder</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 89.17 24" role="img" aria-label="YieldPlanet"><text x="0" y="17.6" textLength="89.17" lengthAdjust="spacingAndGlyphs">YieldPlanet</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 68.69 24" role="img" aria-label="Channex"><text x="0" y="17.6" textLength="68.69" lengthAdjust="spacingAndGlyphs">Channex</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 103.01 24" role="img" aria-label="Neobookings"><text x="0" y="17.6" textLength="103.01" lengthAdjust="spacingAndGlyphs">Neobookings</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 65.44 24" role="img" aria-label="WuBook"><text x="0" y="17.6" textLength="65.44" lengthAdjust="spacingAndGlyphs">WuBook</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 65.5 24" role="img" aria-label="Prestige"><text x="0" y="17.6" textLength="65.5" lengthAdjust="spacingAndGlyphs">Prestige</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 90.45 24" role="img" aria-label="RoomCloud"><text x="0" y="17.6" textLength="90.45" lengthAdjust="spacingAndGlyphs">RoomCloud</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 77.67 24" role="img" aria-label="Paycomet"><text x="0" y="17.6" textLength="77.67" lengthAdjust="spacingAndGlyphs">Paycomet</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 47.57 24" role="img" aria-label="Monei"><text x="0" y="17.6" textLength="47.57" lengthAdjust="spacingAndGlyphs">Monei</text></svg></li>
+                  <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Redsys"><path d="M11.626 24c-3.989-.108-7.476-2.03-9.89-5.873A10.9 10.9 0 0 1 .17 13.959a12.4 12.4 0 0 1 .239-4.996c.44-1.711 1.275-3.197 2.339-4.58.075-.099.169-.263.314-.174.098.061.023.207-.019.324-.473 1.36-.46 2.756.225 3.984.783 1.411 1.964 2.438 3.67 2.705 1.636.258 3.07-.211 4.21-1.317 1.378-1.34 1.95-2.99 1.415-4.946-.285-1.036-.768-1.922-1.612-2.578-1.092-.848-2.33-1.26-3.722-1.12-.098.01-.225.08-.267-.056s.103-.14.187-.178A11.9 11.9 0 0 1 12.071 0c1.74.01 3.427.384 5.006 1.125 2.152 1.008 3.91 2.498 5.133 4.552a12.4 12.4 0 0 1 1.688 4.93c.154 1.313.08 2.584-.188 3.863-.333 1.575-.942 3.028-1.875 4.34-.853 1.2-1.851 2.241-3.103 3.052-.998.647-2.025 1.177-3.16 1.538-1.115.356-2.245.544-3.946.595z"/></svg></li>
+                  <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Stripe"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.594-7.305h.003z"/></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 66.9 24" role="img" aria-label="CashDro"><text x="0" y="17.6" textLength="66.9" lengthAdjust="spacingAndGlyphs">CashDro</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 56.66 24" role="img" aria-label="Dataria"><text x="0" y="17.6" textLength="56.66" lengthAdjust="spacingAndGlyphs">Dataria</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 78.11 24" role="img" aria-label="PriceLabs"><text x="0" y="17.6" textLength="78.11" lengthAdjust="spacingAndGlyphs">PriceLabs</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 95.9 24" role="img" aria-label="RevCtrlData"><text x="0" y="17.6" textLength="95.9" lengthAdjust="spacingAndGlyphs">RevCtrlData</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 58.66 24" role="img" aria-label="Revbell"><text x="0" y="17.6" textLength="58.66" lengthAdjust="spacingAndGlyphs">Revbell</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 60.37 24" role="img" aria-label="Revtool"><text x="0" y="17.6" textLength="60.37" lengthAdjust="spacingAndGlyphs">Revtool</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 123.78 24" role="img" aria-label="TheNetRevenue"><text x="0" y="17.6" textLength="123.78" lengthAdjust="spacingAndGlyphs">TheNetRevenue</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 130.07 24" role="img" aria-label="RoomPriceGenie"><text x="0" y="17.6" textLength="130.07" lengthAdjust="spacingAndGlyphs">RoomPriceGenie</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 36.06 24" role="img" aria-label="Tesa"><text x="0" y="17.6" textLength="36.06" lengthAdjust="spacingAndGlyphs">Tesa</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 66.13 24" role="img" aria-label="Salto KS"><text x="0" y="17.6" textLength="66.13" lengthAdjust="spacingAndGlyphs">Salto KS</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 98.56 24" role="img" aria-label="Yacan Smart"><text x="0" y="17.6" textLength="98.56" lengthAdjust="spacingAndGlyphs">Yacan Smart</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 73.88 24" role="img" aria-label="Danalock"><text x="0" y="17.6" textLength="73.88" lengthAdjust="spacingAndGlyphs">Danalock</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 56.85 24" role="img" aria-label="TTLock"><text x="0" y="17.6" textLength="56.85" lengthAdjust="spacingAndGlyphs">TTLock</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 46.28 24" role="img" aria-label="Agora"><text x="0" y="17.6" textLength="46.28" lengthAdjust="spacingAndGlyphs">Agora</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 38.93 24" role="img" aria-label="Revo"><text x="0" y="17.6" textLength="38.93" lengthAdjust="spacingAndGlyphs">Revo</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 54.39 24" role="img" aria-label="HioPos"><text x="0" y="17.6" textLength="54.39" lengthAdjust="spacingAndGlyphs">HioPos</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 68.42 24" role="img" aria-label="Spalopia"><text x="0" y="17.6" textLength="68.42" lengthAdjust="spacingAndGlyphs">Spalopia</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 50.92 24" role="img" aria-label="HiJiffy"><text x="0" y="17.6" textLength="50.92" lengthAdjust="spacingAndGlyphs">HiJiffy</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 65.79 24" role="img" aria-label="Clientify"><text x="0" y="17.6" textLength="65.79" lengthAdjust="spacingAndGlyphs">Clientify</text></svg></li>
+                  <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Sage 50"><path d="M2.702 5.316C1.167 5.316 0 6.48 0 7.972c0 1.635 1.167 2.267 2.46 2.655 1.224.387 1.804.818 1.804 1.666 0 .86-.64 1.465-1.477 1.465-.84 0-1.566-.604-1.566-1.535 0-.516.242-.647.242-.934 0-.33-.227-.574-.599-.574-.423 0-.864.647-.864 1.566 0 1.48 1.266 2.57 2.787 2.57 1.535 0 2.701-1.163 2.701-2.656 0-1.623-1.166-2.267-2.472-2.655-1.209-.372-1.792-.818-1.792-1.666 0-.845.626-1.45 1.463-1.45.867 0 1.565.617 1.577 1.465.016.388.285.617.599.617a.592.592 0 0 0 .61-.647c-.027-1.48-1.263-2.543-2.771-2.543zm6.171 9.52c.683 0 1.21-.23 1.21-.69a.57.57 0 0 0-.557-.574c-.2 0-.341.085-.668.085-.882 0-1.577-.76-1.577-1.65 0-.962.71-1.725 1.608-1.725 1.009 0 1.65.775 1.65 1.895v2.054c0 .36.284.604.625.604.327 0 .61-.244.61-.604v-2.097c0-1.72-1.178-2.984-2.858-2.984-1.566 0-2.86 1.22-2.86 2.856 0 1.58 1.282 2.83 2.817 2.83zm6.257 3.848c1.535 0 2.701-1.163 2.701-2.656 0-1.635-1.166-2.267-2.472-2.655-1.209-.387-1.792-.818-1.792-1.666s.64-1.465 1.463-1.465c.84 0 1.577.604 1.577 1.535 0 .519-.241.647-.241.934 0 .33.226.574.583.574.441 0 .882-.647.882-1.566 0-1.48-1.278-2.57-2.801-2.57-1.535 0-2.687 1.163-2.687 2.656 0 1.623 1.152 2.267 2.46 2.655 1.224.372 1.804.818 1.804 1.666 0 .86-.64 1.45-1.462 1.45-.883 0-1.566-.601-1.578-1.465-.015-.388-.3-.604-.598-.604-.327 0-.626.216-.61.631.011 1.499 1.247 2.546 2.77 2.546zm6.171-3.849c.795 0 1.424-.229 1.862-.503.426-.272.595-.504.595-.76 0-.272-.2-.516-.568-.516-.441 0-.795.66-1.877.66-.952 0-1.707-.76-1.707-1.722 0-.95.725-1.724 1.635-1.724.982 0 1.508.647 1.508 1.062 0 .116-.085.174-.2.174h-1.194c-.326 0-.568.216-.568.503 0 .314.242.546.568.546h1.636c.625 0 1.009-.33 1.009-.89 0-1.408-1.194-2.512-2.774-2.512-1.566 0-2.83 1.263-2.83 2.84s1.312 2.842 2.905 2.842z"/></svg></li>
+                  <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="Sage 200"><path d="M2.702 5.316C1.167 5.316 0 6.48 0 7.972c0 1.635 1.167 2.267 2.46 2.655 1.224.387 1.804.818 1.804 1.666 0 .86-.64 1.465-1.477 1.465-.84 0-1.566-.604-1.566-1.535 0-.516.242-.647.242-.934 0-.33-.227-.574-.599-.574-.423 0-.864.647-.864 1.566 0 1.48 1.266 2.57 2.787 2.57 1.535 0 2.701-1.163 2.701-2.656 0-1.623-1.166-2.267-2.472-2.655-1.209-.372-1.792-.818-1.792-1.666 0-.845.626-1.45 1.463-1.45.867 0 1.565.617 1.577 1.465.016.388.285.617.599.617a.592.592 0 0 0 .61-.647c-.027-1.48-1.263-2.543-2.771-2.543zm6.171 9.52c.683 0 1.21-.23 1.21-.69a.57.57 0 0 0-.557-.574c-.2 0-.341.085-.668.085-.882 0-1.577-.76-1.577-1.65 0-.962.71-1.725 1.608-1.725 1.009 0 1.65.775 1.65 1.895v2.054c0 .36.284.604.625.604.327 0 .61-.244.61-.604v-2.097c0-1.72-1.178-2.984-2.858-2.984-1.566 0-2.86 1.22-2.86 2.856 0 1.58 1.282 2.83 2.817 2.83zm6.257 3.848c1.535 0 2.701-1.163 2.701-2.656 0-1.635-1.166-2.267-2.472-2.655-1.209-.387-1.792-.818-1.792-1.666s.64-1.465 1.463-1.465c.84 0 1.577.604 1.577 1.535 0 .519-.241.647-.241.934 0 .33.226.574.583.574.441 0 .882-.647.882-1.566 0-1.48-1.278-2.57-2.801-2.57-1.535 0-2.687 1.163-2.687 2.656 0 1.623 1.152 2.267 2.46 2.655 1.224.372 1.804.818 1.804 1.666 0 .86-.64 1.45-1.462 1.45-.883 0-1.566-.601-1.578-1.465-.015-.388-.3-.604-.598-.604-.327 0-.626.216-.61.631.011 1.499 1.247 2.546 2.77 2.546zm6.171-3.849c.795 0 1.424-.229 1.862-.503.426-.272.595-.504.595-.76 0-.272-.2-.516-.568-.516-.441 0-.795.66-1.877.66-.952 0-1.707-.76-1.707-1.722 0-.95.725-1.724 1.635-1.724.982 0 1.508.647 1.508 1.062 0 .116-.085.174-.2.174h-1.194c-.326 0-.568.216-.568.503 0 .314.242.546.568.546h1.636c.625 0 1.009-.33 1.009-.89 0-1.408-1.194-2.512-2.774-2.512-1.566 0-2.83 1.263-2.83 2.84s1.312 2.842 2.905 2.842z"/></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 72.74 24" role="img" aria-label="Clavecon"><text x="0" y="17.6" textLength="72.74" lengthAdjust="spacingAndGlyphs">Clavecon</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 69.45 24" role="img" aria-label="Asincorp"><text x="0" y="17.6" textLength="69.45" lengthAdjust="spacingAndGlyphs">Asincorp</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 55.54 24" role="img" aria-label="Holded"><text x="0" y="17.6" textLength="55.54" lengthAdjust="spacingAndGlyphs">Holded</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 21.12 24" role="img" aria-label="A3"><text x="0" y="17.6" textLength="21.12" lengthAdjust="spacingAndGlyphs">A3</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 39.23 24" role="img" aria-label="Siigo"><text x="0" y="17.6" textLength="39.23" lengthAdjust="spacingAndGlyphs">Siigo</text></svg></li>
+                  <li class="mrq__item" data-mark="icon"><svg viewBox="0 0 24 24" role="img" aria-label="SAP"><path d="M0 6.064v11.872h12.13L24 6.064zm3.264 2.208h.005c.863.001 1.915.245 2.676.633l-.82 1.43c-.835-.404-1.255-.442-1.73-.467-.708-.038-1.064.215-1.069.488-.007.332.669.633 1.305.838.964.306 2.19.715 2.377 1.9L7.77 8.437h2.046l2.064 5.576-.007-5.575h2.37c2.257 0 3.318.764 3.318 2.519 0 1.575-1.09 2.514-2.936 2.514h-.763l-.01 2.094-3.588-.003-.25-.908c-.37.122-.787.189-1.23.189-.456 0-.885-.071-1.263-.2l-.358.919-2 .006.09-.462c-.029.025-.057.05-.087.074-.535.43-1.208.629-2.037.644l-.213.002a5.075 5.075 0 0 1-2.581-.675l.73-1.448c.79.467 1.286.572 1.956.558.347-.007.598-.07.761-.239a.557.557 0 0 0 .156-.369c.007-.376-.53-.553-1.185-.756-.531-.164-1.135-.389-1.606-.735-.559-.41-.825-.924-.812-1.65a1.99 1.99 0 0 1 .566-1.377c.519-.537 1.357-.863 2.363-.863zm10.597 1.67v1.904h.521c.694 0 1.247-.23 1.248-.964 0-.709-.554-.94-1.248-.94zm-5.087.767l-.748 2.362c.223.085.481.133.757.133.268 0 .52-.047.742-.126l-.736-2.37z"/></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 50.01 24" role="img" aria-label="Prinex"><text x="0" y="17.6" textLength="50.01" lengthAdjust="spacingAndGlyphs">Prinex</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 37.3 24" role="img" aria-label="Char"><text x="0" y="17.6" textLength="37.3" lengthAdjust="spacingAndGlyphs">Char</text></svg></li>
+                  <li class="mrq__item"><svg viewBox="0 0 54.22 24" role="img" aria-label="HubOS"><text x="0" y="17.6" textLength="54.22" lengthAdjust="spacingAndGlyphs">HubOS</text></svg></li>
+              </ul>
+            </div>
+          </div>
+        <button type="button" class="mrq__pause" data-mrq-pause aria-pressed="false" aria-label="Pausar el movimiento de las integraciones">
+          <svg class="mrq__ico-pause" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1.5" width="3" height="9" rx="1"/><rect x="7" y="1.5" width="3" height="9" rx="1"/></svg>
+          <svg class="mrq__ico-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.8v8.4l7-4.2z"/></svg>
+        </button>
         </div>
       </div>
 
@@ -323,76 +422,35 @@
              cualquier cifra se abre y enseña las cuatro cosas que hay detrás.
              El rótulo es un <p> y no un encabezado a propósito: el hero se rastrea
              y un h3 decorativo aquí rompería el esquema h1 -> h2. -->
-        <div class="trace" data-enter style="--d:520">
-          <p class="trace__label">Cualquier cifra se abre así</p>
-          <ol class="trace__list">
-            <li><span class="trace__n">01</span><span class="trace__t">Fórmula</span></li>
-            <li><span class="trace__n">02</span><span class="trace__t">Hechos</span></li>
-            <li><span class="trace__n">03</span><span class="trace__t">Registro</span></li>
-            <li><span class="trace__n">04</span><span class="trace__t">Dato en bruto</span></li>
-          </ol>
-          <a class="trace__link" href="panel/">Ábrela en el panel demo<span class="trace__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+        <!-- ===========================================================================
+             INTEGRACIONES · rejilla compacta de la columna derecha del hero.
+             GENERADO por node _build/integraciones/build-aside.js — no editar a mano.
+
+             Sustituye al bloque .trace (la cadena de evidencia 01-04), que se movio de
+             sitio. Son nueve marcas, UNA POR CATEGORIA, no las nueve mas conocidas:
+             asi la rejilla dice "reservas, cobro, tarifa, llave, TPV, contabilidad,
+             huesped, domotica y normativa" en vez de repetir channel managers.
+
+             Los dibujos son los mismos <svg> de la tira inferior (misma fuente).
+             Van en currentColor y heredan el color del contenedor.
+             =========================================================================== -->
+        <div class="hints" data-enter style="--d:520">
+          <p class="hints__label">Nos integramos con</p>
+          <ul class="hints__grid">
+            <li class="hints__item" title="Channel manager"><svg viewBox="0 0 85.91 24" role="img" focusable="false" aria-label="SiteMinder"><text x="0" y="17.6" textLength="85.91" lengthAdjust="spacingAndGlyphs">SiteMinder</text></svg></li>
+            <li class="hints__item" title="Pasarelas de pago"><svg viewBox="0 0 24 24" role="img" focusable="false" aria-label="Redsys"><path d="M11.626 24c-3.989-.108-7.476-2.03-9.89-5.873A10.9 10.9 0 0 1 .17 13.959a12.4 12.4 0 0 1 .239-4.996c.44-1.711 1.275-3.197 2.339-4.58.075-.099.169-.263.314-.174.098.061.023.207-.019.324-.473 1.36-.46 2.756.225 3.984.783 1.411 1.964 2.438 3.67 2.705 1.636.258 3.07-.211 4.21-1.317 1.378-1.34 1.95-2.99 1.415-4.946-.285-1.036-.768-1.922-1.612-2.578-1.092-.848-2.33-1.26-3.722-1.12-.098.01-.225.08-.267-.056s.103-.14.187-.178A11.9 11.9 0 0 1 12.071 0c1.74.01 3.427.384 5.006 1.125 2.152 1.008 3.91 2.498 5.133 4.552a12.4 12.4 0 0 1 1.688 4.93c.154 1.313.08 2.584-.188 3.863-.333 1.575-.942 3.028-1.875 4.34-.853 1.2-1.851 2.241-3.103 3.052-.998.647-2.025 1.177-3.16 1.538-1.115.356-2.245.544-3.946.595z"/></svg></li>
+            <li class="hints__item" title="Revenue management"><svg viewBox="0 0 78.11 24" role="img" focusable="false" aria-label="PriceLabs"><text x="0" y="17.6" textLength="78.11" lengthAdjust="spacingAndGlyphs">PriceLabs</text></svg></li>
+            <li class="hints__item" title="Llaves y accesos"><svg viewBox="0 0 66.13 24" role="img" focusable="false" aria-label="Salto KS"><text x="0" y="17.6" textLength="66.13" lengthAdjust="spacingAndGlyphs">Salto KS</text></svg></li>
+            <li class="hints__item" title="TPV, restauración y spa"><svg viewBox="0 0 38.93 24" role="img" focusable="false" aria-label="Revo"><text x="0" y="17.6" textLength="38.93" lengthAdjust="spacingAndGlyphs">Revo</text></svg></li>
+            <li class="hints__item" title="CRM y huésped"><svg viewBox="0 0 50.92 24" role="img" focusable="false" aria-label="HiJiffy"><text x="0" y="17.6" textLength="50.92" lengthAdjust="spacingAndGlyphs">HiJiffy</text></svg></li>
+            <li class="hints__item" title="Contabilidad y ERP"><svg viewBox="0 0 55.54 24" role="img" focusable="false" aria-label="Holded"><text x="0" y="17.6" textLength="55.54" lengthAdjust="spacingAndGlyphs">Holded</text></svg></li>
+            <li class="hints__item" title="Housekeeping y domótica"><svg viewBox="0 0 54.22 24" role="img" focusable="false" aria-label="HubOS"><text x="0" y="17.6" textLength="54.22" lengthAdjust="spacingAndGlyphs">HubOS</text></svg></li>
+            <li class="hints__item" title="Pasarelas de pago"><svg viewBox="0 0 24 24" role="img" focusable="false" aria-label="Stripe"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.594-7.305h.003z"/></svg></li>
+          </ul>
+          <a class="hints__link" href="#integraciones">Ver las 50 integraciones<span class="hints__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
         </div>
        </div>
       </aside>
-
-      <!-- ===== Escaparate del producto (revelado direccional al pasar el raton)
-           Recreacion del componente "Directional Hover Reveal" que paso Alex.
-           La referencia lo mueve con GSAP; aqui las cuñas son transiciones CSS
-           de clip-path, por el mismo motivo que brain.js/planet.js no usan
-           three.js: la pagina no puede depender de un CDN para funcionar.
-
-           Reparto de capas dentro del hero:
-             0 tejido Perlin · 1 cerebro · 2 copy y aside · 3 ESCAPARATE ·
-             4 lista del producto y barra · 5 nav
-           El escaparate se pone por encima del copy porque, mientras esta
-           puesto, el copy se atenua — es el mismo intercambio que hace la
-           referencia con su titulo "Studio Grafixo".
-
-           Todo esto es DECORACION: aria-hidden, sin foco, y sin JS no aparece
-           nunca. El contenido de verdad son los enlaces de la lista. -->
-      <div class="hero__showcase" data-showcase aria-hidden="true">
-        <div class="sc__bgs">
-          <div class="sc__bg" data-sc="hoy" data-bg="assets/img/producto/hoy-bg.webp?v=1fa3d925"></div>
-          <div class="sc__bg" data-sc="habitaciones" data-bg="assets/img/producto/habitaciones-bg.webp?v=afa348bd"></div>
-          <div class="sc__bg" data-sc="housekeeping" data-bg="assets/img/producto/housekeeping-bg.webp?v=beb50723"></div>
-          <div class="sc__bg" data-sc="revenue" data-bg="assets/img/producto/revenue-bg.webp?v=e620b45d"></div>
-          <div class="sc__bg" data-sc="trazabilidad" data-bg="assets/img/producto/trazabilidad-bg.webp?v=a67e75f2"></div>
-        </div>
-
-        <div class="sc__stage">
-          <div class="sc__item" data-sc="hoy">
-            <p class="sc__title">Hoy</p>
-            <div class="sc__img sc__img--a1" data-dir="right"><i data-bg="assets/img/producto/hoy-a.webp?v=dd4ade85"></i></div>
-            <div class="sc__img sc__img--a2" data-dir="left"><i data-bg="assets/img/producto/hoy-b.webp?v=7a0fe631"></i></div>
-            <div class="sc__img sc__img--a3" data-dir="top"><i data-bg="assets/img/producto/hoy-c.webp?v=4c0d4366"></i></div>
-          </div>
-          <div class="sc__item" data-sc="habitaciones">
-            <p class="sc__title">Habitaciones</p>
-            <div class="sc__img sc__img--b1" data-dir="bottom"><i data-bg="assets/img/producto/habitaciones-a.webp?v=3374c9bc"></i></div>
-            <div class="sc__img sc__img--b2" data-dir="right"><i data-bg="assets/img/producto/habitaciones-b.webp?v=fdfb672d"></i></div>
-            <div class="sc__img sc__img--b3" data-dir="right"><i data-bg="assets/img/producto/habitaciones-c.webp?v=4073be8b"></i></div>
-          </div>
-          <div class="sc__item" data-sc="housekeeping">
-            <p class="sc__title">Housekeeping</p>
-            <div class="sc__img sc__img--c1" data-dir="right"><i data-bg="assets/img/producto/housekeeping-a.webp?v=ccab4527"></i></div>
-            <div class="sc__img sc__img--c2" data-dir="bottom"><i data-bg="assets/img/producto/housekeeping-b.webp?v=97cb0b88"></i></div>
-            <div class="sc__img sc__img--c3" data-dir="left"><i data-bg="assets/img/producto/housekeeping-c.webp?v=850d8190"></i></div>
-          </div>
-          <div class="sc__item" data-sc="revenue">
-            <p class="sc__title">Revenue y reservas</p>
-            <div class="sc__img sc__img--d1" data-dir="left"><i data-bg="assets/img/producto/revenue-a.webp?v=d3c107e7"></i></div>
-            <div class="sc__img sc__img--d2" data-dir="right"><i data-bg="assets/img/producto/revenue-b.webp?v=7b821395"></i></div>
-            <div class="sc__img sc__img--d3" data-dir="right"><i data-bg="assets/img/producto/revenue-c.webp?v=fdf4e556"></i></div>
-          </div>
-          <div class="sc__item" data-sc="trazabilidad">
-            <p class="sc__title">Trazabilidad</p>
-            <div class="sc__img sc__img--e1" data-dir="right"><i data-bg="assets/img/producto/trazabilidad-a.webp?v=16683288"></i></div>
-            <div class="sc__img sc__img--e2" data-dir="bottom"><i data-bg="assets/img/producto/trazabilidad-b.webp?v=c441d76a"></i></div>
-            <div class="sc__img sc__img--e3" data-dir="right"><i data-bg="assets/img/producto/trazabilidad-c.webp?v=f48f8f20"></i></div>
-          </div>
-        </div>
-      </div>
 
     </section>
   </div>
@@ -400,185 +458,724 @@
   <!-- ============ CONTENT SHEET ============ -->
   <main id="contenido">
 
-    <section class="sheet sheet--process" id="como-trabajamos" aria-labelledby="ct-title">
-      <div class="container">
-        <p class="tag reveal" data-reveal="up">Cómo trabajamos</p>
-        <h2 id="ct-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Primero tus definiciones. <span class="fade">Después tus pantallas.</span></h2>
+<!-- ===========================================================================
+     EL RECORRIDO POR EL HOTEL — marcado listo para pegar DENTRO de <main>,
+     entre dos <section class="sheet"> cualesquiera.
+
+     Depende de:  <link rel="stylesheet" href="hotel-anim.css?v=8b1c1268">   (tras styles.css)
+                  <script src="hotel-anim.js?v=6b954b34" defer></script>
+
+     Todos los id llevan prefijo "ha-" porque index.html ya usa #producto,
+     #inicio, #contacto, #como-trabajamos y cinco #producto-*.
+     La clase .reveal del original es aqui .ha-reveal: en holdera .reveal ya
+     existe con otra semantica y la gobierna script.js.
+
+     .ha--seam pinta las dos rampas de 180 px que funden este bloque claro con
+     la hoja oscura de arriba y de abajo. Si el bloque acabara entre dos
+     secciones claras, se quita esa clase y ya esta.
+
+     🔴 data-ha-scenes="off": las cinco escenas lottie del original NO se
+     cargan. No es un fallo tecnico —la inversion por CSS las deja perfectamente
+     legibles— sino de CONTENIDO: estan en ingles, el chat lo firma "Lance
+     Agent" (nombre de producto de otra empresa) y la quinta ensena cifras
+     inventadas en dolares (ocupacion, ingresos y RevPAR de un hotel que no
+     existe). Con la obra sustituida o aprobada por Alex se encienden
+     poniendo data-ha-scenes="on".
+
+     data-ha-assets es la raiz de los assets pesados (SVG del plano, lottie y
+     la libreria). Se pide todo en diferido y solo cuando hace falta.
+     =========================================================================== -->
+
+<section class="ha ha--seam" id="ha-recorrido" data-ha-scenes="off" data-ha-assets="assets/anim/" aria-labelledby="ha-title">
+  <div class="ha-stage-section" id="ha-stage-section">
+    <div class="ha-pin" id="ha-pin">
+
+      <!-- Capas de fondo. Mismo apilamiento que el original menos el video:
+           papel z2 · plano z3 · degradados de borde z10 · contenido z20.
+           Solo existen en el modo pineado; hotel-anim.js escribe su opacidad y
+           su color desde las curvas medidas. -->
+      <div class="ha-layer ha-scrim" id="ha-scrim" aria-hidden="true"></div>
+      <div class="ha-layer ha-map" id="ha-mapLayer" aria-hidden="true">
+        <div class="ha-map__svg" id="ha-map"></div>
+      </div>
+      <div class="ha-grad ha-grad--left" id="ha-gradL" aria-hidden="true"></div>
+      <div class="ha-grad ha-grad--top" id="ha-gradT" aria-hidden="true"></div>
+
+      <!-- ─────────────────────────────────────────── escena 1 · la apertura -->
+      <div class="ha-stage ha-stage--trust" id="ha-stageTrust">
+        <div class="ha-wrap">
+          <p class="ha-eyebrow ha-reveal">
+            <span class="ha-eyebrow__bar" aria-hidden="true"></span>El recorrido
+          </p>
+          <h2 class="ha-lead ha-reveal" data-ha-delay="1" id="ha-title">
+            Un mismo sistema, y cada equipo del hotel viendo lo que le toca.
+          </h2>
+
+          <!-- El plano dibujandose de una vez, para cuando no hay recorrido
+               pineado (movil, movimiento reducido, sin datos). Lo rellena
+               hotel-anim.js; vacio no ocupa nada. -->
+          <div class="ha-map-static" id="ha-mapStatic" aria-hidden="true"></div>
+
+          <div class="ha-types-block">
+            <p class="ha-types__label">Pensado para</p>
+            <ul class="ha-types">
+              <li>Hoteles independientes</li>
+              <li>Cadenas hoteleras</li>
+              <li>Hoteles de lujo</li>
+            </ul>
+          </div>
+        </div>
       </div>
 
-      <!-- Los cuatro pasos, sobre el planeta que gira con el scroll.
-           Sustituye a la rejilla de cuatro tarjetas iguales que había aquí.
-           El planeta es decoración: los pasos son marcado normal y se leen
-           enteros sin JS, sin WebGL y sin las texturas. -->
-      <div class="orbit" data-planet-scene>
-        <div class="orbit__sky" aria-hidden="true">
-          <canvas class="orbit__gl" data-planet></canvas>
+      <!-- ──────────────────────────────────── escena 2 · los departamentos -->
+      <div class="ha-stage ha-stage--tour" id="ha-stageTour">
+
+        <!-- El HUD pineado. Los paneles de la tarjeta los crea hotel-anim.js
+             MOVIENDO los nodos de la lista de abajo: un solo juego de
+             contenido, ni duplicado en el DOM ni tabulable invisible. -->
+        <div class="ha-hud" id="ha-hud">
+          <div class="ha-tabs-wrap">
+            <span class="ha-dash" id="ha-dash" aria-hidden="true"></span>
+            <div class="ha-tabs" id="ha-tabs" aria-label="Departamentos del hotel">
+              <button type="button" class="ha-tab" id="ha-tab-front" data-dept="front">Recepción</button>
+              <button type="button" class="ha-tab" id="ha-tab-back" data-dept="back">Operaciones</button>
+              <button type="button" class="ha-tab" id="ha-tab-sales" data-dept="sales">Ventas</button>
+              <button type="button" class="ha-tab" id="ha-tab-food" data-dept="food">Restauración</button>
+              <button type="button" class="ha-tab" id="ha-tab-mgmt" data-dept="mgmt">Dirección</button>
+            </div>
+          </div>
+          <div class="ha-card" id="ha-card">
+            <div class="ha-card__blur" aria-hidden="true"></div>
+            <div class="ha-card__ring" aria-hidden="true"><div class="ha-card__spin"></div></div>
+          </div>
         </div>
-        <ol class="orbit__steps">
-          <li class="ostep" tabindex="0" data-step="0">
-            <div class="ostep__row">
-              <span class="ostep__num" aria-hidden="true">01</span>
-              <h3 class="ostep__title" data-word="Conectamos">Conectamos</h3>
+
+        <button type="button" class="ha-skip" id="ha-skip">Saltar el recorrido</button>
+
+        <!-- EL CONTENIDO REAL. Siempre en el DOM, siempre indexable. En modo
+             pineado sus nodos viven dentro de la tarjeta; fuera de el, es esta
+             lista la que se lee. -->
+        <ol class="ha-list ha-wrap" id="ha-list">
+          <li class="ha-item" data-dept="front">
+            <div class="ha-item__body">
+              <p class="ha-item__num">01</p>
+              <h3 class="ha-item__title">Recepción</h3>
+              <p class="ha-item__text">Llegadas, salidas y qué habitaciones están listas para entrar. Lo que pasa hoy, en una sola pantalla.</p>
             </div>
-            <p class="ostep__desc">Nos pasas un export de tu PMS. No instalamos nada en tu hotel.</p>
+            <div class="ha-media" data-dept="front" data-lottie="lottie/product-1.json"
+                 style="--ha-lottie-w:321px; --ha-lottie-h:184px; aspect-ratio: 321 / 184;" aria-hidden="true"></div>
           </li>
-          <li class="ostep" tabindex="0" data-step="1">
-            <div class="ostep__row">
-              <span class="ostep__num" aria-hidden="true">02</span>
-              <h3 class="ostep__title" data-word="Validamos">Validamos</h3>
+
+          <li class="ha-item" data-dept="back">
+            <div class="ha-item__body">
+              <p class="ha-item__num">02</p>
+              <h3 class="ha-item__title">Operaciones</h3>
+              <p class="ha-item__text">El estado de cada habitación, planta a planta: limpia, sucia, en limpieza, ocupada o fuera de servicio.</p>
             </div>
-            <p class="ostep__desc">Repasamos contigo qué significa cada campo: OOO, OOS, habitaciones vendidas, a qué hora cierra el día.</p>
+            <div class="ha-media" data-dept="back" data-lottie="lottie/product-2.json"
+                 style="--ha-lottie-w:306px; --ha-lottie-h:128px; aspect-ratio: 306 / 128;" aria-hidden="true"></div>
           </li>
-          <li class="ostep" tabindex="0" data-step="2">
-            <div class="ostep__row">
-              <span class="ostep__num" aria-hidden="true">03</span>
-              <h3 class="ostep__title" data-word="Publicamos">Publicamos</h3>
+
+          <li class="ha-item" data-dept="sales">
+            <div class="ha-item__body">
+              <p class="ha-item__num">03</p>
+              <h3 class="ha-item__title">Ventas</h3>
+              <p class="ha-item__text">Ocupación, ADR y RevPAR, y el ritmo de reservas comparado con el mismo momento del año pasado.</p>
             </div>
-            <p class="ostep__desc">Tus pantallas, con tus definiciones y tu vocabulario.</p>
+            <div class="ha-media" data-dept="sales" data-lottie="lottie/product-3.json"
+                 style="--ha-lottie-w:304px; --ha-lottie-h:205px; aspect-ratio: 304 / 205;" aria-hidden="true"></div>
           </li>
-          <li class="ostep" tabindex="0" data-step="3">
-            <div class="ostep__row">
-              <span class="ostep__num" aria-hidden="true">04</span>
-              <h3 class="ostep__title" data-word="Trazamos">Trazamos</h3>
+
+          <li class="ha-item" data-dept="food">
+            <div class="ha-item__body">
+              <p class="ha-item__num">04</p>
+              <h3 class="ha-item__title">Restauración</h3>
+              <p class="ha-item__text">Lo que aporta cada departamento más allá de la habitación, con los supuestos del cálculo a la vista.</p>
             </div>
-            <p class="ostep__desc">Cada cifra queda unida al registro exacto del que sale, y lo que falte se dice.</p>
+            <div class="ha-media" data-dept="food" data-lottie="lottie/product-4.json"
+                 style="--ha-lottie-w:324px; --ha-lottie-h:152px; aspect-ratio: 324 / 152;" aria-hidden="true"></div>
+          </li>
+
+          <li class="ha-item" data-dept="mgmt">
+            <div class="ha-item__body">
+              <p class="ha-item__num">05</p>
+              <h3 class="ha-item__title">Dirección</h3>
+              <p class="ha-item__text">Cada indicador con su fórmula, sus entradas y el registro en bruto del que sale. Y cuando el dato no está, lo dice.</p>
+            </div>
+            <div class="ha-media" data-dept="mgmt" data-lottie="lottie/product-5.json"
+                 style="--ha-lottie-w:306px; --ha-lottie-h:65px; aspect-ratio: 306 / 65;" aria-hidden="true"></div>
           </li>
         </ol>
       </div>
 
-      <div class="container">
-        <div class="stats reveal" data-reveal="up">
-          <!-- Dato confirmado por Alex (07-09-2026) -->
-          <div class="stat"><b>+5</b><span>años de experiencia</span></div>
-          <div class="stat"><b>BCN</b><span>con sede en Barcelona</span></div>
-          <!-- El hotel de la demo: 100 habitaciones, 5 plantas y 60 días de histórico. Ficticio y congelado. -->
-          <div class="stat"><b>100</b><span>habitaciones · el hotel de la demo</span></div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- El producto: cinco pantallas encadenadas al scroll (data-deck).
-         La saliente se va a la izquierda encogiendo y atenuándose mientras la
-         entrante llega desde la derecha — la transición de la referencia, pero
-         gobernada por el scroll en vez de por un clic.
-         Sin JS las cinco quedan una debajo de otra, legibles: el posicionamiento
-         absoluto está detrás de .has-js. -->
-    <section class="sheet sheet--svc" id="producto" aria-labelledby="svc-title">
-      <div class="container">
-        <p class="tag reveal" data-reveal="up">El producto</p>
-        <h2 id="svc-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Cinco pantallas. <span class="fade">Un solo hotel.</span></h2>
-        <p class="sheet__lead reveal" data-reveal="up" style="--i:2">Las cinco leen lo mismo: el export que tu PMS ya genera. Y hay una cifra que casi nadie calcula entera — el <strong>TRevPAR</strong> es el ingreso TOTAL del hotel por habitación disponible: alojamiento, restauración, spa y el resto de servicios, no solo el alojamiento.</p>
-        <!-- Índice siempre visible de las cinco pantallas. El deck apila sus
-             cinco diapositivas en un solo viewport pegajoso y oculta las que no
-             están en escena, así que un rastreador o un lector de pantalla que
-             llegaba aquí solo encontraba la primera. Cada enlace lleva a la
-             ancla de su diapositiva; script.js desplaza el deck hasta ella. -->
-        <ul class="svc-index reveal" data-reveal="up" style="--i:3" aria-label="Las cinco pantallas">
-          <li><a href="#producto-hoy">Hoy <small>El día del hotel en una pantalla</small></a></li>
-          <li><a href="#producto-habitaciones">Habitaciones <small>Las 100 habitaciones, planta a planta</small></a></li>
-          <li><a href="#producto-housekeeping">Housekeeping <small>Vacant Clean, Vacant Dirty y fuera de orden</small></a></li>
-          <li><a href="#producto-revenue">Revenue y reservas <small>Ocupación, ADR, RevPAR y TRevPAR</small></a></li>
-          <li><a href="#producto-trazabilidad">Trazabilidad <small>Cada cifra, unida a su registro</small></a></li>
-        </ul>
-      </div>
-      <div class="deck" data-deck>
-        <div class="deck__stage">
-          <div class="deck__viewport">
-            <article class="deck__slide" id="producto-hoy" data-slide aria-label="Hoy">
-              <div class="deck__inner">
-                <div class="deck__grid">
-                  <ul class="deck__col">
-                  <li class="deck__row" style="--i:0"><span class="deck__k">PANTALLA</span><span class="deck__v">Hoy</span><i class="deck__line deck__line--l"></i></li>
-                  <li class="deck__row" style="--i:1"><span class="deck__k">QUÉ ES</span><span class="deck__v">El día del hotel, de un vistazo</span><i class="deck__line deck__line--l"></i></li>
-                  <li class="deck__row" style="--i:2"><span class="deck__k">QUÉ CONTESTA</span><span class="deck__v">Cuántas llegadas, salidas y habitaciones en casa</span><i class="deck__line deck__line--l"></i></li>
-                  </ul>
-                  <ul class="deck__col">
-                  <li class="deck__row" style="--i:0"><span class="deck__k">DE DÓNDE SALE</span><span class="deck__v">Export diario del PMS</span><i class="deck__line deck__line--r"></i></li>
-                  <li class="deck__row" style="--i:1"><span class="deck__k">QUÉ PASA SI FALTA</span><span class="deck__v">Se dice «sin dato»; nunca un cero en su lugar</span><i class="deck__line deck__line--r"></i></li>
-                  <li class="deck__row" style="--i:2"><span class="deck__k">DÓNDE SE VE</span><span class="deck__v">Panel demo · Hoy</span><i class="deck__line deck__line--r"></i></li>
-                  </ul>
-                </div>
-                <h3 class="deck__title">HOY</h3>
-                <figure class="deck__art" aria-hidden="true"><img src="assets/img/producto/hoy-b.webp?v=7a0fe631" alt="" width="1040" height="694" loading="lazy" decoding="async"></figure>
-              </div>
-            </article>
-            <article class="deck__slide" id="producto-habitaciones" data-slide aria-label="Habitaciones">
-              <div class="deck__inner">
-                <div class="deck__grid">
-                  <ul class="deck__col">
-                  <li class="deck__row" style="--i:0"><span class="deck__k">PANTALLA</span><span class="deck__v">Habitaciones</span><i class="deck__line deck__line--l"></i></li>
-                  <li class="deck__row" style="--i:1"><span class="deck__k">QUÉ ES</span><span class="deck__v">El plano del edificio, no una tabla</span><i class="deck__line deck__line--l"></i></li>
-                  <li class="deck__row" style="--i:2"><span class="deck__k">QUÉ CONTESTA</span><span class="deck__v">Qué pasa en cada planta y en cada habitación</span><i class="deck__line deck__line--l"></i></li>
-                  </ul>
-                  <ul class="deck__col">
-                  <li class="deck__row" style="--i:0"><span class="deck__k">DE DÓNDE SALE</span><span class="deck__v">Configuración del edificio y snapshots intradía</span><i class="deck__line deck__line--r"></i></li>
-                  <li class="deck__row" style="--i:1"><span class="deck__k">QUÉ PASA SI FALTA</span><span class="deck__v">La habitación sale marcada, no rellenada</span><i class="deck__line deck__line--r"></i></li>
-                  <li class="deck__row" style="--i:2"><span class="deck__k">DÓNDE SE VE</span><span class="deck__v">Panel demo · Habitaciones</span><i class="deck__line deck__line--r"></i></li>
-                  </ul>
-                </div>
-                <h3 class="deck__title">HABITACIONES</h3>
-                <figure class="deck__art" aria-hidden="true"><img src="assets/img/producto/habitaciones-b.webp?v=fdfb672d" alt="" width="1040" height="694" loading="lazy" decoding="async"></figure>
-              </div>
-            </article>
-            <article class="deck__slide" id="producto-housekeeping" data-slide aria-label="Housekeeping">
-              <div class="deck__inner">
-                <div class="deck__grid">
-                  <ul class="deck__col">
-                  <li class="deck__row" style="--i:0"><span class="deck__k">PANTALLA</span><span class="deck__v">Housekeeping</span><i class="deck__line deck__line--l"></i></li>
-                  <li class="deck__row" style="--i:1"><span class="deck__k">QUÉ ES</span><span class="deck__v">El estado de limpieza llamado por su nombre</span><i class="deck__line deck__line--l"></i></li>
-                  <li class="deck__row" style="--i:2"><span class="deck__k">QUÉ CONTESTA</span><span class="deck__v">Cuántas Vacant Clean (VC), Vacant Dirty (VD) y OOO</span><i class="deck__line deck__line--l"></i></li>
-                  </ul>
-                  <ul class="deck__col">
-                  <li class="deck__row" style="--i:0"><span class="deck__k">DE DÓNDE SALE</span><span class="deck__v">Snapshots intradía del export del PMS</span><i class="deck__line deck__line--r"></i></li>
-                  <li class="deck__row" style="--i:1"><span class="deck__k">QUÉ PASA SI FALTA</span><span class="deck__v">Sin estado es «sin estado», no «limpia»</span><i class="deck__line deck__line--r"></i></li>
-                  <li class="deck__row" style="--i:2"><span class="deck__k">DÓNDE SE VE</span><span class="deck__v">Panel demo · Housekeeping</span><i class="deck__line deck__line--r"></i></li>
-                  </ul>
-                </div>
-                <h3 class="deck__title">HOUSEKEEPING</h3>
-                <figure class="deck__art" aria-hidden="true"><img src="assets/img/producto/housekeeping-b.webp?v=97cb0b88" alt="" width="1040" height="694" loading="lazy" decoding="async"></figure>
-              </div>
-            </article>
-            <article class="deck__slide" id="producto-revenue" data-slide aria-label="Revenue y reservas">
-              <div class="deck__inner">
-                <div class="deck__grid">
-                  <ul class="deck__col">
-                  <li class="deck__row" style="--i:0"><span class="deck__k">PANTALLA</span><span class="deck__v">Revenue y reservas</span><i class="deck__line deck__line--l"></i></li>
-                  <li class="deck__row" style="--i:1"><span class="deck__k">QUÉ ES</span><span class="deck__v">Ocupación, ADR, RevPAR y TRevPAR, mes a mes</span><i class="deck__line deck__line--l"></i></li>
-                  <li class="deck__row" style="--i:2"><span class="deck__k">QUÉ CONTESTA</span><span class="deck__v">Cómo vas contra el mismo momento del año pasado</span><i class="deck__line deck__line--l"></i></li>
-                  </ul>
-                  <ul class="deck__col">
-                  <li class="deck__row" style="--i:0"><span class="deck__k">DE DÓNDE SALE</span><span class="deck__v">Export diario del PMS y sus 60 días de histórico</span><i class="deck__line deck__line--r"></i></li>
-                  <li class="deck__row" style="--i:1"><span class="deck__k">QUÉ PASA SI FALTA</span><span class="deck__v">Un KPI al que le falte un input no se publica</span><i class="deck__line deck__line--r"></i></li>
-                  <li class="deck__row" style="--i:2"><span class="deck__k">DÓNDE SE VE</span><span class="deck__v">Panel demo · Revenue y reservas</span><i class="deck__line deck__line--r"></i></li>
-                  </ul>
-                </div>
-                <h3 class="deck__title">REVENUE</h3>
-                <figure class="deck__art" aria-hidden="true"><img src="assets/img/producto/revenue-b.webp?v=7b821395" alt="" width="1040" height="694" loading="lazy" decoding="async"></figure>
-              </div>
-            </article>
-            <article class="deck__slide" id="producto-trazabilidad" data-slide aria-label="Trazabilidad">
-              <div class="deck__inner">
-                <div class="deck__grid">
-                  <ul class="deck__col">
-                  <li class="deck__row" style="--i:0"><span class="deck__k">PANTALLA</span><span class="deck__v">Trazabilidad</span><i class="deck__line deck__line--l"></i></li>
-                  <li class="deck__row" style="--i:1"><span class="deck__k">QUÉ ES</span><span class="deck__v">El botón que abre cualquier cifra del panel</span><i class="deck__line deck__line--l"></i></li>
-                  <li class="deck__row" style="--i:2"><span class="deck__k">QUÉ CONTESTA</span><span class="deck__v">De dónde sale este número, exactamente</span><i class="deck__line deck__line--l"></i></li>
-                  </ul>
-                  <ul class="deck__col">
-                  <li class="deck__row" style="--i:0"><span class="deck__k">DE DÓNDE SALE</span><span class="deck__v">Del mismo registro que alimenta la cifra</span><i class="deck__line deck__line--r"></i></li>
-                  <li class="deck__row" style="--i:1"><span class="deck__k">QUÉ PASA SI FALTA</span><span class="deck__v">Se dice qué falta y por qué falta</span><i class="deck__line deck__line--r"></i></li>
-                  <li class="deck__row" style="--i:2"><span class="deck__k">DÓNDE SE VE</span><span class="deck__v">Detrás de cada cifra, en las cuatro pantallas</span><i class="deck__line deck__line--r"></i></li>
-                  </ul>
-                </div>
-                <h3 class="deck__title">TRAZABILIDAD</h3>
-                <figure class="deck__art" aria-hidden="true"><img src="assets/img/producto/trazabilidad-b.webp?v=c441d76a" alt="" width="1040" height="694" loading="lazy" decoding="async"></figure>
-              </div>
-            </article>
+      <!-- ──────────────────────────────────────── escena 3 · lo que medimos -->
+      <div class="ha-stage ha-stage--outcomes" id="ha-stageOutcomes">
+        <div class="ha-wrap ha-outcomes">
+          <div class="ha-outcomes__intro">
+            <h2>Medimos lo que importa</h2>
+            <p>Definimos contigo qué significa mejorar y medimos el sistema sobre objetivos reales de tu hotel.</p>
+          </div>
+          <div class="ha-stats" id="ha-stats">
+            <div class="ha-stat">
+              <p class="ha-stat__metric">Tiempo de respuesta</p>
+              <p class="ha-stat__label">Cuánto tarda cada solicitud en llegar a la persona o a la pantalla adecuada.</p>
+            </div>
+            <div class="ha-stat">
+              <p class="ha-stat__metric">Carga operativa</p>
+              <p class="ha-stat__label">Qué tareas repetitivas deja de hacer tu equipo y cuánto tiempo recupera.</p>
+            </div>
+            <div class="ha-stat">
+              <p class="ha-stat__metric">Calidad del dato</p>
+              <p class="ha-stat__label">Cuántos indicadores puedes trazar hasta su registro de origen, y cuáles siguen sin fuente.</p>
+            </div>
           </div>
         </div>
       </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     BLOQUE: «Todo tu hotel, conectado» — qué entra, qué enciende y qué se
+     queda a oscuras sin ello.
+     CSS: _build/parts/opera.css  (tokens --op-*)
+     Hoja: OSCURA (va dentro de <main>, sobre --sh-bg).
+
+     COHERENCIA CON partners.html — leerlo antes de tocar esto:
+       · Las cuatro fuentes de la columna «lo que ya entra» son literalmente
+         las cuatro de partners.html, con los mismos nombres. Allí se dice
+         «cuatro fuentes, ni una más»: aquí no se puede añadir una quinta a
+         esa lista sin contradecir la página que ya está publicada.
+       · Todo lo demás (contabilidad, POS por ticket, distribución, nóminas,
+         contadores, encuestas, pagos, cerraduras) va en la segunda columna,
+         que es la de lo que NO se lee hoy.
+       · Sin conexión en vivo y sin contraseñas de tus sistemas: eso también
+         está publicado allí y aquí se repite igual.
+
+     Las cuentas de la columna derecha salen del catálogo de métricas del
+     panel: 57 definidas, 13 con valor en el hotel de la demo, 44 sin valor.
+     Los 18 / 9 / 5 / 3 / 3 / 3 / 2 son el recuento de las fuentes que nombra
+     cada una de esas 44 — y se solapan, porque hay métricas que esperan a dos
+     sitios a la vez. Está dicho en la nota del final del bloque.
+     ========================================================================== -->
+<section class="sheet op" id="conectado" aria-labelledby="op-title">
+  <div class="container">
+    <p class="tag reveal" data-reveal="up">Todo tu hotel</p>
+    <h2 id="op-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Conectado hasta donde llega. <span class="fade">Y dicho hasta dónde llega.</span></h2>
+    <p class="sheet__lead reveal" data-reveal="up" style="--i:2">Cualquiera puede dibujar un esquema con veinte cajas conectadas. Esto es el de verdad: las cuatro cosas que Holdera lee hoy, qué se enciende con cada una y qué pantalla se queda apagada si falta — y al lado, sin adornos, todo lo que todavía no lee y cuántas métricas están esperando a eso.</p>
+  </div>
+
+  <div class="container op__grid">
+
+    <!-- ------------------------------------------------ lo que ya entra -->
+    <div class="op__col op__col--in reveal" data-reveal="up">
+      <h3 class="op__ch"><span class="op__ch-dot" aria-hidden="true"></span>Lo que ya entra</h3>
+      <p class="op__cnote">Cuatro archivos que tu hotel ya sabe generar. Ninguno es un sistema nuevo que tu equipo tenga que aprender.</p>
+
+      <ol class="op__srcs">
+        <li class="op-src">
+          <p class="op-src__n" aria-hidden="true">01</p>
+          <h4 class="op-src__name">PMS · el cierre del día</h4>
+          <p class="op-src__what">Una fila por noche cerrada: habitaciones físicas, vendidas, ocupadas, fuera de orden y fuera de servicio, y el ingreso de alojamiento de esa noche.</p>
+          <p class="op-src__on"><span class="op-src__lab">Enciende</span>Ocupación, ADR y RevPAR de cada noche cerrada, y el histórico contra el que se compara el mes.</p>
+          <p class="op-src__off"><span class="op-src__lab">Sin esto</span>No hay histórico: ni medias, ni comparación con el año pasado. Se dice en pantalla en vez de enseñar un cero.</p>
+        </li>
+
+        <li class="op-src">
+          <p class="op-src__n" aria-hidden="true">02</p>
+          <h4 class="op-src__name">PMS · la foto intradía</h4>
+          <p class="op-src__what">El estado del hotel a una hora concreta: llegadas, salidas, habitaciones en casa y el estado de limpieza de las vacías.</p>
+          <p class="op-src__on"><span class="op-src__lab">Enciende</span>El hotel de hoy planta por planta, el housekeeping y las llegadas que todavía no tienen habitación lista.</p>
+          <p class="op-src__off"><span class="op-src__lab">Sin esto</span>El día de hoy no existe: solo se pueden enseñar noches ya cerradas, y Holdera lo advierte.</p>
+        </li>
+
+        <li class="op-src">
+          <p class="op-src__n" aria-hidden="true">03</p>
+          <h4 class="op-src__name">Reservas · las noches futuras</h4>
+          <p class="op-src__what">Las habitaciones on the books de cada noche que aún no ha llegado, por tipo, con la fecha en que se tomó la lectura. Dos lecturas separadas en el tiempo son lo que hace posible el pickup.</p>
+          <p class="op-src__on"><span class="op-src__lab">Enciende</span>El calendario mes a mes, el pickup de los últimos siete días y el ritmo de venta contra el año pasado.</p>
+          <p class="op-src__off"><span class="op-src__lab">Sin esto</span>El calendario se queda en histórico: ni pickup, ni pace. No se estima; se dice que no está.</p>
+        </li>
+
+        <li class="op-src">
+          <p class="op-src__n" aria-hidden="true">04</p>
+          <h4 class="op-src__name">Otros departamentos</h4>
+          <p class="op-src__what">El ingreso que no es alojamiento —restauración, spa, parking, lavandería— como total por día y por departamento, cerrado con la misma fecha que tu PMS usa para el día.</p>
+          <p class="op-src__on"><span class="op-src__lab">Enciende</span>El TRevPAR de verdad: el ingreso total del hotel por habitación disponible, no solo la cama.</p>
+          <p class="op-src__off"><span class="op-src__lab">Sin esto</span>Se enseña el RevPAR y el TRevPAR queda marcado como incompleto. En el panel de demostración esos importes van <em>modelados</em> desde supuestos declarados, y cada supuesto está impreso detrás de la cifra.</p>
+        </li>
+      </ol>
+
+      <p class="op__live">Y nada de esto se queda conectado. Holdera lee el archivo que tu hotel exporta, lo procesa y lo publica; entre un export y el siguiente la pantalla sigue diciendo lo mismo, y por eso cada pantalla lleva escrito de cuándo es su dato. <a class="op__link" href="partners.html">Las cuatro vías por las que puede llegarnos ese archivo</a>.</p>
+    </div>
+
+    <!-- --------------------------------------- lo que todavía no entra -->
+    <div class="op__col op__col--out reveal" data-reveal="up" style="--i:2">
+      <h3 class="op__ch op__ch--out"><span class="op__ch-dot op__ch-dot--out" aria-hidden="true"></span>Lo que todavía no entra</h3>
+      <p class="op__cnote">Del catálogo de 57 métricas, en el hotel de la demo 13 tienen valor y 44 salen sin cifra. Cada una dice a qué está esperando. Estos son los huecos grandes.</p>
+
+      <dl class="op__gaps">
+        <div class="op-gap">
+          <dt class="op-gap__k"><span class="op-gap__name">Contabilidad · el libro mayor</span><span class="op-gap__n"><b>18</b> métricas</span></dt>
+          <dd class="op-gap__v">Holdera llega hoy hasta el <strong>ingreso</strong>. El beneficio no: sin el mapeo de cuentas validado no hay GOP, ni GOPPAR, ni GOPPOR, ni coste por habitación ocupada, ni márgenes. Es el hueco más grande del catálogo, y con diferencia.</dd>
+        </div>
+
+        <div class="op-gap">
+          <dt class="op-gap__k"><span class="op-gap__name">POS · el ticket, no el total</span><span class="op-gap__n"><b>9</b> métricas</span></dt>
+          <dd class="op-gap__v">Con el total del día por departamento sale el TRevPAR. Lo que no sale es lo que pasa dentro del restaurante: ticket medio, ingreso por asiento y hora, coste de comida y de bebida. Para eso hacen falta los tickets y el inventario, no una suma.</dd>
+        </div>
+
+        <div class="op-gap">
+          <dt class="op-gap__k"><span class="op-gap__name">Distribución · canales y comisiones</span><span class="op-gap__n"><b>2</b> métricas</span></dt>
+          <dd class="op-gap__v">Si tu libro de reservas trae el canal, la mezcla por canal y el peso de la venta directa se ven. Lo que ese canal te cuesta, no: el coste de distribución necesita las comisiones, y esas viven entre tu channel manager y tu contabilidad. El reparto de GDS y turoperación tampoco sale sin el detalle de distribución.</dd>
+        </div>
+
+        <div class="op-gap">
+          <dt class="op-gap__k"><span class="op-gap__name">Mercado · tu comp set</span><span class="op-gap__n"><b>3</b> métricas</span></dt>
+          <dd class="op-gap__v">MPI, ARI y RGI comparan tu hotel con su competencia, y esa competencia no está en ningún archivo tuyo. Sin una fuente de mercado contratada, esas tres casillas se quedan vacías y dicen por qué.</dd>
+        </div>
+
+        <div class="op-gap">
+          <dt class="op-gap__k"><span class="op-gap__name">Personas · nóminas y fichajes</span><span class="op-gap__n"><b>5</b> métricas</span></dt>
+          <dd class="op-gap__v">Productividad, coste de personal sobre ingreso, horas extra, coste de plantilla por habitación ocupada. Hoy Holdera ve cuánta gente hay desplegada en la demo, no cuánto cuesta.</dd>
+        </div>
+
+        <div class="op-gap">
+          <dt class="op-gap__k"><span class="op-gap__name">Huésped · encuestas y CRM</span><span class="op-gap__n"><b>3</b> métricas</span></dt>
+          <dd class="op-gap__v">NPS, satisfacción y repetición salen de preguntarle al huésped y de un histórico de clientes. Ninguna de las dos cosas se puede deducir de un export de habitaciones, y no se van a estimar.</dd>
+        </div>
+
+        <div class="op-gap">
+          <dt class="op-gap__k"><span class="op-gap__name">Edificio · contadores de luz y agua</span><span class="op-gap__n"><b>3</b> métricas</span></dt>
+          <dd class="op-gap__v">Consumo por habitación ocupada e intensidad energética e hídrica. Hace falta el contador o la factura; no hay manera honesta de repartir un consumo que nadie ha medido.</dd>
+        </div>
+
+        <div class="op-gap op-gap--none">
+          <dt class="op-gap__k"><span class="op-gap__name">Pagos y cerraduras</span><span class="op-gap__n">ninguna</span></dt>
+          <dd class="op-gap__v">No se conectan, y hoy no hacen falta. Holdera no cobra, no concilia cobros y no abre puertas: del dinero solo necesita el ingreso del día, que ya viene en el cierre del PMS, y de las entradas se queda con lo que registra el PMS, no con lo que registra la cerradura.</dd>
+        </div>
+      </dl>
+
+      <p class="op__foot">Los números no suman 44 a propósito: hay métricas que esperan a dos sitios a la vez y aparecen en los dos. La lista completa, con el nombre de cada una y lo que le falta, está abierta en el panel — <a class="op__link" href="/panel/metrics/">el catálogo de las 57</a>.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==========================================================================
+     BLOQUE: Funciones — tarjetas deslizables en horizontal
+     Fuente de contenido: _build/contenido/features.json
+     Hoja: OSCURA (va dentro de <main>, sobre --sh-bg).
+     CSS: _build/parts/features.css  (tokens --ft-*)
+
+     Sin JavaScript el bloque funciona entero: el raíl es scroll horizontal
+     nativo con scroll-snap, y cada tarjeta es un enlace real a su pantalla
+     del panel demo. Los dos botones de flecha están ocultos hasta que
+     .has-js existe, porque sin JS no harían nada (ver la nota de integración).
+
+     Los ocho enlaces se han comprobado contra el panel capturado: los ocho
+     devuelven 200. No inventes rutas nuevas aquí sin volver a comprobarlas.
+
+     data-feature-page lleva el slug de la futura página /features/<slug>.html.
+     Esas páginas todavía NO existen: cuando se publiquen, el orquestador
+     puede convertir ese atributo en el href principal y bajar el enlace al
+     panel a un segundo enlace dentro de la tarjeta.
+     ========================================================================== -->
+<section class="sheet ft" id="funciones" aria-labelledby="ft-title">
+  <div class="container ft__head">
+    <p class="tag reveal" data-reveal="up">Qué hace</p>
+    <h2 id="ft-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Ocho cosas que hace hoy. <span class="fade">Ninguna a base de estimar.</span></h2>
+    <p class="sheet__lead reveal" data-reveal="up" style="--i:2">Cada tarjeta abre la pantalla de verdad en el panel de demostración: un hotel ficticio de cien habitaciones, congelado a propósito el jueves 15 de enero de 2026 a las 14:30. Puedes abrirlo, mirar una cifra y abrir esa cifra.</p>
+
+    <!-- Controles del raíl. Solo con JS: sin él, el raíl se desliza igual
+         con el dedo, la rueda, la barra de scroll o el tabulador. -->
+    <div class="ft__ctrl reveal" data-reveal="up" style="--i:3">
+      <p class="ft__hint">Desliza para ver las ocho</p>
+      <div class="ft__arrows">
+        <button class="btn btn--on-dark btn--secondary btn--icon ft__arrow" type="button" data-ft-prev aria-controls="ft-rail" aria-label="Ver las funciones anteriores">
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M10 2.5 4.5 8l5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="btn btn--on-dark btn--secondary btn--icon ft__arrow" type="button" data-ft-next aria-controls="ft-rail" aria-label="Ver las funciones siguientes">
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M6 2.5 11.5 8 6 13.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ft__viewport" id="ft-rail" tabindex="0" role="region" aria-label="Funciones de Holdera, lista deslizable en horizontal" data-ft-viewport>
+    <ul class="ft__rail">
+
+      <li class="ft-card ft-card--wide" id="funcion-hoy">
+        <p class="ft-card__idx"><span class="ft-card__n">01</span><span class="ft-card__of">de 08</span></p>
+        <p class="ft-card__kicker">No el cierre de ayer: el hotel a las 14:30.</p>
+        <h3 class="ft-card__title"><a class="ft-card__link" href="/panel/" data-feature-page="operacion-diaria-hotel">El día de hoy, tal como está a esta hora</a></h3>
+        <p class="ft-card__body">Llegadas, salidas, habitaciones en casa y habitaciones listas, leídas de la foto intradía que tu PMS deja a una hora concreta. Cada pantalla lleva escrito de cuándo es el dato que estás mirando, y lo que todavía no ha cerrado sale marcado como no cerrado en vez de redondeado.</p>
+        <p class="ft-card__qlabel">Qué contesta</p>
+        <ul class="ft-card__q">
+          <li>¿Cuántas llegadas me quedan por entrar esta tarde?</li>
+          <li>¿Tengo habitaciones listas suficientes para las que faltan?</li>
+          <li>¿Cuántas habitaciones espero esta noche, y eso es un hecho o una proyección?</li>
+        </ul>
+        <p class="ft-card__foot"><span class="ft-card__screen">Panel demo · Hoy</span><span class="ft-card__go" aria-hidden="true">Abrir</span></p>
+      </li>
+
+      <li class="ft-card" id="funcion-habitaciones">
+        <p class="ft-card__idx"><span class="ft-card__n">02</span><span class="ft-card__of">de 08</span></p>
+        <p class="ft-card__kicker">Planta por planta, y qué pasa en cada una.</p>
+        <h3 class="ft-card__title"><a class="ft-card__link" href="/panel/rooms/" data-feature-page="estado-de-habitaciones-por-planta">El edificio, no una tabla de cien filas</a></h3>
+        <p class="ft-card__body">Las habitaciones se miran donde están. El panel dibuja el hotel planta a planta con el reparto de estados de cada una, y separa lo que es dato del PMS de lo que es configuración del edificio: en la demo lo dice en pantalla, con esas palabras.</p>
+        <p class="ft-card__qlabel">Qué contesta</p>
+        <ul class="ft-card__q">
+          <li>¿Qué planta va retrasada respecto a las demás?</li>
+          <li>¿Cuántas habitaciones hay en cada estado, planta por planta?</li>
+          <li>¿Cuántas tengo fuera de orden y qué me cuestan en ocupación?</li>
+        </ul>
+        <p class="ft-card__foot"><span class="ft-card__screen">Panel demo · Habitaciones</span><span class="ft-card__go" aria-hidden="true">Abrir</span></p>
+      </li>
+
+      <li class="ft-card" id="funcion-housekeeping">
+        <p class="ft-card__idx"><span class="ft-card__n">03</span><span class="ft-card__of">de 08</span></p>
+        <p class="ft-card__kicker">Vacante limpia no es lo mismo que vacante.</p>
+        <h3 class="ft-card__title"><a class="ft-card__link" href="/panel/rooms/layer-housekeeping/" data-feature-page="housekeeping-hotel">Housekeeping con el nombre exacto de cada estado</a></h3>
+        <p class="ft-card__body">Holdera separa Vacant Clean (VC), Cleaning (IP) y Vacant Dirty (VD) de las que están fuera de orden (OOO) o fuera de servicio (OOS), y cuenta si las limpias cubren de verdad las llegadas que faltan por entrar. Una habitación sin estado sale como sin estado, nunca como limpia.</p>
+        <p class="ft-card__qlabel">Qué contesta</p>
+        <ul class="ft-card__q">
+          <li>¿Cuántas habitaciones están listas de verdad, no solo vacías?</li>
+          <li>¿Cubren las llegadas que todavía tengo pendientes?</li>
+          <li>¿Qué planta lleva más trabajo por delante en este turno?</li>
+        </ul>
+        <p class="ft-card__foot"><span class="ft-card__screen">Panel demo · Housekeeping</span><span class="ft-card__go" aria-hidden="true">Abrir</span></p>
+      </li>
+
+      <li class="ft-card" id="funcion-revenue">
+        <p class="ft-card__idx"><span class="ft-card__n">04</span><span class="ft-card__of">de 08</span></p>
+        <p class="ft-card__kicker">Ocupación, ADR, RevPAR y TRevPAR a la vez.</p>
+        <h3 class="ft-card__title"><a class="ft-card__link" href="/panel/revenue/" data-feature-page="revenue-adr-revpar-trevpar">Cómo vendes, contra el mismo momento del año pasado</a></h3>
+        <p class="ft-card__body">Esta noche, el mes en curso y las treinta noches que vienen, cada cifra leída contra el mismo punto de la curva de reserva del año pasado. Cómo acabó aquel año va aparte y etiquetado: un libro que todavía se está llenando siempre parece un desplome contra un año ya cerrado.</p>
+        <p class="ft-card__qlabel">Qué contesta</p>
+        <ul class="ft-card__q">
+          <li>¿Voy mejor o peor que el año pasado, comparando lo comparable?</li>
+          <li>¿Cuánto de mi ingreso no es la habitación?</li>
+          <li>¿De dónde sale exactamente este ADR?</li>
+        </ul>
+        <p class="ft-card__foot"><span class="ft-card__screen">Panel demo · Revenue</span><span class="ft-card__go" aria-hidden="true">Abrir</span></p>
+      </li>
+
+      <li class="ft-card" id="funcion-reservas">
+        <p class="ft-card__idx"><span class="ft-card__n">05</span><span class="ft-card__of">de 08</span></p>
+        <p class="ft-card__kicker">Ocho meses, y el pickup de los últimos siete días.</p>
+        <h3 class="ft-card__title"><a class="ft-card__link" href="/panel/revenue/bookings/" data-feature-page="calendario-de-reservas-pickup-pace">El calendario de reservas, noche a noche</a></h3>
+        <p class="ft-card__body">Un calendario mes a mes con la ocupación, la tarifa y las habitaciones on the books de cada noche, más lo que ha entrado esta semana y cómo va el ritmo de venta contra el año pasado. La línea de este año termina hoy: Holdera no dibuja el futuro.</p>
+        <p class="ft-card__qlabel">Qué contesta</p>
+        <ul class="ft-card__q">
+          <li>¿Qué noches se me están quedando vacías?</li>
+          <li>¿Qué ha entrado esta semana, y a qué tarifa?</li>
+          <li>¿Voy por delante o por detrás del ritmo del año pasado?</li>
+        </ul>
+        <p class="ft-card__foot"><span class="ft-card__screen">Panel demo · Reservas</span><span class="ft-card__go" aria-hidden="true">Abrir</span></p>
+      </li>
+
+      <li class="ft-card ft-card--wide" id="funcion-trazabilidad">
+        <p class="ft-card__idx"><span class="ft-card__n">06</span><span class="ft-card__of">de 08</span></p>
+        <p class="ft-card__kicker">Fórmula, entradas, registro y dato en bruto.</p>
+        <h3 class="ft-card__title"><a class="ft-card__link" href="/panel/operations/occupancy/businessdate-2026-01-14/" data-feature-page="trazabilidad-de-cifras">Cualquier cifra se abre hasta el registro que la produjo</a></h3>
+        <p class="ft-card__body">Detrás de cada número hay cuatro pasos: la fórmula, el valor que tomó cada entrada, el registro ya normalizado y la fila tal como entró, con su identificador de origen y su huella de contenido. El último paso no es un resumen de la fuente: es la fuente.</p>
+        <p class="ft-card__qlabel">Qué contesta</p>
+        <ul class="ft-card__q">
+          <li>¿De dónde sale este número, exactamente?</li>
+          <li>¿Qué valor tomó cada entrada de la fórmula?</li>
+          <li>¿Este dato es definitivo o todavía puede cambiar?</li>
+        </ul>
+        <p class="ft-card__foot"><span class="ft-card__screen">Panel demo · Un día trazado</span><span class="ft-card__go" aria-hidden="true">Abrir</span></p>
+      </li>
+
+      <li class="ft-card" id="funcion-definiciones">
+        <p class="ft-card__idx"><span class="ft-card__n">07</span><span class="ft-card__of">de 08</span></p>
+        <p class="ft-card__kicker">Tu convención de OOO y OOS, no la nuestra.</p>
+        <h3 class="ft-card__title"><a class="ft-card__link" href="/panel/metrics/occupancy_rate/" data-feature-page="definiciones-acordadas">Primero acordamos qué significa cada cosa</a></h3>
+        <p class="ft-card__body">Ocupación sobre las habitaciones físicas y ocupación sobre las que están en operación no son la misma cifra, y la diferencia son tus habitaciones fuera de orden. Holdera enseña las dos, escribe la fórmula de cada una y las marca como pendientes de validar hasta que confirmas cuál es la convención de tu hotel.</p>
+        <p class="ft-card__qlabel">Qué contesta</p>
+        <ul class="ft-card__q">
+          <li>¿Las fuera de orden entran o no entran en el denominador?</li>
+          <li>¿Por qué mi ocupación no coincide con la que da mi PMS?</li>
+          <li>¿Quién decide la definición, tu hotel o el software?</li>
+        </ul>
+        <p class="ft-card__foot"><span class="ft-card__screen">Panel demo · Métricas · Ocupación</span><span class="ft-card__go" aria-hidden="true">Abrir</span></p>
+      </li>
+
+      <li class="ft-card ft-card--count" id="funcion-catalogo">
+        <p class="ft-card__idx"><span class="ft-card__n">08</span><span class="ft-card__of">de 08</span></p>
+        <p class="ft-card__kicker">Lo que falta se dice que falta, con nombre.</p>
+        <h3 class="ft-card__title"><a class="ft-card__link" href="/panel/metrics/" data-feature-page="catalogo-de-metricas-hoteleras">Un catálogo de 57 métricas que dice cuáles no puede calcular</a></h3>
+        <p class="ft-card__body">El catálogo trae 57 KPIs hoteleros con su fórmula. En el hotel de la demo, 13 tienen valor y las otras 44 salen sin cifra y con lo que les falta escrito al lado: 18 nombran la contabilidad, 9 el POS y 3 una fuente de mercado. Ninguna se rellena con una estimación.</p>
+        <p class="ft-card__qlabel">Qué contesta</p>
+        <ul class="ft-card__q">
+          <li>¿Qué puedo medir hoy con lo que ya exporto?</li>
+          <li>¿Qué tendría que conectar para llegar al GOPPAR?</li>
+          <li>¿Por qué esta casilla está vacía?</li>
+        </ul>
+        <p class="ft-card__foot"><span class="ft-card__screen">Panel demo · Métricas</span><span class="ft-card__go" aria-hidden="true">Abrir</span></p>
+      </li>
+
+    </ul>
+  </div>
+
+  <div class="container">
+    <p class="ft__note reveal" data-reveal="up">Las cifras de estas tarjetas son las del hotel de demostración: cien habitaciones, cinco plantas y sesenta días de histórico, todo ficticio. Holdera todavía no tiene clientes publicables, así que no verás aquí los resultados de nadie.</p>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     BLOQUE: Preguntas frecuentes
+     Fuente de contenido: _build/contenido/faq.json  (12 preguntas)
+     JSON-LD:             _build/contenido/faq-jsonld.json  (8 preguntas —
+                          las cuatro con marcador se quedan fuera a propósito)
+     CSS:                 _build/parts/faq.css  (tokens --faq-*)
+     Hoja: OSCURA (va dentro de <main>, sobre --sh-bg).
+
+     · <details>/<summary> nativo: abre y cierra sin una línea de JavaScript.
+     · El texto de cada respuesta es IDÉNTICO al de faq.json, porque el de
+       faq.json es el que viaja en el dato estructurado. Si cambias uno,
+       cambia el otro y vuelve a generar el JSON-LD:
+           node _build/contenido/build-faq-jsonld.js
+     · Cuatro respuestas llevan un marcador «[… por confirmar]». Ese formato
+       es el del resto del sitio y es el que reconoce la expresión regular de
+       _build/check-placeholders.js — no le metas nada detrás de «confirmar»
+       dentro del corchete o el guardia deja de verlo.
+     ========================================================================== -->
+<section class="sheet faq" id="preguntas" aria-labelledby="faq-title">
+  <div class="container faq__grid">
+
+    <div class="faq__intro">
+      <p class="tag reveal" data-reveal="up">Preguntas</p>
+      <h2 id="faq-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Lo que se pregunta <span class="fade">antes de sentarse.</span></h2>
+      <p class="sheet__lead reveal" data-reveal="up" style="--i:2">Doce preguntas reales de dirección de hotel, contestadas hasta donde llega lo que hay. No hay respuesta de compromiso: donde Holdera todavía no ha decidido algo, lo pone y ya está.</p>
+      <p class="faq__legend reveal" data-reveal="up" style="--i:3">
+        <span class="faq__legend-sample" data-placeholder>[… por confirmar]</span>
+        Cuatro de las doce llevan un hueco escrito así. Son decisiones abiertas —precio, permanencia, dónde vive el dato, multipropiedad— y preferimos el hueco a una frase que suene bien.
+      </p>
+    </div>
+
+    <div class="faq__list reveal" data-reveal="up">
+
+      <details class="faq__item" id="faq-sustituye">
+        <summary class="faq__q">¿Holdera sustituye a mi PMS o se conecta con él?<span class="faq__sign" aria-hidden="true"></span></summary>
+        <div class="faq__a">
+          <p>Se conecta, y en una sola dirección: lee. Holdera no gestiona reservas, no bloquea habitaciones, no cobra y no escribe nada en tus sistemas. Tu PMS sigue siendo donde ocurre la operación; Holdera es donde la ves junta y con su origen al lado. Si un día dejas de usarlo, tu PMS se queda exactamente como estaba.</p>
+        </div>
+      </details>
+
+      <details class="faq__item" id="faq-que-pms">
+        <summary class="faq__q">¿Con qué PMS funciona?<span class="faq__sign" aria-hidden="true"></span></summary>
+        <div class="faq__a">
+          <p>La pregunta que decide no es la marca, es qué informes sabe sacar. Holdera necesita cuatro cosas: el cierre del día, la foto intradía, las noches ya vendidas por delante y el ingreso de los departamentos que no son alojamiento. Si tu PMS puede generar eso, aunque sea en un CSV, funciona. No publicamos una lista de PMS «certificados» porque no la tenemos: mándanos un informe de ejemplo y te decimos qué pantallas se encienden con él y cuáles no.</p>
+        </div>
+      </details>
+
+      <details class="faq__item" id="faq-falta-dato">
+        <summary class="faq__q">¿Y si mi PMS no exporta uno de esos datos?<span class="faq__sign" aria-hidden="true"></span></summary>
+        <div class="faq__a">
+          <p>Entonces esa parte no se enciende, y la pantalla lo dice. Sin la foto intradía no hay «hoy»: solo noches ya cerradas. Sin las noches futuras no hay pickup ni ritmo de venta. Sin el ingreso de restauración y spa se enseña el RevPAR y el TRevPAR queda marcado como incompleto, que es la cifra que más se falsea cuando solo se cuentan las habitaciones. Lo que no se hace nunca es estimar el hueco y enseñarlo como si fuera un dato.</p>
+        </div>
+      </details>
+
+      <details class="faq__item" id="faq-puesta-en-marcha">
+        <summary class="faq__q">¿Cuánto tarda en estar funcionando?<span class="faq__sign" aria-hidden="true"></span></summary>
+        <div class="faq__a">
+          <p>Depende de por dónde entre el dato, y hay cuatro vías. Por la más simple —descargas el informe de tu PMS y nos lo pasas— ver tus propios números en pantalla es cuestión de días y no hace falta que nadie toque tu sistema. Lo demás (que el export salga solo cada noche, repasar contigo las definiciones) depende de tu PMS y de quién lo administre, así que la fecha te la damos después de ver tu export, no antes de verlo.</p>
+        </div>
+      </details>
+
+      <details class="faq__item" id="faq-que-datos">
+        <summary class="faq__q">¿Qué datos salen exactamente de mi hotel?<span class="faq__sign" aria-hidden="true"></span></summary>
+        <div class="faq__a">
+          <p>Cifras de habitaciones y de dinero por día, no expedientes. Del cierre diario: habitaciones físicas, vendidas, ocupadas, fuera de orden, fuera de servicio y el ingreso de alojamiento de esa noche. De la foto intradía: llegadas, salidas y el estado de limpieza de las habitaciones. De las noches futuras: habitaciones on the books por noche y por tipo, con la fecha en que se tomó la lectura. Y de los otros departamentos, el total por día. Nada de eso necesita el nombre de nadie.</p>
+        </div>
+      </details>
+
+      <!-- TODO (Alex): ubicación del dato, plazo de conservación y control de acceso interno. -->
+      <details class="faq__item faq__item--todo" id="faq-donde-se-guardan">
+        <summary class="faq__q">¿Dónde se guardan esos datos y quién puede verlos?<span class="faq__sign" aria-hidden="true"></span></summary>
+        <div class="faq__a">
+          <p>Lo que sí está decidido: Holdera no se queda conectado a tus sistemas y nunca te pide sus contraseñas. Si hace falta un acceso, es uno propio, de solo lectura, acotado a los campos que hayamos acordado, y lo puedes revocar cuando quieras. Lo que todavía no está cerrado por escrito es dónde se alojan tus datos, cuánto tiempo se conservan y quién de nuestro lado puede abrirlos: <span class="faq__todo" data-placeholder>[ubicación del dato, plazo de conservación y control de acceso por confirmar]</span>. Preferimos dejarlo en blanco a publicar una política que aún no existe.</p>
+        </div>
+      </details>
+
+      <details class="faq__item" id="faq-datos-personales">
+        <summary class="faq__q">¿Qué pasa con los datos personales de los huéspedes?<span class="faq__sign" aria-hidden="true"></span></summary>
+        <div class="faq__a">
+          <p>Holdera trabaja con agregados: cuántas habitaciones, en qué estado y por cuánto. Para calcular ocupación, ADR, RevPAR o pickup no hace falta ni un nombre, y por defecto no se piden. En el panel de demostración hay una pantalla de huéspedes con algo de detalle individual —lo justo para atender a alguien que está esperando en recepción, y con la inicial del apellido—; si en tu hotel ese detalle sobra, esa pantalla sencillamente no se enciende, porque sin la fuente no hay pantalla. La parte legal y de custodia está en la pregunta anterior, que es la que todavía tiene decisiones abiertas.</p>
+        </div>
+      </details>
+
+      <!-- TODO (Alex): precio y modelo de facturación. -->
+      <details class="faq__item faq__item--todo" id="faq-precio">
+        <summary class="faq__q">¿Cuánto cuesta y cómo se factura?<span class="faq__sign" aria-hidden="true"></span></summary>
+        <div class="faq__a">
+          <p><span class="faq__todo" data-placeholder>[Precio y modelo de facturación por confirmar]</span>. Holdera está en fase piloto y el precio todavía no está publicado. Poner aquí una cifra de adorno sería exactamente lo contrario de lo que hace el producto, así que no la vas a encontrar: cuéntanos cuántas habitaciones tienes y qué exporta tu PMS y lo hablamos con tu caso delante.</p>
+        </div>
+      </details>
+
+      <!-- TODO (Alex): permanencia y condiciones de baja. -->
+      <details class="faq__item faq__item--todo" id="faq-permanencia">
+        <summary class="faq__q">¿Hay permanencia?<span class="faq__sign" aria-hidden="true"></span></summary>
+        <div class="faq__a">
+          <p><span class="faq__todo" data-placeholder>[Condiciones de permanencia y de baja por confirmar]</span>. No hay todavía una política escrita y preferimos decirlo a improvisarla. Lo que sí es cierto por cómo está montado el producto: Holdera lee y no escribe, así que el día que lo dejes tu PMS y tus datos siguen donde estaban, porque nunca dejaron de estar ahí.</p>
+        </div>
+      </details>
+
+      <!-- TODO (Alex): si la vista de grupo multipropiedad entra en el alcance, y cuándo. -->
+      <details class="faq__item faq__item--todo" id="faq-varios-hoteles">
+        <summary class="faq__q">¿Funciona con varios hoteles?<span class="faq__sign" aria-hidden="true"></span></summary>
+        <div class="faq__a">
+          <p>Hoy el producto está pensado y probado sobre un hotel: el panel enseña una propiedad, con sus plantas y sus habitaciones. Y las definiciones se acuerdan hotel por hotel a propósito, porque dos hoteles del mismo grupo rara vez cuentan igual las habitaciones fuera de orden — sumarlos antes de acordar eso es fabricar una cifra que no significa nada. Una vista de grupo que consolide varias propiedades: <span class="faq__todo" data-placeholder>[alcance y fecha por confirmar]</span>. Si tienes varios, dínoslo al escribir: cambia bastante la conversación.</p>
+        </div>
+      </details>
+
+      <details class="faq__item" id="faq-no-cuadra">
+        <summary class="faq__q">¿Y si una cifra no me cuadra?<span class="faq__sign" aria-hidden="true"></span></summary>
+        <div class="faq__a">
+          <p>Se abre. Cada número lleva detrás la fórmula, el valor que tomó cada entrada, el registro ya normalizado y la fila en bruto tal como entró, con su identificador de origen. Casi nunca el desacuerdo es un error de cálculo: es una definición distinta —tú cuentas las fuera de orden dentro del denominador y la pantalla las cuenta fuera, o tu día cierra a otra hora—. Eso se corrige en la definición y el histórico se vuelve a calcular con ella. Y mientras una definición no esté validada contigo, la cifra sale marcada como pendiente de validar en vez de pasar por definitiva.</p>
+        </div>
+      </details>
+
+      <details class="faq__item" id="faq-ia">
+        <summary class="faq__q">¿Esto es inteligencia artificial? ¿Decide algo por su cuenta?<span class="faq__sign" aria-hidden="true"></span></summary>
+        <div class="faq__a">
+          <p>No decide nada y no actúa fuera del panel: no cambia tarifas, no escribe en tu PMS y no manda correos. Hay una pantalla que cruza señales del propio hotel y propone algo —en la demo, que hay trece minutos de espera en el restaurante mientras una planta tiene capacidad libre— y lo enseña por etapas: qué observa, cómo lo explica, qué recomienda y qué pasaría si se hiciera. Decides tú. El caso queda registrado y, cuando se cierra, se compara lo que se predijo con lo que acabó pasando.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+
+
+    <section class="sheet" id="integraciones" aria-labelledby="ints-title">
+      <div class="container">
+        <p class="tag reveal" data-reveal="up">Integraciones</p>
+        <h2 id="ints-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Se conecta con <span class="fade">lo que ya usas.</span></h2>
+      </div>
+      <div class="container reveal" data-reveal="up" style="--i:2">
+        <!-- 47 entradas en 10 grupos. Listas anidadas, no una rejilla de
+             tarjetas: los grupos tienen entre 2 y 9 miembros y una rejilla uniforme
+             de tres columnas esta prohibida por el CLAUDE.md global. El titulo de
+             grupo es un <p>, no un <h3>: este bloque se copia dentro del drawer y de
+             la nav, y un encabezado decorativo ahi rompe el esquema h1->h2 de la
+             pagina (trampa del paso 5). -->
+        <div class="ints">
+          <p class="ints__eyebrow">Nos integramos con</p>
+          <ul class="ints__groups">
+                <li class="ints__group">
+                  <p class="ints__cat">Channel manager</p>
+                  <ul class="ints__items">
+                    <li>SiteMinder</li>
+                    <li>YieldPlanet</li>
+                    <li>Channex</li>
+                    <li>Neobookings</li>
+                    <li>WuBook</li>
+                    <li>Prestige</li>
+                    <li>RoomCloud</li>
+                  </ul>
+                </li>
+                <li class="ints__group">
+                  <p class="ints__cat">Pasarelas de pago</p>
+                  <ul class="ints__items">
+                    <li>Paycomet</li>
+                    <li>Monei</li>
+                    <li>Redsys</li>
+                    <li>Stripe</li>
+                    <li>CashDro</li>
+                  </ul>
+                </li>
+                <li class="ints__group">
+                  <p class="ints__cat">Revenue management</p>
+                  <ul class="ints__items">
+                    <li>Dataria</li>
+                    <li>PriceLabs</li>
+                    <li>RevCtrlData</li>
+                    <li>Revbell</li>
+                    <li>Revtool</li>
+                    <li>TheNetRevenue</li>
+                    <li>RoomPriceGenie</li>
+                  </ul>
+                </li>
+                <li class="ints__group">
+                  <p class="ints__cat">Llaves y accesos</p>
+                  <ul class="ints__items">
+                    <li>Tesa</li>
+                    <li>Salto KS</li>
+                    <li>Yacan Smart</li>
+                    <li>Danalock</li>
+                    <li>TTLock</li>
+                  </ul>
+                </li>
+                <li class="ints__group">
+                  <p class="ints__cat">TPV, restauración y spa</p>
+                  <ul class="ints__items">
+                    <li>Agora</li>
+                    <li>Revo</li>
+                    <li>HioPos</li>
+                    <li>Spalopia</li>
+                  </ul>
+                </li>
+                <li class="ints__group">
+                  <p class="ints__cat">CRM y huésped</p>
+                  <ul class="ints__items">
+                    <li>HiJiffy</li>
+                    <li>Clientify</li>
+                  </ul>
+                </li>
+                <li class="ints__group">
+                  <p class="ints__cat">Contabilidad y ERP</p>
+                  <ul class="ints__items">
+                    <li>Sage 50</li>
+                    <li>Sage 200</li>
+                    <li>Clavecon</li>
+                    <li>Asincorp</li>
+                    <li>Holded</li>
+                    <li>A3</li>
+                    <li>Siigo</li>
+                    <li>SAP</li>
+                    <li>Prinex</li>
+                  </ul>
+                </li>
+                <li class="ints__group">
+                  <p class="ints__cat">Housekeeping y domótica</p>
+                  <ul class="ints__items">
+                    <li>Char</li>
+                    <li>HubOS</li>
+                  </ul>
+                </li>
+                <li class="ints__group">
+                  <p class="ints__cat">Autoridades y normativa</p>
+                  <ul class="ints__items">
+                    <li>SES Hospedajes</li>
+                    <li>Ertzaintza</li>
+                    <li>Mossos d’Esquadra</li>
+                    <li>MiDNI</li>
+                    <li>TicketBAI</li>
+                    <li>Verifactu</li>
+                  </ul>
+                </li>
+                <li class="ints__group">
+                  <p class="ints__cat">Módulos del propio PMS</p>
+                  <ul class="ints__items">
+                    <li>Check-in Online</li>
+                    <li>WebApp del huésped</li>
+                    <li>Motor de reservas</li>
+                  </ul>
+                </li>
+          </ul>
+          <p class="ints__note">Las marcas pertenecen a sus respectivos titulares.</p>
+          <!-- TODO: confirmar con Alex que el producto de Holdera hereda de verdad
+               estas integraciones de Hotelgest antes de publicar este bloque. -->
+        </div>
+      </div>
     </section>
+
     <section class="sheet sheet--cta" id="contacto" aria-labelledby="cta-title">
       <div class="container cta">
         <div class="cta__text">
@@ -636,8 +1233,9 @@
       <nav class="footer__nav" aria-label="Pie de página">
         <p class="footer__head">Holdera</p>
         <a href="#inicio">Inicio</a>
-        <a href="#producto">El producto</a>
-        <a href="#como-trabajamos">Cómo trabajamos</a>
+        <a href="#ha-recorrido">El producto</a>
+        <a href="#conectado">Cómo funciona</a>
+        <a href="#integraciones">Integraciones</a>
         <a href="nosotros.html">Nosotros</a>
         <a href="partners.html">Partners</a>
         <a href="panel/">Panel demo</a>
@@ -646,8 +1244,8 @@
       <div class="footer__contact">
         <p class="footer__head">Contacto</p>
         <!-- TODO (Alex): datos de contacto reales. Cada [corchete] es un marcador: sustituir texto Y href. -->
-        <span data-placeholder="email">[email por confirmar]</span>
-        <span data-placeholder="telefono">[teléfono por confirmar]</span>
+        <a href="mailto:info@holdera.es">info@holdera.es</a>
+        <a href="tel:+34607836960">+34 607 83 69 60</a>
         <span data-placeholder="whatsapp">[WhatsApp por confirmar]</span>
         <span data-placeholder="instagram">[Instagram por confirmar]</span>
         <p class="footer__addr">Barcelona · España</p>
@@ -665,6 +1263,8 @@
   <!-- Side menu -->
   <!-- Side menu -->
   <!-- Side menu -->
+  <!-- Side menu -->
+  <!-- Side menu -->
   <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Menú de navegación" aria-hidden="true" inert>
     <div class="drawer__panel">
       <div class="drawer__head">
@@ -678,13 +1278,17 @@
           <span class="mrow__label">Inicio</span>
           <span class="mrow__band" aria-hidden="true"><span class="mrow__track"><span class="mrow__inner" aria-hidden="true"><span>Operaciones de hotel</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i><span>Todo el hotel, a la vez</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Cada cifra con su origen</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Barcelona</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i><span>Operaciones de hotel</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i><span>Todo el hotel, a la vez</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Cada cifra con su origen</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Barcelona</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i></span></span></span>
         </a>
-        <a class="mrow__link" href="#producto" style="--i:1">
+        <a class="mrow__link" href="#ha-recorrido" style="--i:1">
           <span class="mrow__label">El producto</span>
           <span class="mrow__band" aria-hidden="true"><span class="mrow__track"><span class="mrow__inner" aria-hidden="true"><span>Hoy</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i><span>Habitaciones y plantas</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Housekeeping</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Revenue y reservas</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i><span>Hoy</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i><span>Habitaciones y plantas</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Housekeeping</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Revenue y reservas</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i></span></span></span>
         </a>
-        <a class="mrow__link" href="#como-trabajamos" style="--i:2">
-          <span class="mrow__label">Cómo trabajamos</span>
+        <a class="mrow__link" href="#conectado" style="--i:2">
+          <span class="mrow__label">Cómo funciona</span>
           <span class="mrow__band" aria-hidden="true"><span class="mrow__track"><span class="mrow__inner" aria-hidden="true"><span>Conectamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Validamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Publicamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i><span>Trazamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i><span>Conectamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Validamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Publicamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i><span>Trazamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i></span></span></span>
+        </a>
+        <a class="mrow__link" href="#integraciones" style="--i:3">
+          <span class="mrow__label">Integraciones</span>
+          <span class="mrow__band" aria-hidden="true"><span class="mrow__track"><span class="mrow__inner" aria-hidden="true"><span>Producto propio</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Más de 5 años</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Con sede en Barcelona</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i><span>En fase piloto</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i><span>Producto propio</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Más de 5 años</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Con sede en Barcelona</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i><span>En fase piloto</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i></span></span></span>
         </a>
         <a class="mrow__link" href="nosotros.html" style="--i:3">
           <span class="mrow__label">Nosotros</span>
@@ -711,13 +1315,15 @@
   </div>
   <!-- /drawer -->
 
-  <script src="script.js?v=247b4b29" defer></script>
+  <script src="script.js?v=488f120c" defer></script>
   <!-- waves.js is plain canvas2d, no CDN: pure decoration under everything -->
   <script src="waves.js?v=3b6f3e13" defer></script>
   <!-- brain.js is self-contained WebGL (no CDN): if it fails the poster stays put -->
   <script src="brain.js?v=f883ece9" defer></script>
-  <!-- planet.js is raw WebGL, no CDN -->
-  <script src="planet.js?v=987c881d" defer></script>
+  <!-- El recorrido del hotel: WebGL no, canvas no; SVG + CSS y su propio
+       lector de scroll. Pide el plano y los datos medidos en diferido y
+       solo en escritorio sin movimiento reducido. -->
+  <script src="hotel-anim.js?v=6b954b34" defer></script>
   <!-- GSAP + ScrollTrigger (cdnjs) los inyecta script.js SOLO en escritorio y
        sin movimiento reducido: son la capa opcional del scroll del hero y en
        móvil no se usan (42 KB menos por visita). La página nunca los espera. -->

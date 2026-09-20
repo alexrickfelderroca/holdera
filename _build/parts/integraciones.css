@@ -1,0 +1,365 @@
+/* ===========================================================================
+   HOLDERA · INTEGRACIONES — estilos de las dos piezas de integraciones.html
+
+   COMO SE INTEGRA (leer antes de pegar)
+   -------------------------------------
+   Lo mas sencillo y lo que menos toca: APENDAR este archivo entero AL FINAL de
+   styles.css. Razon concreta, no estetica: `_build/check-tokens.js` y
+   `_build/contrast.js` llevan la lista de hojas ESCRITA A MANO
+   (`['styles.css', 'pages.css']`), asi que un tercer archivo .css no lo mira
+   ningun guardia — pasaria las cinco puertas sin que nadie haya comprobado ni
+   sus tokens ni su contraste, que es justo la clase de verde mentiroso que
+   este proyecto ya ha pagado dos veces. Si se prefiere archivo aparte, hay que
+   anadirlo a esas dos listas Y al <link> de las paginas que lo usen.
+
+   POR QUE SE PUEDE APENDAR AL FINAL SIN ROMPER NADA
+   ------------------------------------------------
+   1. Todas las reglas de la tira son (0,2,0) — `.hero__bar.hero__bar--mrq` —
+      frente a las (0,1,0) de `.hero__bar` que ya hay en styles.css. Ganan por
+      especificidad, no por orden, asi que da igual donde acaben.
+   2. El bloque de "prefers-reduced-motion" que cierra styles.css apaga la
+      animacion con `*, *::before, *::after { animation: none !important }`.
+      El !important le gana a esta hoja aunque vaya despues: la marquesina se
+      para sola y no hace falta repetirlo. Lo que SI se dice aqui abajo es lo
+      que ese bloque no puede saber — que el visor pase a ser desplazable y
+      que el clon sobre.
+   3. El orden INTERNO de este archivo si importa, y es el de la casa:
+      base -> movil -> movimiento reducido -> (movil Y movimiento reducido).
+      El ultimo bloque existe por la trampa del paso 8: dos @media con la
+      misma especificidad, gana la que va despues en el archivo.
+
+   QUE SUSTITUYE
+   -------------
+   Al <div class="hero__bar"> de los cuatro chips. La tira conserva la clase
+   .hero__bar para heredar posicion, z-index y sombra, y para que
+   `_build/hero-fit.js` siga encontrando el nodo que mide.
+
+   LA BARRA CRECE DE 46px A 80px. Medido, no supuesto: eso NO descuadra nada.
+   Ver la nota al pie del archivo, que trae los numeros de los once viewports
+   que se comprobaron y una pega heredada que conviene conocer.
+   =========================================================================== */
+
+:root {
+  /* Alto de la tira. 80px: dentro del objetivo (76-88), multiplo de 8 y
+     suficiente para una caja de mayusculas de ~14px con aire arriba y abajo.
+     La barra anterior media 46px MEDIDOS (no 56: se comprobo en el navegador,
+     `--bar-h` vale 46px y el rect devuelve 46). */
+
+  /* Alto de dibujo de cada marca. El wordmark va en una caja de 24 cuya caja
+     de mayusculas ocupa ~11,5 (0,72em de un cuerpo 16), asi que a 30px de alto
+     las mayusculas miden 14,4px. Un simbolo lleno a 14,4px se leeria enano: a
+     20px queda en 1,39x la altura de mayuscula, que es la proporcion habitual
+     entre un logotipo y el texto que lo acompana. */
+  --mrq-mark: 30px;
+  --mrq-mark-icon: 20px;
+  --mrq-mark-sm: 24px;
+  --mrq-mark-icon-sm: 17px;
+
+  --mrq-gap: clamp(32px, 3.4vw, 56px);
+
+  /* Duracion de una vuelta completa. Una pasada mide ~4.900px, asi que 112s
+     son ~44px/s: se lee sin perseguirlo y no marea en una pagina que ademas
+     tiene una nube de puntos girando. Se toca AQUI, no en el @keyframes. */
+  --mrq-speed: 112s;
+
+  /* El desvanecido de los dos extremos del visor, para que las marcas no
+     aparezcan y desaparezcan de golpe contra el borde de la barra. Vive en
+     :root porque es color (dos paradas de negro con alfa) y en esta casa
+     ningun literal de color puede quedar fuera de :root — mismo motivo por el
+     que --wave-mask esta aqui arriba y no dentro de su regla. */
+  --mrq-mask: linear-gradient(90deg,
+    rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 40px,
+    rgba(0, 0, 0, 1) calc(100% - 56px), rgba(0, 0, 0, 0) 100%);
+  --mrq-mask-sm: linear-gradient(90deg,
+    rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 20px,
+    rgba(0, 0, 0, 1) calc(100% - 28px), rgba(0, 0, 0, 0) 100%);
+}
+
+/* ---------------------------------------------------------------------------
+   (A) LA TIRA DEL HERO
+--------------------------------------------------------------------------- */
+
+/* La rejilla de cuatro chips pasa a ser dos columnas: rotulo fijo + visor.
+   `--bar-h` se reescribe en vez de tocar `height`, asi la regla
+   `height: var(--bar-h)` que ya hay en styles.css resuelve sola. */
+.hero__bar.hero__bar--mrq {
+  /* --bar-h ya NO se toca aqui: vive en :root de styles.css. Ver la nota
+     de _build/migrations/patch-integraciones.js. */
+  /* TRES columnas, no dos: rotulo · cinta · boton de pausa. Con dos, el
+     boton no cabia en la rejilla y Grid lo mandaba a una segunda fila
+     implicita, donde se veia debajo del rotulo en lugar de a la derecha. */
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  justify-content: stretch;
+  gap: 0;
+  padding: 0 clamp(12px, 1.2vw, 18px) 0 clamp(20px, 2.4vw, 32px);
+  overflow: hidden;                 /* el radio de 16px recorta la tira */
+}
+
+.hero__bar--mrq .mrq__label {
+  margin: 0;
+  padding-right: clamp(16px, 1.6vw, 24px);
+  border-right: 1px solid var(--on-ink-border-strong);
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: var(--w-60);               /* 5,43:1 sobre el extremo claro del degradado */
+  white-space: nowrap;
+}
+
+/* El visor recorta y desvanece; el track es lo que se mueve. Son dos cajas
+   distintas a proposito: animar el que tambien recorta obliga al navegador a
+   recalcular el clip en cada frame. */
+.hero__bar--mrq .mrq__viewport {
+  overflow: hidden;
+  -webkit-mask-image: var(--mrq-mask);
+          mask-image: var(--mrq-mask);
+}
+
+.hero__bar--mrq .mrq__track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: mrq-scroll var(--mrq-speed) linear infinite;
+}
+
+/* Al -50% el track ha avanzado exactamente una pasada, y como la segunda es
+   un clon el dibujo es identico al del 0%: el salto no se ve. Por eso las dos
+   <ul> tienen que medir lo mismo — si alguien anade una marca a una sola, la
+   costura aparece. */
+@keyframes mrq-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+/* Cortesia: se para al pasar el raton o al tabular dentro, para poder leer una
+   marca concreta sin perseguirla. */
+.hero__bar--mrq:hover .mrq__track,
+.hero__bar--mrq:focus-within .mrq__track { animation-play-state: paused; }
+
+.hero__bar--mrq .mrq__row {
+  display: flex;
+  align-items: center;
+  gap: var(--mrq-gap);
+  margin: 0;
+  padding: 0 0 0 var(--mrq-gap);
+  list-style: none;
+}
+
+.hero__bar--mrq .mrq__item {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.hero__bar--mrq .mrq__item svg {
+  display: block;
+  height: var(--mrq-mark);
+  width: auto;
+  fill: currentColor;
+  color: var(--w-84);               /* 8,9:1 en el peor suelo de la barra */
+  transition: color var(--t-fast) var(--ease);
+}
+
+/* Los cuatro atributos de tipografia que el generador NO repite en cada uno de
+   los 82 <svg> incrustados: se dicen una vez, aqui. El .svg suelto de
+   assets/img/integraciones/ si los lleva dentro, porque nadie le aplica esta
+   hoja. Los numeros son los mismos con los que se midieron los anchos
+   (_build/integraciones/wordmark-widths.json), y tienen que seguir siendolo:
+   si cambian aqui y no alli, el textLength deforma los nombres. */
+.hero__bar--mrq .mrq__item text {
+  font-family: var(--font);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.hero__bar--mrq .mrq__item[data-mark="icon"] svg { height: var(--mrq-mark-icon); }
+
+.hero__bar--mrq .mrq__item:hover svg { color: var(--w-90); }
+
+/* ---------------------------------------------------------------------------
+   (B) EL BLOQUE DE LA NAV (drawer + desplegable de escritorio)
+   Va sobre superficie de tinta: --panel en el drawer, el mismo grupo
+   --on-ink-* en la nav. No usa --sh-* : ese grupo es el de la hoja.
+--------------------------------------------------------------------------- */
+
+.ints { color: var(--on-ink-text-2); }
+
+.ints__eyebrow {
+  margin: 0 0 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--on-ink-muted);       /* 4,96:1 sobre --panel */
+}
+
+/* Columnas de flujo, no una rejilla de tarjetas: los nueve grupos tienen
+   entre 2 y 9 miembros y una rejilla uniforme de tres columnas esta prohibida
+   por el CLAUDE.md global. Con `columns` cada grupo ocupa lo que mide y el
+   bloque queda desigual, que es como se lee un indice de verdad. */
+.ints__groups {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  /* Ancho de columna, no numero de columnas: el bloque tiene que servir en el
+     drawer (326px de panel) y en un desplegable de escritorio (~1.350px), y
+     con `columns: 3` fijas lo segundo daba columnas de 448px con nombres de
+     80px dentro — tres islas perdidas en un campo vacio. Con el ancho fijado,
+     el navegador pone las que quepan: 1 en el drawer, 6 en el desplegable.
+     `break-inside: avoid` en el grupo impide que una categoria se parta. */
+  columns: 200px;
+  column-gap: 32px;
+}
+
+.ints__group {
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  margin: 0 0 24px;
+}
+
+.ints__cat {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--on-ink-text);        /* 14,6:1 sobre --panel */
+}
+
+.ints__items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ints__items li {
+  font-size: 14px;
+  line-height: 1.6;                 /* dentro del 1,5-1,7 de la casa */
+  color: var(--on-ink-text-2);      /* 9,7:1 sobre --panel */
+}
+
+.ints__note {
+  margin: 8px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--on-ink-border);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--on-ink-muted);
+}
+
+/* ---------------------------------------------------------------------------
+   MOVIL (<=900px)
+   El hero deja de estar pineado y la barra pasa a ser un bloque normal. El
+   rotulo se va ARRIBA en vez de al lado: a 390px, un rotulo de 118px al lado
+   del visor deja 220px de tira, que no da para dos marcas.
+--------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .hero__bar.hero__bar--mrq {
+    --mrq-gap: 28px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+    padding: 12px 0;
+  }
+
+  .hero__bar--mrq .mrq__label {
+    padding: 0 16px;
+    border-right: 0;
+    font-size: 11px;
+  }
+
+  .hero__bar--mrq .mrq__viewport {
+    -webkit-mask-image: var(--mrq-mask-sm);
+            mask-image: var(--mrq-mask-sm);
+  }
+
+  .hero__bar--mrq .mrq__item svg { height: var(--mrq-mark-sm); }
+  .hero__bar--mrq .mrq__item[data-mark="icon"] svg { height: var(--mrq-mark-icon-sm); }
+
+  /* DOS columnas en el movil, no una. Medido: a una sola columna el bloque
+     mide 1.757px dentro del drawer — 47 nombres en fila india que hay que
+     recorrer enteros con el dedo. A dos baja a la mitad y sigue cabiendo: la
+     columna mas ancha del drawer (326px de panel, 20px de canal) son 153px y
+     el nombre mas largo, "RoomPriceGenie", mide 114px a 14px. */
+  .ints__groups { columns: 2; column-gap: 20px; }
+  .ints__group { margin-bottom: 20px; }
+}
+
+/* ---------------------------------------------------------------------------
+   MOVIMIENTO REDUCIDO
+   La animacion ya la apaga el bloque final de styles.css con
+   `animation: none !important`. Lo que falta es lo que ese bloque no puede
+   saber: sin movimiento, una tira recortada esconde 39 de 41 marcas para
+   siempre. El visor pasa a desplazarse a mano y el clon sobra — 41 logotipos
+   repetidos no aportan nada cuando no hay bucle que disimular.
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .hero__bar--mrq .mrq__viewport {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .hero__bar--mrq .mrq__viewport::-webkit-scrollbar { display: none; }
+  .hero__bar--mrq .mrq__track { width: auto; }
+  .hero__bar--mrq .mrq__row[aria-hidden="true"] { display: none; }
+  .hero__bar--mrq .mrq__item svg { transition: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   MOVIL **Y** MOVIMIENTO REDUCIDO — el ultimo bloque, a proposito
+   Trampa del paso 8, literal: dos @media con la misma especificidad y gana la
+   que va despues en el ARCHIVO. El bloque movil de arriba deja el visor con
+   `overflow: hidden` heredado de la base; si se dejara ahi, un movil con
+   «Reducir movimiento» (que mucha gente lleva puesto en iOS) veria una tira
+   congelada mostrando dos marcas y sin forma de ver las otras 39. Va
+   combinado y al final en vez de acotar el bloque movil con
+   `and (prefers-reduced-motion: no-preference)`, porque acotarlo se llevaria
+   por delante el rotulo de 11px y la altura de marca reducida, que ese movil
+   necesita igual.
+--------------------------------------------------------------------------- */
+@media (max-width: 900px) and (prefers-reduced-motion: reduce) {
+  .hero__bar--mrq .mrq__viewport { overflow-x: auto; }
+  .hero__bar--mrq .mrq__row { padding-right: var(--mrq-gap); }
+}
+
+/* ===========================================================================
+   NOTA PARA QUIEN INTEGRE — el encaje del hero, y un guardia que esta muerto
+   ===========================================================================
+   LO QUE SE TEMIA. Que 34px mas de barra (46 -> 80) empujasen la columna
+   izquierda del hero hasta cruzarla con la tira. Es el bug del paso 4: cuando
+   se cruzan, lo de arriba (z-index 4) se come los clics de los dos botones.
+
+   LO QUE PASA DE VERDAD. No se cruzan en ningun viewport probado. El hueco
+   entre el final del copy y el borde de la tira, con la tira ya a 80px:
+
+       1920x1080  388px      1366x600   129px
+       1440x900   229px      1366x560    89px
+       1366x768   254px      1280x520    59px
+       1280x700   239px      1024x600   166px
+       1366x620   149px      1024x1366  738px   (tablet en vertical)
+       901x700    274px      390x844    323px   (ahi la tira mide 73px)
+
+   En los once: `overflowX` 0, y `elementFromPoint` sobre los cinco puntos de
+   CADA boton del hero devuelve el boton. Ninguno se queda sin margen.
+
+   El motivo de que sobre tanto sitio es que la columna izquierda ya no es lo
+   que era: la lista de cinco servicios que se cruzaba con la barra
+   DESAPARECIO en el pivote a hoteles. Hoy `.hero__left` solo lleva `.hero__copy`.
+   Por eso NO hay que tocar el `@media (max-height: 895px)` de styles.css: su
+   derivacion (top + copy + gap + lista + fondo <= H) incluye un termino
+   "lista" que ya no existe, asi que sigue sobrando altura por todos lados.
+
+   🔴 PERO, DE PASO: `_build/hero-fit.js` ESTA MUERTO Y NADIE LO SABE.
+   Busca `[data-works]`, y ese atributo se fue de index.html con la lista de
+   servicios. Hoy devuelve {skipped:'mobile layout or missing nodes'} en TODOS
+   los viewports — o sea que la comprobacion que existe justamente para que no
+   se repita el bug del paso 4 lleva sin comprobar nada desde el pivote, y
+   ademas sale en verde. Es el patron que este proyecto ya ha pagado dos veces
+   (`.filter(existsSync)` escondiendo listas muertas en el paso 9). Arreglo:
+   cambiar `[data-works]` por `.hero__copy` y medir contra `.hero__bar`, que es
+   lo que se ha hecho a mano para escribir la tabla de arriba. No se toca aqui
+   porque hero-fit.js no es de esta tarea.
+   =========================================================================== */

@@ -1,0 +1,123 @@
+{
+  "_meta": {
+    "bloque": "Preguntas frecuentes — las que hace un director de hotel antes de sentarse",
+    "generado": "2026-09-20",
+    "idioma": "es-ES",
+    "tratamiento": "tú",
+    "regla": "Ninguna respuesta afirma cumplimiento normativo, certificación, integración concreta ni política comercial. Donde Holdera todavía no tiene una decisión tomada, la respuesta lleva un marcador «[… por confirmar con Alex]» y la pregunta queda FUERA del JSON-LD.",
+    "coherencia": "Las respuestas 1 a 5 no contradicen partners.html: cuatro fuentes (cierre diario, foto intradía, noches futuras, otros departamentos) y cuatro vías de entrega (CSV a mano, export programado, API de solo lectura, correo automático), sin conexión en vivo y sin contraseñas de tus sistemas.",
+    "jsonld": "_build/contenido/faq-jsonld.json — solo las 8 preguntas sin marcador",
+    "encoding": "UTF-8 sin BOM"
+  },
+
+  "preguntas": [
+    {
+      "id": "faq-sustituye",
+      "orden": 1,
+      "pregunta": "¿Holdera sustituye a mi PMS o se conecta con él?",
+      "respuesta": "Se conecta, y en una sola dirección: lee. Holdera no gestiona reservas, no bloquea habitaciones, no cobra y no escribe nada en tus sistemas. Tu PMS sigue siendo donde ocurre la operación; Holdera es donde la ves junta y con su origen al lado. Si un día dejas de usarlo, tu PMS se queda exactamente como estaba.",
+      "tieneMarcador": false,
+      "enJsonLd": true
+    },
+    {
+      "id": "faq-que-pms",
+      "orden": 2,
+      "pregunta": "¿Con qué PMS funciona?",
+      "respuesta": "La pregunta que decide no es la marca, es qué informes sabe sacar. Holdera necesita cuatro cosas: el cierre del día, la foto intradía, las noches ya vendidas por delante y el ingreso de los departamentos que no son alojamiento. Si tu PMS puede generar eso, aunque sea en un CSV, funciona. No publicamos una lista de PMS «certificados» porque no la tenemos: mándanos un informe de ejemplo y te decimos qué pantallas se encienden con él y cuáles no.",
+      "tieneMarcador": false,
+      "enJsonLd": true
+    },
+    {
+      "id": "faq-falta-dato",
+      "orden": 3,
+      "pregunta": "¿Y si mi PMS no exporta uno de esos datos?",
+      "respuesta": "Entonces esa parte no se enciende, y la pantalla lo dice. Sin la foto intradía no hay «hoy»: solo noches ya cerradas. Sin las noches futuras no hay pickup ni ritmo de venta. Sin el ingreso de restauración y spa se enseña el RevPAR y el TRevPAR queda marcado como incompleto, que es la cifra que más se falsea cuando solo se cuentan las habitaciones. Lo que no se hace nunca es estimar el hueco y enseñarlo como si fuera un dato.",
+      "tieneMarcador": false,
+      "enJsonLd": true
+    },
+    {
+      "id": "faq-puesta-en-marcha",
+      "orden": 4,
+      "pregunta": "¿Cuánto tarda en estar funcionando?",
+      "respuesta": "Depende de por dónde entre el dato, y hay cuatro vías. Por la más simple —descargas el informe de tu PMS y nos lo pasas— ver tus propios números en pantalla es cuestión de días y no hace falta que nadie toque tu sistema. Lo demás (que el export salga solo cada noche, repasar contigo las definiciones) depende de tu PMS y de quién lo administre, así que la fecha te la damos después de ver tu export, no antes de verlo.",
+      "tieneMarcador": false,
+      "enJsonLd": true
+    },
+    {
+      "id": "faq-que-datos",
+      "orden": 5,
+      "pregunta": "¿Qué datos salen exactamente de mi hotel?",
+      "respuesta": "Cifras de habitaciones y de dinero por día, no expedientes. Del cierre diario: habitaciones físicas, vendidas, ocupadas, fuera de orden, fuera de servicio y el ingreso de alojamiento de esa noche. De la foto intradía: llegadas, salidas y el estado de limpieza de las habitaciones. De las noches futuras: habitaciones on the books por noche y por tipo, con la fecha en que se tomó la lectura. Y de los otros departamentos, el total por día. Nada de eso necesita el nombre de nadie.",
+      "tieneMarcador": false,
+      "enJsonLd": true
+    },
+    {
+      "id": "faq-donde-se-guardan",
+      "orden": 6,
+      "pregunta": "¿Dónde se guardan esos datos y quién puede verlos?",
+      "respuesta": "Lo que sí está decidido: Holdera no se queda conectado a tus sistemas y nunca te pide sus contraseñas. Si hace falta un acceso, es uno propio, de solo lectura, acotado a los campos que hayamos acordado, y lo puedes revocar cuando quieras. Lo que todavía no está cerrado por escrito es dónde se alojan tus datos, cuánto tiempo se conservan y quién de nuestro lado puede abrirlos: [ubicación del dato, plazo de conservación y control de acceso por confirmar]. Preferimos dejarlo en blanco a publicar una política que aún no existe.",
+      "tieneMarcador": true,
+      "enJsonLd": false,
+      "marcadores": ["ubicación del dato", "plazo de conservación", "control de acceso"]
+    },
+    {
+      "id": "faq-datos-personales",
+      "orden": 7,
+      "pregunta": "¿Qué pasa con los datos personales de los huéspedes?",
+      "respuesta": "Holdera trabaja con agregados: cuántas habitaciones, en qué estado y por cuánto. Para calcular ocupación, ADR, RevPAR o pickup no hace falta ni un nombre, y por defecto no se piden. En el panel de demostración hay una pantalla de huéspedes con algo de detalle individual —lo justo para atender a alguien que está esperando en recepción, y con la inicial del apellido—; si en tu hotel ese detalle sobra, esa pantalla sencillamente no se enciende, porque sin la fuente no hay pantalla. La parte legal y de custodia está en la pregunta anterior, que es la que todavía tiene decisiones abiertas.",
+      "tieneMarcador": false,
+      "enJsonLd": true
+    },
+    {
+      "id": "faq-precio",
+      "orden": 8,
+      "pregunta": "¿Cuánto cuesta y cómo se factura?",
+      "respuesta": "[Precio y modelo de facturación por confirmar]. Holdera está en fase piloto y el precio todavía no está publicado. Poner aquí una cifra de adorno sería exactamente lo contrario de lo que hace el producto, así que no la vas a encontrar: cuéntanos cuántas habitaciones tienes y qué exporta tu PMS y lo hablamos con tu caso delante.",
+      "tieneMarcador": true,
+      "enJsonLd": false,
+      "marcadores": ["precio", "modelo de facturación"]
+    },
+    {
+      "id": "faq-permanencia",
+      "orden": 9,
+      "pregunta": "¿Hay permanencia?",
+      "respuesta": "[Condiciones de permanencia y de baja por confirmar]. No hay todavía una política escrita y preferimos decirlo a improvisarla. Lo que sí es cierto por cómo está montado el producto: Holdera lee y no escribe, así que el día que lo dejes tu PMS y tus datos siguen donde estaban, porque nunca dejaron de estar ahí.",
+      "tieneMarcador": true,
+      "enJsonLd": false,
+      "marcadores": ["permanencia", "condiciones de baja"]
+    },
+    {
+      "id": "faq-varios-hoteles",
+      "orden": 10,
+      "pregunta": "¿Funciona con varios hoteles?",
+      "respuesta": "Hoy el producto está pensado y probado sobre un hotel: el panel enseña una propiedad, con sus plantas y sus habitaciones. Y las definiciones se acuerdan hotel por hotel a propósito, porque dos hoteles del mismo grupo rara vez cuentan igual las habitaciones fuera de orden — sumarlos antes de acordar eso es fabricar una cifra que no significa nada. Una vista de grupo que consolide varias propiedades: [alcance y fecha por confirmar]. Si tienes varios, dínoslo al escribir: cambia bastante la conversación.",
+      "tieneMarcador": true,
+      "enJsonLd": false,
+      "marcadores": ["vista de grupo multipropiedad: alcance y fecha"]
+    },
+    {
+      "id": "faq-no-cuadra",
+      "orden": 11,
+      "pregunta": "¿Y si una cifra no me cuadra?",
+      "respuesta": "Se abre. Cada número lleva detrás la fórmula, el valor que tomó cada entrada, el registro ya normalizado y la fila en bruto tal como entró, con su identificador de origen. Casi nunca el desacuerdo es un error de cálculo: es una definición distinta —tú cuentas las fuera de orden dentro del denominador y la pantalla las cuenta fuera, o tu día cierra a otra hora—. Eso se corrige en la definición y el histórico se vuelve a calcular con ella. Y mientras una definición no esté validada contigo, la cifra sale marcada como pendiente de validar en vez de pasar por definitiva.",
+      "tieneMarcador": false,
+      "enJsonLd": true
+    },
+    {
+      "id": "faq-ia",
+      "orden": 12,
+      "pregunta": "¿Esto es inteligencia artificial? ¿Decide algo por su cuenta?",
+      "respuesta": "No decide nada y no actúa fuera del panel: no cambia tarifas, no escribe en tu PMS y no manda correos. Hay una pantalla que cruza señales del propio hotel y propone algo —en la demo, que hay trece minutos de espera en el restaurante mientras una planta tiene capacidad libre— y lo enseña por etapas: qué observa, cómo lo explica, qué recomienda y qué pasaría si se hiciera. Decides tú. El caso queda registrado y, cuando se cierra, se compara lo que se predijo con lo que acabó pasando.",
+      "tieneMarcador": false,
+      "enJsonLd": true
+    }
+  ],
+
+  "pendiente": [
+    "Precio y modelo de facturación (faq-precio).",
+    "Permanencia y condiciones de baja (faq-permanencia).",
+    "Ubicación del dato, plazo de conservación y control de acceso interno (faq-donde-se-guardan).",
+    "Figura legal del tratamiento (responsable / encargado) y documento asociado: NO se menciona en ninguna respuesta, a propósito. Cuando exista, es una pregunta nueva, no un añadido a faq-datos-personales.",
+    "Vista de grupo multipropiedad: si entra en el alcance y cuándo (faq-varios-hoteles)."
+  ]
+}

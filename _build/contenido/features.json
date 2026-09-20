@@ -1,0 +1,175 @@
+{
+  "_meta": {
+    "bloque": "Funciones de Holdera — tarjetas deslizables en horizontal",
+    "generado": "2026-09-20",
+    "idioma": "es-ES",
+    "tratamiento": "tú",
+    "regla": "Cada feature describe algo que el producto HACE hoy. El enlace profundo se ha comprobado contra el panel capturado que se sirve en /panel/ (los ocho devuelven 200). Las cifras que aparecen en los párrafos son del hotel FICTICIO de la demo y van etiquetadas como tales en el markup.",
+    "verificacionEnlaces": "curl -s -o /dev/null -w '%{http_code}' http://localhost:4177<enlace> — los 8 devuelven 200 (20-09-2026)",
+    "paginasFuturas": "Cada feature trae slug, title y metaDescription pensados para /features/<slug>.html. Esas páginas AÚN NO EXISTEN: el markup enlaza al panel y lleva data-feature-page con el slug para que el orquestador lo convierta en enlace cuando se publiquen.",
+    "encoding": "UTF-8 sin BOM"
+  },
+
+  "features": [
+    {
+      "clave": "hoy",
+      "orden": 1,
+      "titulo": "El día de hoy, tal como está a esta hora",
+      "frase": "No el cierre de ayer: el hotel a las 14:30.",
+      "parrafo": "Llegadas, salidas, habitaciones en casa y habitaciones listas, leídas de la foto intradía que tu PMS deja a una hora concreta. Cada pantalla lleva escrito de cuándo es el dato que estás mirando, y lo que todavía no ha cerrado sale marcado como no cerrado en vez de redondeado.",
+      "pantalla": "Hoy",
+      "enlace": "/panel/",
+      "enlaceEtiqueta": "Abrir Hoy en el panel demo",
+      "contesta": [
+        "¿Cuántas llegadas me quedan por entrar esta tarde?",
+        "¿Tengo habitaciones listas suficientes para las que faltan?",
+        "¿Cuántas habitaciones espero esta noche, y eso es un hecho o una proyección?"
+      ],
+      "slug": "operacion-diaria-hotel",
+      "title": "El día del hotel en una pantalla | Holdera",
+      "metaDescription": "Llegadas, salidas, habitaciones en casa y habitaciones listas a la hora en que las miras. Holdera lee la foto intradía de tu PMS y dice de cuándo es cada dato."
+    },
+    {
+      "clave": "habitaciones",
+      "orden": 2,
+      "titulo": "El edificio, no una tabla de cien filas",
+      "frase": "Planta por planta, y qué pasa en cada una.",
+      "parrafo": "Las habitaciones se miran donde están. El panel dibuja el hotel planta a planta con el reparto de estados de cada una, y separa lo que es dato del PMS de lo que es configuración del edificio: en la demo lo dice en pantalla, con esas palabras.",
+      "pantalla": "Habitaciones",
+      "enlace": "/panel/rooms/",
+      "enlaceEtiqueta": "Abrir Habitaciones en el panel demo",
+      "contesta": [
+        "¿Qué planta va retrasada respecto a las demás?",
+        "¿Cuántas habitaciones hay en cada estado, planta por planta?",
+        "¿Cuántas tengo fuera de orden y qué me cuestan en ocupación?"
+      ],
+      "slug": "estado-de-habitaciones-por-planta",
+      "title": "Estado de las habitaciones, planta a planta | Holdera",
+      "metaDescription": "El hotel dibujado por plantas, con el reparto de estados de cada una y la línea que separa el dato del PMS de la configuración del edificio."
+    },
+    {
+      "clave": "housekeeping",
+      "orden": 3,
+      "titulo": "Housekeeping con el nombre exacto de cada estado",
+      "frase": "Vacante limpia no es lo mismo que vacante.",
+      "parrafo": "Holdera separa Vacant Clean (VC), Cleaning (IP) y Vacant Dirty (VD) de las que están fuera de orden (OOO) o fuera de servicio (OOS), y cuenta si las limpias cubren de verdad las llegadas que faltan por entrar. Una habitación sin estado sale como sin estado, nunca como limpia.",
+      "pantalla": "Housekeeping",
+      "enlace": "/panel/rooms/layer-housekeeping/",
+      "enlaceEtiqueta": "Abrir Housekeeping en el panel demo",
+      "contesta": [
+        "¿Cuántas habitaciones están listas de verdad, no solo vacías?",
+        "¿Cubren las llegadas que todavía tengo pendientes?",
+        "¿Qué planta lleva más trabajo por delante en este turno?"
+      ],
+      "slug": "housekeeping-hotel",
+      "title": "Housekeeping: VC, VD, IP, OOO y OOS | Holdera",
+      "metaDescription": "Vacant Clean, Cleaning, Vacant Dirty, fuera de orden y fuera de servicio, contados aparte y cruzados con las llegadas que faltan por entrar."
+    },
+    {
+      "clave": "revenue",
+      "orden": 4,
+      "titulo": "Cómo vendes, contra el mismo momento del año pasado",
+      "frase": "Ocupación, ADR, RevPAR y TRevPAR a la vez.",
+      "parrafo": "Esta noche, el mes en curso y las treinta noches que vienen, cada cifra leída contra el mismo punto de la curva de reserva del año pasado. Cómo acabó aquel año va aparte y etiquetado: un libro que todavía se está llenando siempre parece un desplome contra un año ya cerrado.",
+      "pantalla": "Revenue",
+      "enlace": "/panel/revenue/",
+      "enlaceEtiqueta": "Abrir Revenue en el panel demo",
+      "contesta": [
+        "¿Voy mejor o peor que el año pasado, comparando lo comparable?",
+        "¿Cuánto de mi ingreso no es la habitación?",
+        "¿De dónde sale exactamente este ADR?"
+      ],
+      "slug": "revenue-adr-revpar-trevpar",
+      "title": "Revenue del hotel: ADR, RevPAR y TRevPAR | Holdera",
+      "metaDescription": "Ocupación, ADR, RevPAR y TRevPAR de esta noche, del mes y de las 30 noches que vienen, comparados al mismo punto de la curva de reserva del año pasado."
+    },
+    {
+      "clave": "reservas",
+      "orden": 5,
+      "titulo": "El calendario de reservas, noche a noche",
+      "frase": "Ocho meses, y el pickup de los últimos siete días.",
+      "parrafo": "Un calendario mes a mes con la ocupación, la tarifa y las habitaciones on the books de cada noche, más lo que ha entrado esta semana y cómo va el ritmo de venta contra el año pasado. La línea de este año termina hoy: Holdera no dibuja el futuro.",
+      "pantalla": "Reservas",
+      "enlace": "/panel/revenue/bookings/",
+      "enlaceEtiqueta": "Abrir Reservas en el panel demo",
+      "contesta": [
+        "¿Qué noches se me están quedando vacías?",
+        "¿Qué ha entrado esta semana, y a qué tarifa?",
+        "¿Voy por delante o por detrás del ritmo del año pasado?"
+      ],
+      "slug": "calendario-de-reservas-pickup-pace",
+      "title": "Calendario de reservas, pickup y pace | Holdera",
+      "metaDescription": "Ocupación, tarifa y habitaciones on the books noche a noche, con el pickup de los últimos siete días y el ritmo de venta contra el año pasado."
+    },
+    {
+      "clave": "trazabilidad",
+      "orden": 6,
+      "titulo": "Cualquier cifra se abre hasta el registro que la produjo",
+      "frase": "Fórmula, entradas, registro y dato en bruto.",
+      "parrafo": "Detrás de cada número hay cuatro pasos: la fórmula, el valor que tomó cada entrada, el registro ya normalizado y la fila tal como entró, con su identificador de origen y su huella de contenido. El último paso no es un resumen de la fuente: es la fuente.",
+      "pantalla": "Trazabilidad",
+      "enlace": "/panel/operations/occupancy/businessdate-2026-01-14/",
+      "enlaceEtiqueta": "Abrir un día trazado en el panel demo",
+      "contesta": [
+        "¿De dónde sale este número, exactamente?",
+        "¿Qué valor tomó cada entrada de la fórmula?",
+        "¿Este dato es definitivo o todavía puede cambiar?"
+      ],
+      "slug": "trazabilidad-de-cifras",
+      "title": "Trazabilidad: cada cifra hasta su registro | Holdera",
+      "metaDescription": "Fórmula, valor de cada entrada, registro normalizado y la fila en bruto con su huella de contenido. Cuatro pasos detrás de cualquier número del panel."
+    },
+    {
+      "clave": "definiciones",
+      "orden": 7,
+      "titulo": "Primero acordamos qué significa cada cosa",
+      "frase": "Tu convención de OOO y OOS, no la nuestra.",
+      "parrafo": "Ocupación sobre las habitaciones físicas y ocupación sobre las que están en operación no son la misma cifra, y la diferencia son tus habitaciones fuera de orden. Holdera enseña las dos, escribe la fórmula de cada una y las marca como pendientes de validar hasta que confirmas cuál es la convención de tu hotel.",
+      "pantalla": "Métricas · Ocupación",
+      "enlace": "/panel/metrics/occupancy_rate/",
+      "enlaceEtiqueta": "Ver una definición en el panel demo",
+      "contesta": [
+        "¿Las fuera de orden entran o no entran en el denominador?",
+        "¿Por qué mi ocupación no coincide con la que da mi PMS?",
+        "¿Quién decide la definición, tu hotel o el software?"
+      ],
+      "slug": "definiciones-acordadas",
+      "title": "Definiciones acordadas antes que pantallas | Holdera",
+      "metaDescription": "Ocupación sobre habitaciones físicas o sobre habitaciones en operación: Holdera enseña las dos, escribe la fórmula y espera a que tu hotel valide la suya."
+    },
+    {
+      "clave": "catalogo",
+      "orden": 8,
+      "titulo": "Un catálogo de 57 métricas que dice cuáles no puede calcular",
+      "frase": "Lo que falta se dice que falta, con nombre.",
+      "parrafo": "El catálogo trae 57 KPIs hoteleros con su fórmula. En el hotel de la demo, 13 tienen valor y las otras 44 salen sin cifra y con lo que les falta escrito al lado: 18 nombran la contabilidad, 9 el POS y 3 una fuente de mercado. Ninguna se rellena con una estimación.",
+      "pantalla": "Métricas",
+      "enlace": "/panel/metrics/",
+      "enlaceEtiqueta": "Abrir el catálogo en el panel demo",
+      "contesta": [
+        "¿Qué puedo medir hoy con lo que ya exporto?",
+        "¿Qué tendría que conectar para llegar al GOPPAR?",
+        "¿Por qué esta casilla está vacía?"
+      ],
+      "slug": "catalogo-de-metricas-hoteleras",
+      "title": "Catálogo de 57 métricas hoteleras | Holdera",
+      "metaDescription": "57 KPIs hoteleros con su fórmula, y para cada uno si tu hotel puede calcularlo hoy o qué fuente le falta. Sin estimaciones para rellenar huecos."
+    }
+  ],
+
+  "cifrasUsadas": [
+    { "dato": "57 métricas definidas", "origen": "/panel/metrics/ — «57 defined metrics»", "tipo": "producto" },
+    { "dato": "13 con valor / 44 sin valor", "origen": "/panel/metrics/ — «57 metrics found · 13 with current values»; recuento propio del HTML: 13 Available·Demo, 34 Missing inputs, 3 External source required, 7 Future capability = 57", "tipo": "hotel de demostración" },
+    { "dato": "18 contabilidad · 9 POS · 3 mercado", "origen": "recuento de las etiquetas «… source» del catálogo; algunas métricas nombran dos fuentes y cuentan en las dos", "tipo": "hotel de demostración" },
+    { "dato": "4 pasos de la traza", "origen": "/panel/api/explain/operational_occupancy/*.json — formula · inputs · normalized · raw (con contentHash)", "tipo": "producto" },
+    { "dato": "8 meses de calendario", "origen": "/panel/revenue/bookings/ — dic 2025 a jul 2026", "tipo": "producto" },
+    { "dato": "14:30 · 15 de enero de 2026", "origen": "el panel demo está congelado a propósito en ese instante", "tipo": "hotel de demostración" }
+  ],
+
+  "pendiente": [
+    "Las ocho páginas /features/<slug>.html NO existen todavía. El markup enlaza al panel y guarda el slug en data-feature-page; cuando se publiquen, ese atributo pasa a ser el href principal y el enlace al panel baja a un segundo enlace dentro de la tarjeta. Habrá que darlas de alta en _build/seo/meta.json y regenerar el sitemap.",
+    "Discrepancia de cifras que Alex debería zanjar: la memoria del proyecto dice «5 métricas de ocupación calculadas, 56 de 57 sin datos», y el panel capturado de hoy dice «57 defined metrics · 13 with current values» (recuento propio: 13 Available·Demo / 34 Missing inputs / 3 External source required / 7 Future capability). El bloque publica lo que dice el panel, que es lo que el visitante puede abrir y comprobar. Si la cifra buena es otra, hay que corregir la tarjeta 08 y el bloque «lo que todavía no entra».",
+    "Matiz que el bloque NO afirma y conviene tener presente: de las 13 con valor, solo las dos de ocupación se pueden abrir hasta el registro en bruto por /api/explain; el resto sale del libro de reservas determinista. La tarjeta de trazabilidad enlaza a propósito a un día de ocupación, que es donde la cadena está completa.",
+    "Las cifras del hotel de la demo (100 habitaciones, 5 plantas, 60 días, 15-01-2026 14:30) quedan desfasadas si se vuelve a capturar el panel con otros datos. Están en el párrafo de la tarjeta 08 y en la nota del final del bloque."
+  ]
+}

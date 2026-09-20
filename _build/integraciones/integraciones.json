@@ -1,0 +1,744 @@
+{
+  "procedencia": {
+    "fuente": "Catálogo de integraciones de Hotelgest (hotelgest.com), extraído el 20-09-2026.",
+    "como": "https://hotelgest.com/integraciones es una SPA (7,6 KB de HTML sin contenido). Los 50 nombres se leyeron del array del catálogo dentro de su bundle de producción https://hotelgest.com/assets/main-BE38B6sb.js. El volcado literal está en _fuente-hotelgest-catalogo.json.",
+    "corroboracion": "El agrupador del mega-menú del mismo bundle (Pagos / Channel / Accesos y llaves / Revenue / Contabilidad / CRM y POS) coincide exactamente con las categorías que Alex leyó en sus capturas de pantalla.",
+    "robots": "https://hotelgest.com/robots.txt permite explícitamente a ClaudeBot y anthropic-ai.",
+    "webs_oficiales": "Cada dominio se probó por HTTP el 20-09-2026. Solo se anota `web` si respondió 2xx y el <title> o la URL final mencionan la marca; el resto queda en null con su motivo en `nota_web`.",
+    "atribucion_a_holdera": "🔴 PENDIENTE DE CONFIRMAR. Estas son las integraciones de HOTELGEST. Que Holdera comparta las mismas es lo que dijo Alex; no se ha podido verificar contra ninguna fuente pública. Nada aquí demuestra que el producto de Holdera esté conectado hoy a ninguna de ellas.",
+    "marcas": "Las marcas pertenecen a sus respectivos titulares. No implica acuerdo comercial, patrocinio ni respaldo."
+  },
+  "totales": {
+    "catalogo_completo": 50,
+    "software_de_terceros": 41,
+    "autoridades_y_estandares": 6,
+    "modulos_propios_de_hotelgest": 3,
+    "en_la_marquesina": 41,
+    "con_web_verificada": 41,
+    "sin_web_verificada": 9
+  },
+  "grupos": [
+    {
+      "id": "channel",
+      "titulo": "Channel manager",
+      "integraciones": [
+        "SiteMinder",
+        "YieldPlanet",
+        "Channex",
+        "Neobookings",
+        "WuBook",
+        "Prestige",
+        "RoomCloud"
+      ]
+    },
+    {
+      "id": "pagos",
+      "titulo": "Pasarelas de pago",
+      "integraciones": [
+        "Paycomet",
+        "Monei",
+        "Redsys",
+        "Stripe",
+        "CashDro"
+      ]
+    },
+    {
+      "id": "revenue",
+      "titulo": "Revenue management",
+      "integraciones": [
+        "Dataria",
+        "PriceLabs",
+        "RevCtrlData",
+        "Revbell",
+        "Revtool",
+        "TheNetRevenue",
+        "RoomPriceGenie"
+      ]
+    },
+    {
+      "id": "accesos",
+      "titulo": "Llaves y accesos",
+      "integraciones": [
+        "Tesa",
+        "Salto KS",
+        "Yacan Smart",
+        "Danalock",
+        "TTLock"
+      ]
+    },
+    {
+      "id": "tpv",
+      "titulo": "TPV, restauración y spa",
+      "integraciones": [
+        "Agora",
+        "Revo",
+        "HioPos",
+        "Spalopia"
+      ]
+    },
+    {
+      "id": "crm",
+      "titulo": "CRM y huésped",
+      "integraciones": [
+        "HiJiffy",
+        "Clientify"
+      ]
+    },
+    {
+      "id": "contabilidad",
+      "titulo": "Contabilidad y ERP",
+      "integraciones": [
+        "Sage 50",
+        "Sage 200",
+        "Clavecon",
+        "Asincorp",
+        "Holded",
+        "A3",
+        "Siigo",
+        "SAP",
+        "Prinex"
+      ]
+    },
+    {
+      "id": "operativa",
+      "titulo": "Housekeeping y domótica",
+      "integraciones": [
+        "Char",
+        "HubOS"
+      ]
+    },
+    {
+      "id": "normativa",
+      "titulo": "Autoridades y normativa",
+      "integraciones": [
+        "SES Hospedajes",
+        "Ertzaintza",
+        "Mossos d’Esquadra",
+        "MiDNI",
+        "TicketBAI",
+        "Verifactu"
+      ]
+    },
+    {
+      "id": "modulos",
+      "titulo": "Módulos del propio PMS",
+      "nota": "No son integraciones con un tercero: son piezas del propio PMS que alimentan las mismas pantallas.",
+      "integraciones": [
+        "Check-in Online",
+        "WebApp del huésped",
+        "Motor de reservas"
+      ]
+    }
+  ],
+  "integraciones": [
+    {
+      "nombre": "SiteMinder",
+      "categoria": "Channel manager",
+      "slug": "siteminder",
+      "web": "https://www.siteminder.com/",
+      "grupo": "channel",
+      "tipo": "Channel Manager",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "SiteMinder",
+      "cat_en_origen": "channel",
+      "nota_web": "dominio vivo; Cloudflare devuelve 403 a curl, asi que el <title> no se pudo leer"
+    },
+    {
+      "nombre": "YieldPlanet",
+      "categoria": "Channel manager",
+      "slug": "yieldplanet",
+      "web": "https://www.yieldplanet.com/",
+      "grupo": "channel",
+      "tipo": "Channel Manager",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "YieldPlanet",
+      "cat_en_origen": "channel"
+    },
+    {
+      "nombre": "Channex",
+      "categoria": "Channel manager",
+      "slug": "channex",
+      "web": "https://channex.io/",
+      "grupo": "channel",
+      "tipo": "Channel Manager",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Channex",
+      "cat_en_origen": "channel"
+    },
+    {
+      "nombre": "Neobookings",
+      "categoria": "Channel manager",
+      "slug": "neobookings",
+      "web": "https://neobookings.com/",
+      "grupo": "channel",
+      "tipo": "Motor y channel",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Neobookings",
+      "cat_en_origen": "channel"
+    },
+    {
+      "nombre": "WuBook",
+      "categoria": "Channel manager",
+      "slug": "wubook",
+      "web": "https://wubook.net/",
+      "grupo": "channel",
+      "tipo": "Channel Manager",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "WuBook",
+      "cat_en_origen": "channel"
+    },
+    {
+      "nombre": "Prestige",
+      "categoria": "Channel manager",
+      "slug": "prestige",
+      "web": null,
+      "grupo": "channel",
+      "tipo": "Channel Manager",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Prestige",
+      "cat_en_origen": "channel",
+      "nota_web": "ningun dominio candidato resuelve; marca demasiado generica para adivinarla"
+    },
+    {
+      "nombre": "RoomCloud",
+      "categoria": "Channel manager",
+      "slug": "roomcloud",
+      "web": "https://www.roomcloud.net/",
+      "grupo": "channel",
+      "tipo": "Channel Manager",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "RoomCloud",
+      "cat_en_origen": "channel"
+    },
+    {
+      "nombre": "Paycomet",
+      "categoria": "Pasarelas de pago",
+      "slug": "paycomet",
+      "web": "https://www.paycomet.com/",
+      "grupo": "pagos",
+      "tipo": "Pasarela de pago",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Paycomet",
+      "cat_en_origen": "pasarelas"
+    },
+    {
+      "nombre": "Monei",
+      "categoria": "Pasarelas de pago",
+      "slug": "monei",
+      "web": "https://monei.com/",
+      "grupo": "pagos",
+      "tipo": "Pasarela de pago",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Monei",
+      "cat_en_origen": "pasarelas"
+    },
+    {
+      "nombre": "Redsys",
+      "categoria": "Pasarelas de pago",
+      "slug": "redsys",
+      "web": "https://www.redsys.es/",
+      "grupo": "pagos",
+      "tipo": "Pasarela de pago",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Redsys",
+      "cat_en_origen": "pasarelas"
+    },
+    {
+      "nombre": "Stripe",
+      "categoria": "Pasarelas de pago",
+      "slug": "stripe",
+      "web": "https://stripe.com/",
+      "grupo": "pagos",
+      "tipo": "Pasarela de pago",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Stripe",
+      "cat_en_origen": "pasarelas"
+    },
+    {
+      "nombre": "CashDro",
+      "categoria": "Pasarelas de pago",
+      "slug": "cashdro",
+      "web": "https://www.cashdro.com/",
+      "grupo": "pagos",
+      "tipo": "Pasarela de pago",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "CashDro",
+      "cat_en_origen": "pasarelas"
+    },
+    {
+      "nombre": "Dataria",
+      "categoria": "Revenue management",
+      "slug": "dataria",
+      "web": "https://dataria.es/",
+      "grupo": "revenue",
+      "tipo": "Revenue Management",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Dataria",
+      "cat_en_origen": "revenue"
+    },
+    {
+      "nombre": "PriceLabs",
+      "categoria": "Revenue management",
+      "slug": "pricelabs",
+      "web": "https://www.pricelabs.co/",
+      "grupo": "revenue",
+      "tipo": "Revenue Management",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "PriceLabs",
+      "cat_en_origen": "revenue"
+    },
+    {
+      "nombre": "RevCtrlData",
+      "categoria": "Revenue management",
+      "slug": "revctrldata",
+      "web": null,
+      "grupo": "revenue",
+      "tipo": "Revenue Management",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "RevCtrlData",
+      "cat_en_origen": "revenue",
+      "nota_web": "ningun dominio candidato resuelve"
+    },
+    {
+      "nombre": "Revbell",
+      "categoria": "Revenue management",
+      "slug": "revbell",
+      "web": "https://revbell.com/",
+      "grupo": "revenue",
+      "tipo": "Revenue Management",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Revbell",
+      "cat_en_origen": "revenue"
+    },
+    {
+      "nombre": "Revtool",
+      "categoria": "Revenue management",
+      "slug": "revtool",
+      "web": "https://revtool.es/",
+      "grupo": "revenue",
+      "tipo": "Revenue Management",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Revtool",
+      "cat_en_origen": "revenue"
+    },
+    {
+      "nombre": "TheNetRevenue",
+      "categoria": "Revenue management",
+      "slug": "thenetrevenue",
+      "web": "https://thenetrevenue.com/",
+      "grupo": "revenue",
+      "tipo": "Revenue Management",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "TheNetRevenue",
+      "cat_en_origen": "revenue"
+    },
+    {
+      "nombre": "RoomPriceGenie",
+      "categoria": "Revenue management",
+      "slug": "roompricegenie",
+      "web": "https://www.roompricegenie.com/",
+      "grupo": "revenue",
+      "tipo": "Revenue Management",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "RoomPriceGenie",
+      "cat_en_origen": "revenue"
+    },
+    {
+      "nombre": "Tesa",
+      "categoria": "Llaves y accesos",
+      "slug": "tesa",
+      "web": "https://www.tesa.es/",
+      "grupo": "accesos",
+      "tipo": "Llaves electrónicas",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Tesa",
+      "cat_en_origen": "llaves"
+    },
+    {
+      "nombre": "Salto KS",
+      "categoria": "Llaves y accesos",
+      "slug": "salto-ks",
+      "web": "https://saltoks.com/",
+      "grupo": "accesos",
+      "tipo": "Llaves electrónicas",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Salto KS",
+      "cat_en_origen": "llaves"
+    },
+    {
+      "nombre": "Yacan Smart",
+      "categoria": "Llaves y accesos",
+      "slug": "yacan-smart",
+      "web": "https://yacan.es/",
+      "grupo": "accesos",
+      "tipo": "Llaves electrónicas",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Yacan Smart",
+      "cat_en_origen": "llaves"
+    },
+    {
+      "nombre": "Danalock",
+      "categoria": "Llaves y accesos",
+      "slug": "danalock",
+      "web": "https://danalock.com/",
+      "grupo": "accesos",
+      "tipo": "Llaves electrónicas",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Danalock",
+      "cat_en_origen": "llaves"
+    },
+    {
+      "nombre": "TTLock",
+      "categoria": "Llaves y accesos",
+      "slug": "ttlock",
+      "web": "https://www.ttlock.com/",
+      "grupo": "accesos",
+      "tipo": "Llaves electrónicas",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "TTLock",
+      "cat_en_origen": "llaves"
+    },
+    {
+      "nombre": "Agora",
+      "categoria": "TPV, restauración y spa",
+      "slug": "agora",
+      "web": "https://www.agorapos.com/",
+      "grupo": "tpv",
+      "tipo": "POS Restaurante",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Agora",
+      "cat_en_origen": "pos"
+    },
+    {
+      "nombre": "Revo",
+      "categoria": "TPV, restauración y spa",
+      "slug": "revo",
+      "web": "https://revo.works/",
+      "grupo": "tpv",
+      "tipo": "POS Restaurante",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Revo",
+      "cat_en_origen": "pos"
+    },
+    {
+      "nombre": "HioPos",
+      "categoria": "TPV, restauración y spa",
+      "slug": "hiopos",
+      "web": "https://www.hiopos.com/",
+      "grupo": "tpv",
+      "tipo": "POS Restaurante",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "HioPos",
+      "cat_en_origen": "pos"
+    },
+    {
+      "nombre": "Spalopia",
+      "categoria": "TPV, restauración y spa",
+      "slug": "spalopia",
+      "web": "https://spalopia.com/",
+      "grupo": "tpv",
+      "tipo": "SPA",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Spalopia",
+      "cat_en_origen": "spa"
+    },
+    {
+      "nombre": "HiJiffy",
+      "categoria": "CRM y huésped",
+      "slug": "hijiffy",
+      "web": "https://www.hijiffy.com/",
+      "grupo": "crm",
+      "tipo": "CRM",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "HiJiffy",
+      "cat_en_origen": "crm"
+    },
+    {
+      "nombre": "Clientify",
+      "categoria": "CRM y huésped",
+      "slug": "clientify",
+      "web": "https://clientify.com/",
+      "grupo": "crm",
+      "tipo": "CRM",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Clientify",
+      "cat_en_origen": "crm"
+    },
+    {
+      "nombre": "Sage 50",
+      "categoria": "Contabilidad y ERP",
+      "slug": "sage-50",
+      "web": "https://www.sage.com/",
+      "grupo": "contabilidad",
+      "tipo": "Contabilidad",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Sage 50",
+      "cat_en_origen": "contabilidad"
+    },
+    {
+      "nombre": "Sage 200",
+      "categoria": "Contabilidad y ERP",
+      "slug": "sage-200",
+      "web": "https://www.sage.com/",
+      "grupo": "contabilidad",
+      "tipo": "Contabilidad",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Sage 200",
+      "cat_en_origen": "contabilidad"
+    },
+    {
+      "nombre": "Clavecon",
+      "categoria": "Contabilidad y ERP",
+      "slug": "clavecon",
+      "web": null,
+      "grupo": "contabilidad",
+      "tipo": "Contabilidad",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Clavecon",
+      "cat_en_origen": "contabilidad",
+      "nota_web": "ningun dominio candidato resuelve"
+    },
+    {
+      "nombre": "Asincorp",
+      "categoria": "Contabilidad y ERP",
+      "slug": "asincorp",
+      "web": null,
+      "grupo": "contabilidad",
+      "tipo": "Contabilidad",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Asincorp",
+      "cat_en_origen": "contabilidad",
+      "nota_web": "asincorp.com existe pero es otra empresa (\"Analytical Services\"); asincorp.es no resuelve"
+    },
+    {
+      "nombre": "Holded",
+      "categoria": "Contabilidad y ERP",
+      "slug": "holded",
+      "web": "https://www.holded.com/",
+      "grupo": "contabilidad",
+      "tipo": "Contabilidad",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Holded",
+      "cat_en_origen": "contabilidad"
+    },
+    {
+      "nombre": "A3",
+      "categoria": "Contabilidad y ERP",
+      "slug": "a3",
+      "web": "https://www.a3software.com/",
+      "grupo": "contabilidad",
+      "tipo": "Contabilidad",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "A3",
+      "cat_en_origen": "contabilidad",
+      "nota_web": "gama a3 de Wolters Kluwer"
+    },
+    {
+      "nombre": "Siigo",
+      "categoria": "Contabilidad y ERP",
+      "slug": "siigo",
+      "web": "https://www.siigo.com/",
+      "grupo": "contabilidad",
+      "tipo": "Contabilidad",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Siigo",
+      "cat_en_origen": "contabilidad",
+      "nota_web": "grupo Siigo; que producto concreto usa Hotelgest en Espana esta sin confirmar"
+    },
+    {
+      "nombre": "SAP",
+      "categoria": "Contabilidad y ERP",
+      "slug": "sap",
+      "web": "https://www.sap.com/",
+      "grupo": "contabilidad",
+      "tipo": "Contabilidad",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "SAP",
+      "cat_en_origen": "contabilidad"
+    },
+    {
+      "nombre": "Prinex",
+      "categoria": "Contabilidad y ERP",
+      "slug": "prinex",
+      "web": "https://www.prinex.com/",
+      "grupo": "contabilidad",
+      "tipo": "Contabilidad",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Prinex",
+      "cat_en_origen": "contabilidad"
+    },
+    {
+      "nombre": "SES Hospedajes",
+      "categoria": "Autoridades y normativa",
+      "slug": "ses-hospedajes",
+      "web": null,
+      "grupo": "normativa",
+      "tipo": "Autoridad",
+      "origen": "autoridad-o-estandar",
+      "en_marquesina": false,
+      "nombre_en_origen": "Autoridad España SES",
+      "cat_en_origen": "estatales",
+      "nota_web": "la sede del Ministerio del Interior responde 403 a curl; no se ha podido fijar la URL exacta de SES Hospedajes"
+    },
+    {
+      "nombre": "Ertzaintza",
+      "categoria": "Autoridades y normativa",
+      "slug": "ertzaintza",
+      "web": "https://www.ertzaintza.euskadi.eus/",
+      "grupo": "normativa",
+      "tipo": "Autoridad",
+      "origen": "autoridad-o-estandar",
+      "en_marquesina": false,
+      "nombre_en_origen": "Autoridad España Ertzaintza",
+      "cat_en_origen": "estatales"
+    },
+    {
+      "nombre": "Mossos d’Esquadra",
+      "categoria": "Autoridades y normativa",
+      "slug": "mossos-d-esquadra",
+      "web": "https://mossos.gencat.cat/",
+      "grupo": "normativa",
+      "tipo": "Autoridad",
+      "origen": "autoridad-o-estandar",
+      "en_marquesina": false,
+      "nombre_en_origen": "Autoridad España Mossos",
+      "cat_en_origen": "estatales"
+    },
+    {
+      "nombre": "MiDNI",
+      "categoria": "Autoridades y normativa",
+      "slug": "midni",
+      "web": "https://midni.gob.es/",
+      "grupo": "normativa",
+      "tipo": "Identificación",
+      "origen": "autoridad-o-estandar",
+      "en_marquesina": false,
+      "nombre_en_origen": "DNI Digital (MiDNI)",
+      "cat_en_origen": "estatales"
+    },
+    {
+      "nombre": "TicketBAI",
+      "categoria": "Autoridades y normativa",
+      "slug": "ticketbai",
+      "web": "https://www.euskadi.eus/ticketbai/",
+      "grupo": "normativa",
+      "tipo": "Firma digital",
+      "origen": "autoridad-o-estandar",
+      "en_marquesina": false,
+      "nombre_en_origen": "TicketBAI",
+      "cat_en_origen": "firma"
+    },
+    {
+      "nombre": "Verifactu",
+      "categoria": "Autoridades y normativa",
+      "slug": "verifactu",
+      "web": "https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu.html",
+      "grupo": "normativa",
+      "tipo": "Firma digital",
+      "origen": "autoridad-o-estandar",
+      "en_marquesina": false,
+      "nombre_en_origen": "Verifactu",
+      "cat_en_origen": "firma"
+    },
+    {
+      "nombre": "Char",
+      "categoria": "Housekeeping y domótica",
+      "slug": "char",
+      "web": "https://char.es/",
+      "grupo": "operativa",
+      "tipo": "Telefonía y domótica",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "Char",
+      "cat_en_origen": "telefonia"
+    },
+    {
+      "nombre": "Check-in Online",
+      "categoria": "Módulos del propio PMS",
+      "slug": "check-in-online",
+      "web": null,
+      "grupo": "pms-propio",
+      "tipo": "Check-in",
+      "origen": "modulo-propio-de-hotelgest",
+      "en_marquesina": false,
+      "nombre_en_origen": "Check-in Online",
+      "cat_en_origen": "huesped"
+    },
+    {
+      "nombre": "WebApp del huésped",
+      "categoria": "Módulos del propio PMS",
+      "slug": "webapp-del-huesped",
+      "web": null,
+      "grupo": "pms-propio",
+      "tipo": "WebApp huésped",
+      "origen": "modulo-propio-de-hotelgest",
+      "en_marquesina": false,
+      "nombre_en_origen": "WebApp del huésped",
+      "cat_en_origen": "huesped"
+    },
+    {
+      "nombre": "HubOS",
+      "categoria": "Housekeeping y domótica",
+      "slug": "hubos",
+      "web": null,
+      "grupo": "operativa",
+      "tipo": "Housekeeping",
+      "origen": "software-de-tercero",
+      "en_marquesina": true,
+      "nombre_en_origen": "HubOS",
+      "cat_en_origen": "housekeeping",
+      "nota_web": "hubos.io responde 200 pero es una SPA sin <title>, asi que no se pudo confirmar que sea la marca"
+    },
+    {
+      "nombre": "Motor de reservas",
+      "categoria": "Módulos del propio PMS",
+      "slug": "motor-de-reservas",
+      "web": null,
+      "grupo": "pms-propio",
+      "tipo": "Motor de reservas",
+      "origen": "modulo-propio-de-hotelgest",
+      "en_marquesina": false,
+      "nombre_en_origen": "Motor de reservas",
+      "cat_en_origen": "otros"
+    }
+  ]
+}

@@ -696,109 +696,47 @@
 })();
 
 /* --------------------------------------------------------------------------
-   Service showcase — "Directional Hover Reveal".
+   Marquesina de integraciones — el boton de pausa.
 
-   Hovering a service name in the hero list wipes its three artwork panels in
-   from different edges, fades a full-bleed backdrop under them and brings up
-   the service title, while the hero's own copy, card and point cloud step
-   aside. Letting go puts everything back.
+   Sustituye al bloque del escaparate ("Directional Hover Reveal"), que se fue
+   con la lista de cinco servicios de la que colgaba: script.js hacia
+   `if (!works || !showcase || !hero) return;` y sin la lista no se disparaba
+   nunca. Recuperable en git.
 
-   Three decisions worth keeping:
+   🔴 Esto NO es un adorno. WCAG 2.2.2 «Pause, Stop, Hide» es NIVEL A: todo
+   movimiento automatico que dure mas de cinco segundos tiene que poder
+   pararse. La tira da una vuelta cada 112 s. El CSS la pausa con :hover y con
+   :focus-within, pero dentro de la tira no habia NI UN elemento enfocable, asi
+   que :focus-within era codigo muerto y la tira solo se podia parar con el
+   raton: ni con teclado, ni con el dedo, ni con un lector de pantalla.
 
-   1. POINTER ONLY, and only a real mouse. The effect is decoration: it fires
-      on pointerenter with pointerType === 'mouse' and never on keyboard focus.
-      Blanking the H1 because somebody tabbed through five links would punish
-      exactly the audience that cannot see the artwork. Keyboard gets a focus
-      ring, screen readers get five plain links to #producto, and a phone gets
-      the list with no showcase at all.
-
-   2. THE IMAGES ARE NOT IN THE INITIAL LOAD. 20 files, ~805 KB, all of it
-      decoration for a hover that most visitors never perform. The sources sit
-      in data-bg and are promoted to real background-image the moment the
-      pointer enters the LIST — which is a second or so before any single name
-      can be hovered, so they are already in flight when they are needed and
-      cost nothing to everyone else.
-
-   3. Without JS none of this exists and nothing is missing: the markup is a
-      nav with five links, and the showcase layer has no background at all.
+   El estado vive en una clase de la tira y en aria-pressed del boton, no en
+   una variable: asi el CSS y el arbol de accesibilidad dicen lo mismo.
    -------------------------------------------------------------------------- */
-(() => {
-  'use strict';
-  const works = document.querySelector('[data-works]');
-  const showcase = document.querySelector('[data-showcase]');
-  const hero = document.querySelector('.hero');
-  if (!works || !showcase || !hero) return;
+(function () {
+  const btn = document.querySelector('[data-mrq-pause]');
+  const bar = btn && btn.closest('.hero__bar--mrq');
+  if (!btn || !bar) return;
 
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) return;
-  const able = window.matchMedia('(min-width: 901px) and (hover: hover) and (pointer: fine)');
+  /* El nombre accesible va en aria-label y no en un <span> oculto: este
+     proyecto no tiene utilidad .sr-only, y un span sin ella se VE. */
+  const aplicar = (parada) => {
+    bar.classList.toggle('is-paused', parada);
+    btn.setAttribute('aria-pressed', String(parada));
+    btn.setAttribute('aria-label', parada
+      ? 'Reanudar el movimiento de las integraciones'
+      : 'Pausar el movimiento de las integraciones');
+  };
 
-  const links = Array.from(works.querySelectorAll('a[data-work]'));
-  const bgs = new Map();
-  const items = new Map();
-  showcase.querySelectorAll('.sc__bg[data-sc]').forEach(el => bgs.set(el.dataset.sc, el));
-  showcase.querySelectorAll('.sc__item[data-sc]').forEach(el => items.set(el.dataset.sc, el));
-
-  /* --- lazy sources ------------------------------------------------------ */
-  let armed = false;
-  function arm() {
-    if (armed) return;
-    armed = true;
-    showcase.querySelectorAll('[data-bg]').forEach(el => {
-      el.style.backgroundImage = 'url("' + el.getAttribute('data-bg') + '")';
-      el.removeAttribute('data-bg');
-    });
-  }
-
-  /* --- state ------------------------------------------------------------- */
-  let current = null;
-  let leaveTimer = null;
-
-  function paint(key) {
-    if (key === current) return;
-    current = key;
-    links.forEach(a => a.classList.toggle('is-current', a.dataset.work === key));
-    bgs.forEach((el, k) => el.classList.toggle('is-on', k === key));
-    items.forEach((el, k) => el.classList.toggle('is-on', k === key));
-    hero.classList.toggle('is-showcase', !!key);
-    // the fixed bar lives outside the hero now: it gets its own dark-ground class
-    const bar = document.querySelector('body > .nav');
-    if (bar) bar.classList.toggle('is-veiled', !!key);
-    /* There is no call into waves.js here any more. It used to re-tone the
-       thread for the dark veil, but the field is z-index 0 and the veil is
-       z-index 3 at 93% opacity: the whole cross-module hook moved the
-       composited pixel by about 1/255. Covered is covered. */
-  }
-
-  const clear = () => paint(null);
-
-  function enter(key) {
-    clearTimeout(leaveTimer);
-    if (!able.matches) return;
-    arm();
-    paint(key);
-  }
-
-  /* A small delay on the way out so sliding from one name to the next does not
-     flash the hero back in between them. */
-  function leave() {
-    clearTimeout(leaveTimer);
-    leaveTimer = setTimeout(clear, 90);
-  }
-
-  works.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse' && able.matches) arm(); });
-
-  links.forEach(a => {
-    a.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') enter(a.dataset.work); });
-    a.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') leave(); });
+  btn.addEventListener('click', () => {
+    aplicar(btn.getAttribute('aria-pressed') !== 'true');
   });
-  works.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') leave(); });
 
-  /* Anything that can move the hero out from under the pointer clears it:
-     otherwise the hero can be left dark with no pointer anywhere near the list
-     (the sheet makes the hero inert on scroll, so no pointerleave ever comes). */
-  window.addEventListener('scroll', () => { if (current) clear(); }, { passive: true });
-  window.addEventListener('blur', clear);
-  document.addEventListener('visibilitychange', () => { if (document.hidden) clear(); });
-  able.addEventListener('change', () => { if (!able.matches) clear(); });
+  /* Con movimiento reducido la tira ya esta quieta por CSS: el boton no
+     tendria nada que pausar y ofrecer un control que no hace nada es peor
+     que no ofrecerlo. */
+  const quieto = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const revisar = () => { btn.hidden = quieto.matches; };
+  revisar();
+  quieto.addEventListener('change', revisar);
 })();
