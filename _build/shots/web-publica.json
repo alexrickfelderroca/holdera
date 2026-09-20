@@ -1,0 +1,14 @@
+[
+  { "path": "/index.html",                                      "name": "01-home" },
+  { "path": "/integraciones.html",                              "name": "02-integraciones" },
+  { "path": "/funciones/",                                      "name": "03-funciones" },
+  { "path": "/funciones/operacion-diaria-hotel/",               "name": "04-fn-operacion" },
+  { "path": "/funciones/trazabilidad-de-cifras/",               "name": "05-fn-trazabilidad" },
+  { "path": "/funciones/catalogo-de-metricas-hoteleras/",       "name": "06-fn-catalogo" },
+  { "path": "/nosotros.html",                                   "name": "07-nosotros" },
+  { "path": "/partners.html",                                   "name": "08-partners" },
+  { "path": "/contacto.html",                                   "name": "09-contacto" },
+  { "path": "/aviso-legal.html",                                "name": "10-aviso-legal" },
+  { "path": "/privacidad.html",                                 "name": "11-privacidad" },
+  { "path": "/404.html",                                        "name": "12-404" }
+]

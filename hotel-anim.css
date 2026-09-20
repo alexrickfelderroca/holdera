@@ -115,7 +115,7 @@
      solape): estas rampas son 180 px con cuatro paradas a cada lado. Se apagan
      quitando la clase .ha--seam del <section>. */
   --ha-seam-h: 180px;
-  --ha-seam-0: var(--sh-bg, #121110);
+  --ha-seam-0: var(--sh-bg, #f7f5f1);
   --ha-seam-1: #4a453f;
   --ha-seam-2: #9b958c;
   --ha-seam-3: var(--bg, #e5e5e5);

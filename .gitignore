@@ -32,3 +32,8 @@ node_modules/
 # PUBLICO y ademas se despliega tal cual a holdera.es. Lo que se usa del
 # recorrido esta portado en hotel-anim.* y assets/anim/, sin nada de eso.
 /animacion-hotel-holdera/
+
+# La cache de descarga de _build/integraciones/fetch-marcas.js: 2,5 MB de
+# HTML de webs ajenas. Se vuelve a bajar sola; lo que vale es lo que sale
+# de ella (_build/integraciones/marcas/, que si entra).
+/_build/integraciones/.cache-marcas/

@@ -81,7 +81,7 @@
      the dark sheet the failure is the other way round — #a8530a measures 2.5:1
      on #121110 — so it is lightened instead. Decorative accent (dots, halos,
      pulses, the fish rim) still uses --accent. */
-  --accent-ink: #f59b45;
+  --accent-ink: #9c4c08;
   /* The accent as TEXT on the LIGHT HERO. It exists because --accent-ink could
      not simply be flipped when the sheet went dark: one of its consumers was
      never on the sheet at all. #f08a24 measures 2.42:1 on the hero grey; this
@@ -93,7 +93,7 @@
      accent-color draws inside the consent checkbox, 6.09:1 on this fill. The
      five hero stars that used to be the other one are gone — they announced a
      rating nobody had confirmed. */
-  --accent-hero: #9c4c08;
+  --accent-hero: var(--accent-ink);
   --accent-soft: rgba(240, 138, 36, 0.18);
 
   /* Perlin wave field (waves.js reads both). The thread is WHITE, not ink, and
@@ -120,7 +120,6 @@
   /* Service showcase (directional hover reveal). The veil is what turns the
      light hero dark while a service is held: warm near-black, same family as
      the content sheet, never #000000. */
-  --sc-veil: rgba(11, 10, 9, 0.93);
   /* The big title sits ON TOP of the artwork, so it has to survive whatever
      lands under it. This is the shadow that buys it its contrast back.
      Widened and deepened on 19-09-2026, and measured, not guessed: the art is
@@ -132,9 +131,6 @@
      the real pixels, with the title made transparent so the probe reads the
      BACKGROUND and not the glyphs themselves. Four stops rather than three so
      the edge of the scrim is not a visible disc. */
-  --sc-title-scrim: radial-gradient(86% 88% at 50% 50%,
-    rgba(8, 7, 6, 0.92) 0%, rgba(8, 7, 6, 0.86) 42%, rgba(8, 7, 6, 0.66) 68%,
-    rgba(8, 7, 6, 0.28) 86%, rgba(8, 7, 6, 0) 100%);
   /* There is no --sc-img-shadow either. clip-path clips an element's ENTIRE
      rendering, outer box-shadows included, and .sc__img is clipped by
      definition — even fully open, its polygon is exactly the border box. Two
@@ -156,9 +152,9 @@
      would meet near-black on a straight line — banned by the house floor,
      which asks for >=3 intermediate stops or >=120px of overlap. These are
      the three stops; the ramp below runs over 200px. */
-  --seam-1: #a09b93;
-  --seam-2: #4d4842;
-  --seam-3: #22201d;
+  --seam-1: #e9e7e4;
+  --seam-2: #f0eeea;
+  --seam-3: #f4f2ee;
 
   /* brain hologram — read by brain.js, which is why they live here and not in
      the shader. The cloud is shaded by measured surface curvature: crowns of
@@ -188,20 +184,26 @@
      colour from --sh-*, so the inversion is a palette swap, not a rewrite.
      Warm near-blacks, never #000000 (banned): the sheet has to sit under a warm
      grey hero and a #f08a24 accent without turning blue. */
-  --sh-bg: #121110;
-  --sh-bg-2: #191715;
-  --sh-surface: #1c1a17;
-  --sh-surface-2: #211e1b;
-  --sh-text: #f5f3ef;
-  --sh-text-2: #d2ccc2;
-  --sh-muted: #9c958b;
-  --sh-border: rgba(255, 250, 242, 0.10);
-  --sh-border-strong: rgba(255, 250, 242, 0.22);
+  --sh-bg: #f7f5f1;
+  --sh-bg-2: #f2efea;
+  --sh-surface: #ffffff;
+  --sh-surface-2: #fbf9f5;
+  --sh-text: #16130f;
+  --sh-text-2: #3a352d;
+  --sh-muted: #5f594e;
+  /* La parada más clara del degradado de un titular sobre la hoja: el
+     espejo cálido de --text-fade (#7a7a7a), que es la misma parada sobre
+     el hero. Sobre la hoja clara mide 4,30:1 y sobre una tarjeta 4,68:1 —
+     mejor que el 3,41:1 del original, porque la hoja es más clara que el
+     gris del hero. Un titular es texto grande y debe 3:1. */
+  --sh-fade: #7a736a;
+  --sh-border: rgba(22, 19, 15, 0.10);
+  --sh-border-strong: rgba(22, 19, 15, 0.20);
   /* Form fields still need their own, heavier border, and for the mirror of the
      old reason: a #1c1a17 field on a #191715 panel is ~1.06:1, so the border is
      the ONLY thing identifying the control and WCAG 1.4.11 asks for 3:1. Kept
      separate from --sh-border-strong so the .tag pills stay a hairline. */
-  --sh-field-border: rgba(255, 250, 242, 0.44);
+  --sh-field-border: rgba(22, 19, 15, 0.56);
   /* The boundary of a CONTROL whose only affordance is its outline — the ghost
      and secondary buttons. --sh-border-strong is a decorative hairline and
      composites to just 1.95:1 on --sh-bg, under the 3:1 WCAG 1.4.11 asks of
@@ -209,28 +211,27 @@
      too, at ~1.5:1 — this is a fix, not a regression.) 0.36 is the lowest step
      that clears 3:1 against ALL FOUR sheet backgrounds: 3.24 / 3.27 / 3.27 /
      3.23. Do not lower it without re-running _build/contrast.js. */
-  --sh-control-border: rgba(255, 250, 242, 0.36);
-  --sh-tint: rgba(255, 250, 242, 0.035);
+  --sh-control-border: rgba(22, 19, 15, 0.46);
+  --sh-tint: rgba(22, 19, 15, 0.035);
   /* On a dark surface a white inset bevel finally means something — it measured
      1.00:1 on the old near-white sheet and was removed. This is the light-source
      highlight along the top edge of a raised card. */
-  --sh-bevel: inset 0 1px 0 rgba(255, 250, 242, 0.07);
+  --sh-bevel: none;
 
   /* on ink — the surfaces that stay dark on a light page:
      side drawer, floating island, hero bar, terminal */
-  --on-ink-text: #f4f4f4;
-  --on-ink-text-2: #c9c9c9;
-  --on-ink-muted: #8f8f8f;
-  --on-ink-border: rgba(255, 255, 255, 0.08);
-  --on-ink-border-strong: rgba(255, 255, 255, 0.16);
-  --on-ink-hi: rgba(255, 255, 255, 0.06);
+  --on-ink-text: #16130f;
+  --on-ink-text-2: #3a352d;
+  --on-ink-muted: #5f594e;
+  --on-ink-border: rgba(22, 19, 15, 0.10);
+  --on-ink-border-strong: rgba(22, 19, 15, 0.20);
+  --on-ink-hi: rgba(22, 19, 15, 0.055);
 
   /* alpha layers (white / black / brand tints) — every translucent colour used below */
   --w-0: rgba(255, 255, 255, 0);
   --w-28: rgba(255, 255, 255, 0.28);
   --w-35: rgba(255, 255, 255, 0.35);
   --w-60: rgba(255, 255, 255, 0.60);
-  --w-84: rgba(255, 255, 255, 0.84);
   /* the inset hairline of the showcase panels */
   --w-22: rgba(255, 250, 242, 0.22);
   --w-90: rgba(255, 255, 255, 0.90);
@@ -247,13 +248,13 @@
   --accent-a0: rgba(240, 138, 36, 0);
   --accent-a09: rgba(240, 138, 36, 0.09);
   --accent-a10: rgba(240, 138, 36, 0.10);
-  --bar-a: rgba(18, 18, 18, 0.96);
-  --bar-b: rgba(40, 40, 40, 0.92);
+  --bar-a: rgba(255, 255, 255, 0.94);
+  --bar-b: rgba(255, 255, 255, 0.80);
   /* the fixed nav's glass: light while it rides over the hero / the page band,
      dark once the sheet has reached it (paso 6) */
   --nav-glass-light: rgba(229, 229, 229, 0.82);
-  --nav-glass: rgba(18, 17, 16, 0.80);
-  --panel: #23201c;
+  --nav-glass: rgba(247, 245, 241, 0.82);
+  --panel: #ffffff;
 
   /* shape, motion, layout */
   --r-xl: 32px;
@@ -274,11 +275,11 @@
      ground; on a dark ground there is nothing left to darken, so the card is
      raised by a lit TOP EDGE instead and the shadow only deepens the seat.
      That is why --shadow-sh leads with the bevel. */
-  --shadow-sh: inset 0 1px 0 rgba(255, 250, 242, 0.06), 0 1px 2px rgba(0, 0, 0, 0.40), 0 14px 30px -16px rgba(0, 0, 0, 0.60), 0 36px 70px -36px rgba(0, 0, 0, 0.55);
+  --shadow-sh: 0 1px 2px rgba(22, 19, 15, 0.05), 0 8px 20px -10px rgba(22, 19, 15, 0.10), 0 28px 56px -28px rgba(22, 19, 15, 0.14);
   /* The sheet's own edge, where the dark sheet meets the light hero above it.
      Here a dark shadow DOES work — it is cast upward onto the light hero — and
      the hairline is light so the sheet reads as a lid with a lit rim. */
-  --shadow-sheet: 0 -1px 0 rgba(255, 250, 242, 0.10), 0 -14px 34px -14px rgba(20, 18, 16, 0.26), 0 -44px 110px -24px rgba(20, 18, 16, 0.22);
+  --shadow-sheet: 0 -1px 0 rgba(22, 19, 15, 0.07), 0 -14px 34px -14px rgba(22, 19, 15, 0.12), 0 -44px 110px -24px rgba(22, 19, 15, 0.10);
   --nav-h: 76px;
   /* 80px, no 46: la barra inferior dejo de ser cuatro chips de texto y es
      la tira giratoria de integraciones, que necesita alto para los logos.
@@ -414,7 +415,6 @@ button { font: inherit; color: inherit; }
   /* the white lift at the top would sit ON the dark showcase and grey it out */
   opacity: 1; transition: opacity var(--t-mid) var(--ease);
 }
-.hero.is-showcase::after { opacity: 0; }
 
 /* Perlin wave field — z-index 0, i.e. under the cloud (1), the copy (2), the
    bar (4) and the nav (5). It never covers anything. See --wave-line for why
@@ -453,8 +453,6 @@ button { font: inherit; color: inherit; }
   background: var(--nav-glass);
   box-shadow: 0 1px 0 var(--on-ink-border);
 }
-/* the veil is transparent by design: the showcase's own backdrop is the ground */
-.nav.is-veiled { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; }
 /* entrance: the nav is no longer under .hero [data-enter], so it has its own;
    script.js adds is-ready with the hero's, or at once on pages without one */
 .has-js .nav[data-enter] { opacity: 0; transform: translateY(-10px); transition-delay: 120ms; }
@@ -593,8 +591,8 @@ html:not(.has-js) .brain__poster,
   padding: 0 clamp(20px, 2.4vw, 32px);
   border-radius: var(--r-md); border: 1px solid var(--on-ink-hi);
   background: linear-gradient(90deg, var(--bar-a) 0%, var(--bar-b) 50%, var(--bar-a) 100%);
-  color: var(--w-84); font-size: 12px; letter-spacing: 0.01em;
-  box-shadow: var(--shadow-ink);
+  color: var(--text-2); font-size: 12px; letter-spacing: 0.01em;
+  box-shadow: var(--shadow-soft);
 }
 .hero__bar > * { display: inline-flex; align-items: center; min-width: 0; color: inherit; }
 
@@ -611,24 +609,6 @@ html:not(.has-js) .brain__poster,
 .hero__copy-in, .hero__aside-in {
   transition: opacity var(--t-mid) var(--ease), transform var(--t-mid) var(--ease), visibility 0s;
 }
-/* visibility: hidden, not just opacity 0 + pointer-events: none.
-   pointer-events stops the mouse, but it leaves the buttons and the contact
-   card TABBABLE inside a fully transparent box: with the pointer resting on a
-   service name, Shift+Tab moved focus onto an invisible "Habla con nosotros"
-   with no focus ring anywhere on screen (WCAG 2.4.7). visibility also takes
-   them out of the accessibility tree, and it is delayed by --t-mid on the way
-   in so the fade is still seen, and applied at 0s on the way out so they come
-   straight back. */
-.hero.is-showcase .hero__copy-in,
-.hero.is-showcase .hero__aside-in {
-  opacity: 0; pointer-events: none; visibility: hidden;
-  transition: opacity var(--t-mid) var(--ease), transform var(--t-mid) var(--ease),
-              visibility 0s linear var(--t-mid);
-}
-.hero.is-showcase .hero__copy-in { transform: translateY(-26px); }
-.hero.is-showcase .hero__aside-in { transform: translateY(-20px); }
-.hero.is-showcase .hero__figure-wrap { opacity: 0; transform: translateY(30px) scale(0.96); }
-.hero.is-showcase .hero__wordmark-wrap { opacity: 0; }
 .hero__figure-wrap, .hero__wordmark-wrap {
   transition: opacity var(--t-mid) var(--ease), transform var(--t-mid) var(--ease);
 }
@@ -753,189 +733,6 @@ html:not(.has-js) .brain__poster,
 }
 .trace__link:hover .trace__arrow { background: var(--ink); color: var(--white); transform: translate(2px, -1px); }
 
-/* --------------------------------------------------------------------------
-   Service list + directional hover showcase
-   Recreation of the "Directional Hover Reveal" reference Alex sent. The
-   reference drives the wipes with GSAP; these are CSS clip-path transitions,
-   for the same reason brain.js and planet.js are hand-written WebGL: the page
-   must not need a CDN to work.
-
-   The list lives in the dead band the baseline screenshot found between the
-   hero CTAs (y 568) and the bottom bar (y 834). The showcase never covers it:
-   the stage is inset from the left so the artwork starts where the list ends,
-   exactly as the reference keeps its "Recent works" column clear.
-
-   Pointer-only, on purpose. It fires on mouseenter and NOT on keyboard focus:
-   the whole thing is decoration, and swapping the hero out from under a
-   keyboard user who is only tabbing through five links would hide the H1 for
-   the one audience that cannot see the artwork anyway. Keyboard gets a normal
-   focus ring; screen readers get five plain links.
-   -------------------------------------------------------------------------- */
-/* Position comes from .hero__left; this only sets its own width. */
-.hero__works { width: min(360px, 30vw); }
-/* Not --text-muted. The hero's ground is a radial gradient that runs from
-   --bg-2 at the top to --bg-3 at the corners, and this list sits in the
-   BOTTOM-LEFT — the darkest ground on the page, and darker still under the
-   vignette's --k-06. #666 measures 4.56:1 against --bg but only ~4.4:1 where
-   the label actually sits, i.e. an AA fail that the guard was passing because
-   it was measuring the wrong backdrop. Every colour here is now checked
-   against --k-06 over --bg-3, the worst ground the hero can produce. */
-.hero__works-label {
-  margin: 0 0 12px; font-size: 10px; font-weight: 500;
-  text-transform: uppercase; letter-spacing: 0.18em; color: var(--text-2);
-  transition: color var(--t-mid) var(--ease);
-}
-.hero__works-list { list-style: none; margin: 0; padding: 0; }
-.hero__works-list a {
-  display: inline-block; padding: 4px 0; text-decoration: none;
-  font-size: clamp(15px, 1.2vw, 18px); font-weight: 500; letter-spacing: -0.012em;
-  color: var(--text-2);
-  transition: color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
-}
-/* --ink, not --accent-hero. At 17.28px/500 this is normal body text and owes
-   4.5:1; the accent measures 3.99:1 on the ground under the last item. The
-   accent still marks the current item — but on the showcase veil, where it is
-   6.97:1, which is where the reference uses it too. */
-.hero__works-list a:hover { color: var(--ink); transform: translateX(6px); }
-.hero__works-list a.is-current { transform: translateX(6px); }
-
-/* the list is the one piece of hero copy that SURVIVES the showcase, so it
-   changes clothes instead of fading */
-.hero.is-showcase .hero__works-label { color: var(--on-ink-muted); }
-.hero.is-showcase .hero__works-list a { color: var(--on-ink-text-2); }
-.hero.is-showcase .hero__works-list a.is-current,
-.hero.is-showcase .hero__works-list a:hover { color: var(--accent); }
-
-.hero__showcase {
-  position: absolute; inset: 0; z-index: 3; pointer-events: none;
-  overflow: hidden;
-}
-/* the veil, under the artwork: it is what turns the light hero dark */
-.hero__showcase::before {
-  content: ""; position: absolute; inset: 0;
-  background: var(--sc-veil); opacity: 0;
-  transition: opacity var(--t-mid) var(--ease-in);
-}
-.hero.is-showcase .hero__showcase::before { opacity: 1; transition-timing-function: var(--ease); }
-
-.sc__bgs { position: absolute; inset: 0; }
-.sc__bg {
-  position: absolute; inset: -3%;
-  background: center / cover no-repeat;
-  /* The reference knocks its backdrops down with brightness(0.2) and that is
-     exactly the job: at full strength the backdrop is as legible as the three
-     panels in front of it and you read the same artwork twice, at two scales.
-     Dark enough to be atmosphere, not a second composition. */
-  filter: brightness(0.38) saturate(0.85);
-  opacity: 0; transform: scale(1.05);
-  visibility: hidden;
-  transition: opacity 380ms var(--ease-in), transform 700ms var(--ease-in), visibility 0s linear 380ms;
-}
-.sc__bg.is-on {
-  opacity: 1; transform: none; visibility: visible;
-  transition: opacity 640ms var(--ease), transform 1300ms var(--ease), visibility 0s;
-}
-
-.sc__stage {
-  position: absolute;
-  left: 27%; right: var(--gutter);
-  top: calc(var(--nav-h) + 14px);
-  bottom: calc(var(--bar-inset) + var(--bar-h) + 26px);
-  display: grid; grid-template-areas: "stage";
-}
-.sc__item {
-  grid-area: stage;
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(10, 1fr);
-  visibility: hidden;
-  transition: visibility 0s linear 420ms;
-}
-.sc__item.is-on { visibility: visible; transition-delay: 0s; }
-
-.sc__title {
-  grid-area: 1 / 1 / -1 / -1;
-  position: relative; z-index: 10;
-  align-self: center; margin: 0;
-  font-size: clamp(28px, 5.2vw, 84px); line-height: 0.98; letter-spacing: -0.035em;
-  font-weight: 500; color: var(--sh-text); text-wrap: balance;
-  opacity: 0; transform: translateY(16px);
-  transition: opacity 260ms var(--ease-in), transform 260ms var(--ease-in);
-}
-/* The scrim is a child of the title's own stacking context (z-index 10), so it
-   paints ABOVE the artwork and BELOW the letters. That is what lets the ivory
-   Asesorías panel sit under white type without the title dropping to ~1.1:1. */
-.sc__title::before {
-  content: ""; position: absolute; z-index: -1; inset: -85% -14%;
-  background: var(--sc-title-scrim);
-}
-.sc__item.is-on .sc__title {
-  opacity: 1; transform: none;
-  transition: opacity 520ms var(--ease) 110ms, transform 720ms var(--ease) 110ms;
-}
-
-.sc__img {
-  position: relative; overflow: hidden;
-  /* INSET only. An outline would be drawn outside the box and clipped away,
-     and so is any outer box-shadow — see the note where --sc-img-shadow used
-     to be. The hairline is inside the border box, so it survives the wipe and
-     travels with it. */
-  box-shadow: inset 0 0 0 1px var(--w-22);
-  clip-path: var(--clip-from);
-  transition: clip-path 360ms var(--ease-in);
-  will-change: clip-path;
-}
-.sc__img > i {
-  display: block; width: 100%; height: 100%;
-  background: center 45% / cover no-repeat;
-  transform: scale(1.14);
-  transition: transform 700ms var(--ease-in);
-}
-/* Four-point polygons on both ends: clip-path only interpolates between shapes
-   with the same vertex count, so every edge state is written as four corners
-   collapsed onto one side rather than as an inset(). */
-.sc__img[data-dir="right"]  { --clip-from: polygon(100% 0, 100% 0, 100% 100%, 100% 100%); }
-.sc__img[data-dir="left"]   { --clip-from: polygon(0 0, 0 0, 0 100%, 0 100%); }
-.sc__img[data-dir="top"]    { --clip-from: polygon(0 0, 100% 0, 100% 0, 0 0); }
-.sc__img[data-dir="bottom"] { --clip-from: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); }
-
-.sc__item.is-on .sc__img {
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  transition: clip-path 560ms var(--ease);
-  transition-delay: var(--sd, 0ms);
-}
-.sc__item.is-on .sc__img > i {
-  transform: none;
-  transition: transform 1100ms var(--ease);
-  transition-delay: var(--sd, 0ms);
-}
-/* the stagger is only on the way IN; leaving, all three close together */
-.sc__img:nth-of-type(1) { --sd: 0ms; }
-.sc__img:nth-of-type(2) { --sd: 90ms; }
-.sc__img:nth-of-type(3) { --sd: 170ms; }
-
-/* Five compositions over a 10x10 stage, one per service, laid out so no two
-   read the same way — the reference's pos-1..pos-15 idea. Row / column /
-   row-end / column-end. */
-.sc__img--a1 { grid-area: 1 / 1 / 5 / 5; }
-.sc__img--a2 { grid-area: 4 / 8 / 11 / 11; }
-.sc__img--a3 { grid-area: 7 / 3 / 11 / 6; }
-
-.sc__img--b1 { grid-area: 3 / 4 / 7 / 9; }
-.sc__img--b2 { grid-area: 5 / 1 / 11 / 4; }
-.sc__img--b3 { grid-area: 1 / 7 / 5 / 10; }
-
-.sc__img--c1 { grid-area: 6 / 6 / 10 / 11; }
-.sc__img--c2 { grid-area: 1 / 1 / 8 / 4; }
-.sc__img--c3 { grid-area: 3 / 5 / 7 / 8; }
-
-.sc__img--d1 { grid-area: 1 / 3 / 5 / 8; }
-.sc__img--d2 { grid-area: 4 / 8 / 11 / 11; }
-.sc__img--d3 { grid-area: 6 / 1 / 10 / 4; }
-
-.sc__img--e1 { grid-area: 7 / 4 / 11 / 9; }
-.sc__img--e2 { grid-area: 1 / 8 / 8 / 11; }
-.sc__img--e3 { grid-area: 2 / 1 / 6 / 4; }
 
 /* The nav changes clothes on a dark ground: the showcase veil (is-veiled) and
    the sheet (is-over-sheet) share the on-ink palette. */
@@ -945,7 +742,9 @@ html:not(.has-js) .brain__poster,
 .nav.is-veiled .nav__links .is-active::after, .nav.is-over-sheet .nav__links .is-active::after { background: var(--on-ink-text); }
 .nav.is-veiled .nav__tz-label, .nav.is-over-sheet .nav__tz-label { color: var(--on-ink-muted); }
 .nav.is-veiled .nav__tz-time, .nav.is-over-sheet .nav__tz-time { color: var(--on-ink-text-2); }
-.nav.is-veiled .nav__mark, .nav.is-over-sheet .nav__mark { background: var(--on-ink-hi); }
+/* El chip del monograma es de tinta SIEMPRE. Tenía un aclarado para
+   cuando la nav pasaba sobre la hoja oscura; con toda la web clara ese
+   aclarado dejaba un chip casi blanco con el monograma blanco dentro. */
 .nav.is-veiled .nav__brand:hover, .nav.is-over-sheet .nav__brand:hover,
 .nav.is-veiled .nav__links > a:hover, .nav.is-over-sheet .nav__links > a:hover,
 /* --sh-control-border, not --on-ink-border-strong: the MENÚ button is a ghost
@@ -958,7 +757,6 @@ html:not(.has-js) .brain__poster,
 }
 .nav.is-veiled .btn--secondary:hover, .nav.is-over-sheet .btn--secondary:hover { background: var(--on-ink-hi); border-color: var(--on-ink-text-2); }
 .nav.is-veiled :focus-visible, .nav.is-over-sheet :focus-visible { outline-color: var(--on-ink-text); }
-.hero.is-showcase :focus-visible { outline-color: var(--on-ink-text); }
 .nav__brand, .nav__links > a, .nav__tz-label, .nav__tz-time, .nav__mark {
   transition: color var(--t-mid) var(--ease), background-color var(--t-mid) var(--ease);
 }
@@ -1014,14 +812,25 @@ main {
   color: var(--sh-text-2);
 }
 .tag::before { content: ""; width: 1px; height: 13px; background: var(--accent-ink); }
+/* Mismo tratamiento que .hero__title y .phead__title: un solo degradado de
+   tres paradas sobre el título ENTERO. Antes el apagado lo hacía un <span>
+   a mitad de frase y se leía como un cambio de fuente.
+   El interlineado baja de 1.02 a 0.98, que es el del hero y el de las
+   cabeceras de página: los tres titulares grandes del sitio se componen
+   ahora igual. */
 .sheet__title {
   max-width: 15ch; margin: 0 0 28px;
-  font-size: clamp(38px, 5vw, 74px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 500;
-}
-.fade {
-  background: linear-gradient(90deg, var(--sh-text-2) 0%, var(--sh-muted) 100%);
+  font-size: clamp(38px, 5vw, 74px); line-height: 0.98; letter-spacing: -0.035em; font-weight: 500;
+  background: linear-gradient(100deg, var(--sh-text) 0%, var(--sh-text-2) 46%, var(--sh-fade) 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
+  text-wrap: balance;
 }
+/* `.fade` ya no pinta nada: su padre lleva el degradado y lo recorta sobre
+   todo el texto, hijos incluidos. El span hereda `color: transparent` y el
+   degradado del padre se ve a través, así que los 42 <span class="fade">
+   de las 15 páginas siguen en su sitio sin tocar ni una. Se conserva como
+   gancho por si vuelve a hacer falta distinguir la segunda mitad. */
+.fade { color: inherit; }
 .sheet__lead { max-width: 58ch; margin: 0; font-size: clamp(16px, 1.3vw, 19px); line-height: 1.6; color: var(--sh-text-2); }
 
 /* Process */
@@ -1599,8 +1408,6 @@ main {
   .hero__left { top: clamp(84px, 11vh, 120px); }
   .hero__aside { top: clamp(84px, 11vh, 120px); }
   .hero__title { font-size: clamp(34px, 3.6vw, 52px); }
-  .hero__works-label { margin-bottom: 6px; }
-  .hero__works-list a { padding: 1px 0; font-size: 14px; }
   /* El alto va en :root para que lo vea tambien la reserva de suelo de
      .hero__left (linea ~494). Antes estaba en .hero__bar y no lo veia. */
   :root { --bar-h: 62px; }
@@ -1651,15 +1458,6 @@ main {
   .hero__copy, .hero__aside { position: static; width: auto; padding: 0 var(--gutter); }
   .hero__copy { order: 1; margin-top: 20px; }
   .hero__title { font-size: clamp(34px, 9.4vw, 48px); letter-spacing: -0.03em; }
-  /* The showcase is a pointer effect and there is no pointer here; the list
-     stays as what it always was underneath — five links to Servicios, sitting
-     in the gap the baseline screenshot showed between the CTAs and the cloud. */
-  .hero__showcase { display: none; }
-  .hero__works {
-    position: static; width: auto; order: 2;
-    padding: 0 var(--gutter); margin-top: 30px;
-  }
-  .hero__works-list a { font-size: 16px; }
   /* 48dvh, no 58dvh. Medido a 390x844 con _build/png-probe.js sobre una captura
      con el cerebro aislado: en una caja de 490px la nube ocupaba 219px de alto
      — el 45% — y dejaba 116px vacios por encima. El cerebro NO encoge al
@@ -1727,7 +1525,6 @@ main {
   .btn { min-height: 44px; }
   .btn--sm { min-height: 44px; }
   .btn--icon { width: 44px; height: 44px; }
-  .hero__works-list a { padding: 9px 0; }
   .nav__brand { min-height: 44px; }
   .skip-link { min-height: 44px; display: inline-flex; align-items: center; }
   /* los cinco pills del indice de servicios: 39px -> 44px por padding */
@@ -1856,11 +1653,11 @@ main {
 
 :root {
   /* Cuerpo del panel: el mismo del drawer. Opaco a proposito (ver arriba). */
-  --mnu-surface: var(--panel);
+  --mnu-surface: #ffffff;
   /* Relleno de una ficha de logo y su hover. Son las dos unicas capas alfa
      nuevas de este archivo; todo lo demas es alias de un token que ya existe. */
-  --mnu-tile: rgba(255, 255, 255, 0.05);
-  --mnu-tile-hover: rgba(255, 255, 255, 0.09);
+  --mnu-tile: rgba(22, 19, 15, 0.045);
+  --mnu-tile-hover: rgba(22, 19, 15, 0.075);
   /* El pie del panel, medio escalon por encima del cuerpo.
      🔴 0.02 NO es un numero suelto: la nota del pie va en --on-ink-muted, que
      es el unico texto del panel sin holgura. Medido sobre --panel:
@@ -1868,12 +1665,12 @@ main {
      A partir de 0.04 el pie ilumina lo justo para tirar la nota por debajo de
      4,5. Si hace falta un pie mas claro, lo que sube es el TEXTO a
      --mnu-text-2, no el fondo. */
-  --mnu-foot: rgba(255, 255, 255, 0.02);
+  --mnu-foot: rgba(22, 19, 15, 0.025);
   --mnu-hairline: var(--on-ink-border);
   --mnu-edge: var(--on-ink-border-strong);
-  --mnu-text: var(--on-ink-text);
-  --mnu-text-2: var(--on-ink-text-2);
-  --mnu-muted: var(--on-ink-muted);
+  --mnu-text: #16130f;
+  --mnu-text-2: #3a352d;
+  --mnu-muted: #5f594e;
   --mnu-accent: var(--accent-ink);
   /* Sombra APILADA, nunca de una capa (prohibido por el CLAUDE.md global):
      bisel arriba + asiento + dos caidas. Es la misma receta que --shadow-ink,
@@ -2192,3 +1989,80 @@ main {
   .mnu__chev, .msub__chev, .mnu__arrow, .mnu__item::before,
   .mnu__cat--link .mnu__arrow { transition: none; }
 }
+
+/* logos:brand-start */
+/* Generado por `node _build/integraciones/build-brand-tokens.js`. No editar a mano:
+   se reescribe entero. El color de cada marca es el que publica su empresa,
+   oscurecido lo justo para llegar a 3:1 sobre CADA uno de los suelos donde
+   aterriza: #f5f5f5 y #ffffff (la celda del hero y la tarjeta del
+   catalogo). El original va en el comentario de cada linea. */
+:root {
+  --brand-hijiffy: #1a1e42; /* HiJiffy: #1a1e42, sin tocar, 14.72:1 */
+  --brand-holded: #ef4444; /* Holded: #ef4444, sin tocar, 3.45:1 */
+  --brand-monei: #009d90; /* Monei: #00c1b1 -> 3.09:1 */
+  --brand-pricelabs: #ff4646; /* PriceLabs: #ff4646, sin tocar, 3.10:1 */
+  --brand-redsys: #d17522; /* Redsys: #dc7c26 -> 3.07:1 */
+  --brand-revbell: #022626; /* Revbell: #022626, sin tocar, 14.73:1 */
+  --brand-salto-ks: #111111; /* Salto KS: #111111, sin tocar, 17.32:1 */
+  --brand-sap: #0094e5; /* SAP: #0faaff -> 3.03:1 */
+  --brand-siteminder: #00033b; /* SiteMinder: #00033b, sin tocar, 17.90:1 */
+  --brand-stripe: #635bff; /* Stripe: #635bff, sin tocar, 4.31:1 */
+}
+
+/* El puente: cada elemento que pinta una marca lleva data-brand="<slug>" y
+   con esto hereda su color en una sola variable, asi el consumidor escribe
+   UNA regla de hover y no cuarenta. Sin token, `--brand` no existe y el
+   hover cae en el color de reposo: ninguna marca se queda invisible. */
+[data-brand="hijiffy"] { --brand: var(--brand-hijiffy); }
+[data-brand="holded"] { --brand: var(--brand-holded); }
+[data-brand="monei"] { --brand: var(--brand-monei); }
+[data-brand="pricelabs"] { --brand: var(--brand-pricelabs); }
+[data-brand="redsys"] { --brand: var(--brand-redsys); }
+[data-brand="revbell"] { --brand: var(--brand-revbell); }
+[data-brand="salto-ks"] { --brand: var(--brand-salto-ks); }
+[data-brand="sap"] { --brand: var(--brand-sap); }
+[data-brand="siteminder"] { --brand: var(--brand-siteminder); }
+[data-brand="stripe"] { --brand: var(--brand-stripe); }
+
+[data-brand="a3"] { --mark: url("assets/img/integraciones/a3.svg"); --mark-ratio: 24.93 / 24; }
+[data-brand="agora"] { --mark: url("assets/img/integraciones/agora.svg"); --mark-ratio: 53.28 / 24; }
+[data-brand="asincorp"] { --mark: url("assets/img/integraciones/asincorp.svg"); --mark-ratio: 79.5 / 24; }
+[data-brand="cashdro"] { --mark: url("assets/img/integraciones/cashdro.svg"); --mark-ratio: 75.59 / 24; }
+[data-brand="channex"] { --mark: url("assets/img/integraciones/channex.svg"); --mark-ratio: 78.41 / 24; }
+[data-brand="char"] { --mark: url("assets/img/integraciones/char.svg"); --mark-ratio: 42.72 / 24; }
+[data-brand="clavecon"] { --mark: url("assets/img/integraciones/clavecon.svg"); --mark-ratio: 82.19 / 24; }
+[data-brand="clientify"] { --mark: url("assets/img/integraciones/clientify.svg"); --mark-ratio: 75.08 / 24; }
+[data-brand="danalock"] { --mark: url("assets/img/integraciones/danalock.svg"); --mark-ratio: 84.08 / 24; }
+[data-brand="dataria"] { --mark: url("assets/img/integraciones/dataria.svg"); --mark-ratio: 64.02 / 24; }
+[data-brand="hijiffy"] { --mark: url("assets/img/integraciones/hijiffy.svg"); --mark-ratio: 108.66 / 24; }
+[data-brand="hiopos"] { --mark: url("assets/img/integraciones/hiopos.svg"); --mark-ratio: 61.46 / 24; }
+[data-brand="holded"] { --mark: url("assets/img/integraciones/holded.svg"); --mark-ratio: 145.05 / 24; }
+[data-brand="hubos"] { --mark: url("assets/img/integraciones/hubos.svg"); --mark-ratio: 61.27 / 24; }
+[data-brand="monei"] { --mark: url("assets/img/integraciones/monei.svg"); --mark-ratio: 110.43 / 24; }
+[data-brand="neobookings"] { --mark: url("assets/img/integraciones/neobookings.svg"); --mark-ratio: 116.4 / 24; }
+[data-brand="paycomet"] { --mark: url("assets/img/integraciones/paycomet.svg"); --mark-ratio: 130.53 / 24; }
+[data-brand="prestige"] { --mark: url("assets/img/integraciones/prestige.svg"); --mark-ratio: 74.01 / 24; }
+[data-brand="pricelabs"] { --mark: url("assets/img/integraciones/pricelabs.svg"); --mark-ratio: 88.22 / 24; }
+[data-brand="prinex"] { --mark: url("assets/img/integraciones/prinex.svg"); --mark-ratio: 57.3 / 24; }
+[data-brand="redsys"] { --mark: url("assets/img/integraciones/redsys.svg"); --mark-ratio: 23.96 / 24; }
+[data-brand="revbell"] { --mark: url("assets/img/integraciones/revbell.svg"); --mark-ratio: 89.02 / 24; }
+[data-brand="revctrldata"] { --mark: url("assets/img/integraciones/revctrldata.svg"); --mark-ratio: 108.36 / 24; }
+[data-brand="revo"] { --mark: url("assets/img/integraciones/revo.svg"); --mark-ratio: 120.47 / 24; }
+[data-brand="revtool"] { --mark: url("assets/img/integraciones/revtool.svg"); --mark-ratio: 68.21 / 24; }
+[data-brand="roomcloud"] { --mark: url("assets/img/integraciones/roomcloud.svg"); --mark-ratio: 102.59 / 24; }
+[data-brand="roompricegenie"] { --mark: url("assets/img/integraciones/roompricegenie.svg"); --mark-ratio: 146.97 / 24; }
+[data-brand="sage-200"] { --mark: url("assets/img/integraciones/sage-200.svg"); --mark-ratio: 43.08 / 24; }
+[data-brand="sage-50"] { --mark: url("assets/img/integraciones/sage-50.svg"); --mark-ratio: 43.08 / 24; }
+[data-brand="salto-ks"] { --mark: url("assets/img/integraciones/salto-ks.svg"); --mark-ratio: 90 / 24; }
+[data-brand="sap"] { --mark: url("assets/img/integraciones/sap.svg"); --mark-ratio: 48.53 / 24; }
+[data-brand="siigo"] { --mark: url("assets/img/integraciones/siigo.svg"); --mark-ratio: 44.33 / 24; }
+[data-brand="siteminder"] { --mark: url("assets/img/integraciones/siteminder.svg"); --mark-ratio: 169.78 / 24; }
+[data-brand="spalopia"] { --mark: url("assets/img/integraciones/spalopia.svg"); --mark-ratio: 77.31 / 24; }
+[data-brand="stripe"] { --mark: url("assets/img/integraciones/stripe.svg"); --mark-ratio: 17.13 / 24; }
+[data-brand="tesa"] { --mark: url("assets/img/integraciones/tesa.svg"); --mark-ratio: 40.75 / 24; }
+[data-brand="thenetrevenue"] { --mark: url("assets/img/integraciones/thenetrevenue.svg"); --mark-ratio: 139.86 / 24; }
+[data-brand="ttlock"] { --mark: url("assets/img/integraciones/ttlock.svg"); --mark-ratio: 64.87 / 24; }
+[data-brand="wubook"] { --mark: url("assets/img/integraciones/wubook.svg"); --mark-ratio: 74.54 / 24; }
+[data-brand="yacan-smart"] { --mark: url("assets/img/integraciones/yacan-smart.svg"); --mark-ratio: 111.76 / 24; }
+[data-brand="yieldplanet"] { --mark: url("assets/img/integraciones/yieldplanet.svg"); --mark-ratio: 101.15 / 24; }
+/* logos:brand-end */

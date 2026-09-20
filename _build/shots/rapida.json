@@ -1,0 +1,5 @@
+[
+  { "path": "/index.html?park=15000",          "name": "faq" },
+  { "path": "/index.html?park=16600",          "name": "cta-pie" },
+  { "path": "/index.html?menu=integraciones",  "name": "menu-int" }
+]

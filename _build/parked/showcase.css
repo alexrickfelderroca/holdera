@@ -1,0 +1,302 @@
+/* ==========================================================================
+   EL ESCAPARATE DEL HERO — APARCADO el 20-09-2026
+
+   Qué era: al pasar el ratón por un servicio de la lista del hero, un telón
+   (--sc-veil) oscurecía el hero entero y entraban tres paneles de obra con
+   cuñas de clip-path desde distintos bordes, más el título grande del
+   servicio. Referencia: grid-animations-8.mp4 («Directional Hover Reveal»).
+
+   Por qué está aquí: el marcado desapareció cuando la web giró al recorrido
+   del hotel y a la rejilla de integraciones. Estas reglas se quedaron
+   huérfanas en styles.css y, al pasar la web a paleta clara, hacían fallar
+   la puerta de contraste con NUEVE suspensos contra un telón que ya no
+   pinta nadie.
+
+   Qué hace falta para devolverlo:
+     1. el marcado (.hero__works-list, .sc__stage, .sc__img, .sc__title)
+     2. el JS que pone .is-showcase / .is-veiled y precarga la obra por data-bg
+     3. los tokens --sc-veil y --sc-title-scrim en :root de styles.css
+     4. las diez declaraciones de _build/contrast.js (ver el comentario allí)
+     5. la obra: assets/img/producto/*.webp, que SIGUE en su sitio
+   🔴 Y ojo: estos colores son de la etapa OSCURA. El telón oscurecía un hero
+   claro, así que --on-ink-* eran texto claro; hoy --on-ink-* es tinta. Si
+   vuelve, hay que re-derivar su texto, no pegarlo tal cual.
+   ========================================================================== */
+
+.hero.is-showcase::after { opacity: 0; }
+
+/* the veil is transparent by design: the showcase's own backdrop is the ground */
+.nav.is-veiled { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; }
+
+/* visibility: hidden, not just opacity 0 + pointer-events: none.
+   pointer-events stops the mouse, but it leaves the buttons and the contact
+   card TABBABLE inside a fully transparent box: with the pointer resting on a
+   service name, Shift+Tab moved focus onto an invisible "Habla con nosotros"
+   with no focus ring anywhere on screen (WCAG 2.4.7). visibility also takes
+   them out of the accessibility tree, and it is delayed by --t-mid on the way
+   in so the fade is still seen, and applied at 0s on the way out so they come
+   straight back. */
+.hero.is-showcase .hero__copy-in,
+.hero.is-showcase .hero__aside-in {
+  opacity: 0; pointer-events: none; visibility: hidden;
+  transition: opacity var(--t-mid) var(--ease), transform var(--t-mid) var(--ease),
+              visibility 0s linear var(--t-mid);
+}
+
+.hero.is-showcase .hero__copy-in { transform: translateY(-26px); }
+
+.hero.is-showcase .hero__aside-in { transform: translateY(-20px); }
+
+.hero.is-showcase .hero__figure-wrap { opacity: 0; transform: translateY(30px) scale(0.96); }
+
+.hero.is-showcase .hero__wordmark-wrap { opacity: 0; }
+
+/* --------------------------------------------------------------------------
+   Service list + directional hover showcase
+   Recreation of the "Directional Hover Reveal" reference Alex sent. The
+   reference drives the wipes with GSAP; these are CSS clip-path transitions,
+   for the same reason brain.js and planet.js are hand-written WebGL: the page
+   must not need a CDN to work.
+
+   The list lives in the dead band the baseline screenshot found between the
+   hero CTAs (y 568) and the bottom bar (y 834). The showcase never covers it:
+   the stage is inset from the left so the artwork starts where the list ends,
+   exactly as the reference keeps its "Recent works" column clear.
+
+   Pointer-only, on purpose. It fires on mouseenter and NOT on keyboard focus:
+   the whole thing is decoration, and swapping the hero out from under a
+   keyboard user who is only tabbing through five links would hide the H1 for
+   the one audience that cannot see the artwork anyway. Keyboard gets a normal
+   focus ring; screen readers get five plain links.
+   -------------------------------------------------------------------------- */
+/* Position comes from .hero__left; this only sets its own width. */
+.hero__works { width: min(360px, 30vw); }
+
+/* Not --text-muted. The hero's ground is a radial gradient that runs from
+   --bg-2 at the top to --bg-3 at the corners, and this list sits in the
+   BOTTOM-LEFT — the darkest ground on the page, and darker still under the
+   vignette's --k-06. #666 measures 4.56:1 against --bg but only ~4.4:1 where
+   the label actually sits, i.e. an AA fail that the guard was passing because
+   it was measuring the wrong backdrop. Every colour here is now checked
+   against --k-06 over --bg-3, the worst ground the hero can produce. */
+.hero__works-label {
+  margin: 0 0 12px; font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.18em; color: var(--text-2);
+  transition: color var(--t-mid) var(--ease);
+}
+
+.hero__works-list { list-style: none; margin: 0; padding: 0; }
+
+.hero__works-list a {
+  display: inline-block; padding: 4px 0; text-decoration: none;
+  font-size: clamp(15px, 1.2vw, 18px); font-weight: 500; letter-spacing: -0.012em;
+  color: var(--text-2);
+  transition: color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+
+/* --ink, not --accent-hero. At 17.28px/500 this is normal body text and owes
+   4.5:1; the accent measures 3.99:1 on the ground under the last item. The
+   accent still marks the current item — but on the showcase veil, where it is
+   6.97:1, which is where the reference uses it too. */
+.hero__works-list a:hover { color: var(--ink); transform: translateX(6px); }
+
+.hero__works-list a.is-current { transform: translateX(6px); }
+
+/* the list is the one piece of hero copy that SURVIVES the showcase, so it
+   changes clothes instead of fading */
+.hero.is-showcase .hero__works-label { color: var(--on-ink-muted); }
+
+.hero.is-showcase .hero__works-list a { color: var(--on-ink-text-2); }
+
+.hero.is-showcase .hero__works-list a.is-current,
+.hero.is-showcase .hero__works-list a:hover { color: var(--accent); }
+
+.hero.is-showcase .hero__showcase::before { opacity: 1; transition-timing-function: var(--ease); }
+
+.sc__bgs { position: absolute; inset: 0; }
+
+.sc__bg {
+  position: absolute; inset: -3%;
+  background: center / cover no-repeat;
+  /* The reference knocks its backdrops down with brightness(0.2) and that is
+     exactly the job: at full strength the backdrop is as legible as the three
+     panels in front of it and you read the same artwork twice, at two scales.
+     Dark enough to be atmosphere, not a second composition. */
+  filter: brightness(0.38) saturate(0.85);
+  opacity: 0; transform: scale(1.05);
+  visibility: hidden;
+  transition: opacity 380ms var(--ease-in), transform 700ms var(--ease-in), visibility 0s linear 380ms;
+}
+
+.sc__bg.is-on {
+  opacity: 1; transform: none; visibility: visible;
+  transition: opacity 640ms var(--ease), transform 1300ms var(--ease), visibility 0s;
+}
+
+.sc__stage {
+  position: absolute;
+  left: 27%; right: var(--gutter);
+  top: calc(var(--nav-h) + 14px);
+  bottom: calc(var(--bar-inset) + var(--bar-h) + 26px);
+  display: grid; grid-template-areas: "stage";
+}
+
+.sc__item {
+  grid-area: stage;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  visibility: hidden;
+  transition: visibility 0s linear 420ms;
+}
+
+.sc__item.is-on { visibility: visible; transition-delay: 0s; }
+
+.sc__title {
+  grid-area: 1 / 1 / -1 / -1;
+  position: relative; z-index: 10;
+  align-self: center; margin: 0;
+  font-size: clamp(28px, 5.2vw, 84px); line-height: 0.98; letter-spacing: -0.035em;
+  font-weight: 500; color: var(--sh-text); text-wrap: balance;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 260ms var(--ease-in), transform 260ms var(--ease-in);
+}
+
+/* The scrim is a child of the title's own stacking context (z-index 10), so it
+   paints ABOVE the artwork and BELOW the letters. That is what lets the ivory
+   Asesorías panel sit under white type without the title dropping to ~1.1:1. */
+.sc__title::before {
+  content: ""; position: absolute; z-index: -1; inset: -85% -14%;
+  background: var(--sc-title-scrim);
+}
+
+.sc__item.is-on .sc__title {
+  opacity: 1; transform: none;
+  transition: opacity 520ms var(--ease) 110ms, transform 720ms var(--ease) 110ms;
+}
+
+.sc__img {
+  position: relative; overflow: hidden;
+  /* INSET only. An outline would be drawn outside the box and clipped away,
+     and so is any outer box-shadow — see the note where --sc-img-shadow used
+     to be. The hairline is inside the border box, so it survives the wipe and
+     travels with it. */
+  box-shadow: inset 0 0 0 1px var(--w-22);
+  clip-path: var(--clip-from);
+  transition: clip-path 360ms var(--ease-in);
+  will-change: clip-path;
+}
+
+.sc__img > i {
+  display: block; width: 100%; height: 100%;
+  background: center 45% / cover no-repeat;
+  transform: scale(1.14);
+  transition: transform 700ms var(--ease-in);
+}
+
+/* Four-point polygons on both ends: clip-path only interpolates between shapes
+   with the same vertex count, so every edge state is written as four corners
+   collapsed onto one side rather than as an inset(). */
+.sc__img[data-dir="right"]  { --clip-from: polygon(100% 0, 100% 0, 100% 100%, 100% 100%); }
+
+.sc__img[data-dir="left"]   { --clip-from: polygon(0 0, 0 0, 0 100%, 0 100%); }
+
+.sc__img[data-dir="top"]    { --clip-from: polygon(0 0, 100% 0, 100% 0, 0 0); }
+
+.sc__img[data-dir="bottom"] { --clip-from: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); }
+
+.sc__item.is-on .sc__img {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  transition: clip-path 560ms var(--ease);
+  transition-delay: var(--sd, 0ms);
+}
+
+.sc__item.is-on .sc__img > i {
+  transform: none;
+  transition: transform 1100ms var(--ease);
+  transition-delay: var(--sd, 0ms);
+}
+
+/* the stagger is only on the way IN; leaving, all three close together */
+.sc__img:nth-of-type(1) { --sd: 0ms; }
+
+.sc__img:nth-of-type(2) { --sd: 90ms; }
+
+.sc__img:nth-of-type(3) { --sd: 170ms; }
+
+/* Five compositions over a 10x10 stage, one per service, laid out so no two
+   read the same way — the reference's pos-1..pos-15 idea. Row / column /
+   row-end / column-end. */
+.sc__img--a1 { grid-area: 1 / 1 / 5 / 5; }
+
+.sc__img--a2 { grid-area: 4 / 8 / 11 / 11; }
+
+.sc__img--a3 { grid-area: 7 / 3 / 11 / 6; }
+
+.sc__img--b1 { grid-area: 3 / 4 / 7 / 9; }
+
+.sc__img--b2 { grid-area: 5 / 1 / 11 / 4; }
+
+.sc__img--b3 { grid-area: 1 / 7 / 5 / 10; }
+
+.sc__img--c1 { grid-area: 6 / 6 / 10 / 11; }
+
+.sc__img--c2 { grid-area: 1 / 1 / 8 / 4; }
+
+.sc__img--c3 { grid-area: 3 / 5 / 7 / 8; }
+
+.sc__img--d1 { grid-area: 1 / 3 / 5 / 8; }
+
+.sc__img--d2 { grid-area: 4 / 8 / 11 / 11; }
+
+.sc__img--d3 { grid-area: 6 / 1 / 10 / 4; }
+
+.sc__img--e1 { grid-area: 7 / 4 / 11 / 9; }
+
+.sc__img--e2 { grid-area: 1 / 8 / 8 / 11; }
+
+.sc__img--e3 { grid-area: 2 / 1 / 6 / 4; }
+
+.hero.is-showcase :focus-visible { outline-color: var(--on-ink-text); }
+
+@media (min-width: 901px) and (max-height: 760px) {
+  .hero__works-label { margin-bottom: 6px; }
+
+  .hero__works-list a { padding: 1px 0; font-size: 14px; }
+}
+
+@media (max-width: 900px) {
+  .hero__works {
+      position: static; width: auto; order: 2;
+      padding: 0 var(--gutter); margin-top: 30px;
+    }
+
+  .hero__works-list a { font-size: 16px; }
+
+  .hero__works-list a { padding: 9px 0; }
+}
+
+
+/* El contenedor del escaparate y su telon. Se quedaron atras en el primer
+   aparcado porque la lista de prefijos no llevaba `.hero__showcase`; lo
+   delato check-tokens.js, que vio --sc-veil usado y sin definir. */
+.hero__showcase {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  overflow: hidden;
+}
+/* the veil, under the artwork: it is what turns the light hero dark */
+.hero__showcase::before {
+  content: ""; position: absolute; inset: 0;
+  background: var(--sc-veil); opacity: 0;
+  transition: opacity var(--t-mid) var(--ease-in);
+}
+
+@media (max-width: 900px) {
+  .hero__showcase { display: none; }
+}
+
+/* Los dos tokens que hacian falta, retirados de :root de styles.css:
+   --sc-veil: rgba(11, 10, 9, 0.93);
+   --sc-title-scrim: (degradado radial, ver git show)
+   Y --w-84: rgba(255,255,255,0.84), que se quedo huerfano al pasar la
+   marquesina del hero a tinta. */

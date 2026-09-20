@@ -23,12 +23,35 @@
 const fs = require('fs');
 const path = require('path');
 
-/* Since step 5 there are three stylesheets. They are parsed as ONE cascade
-   (styles.css first, so a later file can override a rule and "last wins"
-   still holds), and every :root block feeds the same token table. */
-const cssFiles = ['styles.css', 'pages.css']
-  .map(f => path.join(__dirname, '..', f))
-  .filter(p => fs.existsSync(p));
+/* Las SEIS hojas del sitio público, leídas como UNA cascada (styles.css
+   primero, para que una hoja posterior pueda sobreescribir una regla y siga
+   valiendo el "gana la última"); todos los :root alimentan la misma tabla de
+   tokens.
+   🔴 Hasta el 20-09-2026 esta lista tenía DOS archivos y el comentario decía
+   tres. Los dos desplegables de la barra, la FAQ, el catálogo de integraciones
+   y las nueve páginas de /funciones/ no tenían NI UNA comprobación de
+   contraste: todo lo que se construía ahí pasaba las cinco puertas en verde
+   sin que nadie lo hubiera medido.
+   Y el `.filter(existsSync)` que había aquí es justo la trampa que este
+   proyecto ya tiene escrita del paso 9: una hoja que desaparezca dejaría de
+   vigilarse EN SILENCIO y la puerta seguiría saliendo a 0. Ahora falta un
+   archivo y esto para. */
+const cssFiles = [
+  'styles.css',
+  'sections.css',
+  'pages.css',
+  'integraciones.css',
+  'hotel-anim.css',
+  path.join('funciones', 'funciones.css'),
+].map(f => path.join(__dirname, '..', f));
+
+const ausentes = cssFiles.filter(p => !fs.existsSync(p));
+if (ausentes.length) {
+  console.error('ERROR  hojas de estilo que esta puerta dice vigilar y no existen:');
+  ausentes.forEach(p => console.error('       ' + path.relative(path.join(__dirname, '..'), p)));
+  console.error('       Si se han retirado a propósito, quítalas de esta lista a mano.');
+  process.exit(1);
+}
 const raw = cssFiles.map(p => fs.readFileSync(p, 'utf8')).join('\n');
 const css = raw.replace(/\/\*[\s\S]*?\*\//g, '');
 
@@ -218,29 +241,31 @@ const CHECKS = [
   ['trace card link',       ['.trace__link', 'color'],        [{ token: '--bg' }], 4.5],
   ['hero bar chip',         ['.hero__bar', 'color'],          [{ token: '--bar-a' }], 4.5],
   // the service list, on the DARKEST ground the light hero can produce
-  ['services label',        ['.hero__works-label', 'color'],   HERO_LOW, 4.5],
-  ['service link',          ['.hero__works-list a', 'color'],  HERO_LOW, 4.5],
-  ['service link hover',    ['.hero__works-list a:hover', 'color'], HERO_LOW, 4.5],
+  /* Las tres de la lista de servicios del hero se fueron con el escaparate
+     (aparcado en _build/parked/showcase.css el 20-09-2026). Esta puerta hizo
+     justo lo que tenia que hacer al quitarlas del CSS: ERROR, «rule renamed or
+     removed?», en vez de pasar en silencio. */
   // ...and the same list once the showcase veil is over it
-  ['services label on veil', ['.hero.is-showcase .hero__works-label', 'color'], VEIL, 4.5],
-  ['service link on veil',   ['.hero.is-showcase .hero__works-list a', 'color'], VEIL, 4.5],
-  ['service current on veil',['.hero.is-showcase .hero__works-list a.is-current', 'color'], VEIL, 4.5],
   // the big service title is large text, so 3:1
-  ['showcase title on veil', ['.sc__title', 'color'],          VEIL, 3],
   // the fixed bar over the two glasses (paso 6): text on glass on its ground
   ['nav link on light glass',  ['.nav__links > a', 'color'],                     [['.nav.is-scrolled', 'background'], { token: '--bg-3' }], 4.5],
   ['nav clock on light glass', ['.nav__tz-time', 'color'],                       [['.nav.is-scrolled', 'background'], { token: '--bg-3' }], 4.5],
   ['nav link on dark glass',   ['.nav.is-over-sheet .nav__links > a', 'color'],  [['.nav.is-over-sheet', 'background'], { token: '--sh-bg' }], 4.5],
   ['nav clock on dark glass',  ['.nav.is-over-sheet .nav__tz-time', 'color'],    [['.nav.is-over-sheet', 'background'], { token: '--sh-bg' }], 4.5],
+  /* 🔴 RETIRADAS el 20-09-2026. Vigilaban el ESCAPARATE del hero (el telon
+     --sc-veil y la nav sobre el), y ese componente ya NO EXISTE en el marcado:
+     `is-showcase`, `hero__works` y `.sc__` no aparecen en ninguna de las 17
+     paginas ni en script.js — lo sustituyo el recorrido del hotel mas la
+     rejilla de integraciones. Al pasar la web a paleta clara los tokens
+     --on-ink-* se volvieron tinta y estas diez daban 1,06:1 contra un telon
+     que nadie pinta: NUEVE suspensos falsos que bloqueaban la puerta.
+     Lo que queda por limpiar (y NO se toca aqui, es decision de Alex): 64
+     reglas CSS del escaparate en styles.css, los tokens --sc-veil y
+     --sc-title-scrim, y las 20 capturas de assets/img/producto/ (2,7 MB).
+     Si el escaparate vuelve, estas diez lineas vuelven con el. */
   ['nav menu on dark glass',   ['.nav.is-over-sheet .btn--secondary', 'color'],  [['.nav.is-over-sheet', 'background'], { token: '--sh-bg' }], 4.5],
   ['nav menu border on dark glass', ['.nav.is-over-sheet .btn--secondary', 'border-color'], [['.nav.is-over-sheet', 'background'], { token: '--sh-bg' }], 3],
   // the nav keeps working while the hero is dark
-  ['nav link on veil',       ['.nav.is-veiled .nav__links > a', 'color'], VEIL, 4.5],
-  ['nav active on veil',     ['.nav.is-veiled .nav__links .is-active', 'color'], VEIL, 4.5],
-  ['nav clock on veil',      ['.nav.is-veiled .nav__tz-time', 'color'], VEIL, 4.5],
-  ['nav menu button on veil',['.nav.is-veiled .btn--secondary', 'color'], VEIL, 4.5],
-  ['nav menu border on veil',['.nav.is-veiled .btn--secondary', 'border-color'], VEIL, 3],
-  ['focus ring on veil',     ['.hero.is-showcase :focus-visible', 'outline-color'], VEIL, 3],
 ];
 
 let failed = 0;
@@ -267,12 +292,9 @@ for (const [label, fg, stack, need] of CHECKS) {
    not "fix" them to --accent-ink. */
 const ACCENT_ON_INK = new Set([
   '.drawer__links a:hover',
-  /* Both of these only ever apply under .hero.is-showcase — i.e. once the veil
-     has turned the hero dark. They are checked as "service current on veil"
-     above, and the guard caught them the moment they were written, which is
-     the point of this list existing rather than a blanket exemption. */
-  '.hero.is-showcase .hero__works-list a.is-current',
-  '.hero.is-showcase .hero__works-list a:hover',
+  /* Aqui vivian dos excepciones del escaparate. Se fueron con el a
+     _build/parked/showcase.css: sus reglas ya no estan en la cascada, asi que
+     una exencion para ellas solo serviria para tapar un regreso sin medir. */
 ]);
 console.log('\nbright --accent used as text/fill outside the on-ink allowlist:');
 let strays = 0;

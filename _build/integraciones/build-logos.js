@@ -49,6 +49,26 @@ const OUTDIR = path.join(ROOT, 'assets', 'img', 'integraciones');
 
 const catalogo = JSON.parse(fs.readFileSync(path.join(HERE, 'integraciones.json'), 'utf8'));
 const metrics = JSON.parse(fs.readFileSync(path.join(HERE, 'wordmark-widths.json'), 'utf8'));
+/* La caja de tinta medida de cada marca (_build/integraciones/measure-ink.js).
+   Sin el archivo se sigue pudiendo generar: las marcas salen a su tamano de
+   lienzo, como antes, y la tira vuelve a quedar descuadrada — pero nada se
+   rompe y el aviso lo dice. */
+/* 🔴 EL RECORTE ES DE DOS PASADAS, Y EL ORDEN IMPORTA.
+   `ink.json` mide los archivos SERVIDOS, y estos scripts los reescriben,
+   asi que medir sobre un archivo ya recortado y volver a recortar con esa
+   medida lo ROMPE: la segunda pasada ensancha el viewBox otra vez pero con
+   escala 1, y el dibujo se queda a la mitad dentro de una caja doble.
+   Medido: Sage acabo en un viewBox de 43,08 con `scale(1.000000)`.
+
+   El orden correcto, y el unico:
+     node _build/integraciones/build-logos.js --no-crop   (sin recortar)
+     node _build/integraciones/measure-ink.js             (mide el crudo)
+     node _build/integraciones/build-logos.js             (recorta)
+   `--no-crop` existe solo para eso. */
+const NO_CROP = process.argv.includes('--no-crop');
+const ink = !NO_CROP && fs.existsSync(path.join(HERE, 'ink.json'))
+  ? JSON.parse(fs.readFileSync(path.join(HERE, 'ink.json'), 'utf8')).marcas
+  : (console.warn('AVISO: falta ink.json; las marcas saldran a tamano de lienzo. Ejecuta measure-ink.js.'), {});
 
 /* --- 1. simple-icons ------------------------------------------------------
    Misma pareja de versiones fijadas que _build/build-partner-logos.js, y por
@@ -150,7 +170,24 @@ for (const it of items) {
   const titulo = MARCA_REAL[it.nombre];
   const icon = titulo && si ? si.get(titulo) : null;
   let file, slim, tipo, ratio;
-  if (icon) {
+  /* --- 0. EL LOGOTIPO OFICIAL, SI LO HAY ---------------------------------
+     `fetch-marcas.js` baja el logotipo de la propia web de cada marca y lo
+     deja normalizado en `_build/integraciones/marcas/`. Manda sobre todo lo
+     demas: es la marca de verdad.
+
+     Vive en `_build/` y no en `assets/`, y es a proposito: `assets/img/
+     integraciones/` es la carpeta SERVIDA, y la escribe SOLO este generador.
+     Asi da igual en que orden se ejecuten los dos scripts — volver a pasar
+     este nunca pisa un logotipo real con su wordmark, que es justo el fallo
+     que se cometeria con una sola carpeta. */
+  const oficial = path.join(HERE, 'marcas', it.slug + '.svg');
+  if (fs.existsSync(oficial)) {
+    file = fs.readFileSync(oficial, 'utf8').trim();
+    slim = file;                                   // ya viene sin nada que quitar
+    tipo = 'logotipo-oficial';
+    const vb = /viewBox="0 0 ([\d.]+) 24"/.exec(file);
+    ratio = vb ? Math.round(Number(vb[1]) / 24 * 1000) / 1000 : 1;
+  } else if (icon) {
     file = svgIcono(it.nombre, icon, false);
     slim = svgIcono(it.nombre, icon, true);
     tipo = 'marca-real';
@@ -163,6 +200,32 @@ for (const it of items) {
     tipo = 'wordmark';
     ratio = Math.round((ancho / 24) * 1000) / 1000;
   }
+  /* --- TAMANO OPTICO: se recorta al dibujo, no al lienzo ------------------
+     El `viewBox` que trae cada archivo es el lienzo que le dejo quien lo
+     exporto, no lo que ocupa la marca. Escalarlas todas a 24 de alto por su
+     viewBox daba una tira descuadrada: medido con `measure-ink.js`, la
+     tinta va del 56 % del lienzo (Sage) al 100 % (SiteMinder). Casi el doble
+     de tamano real entre dos marcas que el CSS cree iguales — y se veia:
+     SiteMinder y Holded enormes junto a un PriceLabs y un Sage ilegibles.
+
+     Se recorta el viewBox a la caja de tinta MEDIDA. A partir de ahi
+     `height: 13px` son 13px de marca de verdad, en las 41. */
+  const tinta = ink[it.slug];
+  if (tinta) {
+    const [x, y, w, h] = tinta.ink;
+    if (w > 0 && h > 0) {
+      const k = 24 / h;
+      const ancho = Math.round(w * k * 100) / 100;
+      const recorte = (s) =>
+        s.replace(/viewBox="[^"]*"/, `viewBox="0 0 ${ancho} 24"`)
+         .replace(/(<svg[^>]*>)/, `$1<g transform="scale(${k.toFixed(6)}) translate(${-x} ${-y})">`)
+         .replace(/<\/svg>\s*$/, '</g></svg>');
+      file = recorte(file);
+      slim = recorte(slim);
+      ratio = Math.round((ancho / 24) * 1000) / 1000;
+    }
+  }
+
   for (const s of [file, slim]) {
     if (/(fill|stroke)\s*=\s*"#/i.test(s) || /#[0-9a-f]{3,8}\b/i.test(s)
         || /\b(rgb|hsl|oklch|lab)a?\s*\(/i.test(s)) {
@@ -174,9 +237,11 @@ for (const it of items) {
 }
 
 const reales = hechos.filter(h => h.tipo === 'marca-real');
+const oficiales = hechos.filter(h => h.tipo === 'logotipo-oficial');
 console.log(`escritos ${hechos.length} svg en assets/img/integraciones/`);
+console.log(`  logotipo oficial (su web): ${oficiales.length} -> ${oficiales.map(r => r.nombre).join(', ')}`);
 console.log(`  marca real (simple-icons): ${reales.length} -> ${reales.map(r => r.nombre).join(', ')}`);
-console.log(`  wordmark tipografico:      ${hechos.length - reales.length}`);
+console.log(`  wordmark tipografico:      ${hechos.length - reales.length - oficiales.length}`);
 console.log(`  peso total: ${hechos.reduce((a, h) => a + h.bytes, 0)} bytes`);
 
 /* --- 4. marcado de la tira ------------------------------------------------

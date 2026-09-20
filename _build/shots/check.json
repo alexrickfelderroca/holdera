@@ -1,0 +1,5 @@
+[
+  { "path": "/index.html?park=0",  "name": "hero" },
+  { "path": "/integraciones.html", "name": "integraciones" },
+  { "path": "/nosotros.html",      "name": "nosotros" }
+]

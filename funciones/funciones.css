@@ -32,12 +32,12 @@
   /* El contorno discontinuo de la cita literal del panel. NO es un control:
      --sh-control-border (0.36) esta calculado para cosas que se pueden pulsar
      y aqui se leeria como un boton. Este es el escalon decorativo. */
-  --pgf-stamp-border: rgba(255, 250, 242, 0.16);
+  --pgf-stamp-border: rgba(22, 19, 15, 0.16);
 
   /* El lavado de una fila del indice al pasar el raton. --sh-tint (0.035) es
      el relleno en reposo de esas mismas filas, asi que no puede ser tambien
      el hover: no se notaria el cambio. Un escalon por encima. */
-  --pgf-row-hover: rgba(255, 250, 242, 0.05);
+  --pgf-row-hover: rgba(22, 19, 15, 0.045);
 }
 
 /* --------------------------------------------------------------------------

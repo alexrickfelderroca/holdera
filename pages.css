@@ -27,8 +27,8 @@
   --pg-top: 96px;
   /* ghost numerals on the sheet: a fill you can barely see plus a hairline
      stroke, so a 130px "01" reads as structure, not as a headline */
-  --pg-numeral: rgba(255, 250, 242, 0.06);
-  --pg-numeral-stroke: rgba(255, 250, 242, 0.20);
+  --pg-numeral: rgba(22, 19, 15, 0.055);
+  --pg-numeral-stroke: rgba(22, 19, 15, 0.16);
 }
 
 /* --------------------------------------------------------------------------

@@ -872,8 +872,18 @@
        hover lo reabriria en el mismo gesto. */
     g.btn.addEventListener('click', (e) => {
       e.preventDefault();
-      if (abierto === g) { cerrar(g, false); g.bloqueado = true; }
-      else abrir(g);
+      /* 🔴 Con el panel ABIERTO, el clic ENTRA. Antes lo cerraba, y como
+         `pointerenter` lo abre a los 90 ms, con raton el panel siempre
+         estaba abierto cuando llegaba el clic: entrar era imposible.
+         El destino vive en data-href porque aBoton() convierte el <a> en
+         <button>; hasta hoy ese atributo se escribia y no lo leia nadie. */
+      const destino = g.btn.getAttribute('data-href');
+      if (abierto === g) {
+        if (destino) { window.location.href = destino; return; }
+        cerrar(g, false); g.bloqueado = true;
+        return;
+      }
+      abrir(g);
     });
 
     g.btn.addEventListener('keydown', (e) => {
@@ -993,6 +1003,12 @@
   filas.forEach((f) => {
     f.btn.addEventListener('click', (e) => {
       e.preventDefault();
+      /* Mismo criterio que arriba: la sublista ya desplegada significa que
+         las opciones estan a la vista, asi que el segundo toque ENTRA en la
+         pagina de la seccion en vez de volver a cerrar. En tactil, que es
+         donde vive el drawer, era el unico camino que faltaba. */
+      const destino = f.btn.getAttribute('data-href');
+      if (!f.lista.hidden && destino) { window.location.href = destino; return; }
       const abrir = f.lista.hidden;
       /* Una sola abierta a la vez: el drawer no tiene tanto alto. */
       filas.forEach((o) => {

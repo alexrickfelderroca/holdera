@@ -1,0 +1,135 @@
+{
+ "generado": "2026-09-20",
+ "contrato": "monocromo currentColor, viewBox de alto 24",
+ "marcas": {
+  "siteminder": {
+   "nombre": "SiteMinder",
+   "origen": "https://www.siteminder.com/es/",
+   "hex": "#00033b",
+   "colores": [
+    "#00033b"
+   ],
+   "nota": "La home en ingles devuelve un reto de Cloudflare a curl; /es/ no. Su logo en linea no lleva title ni aria-label: se ancla en el viewBox 191x27 de la cabecera (div.header-logo).",
+   "bytes": 5370
+  },
+  "pricelabs": {
+   "nombre": "PriceLabs",
+   "origen": "https://www.pricelabs.co/",
+   "hex": "#ff4646",
+   "colores": [
+    "#ff4646"
+   ],
+   "nota": "Logo en linea en la cabecera, con aria-label propio.",
+   "bytes": 6376
+  },
+  "salto-ks": {
+   "nombre": "Salto KS",
+   "origen": "https://saltosystems.com/en/",
+   "hex": "#111111",
+   "colores": [
+    "#111111",
+    "#50c8ff",
+    "#00b0a2"
+   ],
+   "nota": "Salto KS es el producto; el logotipo es el de Salto Systems, la empresa.",
+   "bytes": 5146
+  },
+  "revo": {
+   "nombre": "Revo",
+   "origen": "https://revo.works/",
+   "hex": null,
+   "colores": [],
+   "nota": "Su portada ensena tambien los logos de Cloudbeds y Cegid: hay que anclar en <title>Revo</title>.",
+   "bytes": 3636
+  },
+  "hijiffy": {
+   "nombre": "HiJiffy",
+   "origen": "https://www.hijiffy.com/wp-content/uploads/2026/01/Logo.svg",
+   "hex": "#1a1e42",
+   "colores": [
+    "#1a1e42"
+   ],
+   "nota": "Archivo suelto en su WordPress. La copia del CDN de Nitro es la misma.",
+   "bytes": 6201
+  },
+  "holded": {
+   "nombre": "Holded",
+   "origen": "https://www.holded.com/",
+   "hex": "#ef4444",
+   "colores": [
+    "#ef4444"
+   ],
+   "nota": "Dos <svg> con aria-label Holded: el de 120x18 es el completo, el de 20x18 solo el isotipo.",
+   "bytes": 8154
+  },
+  "paycomet": {
+   "nombre": "Paycomet",
+   "origen": "https://www.paycomet.com/img/logo-paycomet.svg",
+   "hex": null,
+   "colores": [],
+   "nota": "Archivo suelto.",
+   "bytes": 16326
+  },
+  "monei": {
+   "nombre": "Monei",
+   "origen": "https://assets.monei.com/images/logo.svg",
+   "hex": "#00c1b1",
+   "colores": [
+    "#00c1b1"
+   ],
+   "nota": "Archivo suelto en su CDN.",
+   "bytes": 1052
+  },
+  "revbell": {
+   "nombre": "Revbell",
+   "origen": "https://revbell.com/wp-content/uploads/2025/04/revbell-logo.svg",
+   "hex": "#022626",
+   "colores": [
+    "#022626",
+    "#67d6a1"
+   ],
+   "nota": "Archivo suelto en su WordPress.",
+   "bytes": 4507
+  },
+  "sap": {
+   "nombre": "SAP",
+   "logo": false,
+   "nota": "🔴 SU LOGOTIPO ES UN CALADO y no sobrevive a pasarlo a un color: las letras \"SAP\" son BLANCAS recortadas sobre la franja azul, asi que al volverlo monocromo las letras toman el color de la franja y desaparecen. Medido en la hoja de contacto: un paralelogramo gris sin texto. Se usa el de simple-icons (CC0), que ya viene monocromo y pensado para esto."
+  },
+  "roompricegenie": {
+   "nombre": "RoomPriceGenie",
+   "logo": false,
+   "nota": "Su unico SVG publico (rpg_Logo_black.svg) es el lockup APILADO, 255x185: llevado a 24 de alto mide 33 de ancho y su texto queda a ~6px. Un logotipo ilegible no mejora a un wordmark."
+  },
+  "hubos": {
+   "nombre": "HubOS",
+   "logo": false,
+   "nota": "hubos.com y hubos.es no resuelven (20-09-2026, UA de navegador y siguiendo redirecciones)."
+  },
+  "revtool": {
+   "nombre": "Revtool",
+   "logo": false,
+   "nota": "Su dominio no responde."
+  },
+  "yacan_smart": {
+   "nombre": "yacan_smart",
+   "logo": false,
+   "nota": "El unico .svg de \"logo\" de su portada es el de Google, de un widget de resenas."
+  },
+  "prinex": {
+   "nombre": "Prinex",
+   "logo": false,
+   "nota": "El unico .svg de \"logo\" de su portada es el de Blackstone, su propietario."
+  },
+  "sage-50": {
+   "nombre": "Sage 50",
+   "logo": false,
+   "nota": "Sage sirve UN logo para todos sus productos; un wordmark distingue Sage 50 de Sage 200 y el logo no."
+  },
+  "sage-200": {
+   "nombre": "Sage 200",
+   "logo": false,
+   "nota": "Idem Sage 50."
+  }
+ }
+}

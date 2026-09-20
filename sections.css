@@ -783,9 +783,7 @@
      20px queda en 1,39x la altura de mayuscula, que es la proporcion habitual
      entre un logotipo y el texto que lo acompana. */
   --mrq-mark: 30px;
-  --mrq-mark-icon: 20px;
   --mrq-mark-sm: 24px;
-  --mrq-mark-icon-sm: 17px;
 
   --mrq-gap: clamp(32px, 3.4vw, 56px);
 
@@ -836,7 +834,10 @@
   font-size: 12px;
   line-height: 1.4;
   letter-spacing: 0.01em;
-  color: var(--w-60);               /* 5,43:1 sobre el extremo claro del degradado */
+  /* Era blanco al 60% cuando la barra era de tinta. Sobre la barra blanca
+     es invisible. El rótulo es texto secundario: --text-muted lo deja en
+     4,99:1 sobre el peor suelo de la barra. */
+  color: var(--text-muted);
   white-space: nowrap;
 }
 
@@ -885,31 +886,52 @@
   flex: 0 0 auto;
 }
 
-.hero__bar--mrq .mrq__item svg {
+/* La marca se pinta por MASCARA, igual que en la rejilla `.hints`.
+   ---------------------------------------------------------------------
+   Antes eran 82 <svg> incrustados (41 marcas x la copia del bucle) y
+   pesaban 17,4 KB del documento. Ademas se quedaban DESFASADOS: los
+   archivos de assets/img/integraciones/ pasaron a ser logotipos reales y
+   estas copias seguian siendo los wordmarks viejos, asi que la misma
+   marca salia con dos dibujos distintos a veinte centimetros en la misma
+   pantalla. Con mascara hay un solo archivo por marca y no puede pasar.
+   Medido: index.html de 18.885 a 17.870 bytes con brotli. */
+.hero__bar--mrq .mrq__mark {
   display: block;
   height: var(--mrq-mark);
-  width: auto;
-  fill: currentColor;
-  color: var(--w-84);               /* 8,9:1 en el peor suelo de la barra */
-  transition: color var(--t-fast) var(--ease);
+  aspect-ratio: var(--mark-ratio, 3 / 1);
+  background-color: currentColor;
+  -webkit-mask-image: var(--mark);
+  mask-image: var(--mark);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  /* Era --w-84 (blanco al 84%) y medía 8,9:1 cuando la barra era de TINTA. Con
+     la barra en blanco ese mismo valor deja las marcas casi invisibles: blanco
+     sobre blanco. Ahora es tinta, y el peor suelo de la barra (blanco al 80%
+     sobre --bg-3 con su viñeta) la deja en 9,72:1 — medido con
+     `node _build/paleta-clara.js`, no a ojo. */
+  color: var(--text-2);
+  /* La que se anima es `background-color`, no `color`: es la propiedad que
+     pinta la mascara. Transicionar `color` y confiar en que `currentColor`
+     arrastre al fondo no es fiable entre navegadores. */
+  transition: background-color var(--t-fast) var(--ease);
 }
 
-/* Los cuatro atributos de tipografia que el generador NO repite en cada uno de
-   los 82 <svg> incrustados: se dicen una vez, aqui. El .svg suelto de
-   assets/img/integraciones/ si los lleva dentro, porque nadie le aplica esta
-   hoja. Los numeros son los mismos con los que se midieron los anchos
-   (_build/integraciones/wordmark-widths.json), y tienen que seguir siendolo:
-   si cambian aqui y no alli, el textLength deforma los nombres. */
-.hero__bar--mrq .mrq__item text {
-  font-family: var(--font);
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: 0.2px;
+/* Ya no hay <text> que vestir: la tipografia de los wordmarks viaja
+   DENTRO de cada .svg, que es lo que la mascara necesita para dibujarlos
+   igual sin depender de esta hoja. Y tampoco hay caso especial para los
+   iconos cuadrados: desde que `measure-ink.js` recorta cada marca a su
+   caja de tinta, todas miden lo mismo de dibujo a la misma altura. */
+
+/* El hover toma el color de la marca, como en la rejilla del hero.
+   Sin token (Revo, Paycomet: publican su logo en blanco o negro) cae en
+   la tinta de siempre. */
+.hero__bar--mrq .mrq__item:hover .mrq__mark {
+  background-color: var(--brand, var(--text));
 }
-
-.hero__bar--mrq .mrq__item[data-mark="icon"] svg { height: var(--mrq-mark-icon); }
-
-.hero__bar--mrq .mrq__item:hover svg { color: var(--w-90); }
 
 /* ---------------------------------------------------------------------------
    (B) EL BLOQUE DE LA NAV (drawer + desplegable de escritorio)
@@ -1008,8 +1030,7 @@
             mask-image: var(--mrq-mask-sm);
   }
 
-  .hero__bar--mrq .mrq__item svg { height: var(--mrq-mark-sm); }
-  .hero__bar--mrq .mrq__item[data-mark="icon"] svg { height: var(--mrq-mark-icon-sm); }
+  .hero__bar--mrq .mrq__mark { height: var(--mrq-mark-sm); }
 
   /* DOS columnas en el movil, no una. Medido: a una sola columna el bloque
      mide 1.757px dentro del drawer — 47 nombres en fila india que hay que
@@ -1037,7 +1058,7 @@
   .hero__bar--mrq .mrq__viewport::-webkit-scrollbar { display: none; }
   .hero__bar--mrq .mrq__track { width: auto; }
   .hero__bar--mrq .mrq__row[aria-hidden="true"] { display: none; }
-  .hero__bar--mrq .mrq__item svg { transition: none; }
+  .hero__bar--mrq .mrq__mark { transition: none; }
 }
 
 /* ---------------------------------------------------------------------------
@@ -1147,25 +1168,46 @@
   transition: color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
 }
 
-.hints__item svg {
+/* La marca se pinta por MASCARA, no con un <svg> incrustado.
+   ---------------------------------------------------------------------
+   Los 41 dibujos de assets/img/integraciones/ son monocromos, asi que
+   sirven de mascara: la silueta la pone el archivo y el color, este CSS.
+   `--mark` y `--mark-ratio` los declara el bloque generado del final de
+   styles.css, uno por `data-brand`.
+
+   Incrustarlos costaba 12 KB brotli en index.html (18.885 -> 30.845), un
+   63 % mas de documento bloqueante por una rejilla decorativa del aside.
+   Asi el documento se queda igual y los archivos se cachean aparte —
+   ademas los comparte la pagina de integraciones. */
+.hints__mark {
   display: block;
-  width: auto;
   height: 13px;
+  aspect-ratio: var(--mark-ratio, 3 / 1);
   max-width: 100%;
-  color: inherit;
-  fill: currentColor;
-}
-/* Los wordmarks son <text> dentro del svg: heredan currentColor por fill. */
-.hints__item svg text {
-  fill: currentColor;
-  font-family: inherit;
-  font-size: 19px;
-  font-weight: 500;
+  background-color: currentColor;
+  -webkit-mask-image: var(--mark);
+  mask-image: var(--mark);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  transition: background-color var(--t-fast) var(--ease);
 }
 
-.hints__item:hover {
-  color: var(--text);
-  background: var(--w-84);
+/* 🔴 EL HOVER CAMBIA LA MARCA, NO LA CELDA.
+   Antes la celda entera se aclaraba (`background: var(--w-84)`) y la marca
+   solo pasaba de gris a tinta: el rectangulo gritaba y el logotipo no decia
+   nada. Ahora la celda no se mueve y la marca toma SU color, que es lo que
+   dice "estas sobre esta".
+
+   `--brand` solo existe para las marcas cuyo color publica su empresa (ver
+   el bloque generado). Para el resto el respaldo es `--text`, o sea el
+   mismo oscurecimiento de siempre: ninguna se queda sin respuesta. */
+.hints__item:hover .hints__mark,
+.hints__item:focus-within .hints__mark {
+  background-color: var(--brand, var(--text));
 }
 
 .hints__link {
@@ -1225,11 +1267,11 @@
   border: 1px solid var(--on-ink-border);
   border-radius: var(--r-pill);
   background: none;
-  color: var(--w-84);
+  color: var(--text-2);
   cursor: pointer;
   transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
 }
-.mrq__pause:hover { color: var(--w-90); border-color: var(--on-ink-hi); }
+.mrq__pause:hover { color: var(--text); border-color: var(--border-strong); }
 .mrq__pause svg { display: block; width: 12px; height: 12px; fill: currentColor; }
 /* Dos glifos en el mismo boton: se ensena el que corresponde al estado. */
 .mrq__pause .mrq__ico-play { display: none; }

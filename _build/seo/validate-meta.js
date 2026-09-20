@@ -39,7 +39,13 @@ const FORBIDDEN = ['aggregateRating', 'review', 'reviews', 'ratingValue', 'faxNu
 // (un email de otro proyecto, un teléfono con el prefijo mal, un mailto: colado aquí).
 const CONFIRMED = {
   email: 'info@holdera.es',
-  telephone: '+34607836960',
+  // Corregido el 20-09-2026: el numero publicado hasta hoy (+34607836960) era
+  // INCORRECTO. Alex confirmo este. Esta linea es la que hace de guardian, y
+  // ya ha servido para algo: cuando se cambio el telefono en las 17 paginas
+  // sin tocar aqui, la puerta lo paro y obligo a preguntar en vez de publicar
+  // un segundo numero sin confirmar. Si vuelve a cambiar, se cambia AQUI
+  // tambien o la puerta falla, que es exactamente lo que se quiere.
+  telephone: '+34626276538',
 };
 
 const REQUIRED = {
