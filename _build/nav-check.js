@@ -32,7 +32,7 @@ const BASE = String(arg('base', 'http://localhost:4177')).replace(/\/$/, '');
 /** Cada paso: donde empieza, que enlace pulsa, y que tiene que pasar. */
 const STEPS = [
   {
-    name: 'Today -> Hotel (barra lateral)',
+    name: 'portada -> Hotel (barra lateral)',
     from: '/panel/',
     pick: `[...document.querySelectorAll('a.shell-nav-item')].find(a => /\\/rooms\\/$/.test(a.getAttribute('href')))`,
     expect: { soft: true, url: '/panel/rooms/' },
@@ -69,13 +69,14 @@ const STEPS = [
   },
   {
     name: 'conmutador de fecha (ruta con query: dura, pero el dia correcto)',
-    from: '/panel/',
+    // Vive en Today, que desde el 20-09-2026 ya no es la raiz.
+    from: '/panel/today/',
     pick: `[...document.querySelectorAll('a')].find(a => /\\/panel\\/date-2026-01-14\\/$/.test(a.getAttribute('href') || ''))`,
     expect: { soft: false, url: '/panel/date-2026-01-14/', text: '14 January 2026' },
   },
   {
     name: 'conmutador de hora (idem)',
-    from: '/panel/',
+    from: '/panel/today/',
     pick: `[...document.querySelectorAll('a')].find(a => /\\/panel\\/time-20-3a00\\/$/.test(a.getAttribute('href') || ''))`,
     expect: { soft: false, url: '/panel/time-20-3a00/', text: '20:00' },
   },
