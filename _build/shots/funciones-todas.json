@@ -1,0 +1,38 @@
+[
+  {
+    "path": "/funciones/",
+    "name": "indice"
+  },
+  {
+    "path": "/funciones/operacion-diaria-hotel/",
+    "name": "operacion-diaria-hotel"
+  },
+  {
+    "path": "/funciones/estado-de-habitaciones-por-planta/",
+    "name": "estado-de-habitaciones-por-planta"
+  },
+  {
+    "path": "/funciones/housekeeping-hotel/",
+    "name": "housekeeping-hotel"
+  },
+  {
+    "path": "/funciones/revenue-adr-revpar-trevpar/",
+    "name": "revenue-adr-revpar-trevpar"
+  },
+  {
+    "path": "/funciones/calendario-de-reservas-pickup-pace/",
+    "name": "calendario-de-reservas-pickup-pace"
+  },
+  {
+    "path": "/funciones/trazabilidad-de-cifras/",
+    "name": "trazabilidad-de-cifras"
+  },
+  {
+    "path": "/funciones/definiciones-acordadas/",
+    "name": "definiciones-acordadas"
+  },
+  {
+    "path": "/funciones/catalogo-de-metricas-hoteleras/",
+    "name": "catalogo-de-metricas-hoteleras"
+  }
+]

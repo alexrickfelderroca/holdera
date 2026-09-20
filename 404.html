@@ -15,7 +15,7 @@
   <meta property="og:description" content="La página que buscas no existe o ha cambiado de sitio. Vuelve al inicio de Holdera.">
   <meta property="og:locale" content="es_ES">
   <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=e9fd32ac">
+  <link rel="stylesheet" href="styles.css?v=2dec89dd">
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="pages.css?v=49a2fdfb">
   <script>document.documentElement.classList.add('has-js');</script>
@@ -155,8 +155,130 @@
 
         <nav class="nav__links" aria-label="Principal">
           <a href="index.html">Inicio</a>
-          <a href="index.html#conectado">Cómo funciona</a>
-          <a href="index.html#integraciones">Integraciones</a>
+
+          <a class="mnu__trigger" href="/funciones/" data-menu="mnu-funciones">Funciones<span class="mnu__chev" aria-hidden="true"><svg viewBox="0 0 10 6" width="10" height="6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1.5 5 4.75 9 1.5"/></svg></span></a>
+          <div class="mnu__panel mnu__panel--fn" id="mnu-funciones" data-menu-panel hidden>
+              <div class="mnu__inner">
+                <div class="mnu__cols mnu__cols--fn">
+                  <div class="mnu__col">
+                    <p class="mnu__cat" id="mnu-fn-hoy">La operación</p>
+                    <ul class="mnu__list" aria-labelledby="mnu-fn-hoy">
+                      <li><a class="mnu__item" href="/funciones/operacion-diaria-hotel/">
+                        <span class="mnu__name">Hoy</span>
+                        <span class="mnu__desc">No el cierre de ayer: el hotel a las 14:30.</span>
+                      </a></li>
+                      <li><a class="mnu__item" href="/funciones/estado-de-habitaciones-por-planta/">
+                        <span class="mnu__name">Habitaciones</span>
+                        <span class="mnu__desc">Planta por planta, y qué pasa en cada una.</span>
+                      </a></li>
+                      <li><a class="mnu__item" href="/funciones/housekeeping-hotel/">
+                        <span class="mnu__name">Housekeeping</span>
+                        <span class="mnu__desc">Vacante limpia no es lo mismo que vacante.</span>
+                      </a></li>
+                    </ul>
+                  </div>
+                  <div class="mnu__col">
+                    <p class="mnu__cat" id="mnu-fn-revenue">Lo comercial</p>
+                    <ul class="mnu__list" aria-labelledby="mnu-fn-revenue">
+                      <li><a class="mnu__item" href="/funciones/revenue-adr-revpar-trevpar/">
+                        <span class="mnu__name">Revenue</span>
+                        <span class="mnu__desc">Ocupación, ADR, RevPAR y TRevPAR a la vez.</span>
+                      </a></li>
+                      <li><a class="mnu__item" href="/funciones/calendario-de-reservas-pickup-pace/">
+                        <span class="mnu__name">Reservas</span>
+                        <span class="mnu__desc">Ocho meses, y el pickup de los últimos siete días.</span>
+                      </a></li>
+                    </ul>
+                  </div>
+                  <div class="mnu__col">
+                    <p class="mnu__cat" id="mnu-fn-trazabilidad">La cifra y su origen</p>
+                    <ul class="mnu__list" aria-labelledby="mnu-fn-trazabilidad">
+                      <li><a class="mnu__item" href="/funciones/trazabilidad-de-cifras/">
+                        <span class="mnu__name">Trazabilidad</span>
+                        <span class="mnu__desc">Fórmula, entradas, registro y dato en bruto.</span>
+                      </a></li>
+                      <li><a class="mnu__item" href="/funciones/definiciones-acordadas/">
+                        <span class="mnu__name">Definiciones</span>
+                        <span class="mnu__desc">Tu convención de OOO y OOS, no la nuestra.</span>
+                      </a></li>
+                      <li><a class="mnu__item" href="/funciones/catalogo-de-metricas-hoteleras/">
+                        <span class="mnu__name">Catálogo de métricas</span>
+                        <span class="mnu__desc">Lo que falta se dice que falta, con nombre.</span>
+                      </a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="mnu__foot">
+                <p class="mnu__note">Ocho funciones. Cada una con su página, y su pantalla en el panel demo.</p>
+                <a class="mnu__all" href="/funciones/">Ver todas las funciones<span class="mnu__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+              </div>
+            </div>
+
+          <a class="mnu__trigger" href="/integraciones.html" data-menu="mnu-integraciones">Integraciones<span class="mnu__chev" aria-hidden="true"><svg viewBox="0 0 10 6" width="10" height="6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1.5 5 4.75 9 1.5"/></svg></span></a>
+          <div class="mnu__panel mnu__panel--ints" id="mnu-integraciones" data-menu-panel hidden>
+              <div class="mnu__inner">
+                <div class="mnu__cols mnu__cols--ints">
+                  <div class="mnu__col">
+                    <a class="mnu__cat mnu__cat--link" href="/integraciones.html#int-channel">Channel manager<span class="mnu__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+                    <ul class="mnu__tiles">
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 85.91 24" role="img" aria-label="SiteMinder"><text x="0" y="17.6" textLength="85.91" lengthAdjust="spacingAndGlyphs">SiteMinder</text></svg></li>
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 89.17 24" role="img" aria-label="YieldPlanet"><text x="0" y="17.6" textLength="89.17" lengthAdjust="spacingAndGlyphs">YieldPlanet</text></svg></li>
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 68.69 24" role="img" aria-label="Channex"><text x="0" y="17.6" textLength="68.69" lengthAdjust="spacingAndGlyphs">Channex</text></svg></li>
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 103.01 24" role="img" aria-label="Neobookings"><text x="0" y="17.6" textLength="103.01" lengthAdjust="spacingAndGlyphs">Neobookings</text></svg></li>
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 65.44 24" role="img" aria-label="WuBook"><text x="0" y="17.6" textLength="65.44" lengthAdjust="spacingAndGlyphs">WuBook</text></svg></li>
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 65.5 24" role="img" aria-label="Prestige"><text x="0" y="17.6" textLength="65.5" lengthAdjust="spacingAndGlyphs">Prestige</text></svg></li>
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 90.45 24" role="img" aria-label="RoomCloud"><text x="0" y="17.6" textLength="90.45" lengthAdjust="spacingAndGlyphs">RoomCloud</text></svg></li>
+                    </ul>
+                  </div>
+                  <div class="mnu__col">
+                    <a class="mnu__cat mnu__cat--link" href="/integraciones.html#int-revenue">Revenue management<span class="mnu__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+                    <ul class="mnu__tiles">
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 56.66 24" role="img" aria-label="Dataria"><text x="0" y="17.6" textLength="56.66" lengthAdjust="spacingAndGlyphs">Dataria</text></svg></li>
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 78.11 24" role="img" aria-label="PriceLabs"><text x="0" y="17.6" textLength="78.11" lengthAdjust="spacingAndGlyphs">PriceLabs</text></svg></li>
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 95.9 24" role="img" aria-label="RevCtrlData"><text x="0" y="17.6" textLength="95.9" lengthAdjust="spacingAndGlyphs">RevCtrlData</text></svg></li>
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 58.66 24" role="img" aria-label="Revbell"><text x="0" y="17.6" textLength="58.66" lengthAdjust="spacingAndGlyphs">Revbell</text></svg></li>
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 60.37 24" role="img" aria-label="Revtool"><text x="0" y="17.6" textLength="60.37" lengthAdjust="spacingAndGlyphs">Revtool</text></svg></li>
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 123.78 24" role="img" aria-label="TheNetRevenue"><text x="0" y="17.6" textLength="123.78" lengthAdjust="spacingAndGlyphs">TheNetRevenue</text></svg></li>
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 130.07 24" role="img" aria-label="RoomPriceGenie"><text x="0" y="17.6" textLength="130.07" lengthAdjust="spacingAndGlyphs">RoomPriceGenie</text></svg></li>
+                    </ul>
+                  </div>
+                  <div class="mnu__col">
+                    <a class="mnu__cat mnu__cat--link" href="/integraciones.html#int-pagos">Pasarelas de pago<span class="mnu__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+                    <ul class="mnu__tiles">
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 77.67 24" role="img" aria-label="Paycomet"><text x="0" y="17.6" textLength="77.67" lengthAdjust="spacingAndGlyphs">Paycomet</text></svg></li>
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 47.57 24" role="img" aria-label="Monei"><text x="0" y="17.6" textLength="47.57" lengthAdjust="spacingAndGlyphs">Monei</text></svg></li>
+                      <li class="mnu__tile" data-mark="icon"><svg class="mnu__logo" viewBox="0 0 24 24" role="img" aria-label="Redsys"><path d="M11.626 24c-3.989-.108-7.476-2.03-9.89-5.873A10.9 10.9 0 0 1 .17 13.959a12.4 12.4 0 0 1 .239-4.996c.44-1.711 1.275-3.197 2.339-4.58.075-.099.169-.263.314-.174.098.061.023.207-.019.324-.473 1.36-.46 2.756.225 3.984.783 1.411 1.964 2.438 3.67 2.705 1.636.258 3.07-.211 4.21-1.317 1.378-1.34 1.95-2.99 1.415-4.946-.285-1.036-.768-1.922-1.612-2.578-1.092-.848-2.33-1.26-3.722-1.12-.098.01-.225.08-.267-.056s.103-.14.187-.178A11.9 11.9 0 0 1 12.071 0c1.74.01 3.427.384 5.006 1.125 2.152 1.008 3.91 2.498 5.133 4.552a12.4 12.4 0 0 1 1.688 4.93c.154 1.313.08 2.584-.188 3.863-.333 1.575-.942 3.028-1.875 4.34-.853 1.2-1.851 2.241-3.103 3.052-.998.647-2.025 1.177-3.16 1.538-1.115.356-2.245.544-3.946.595z"/></svg><span class="mnu__brand">Redsys</span></li>
+                      <li class="mnu__tile" data-mark="icon"><svg class="mnu__logo" viewBox="0 0 24 24" role="img" aria-label="Stripe"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.594-7.305h.003z"/></svg><span class="mnu__brand">Stripe</span></li>
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 66.9 24" role="img" aria-label="CashDro"><text x="0" y="17.6" textLength="66.9" lengthAdjust="spacingAndGlyphs">CashDro</text></svg></li>
+                    </ul>
+                  </div>
+                  <div class="mnu__col">
+                    <a class="mnu__cat mnu__cat--link" href="/integraciones.html#int-accesos">Llaves y accesos<span class="mnu__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+                    <ul class="mnu__tiles">
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 36.06 24" role="img" aria-label="Tesa"><text x="0" y="17.6" textLength="36.06" lengthAdjust="spacingAndGlyphs">Tesa</text></svg></li>
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 66.13 24" role="img" aria-label="Salto KS"><text x="0" y="17.6" textLength="66.13" lengthAdjust="spacingAndGlyphs">Salto KS</text></svg></li>
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 98.56 24" role="img" aria-label="Yacan Smart"><text x="0" y="17.6" textLength="98.56" lengthAdjust="spacingAndGlyphs">Yacan Smart</text></svg></li>
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 73.88 24" role="img" aria-label="Danalock"><text x="0" y="17.6" textLength="73.88" lengthAdjust="spacingAndGlyphs">Danalock</text></svg></li>
+                      <li class="mnu__tile"><svg class="mnu__logo" viewBox="0 0 56.85 24" role="img" aria-label="TTLock"><text x="0" y="17.6" textLength="56.85" lengthAdjust="spacingAndGlyphs">TTLock</text></svg></li>
+                    </ul>
+                  </div>
+                </div>
+                <ul class="mnu__mores">
+                  <li><a class="mnu__more" href="/integraciones.html#int-tpv">TPV, restauración y spa</a></li>
+                  <li><a class="mnu__more" href="/integraciones.html#int-crm">CRM y huésped</a></li>
+                  <li><a class="mnu__more" href="/integraciones.html#int-contabilidad">Contabilidad y ERP</a></li>
+                  <li><a class="mnu__more" href="/integraciones.html#int-operativa">Housekeeping y domótica</a></li>
+                  <li><a class="mnu__more" href="/integraciones.html#int-normativa">Autoridades y normativa</a></li>
+                  <li><a class="mnu__more" href="/integraciones.html#int-modulos">Módulos del propio PMS</a></li>
+                </ul>
+              </div>
+              <div class="mnu__foot">
+                <p class="mnu__note">Las marcas pertenecen a sus respectivos titulares.</p>
+                <a class="mnu__all" href="/integraciones.html">Ver las 50 integraciones<span class="mnu__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+              </div>
+            </div>
+
           <a href="nosotros.html">Nosotros</a>
           <a href="partners.html">Partners</a>
           <a href="panel/">Panel demo</a>
@@ -233,8 +355,8 @@
         <p class="footer__head">Holdera</p>
         <a href="index.html">Inicio</a>
         <a href="index.html#ha-recorrido">El producto</a>
-        <a href="index.html#conectado">Cómo funciona</a>
-        <a href="index.html#integraciones">Integraciones</a>
+        <a href="/funciones/">Funciones</a>
+        <a href="/integraciones.html">Integraciones</a>
         <a href="nosotros.html">Nosotros</a>
         <a href="partners.html">Partners</a>
         <a href="panel/">Panel demo</a>
@@ -264,6 +386,10 @@
   <!-- Side menu -->
   <!-- Side menu -->
   <!-- Side menu -->
+  <!-- Side menu -->
+  <!-- Side menu -->
+  <!-- Side menu -->
+  <!-- Side menu -->
   <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Menú de navegación" aria-hidden="true" inert>
     <div class="drawer__panel">
       <div class="drawer__head">
@@ -281,14 +407,98 @@
           <span class="mrow__label">El producto</span>
           <span class="mrow__band" aria-hidden="true"><span class="mrow__track"><span class="mrow__inner" aria-hidden="true"><span>Hoy</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i><span>Habitaciones y plantas</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Housekeeping</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Revenue y reservas</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i><span>Hoy</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i><span>Habitaciones y plantas</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Housekeeping</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Revenue y reservas</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i></span></span></span>
         </a>
-        <a class="mrow__link" href="index.html#conectado" style="--i:2">
-          <span class="mrow__label">Cómo funciona</span>
-          <span class="mrow__band" aria-hidden="true"><span class="mrow__track"><span class="mrow__inner" aria-hidden="true"><span>Conectamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Validamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Publicamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i><span>Trazamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i><span>Conectamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Validamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Publicamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i><span>Trazamos</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i></span></span></span>
-        </a>
-        <a class="mrow__link" href="index.html#integraciones" style="--i:3">
-          <span class="mrow__label">Integraciones</span>
-          <span class="mrow__band" aria-hidden="true"><span class="mrow__track"><span class="mrow__inner" aria-hidden="true"><span>Producto propio</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Más de 5 años</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Con sede en Barcelona</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i><span>En fase piloto</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i><span>Producto propio</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Más de 5 años</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Con sede en Barcelona</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i><span>En fase piloto</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i></span></span></span>
-        </a>
+        <div class="msub" data-msub>
+          <a class="mrow__link msub__head" href="/funciones/" data-msub-trigger data-msub-panel="msub-funciones" style="--i:1">
+            <span class="mrow__label">Funciones</span>
+            <span class="msub__chev" aria-hidden="true"><svg viewBox="0 0 12 8" width="12" height="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 2 6 6.25 10.5 2"/></svg></span>
+            <span class="mrow__band" aria-hidden="true"><span class="mrow__track"><span class="mrow__inner" aria-hidden="true"><span>Hoy</span><span>Habitaciones</span><span>Housekeeping</span><span>Revenue</span><span>Reservas</span><span>Trazabilidad</span><span>Definiciones</span><span>Catálogo de métricas</span><span>Hoy</span><span>Habitaciones</span><span>Housekeeping</span><span>Revenue</span><span>Reservas</span><span>Trazabilidad</span><span>Definiciones</span><span>Catálogo de métricas</span></span></span></span>
+          </a>
+          <div class="msub__list" id="msub-funciones" hidden>
+            <a class="msub__item" href="/funciones/operacion-diaria-hotel/">
+              <span class="msub__name">Hoy</span>
+              <span class="msub__desc">No el cierre de ayer: el hotel a las 14:30.</span>
+            </a>
+            <a class="msub__item" href="/funciones/estado-de-habitaciones-por-planta/">
+              <span class="msub__name">Habitaciones</span>
+              <span class="msub__desc">Planta por planta, y qué pasa en cada una.</span>
+            </a>
+            <a class="msub__item" href="/funciones/housekeeping-hotel/">
+              <span class="msub__name">Housekeeping</span>
+              <span class="msub__desc">Vacante limpia no es lo mismo que vacante.</span>
+            </a>
+            <a class="msub__item" href="/funciones/revenue-adr-revpar-trevpar/">
+              <span class="msub__name">Revenue</span>
+              <span class="msub__desc">Ocupación, ADR, RevPAR y TRevPAR a la vez.</span>
+            </a>
+            <a class="msub__item" href="/funciones/calendario-de-reservas-pickup-pace/">
+              <span class="msub__name">Reservas</span>
+              <span class="msub__desc">Ocho meses, y el pickup de los últimos siete días.</span>
+            </a>
+            <a class="msub__item" href="/funciones/trazabilidad-de-cifras/">
+              <span class="msub__name">Trazabilidad</span>
+              <span class="msub__desc">Fórmula, entradas, registro y dato en bruto.</span>
+            </a>
+            <a class="msub__item" href="/funciones/definiciones-acordadas/">
+              <span class="msub__name">Definiciones</span>
+              <span class="msub__desc">Tu convención de OOO y OOS, no la nuestra.</span>
+            </a>
+            <a class="msub__item" href="/funciones/catalogo-de-metricas-hoteleras/">
+              <span class="msub__name">Catálogo de métricas</span>
+              <span class="msub__desc">Lo que falta se dice que falta, con nombre.</span>
+            </a>
+            <a class="msub__all" href="/funciones/">Ver todas las funciones<span class="mnu__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+          </div>
+        </div>
+        <div class="msub" data-msub>
+          <a class="mrow__link msub__head" href="/integraciones.html" data-msub-trigger data-msub-panel="msub-integraciones" style="--i:2">
+            <span class="mrow__label">Integraciones</span>
+            <span class="msub__chev" aria-hidden="true"><svg viewBox="0 0 12 8" width="12" height="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 2 6 6.25 10.5 2"/></svg></span>
+            <span class="mrow__band" aria-hidden="true"><span class="mrow__track"><span class="mrow__inner" aria-hidden="true"><span>SiteMinder</span><span>YieldPlanet</span><span>Channex</span><span>Neobookings</span><span>WuBook</span><span>Prestige</span><span>RoomCloud</span><span>Dataria</span><span>PriceLabs</span><span>RevCtrlData</span><span>SiteMinder</span><span>YieldPlanet</span><span>Channex</span><span>Neobookings</span><span>WuBook</span><span>Prestige</span><span>RoomCloud</span><span>Dataria</span><span>PriceLabs</span><span>RevCtrlData</span></span></span></span>
+          </a>
+          <div class="msub__list" id="msub-integraciones" hidden>
+            <a class="msub__item" href="/integraciones.html#int-channel">
+              <span class="msub__name">Channel manager</span>
+              <span class="msub__desc">7 integraciones</span>
+            </a>
+            <a class="msub__item" href="/integraciones.html#int-pagos">
+              <span class="msub__name">Pasarelas de pago</span>
+              <span class="msub__desc">5 integraciones</span>
+            </a>
+            <a class="msub__item" href="/integraciones.html#int-revenue">
+              <span class="msub__name">Revenue management</span>
+              <span class="msub__desc">7 integraciones</span>
+            </a>
+            <a class="msub__item" href="/integraciones.html#int-accesos">
+              <span class="msub__name">Llaves y accesos</span>
+              <span class="msub__desc">5 integraciones</span>
+            </a>
+            <a class="msub__item" href="/integraciones.html#int-tpv">
+              <span class="msub__name">TPV, restauración y spa</span>
+              <span class="msub__desc">4 integraciones</span>
+            </a>
+            <a class="msub__item" href="/integraciones.html#int-crm">
+              <span class="msub__name">CRM y huésped</span>
+              <span class="msub__desc">2 integraciones</span>
+            </a>
+            <a class="msub__item" href="/integraciones.html#int-contabilidad">
+              <span class="msub__name">Contabilidad y ERP</span>
+              <span class="msub__desc">9 integraciones</span>
+            </a>
+            <a class="msub__item" href="/integraciones.html#int-operativa">
+              <span class="msub__name">Housekeeping y domótica</span>
+              <span class="msub__desc">2 integraciones</span>
+            </a>
+            <a class="msub__item" href="/integraciones.html#int-normativa">
+              <span class="msub__name">Autoridades y normativa</span>
+              <span class="msub__desc">6 organismos y estándares</span>
+            </a>
+            <a class="msub__item" href="/integraciones.html#int-modulos">
+              <span class="msub__name">Módulos del propio PMS</span>
+              <span class="msub__desc">3 piezas del propio PMS</span>
+            </a>
+            <a class="msub__all" href="/integraciones.html">Ver las 50 integraciones<span class="mnu__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+          </div>
+        </div>
         <a class="mrow__link" href="nosotros.html" style="--i:3">
           <span class="mrow__label">Nosotros</span>
           <span class="mrow__band" aria-hidden="true"><span class="mrow__track"><span class="mrow__inner" aria-hidden="true"><span>Producto propio</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Más de 5 años</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Con sede en Barcelona</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i><span>En fase piloto</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i><span>Producto propio</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-marca.jpg')"></i><span>Más de 5 años</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-mundo.jpg')"></i><span>Con sede en Barcelona</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-red.jpg')"></i><span>En fase piloto</span><i class="mrow__img" style="background-image:url('assets/img/menu/tile-ia.jpg')"></i></span></span></span>
@@ -314,6 +524,6 @@
   </div>
   <!-- /drawer -->
 
-  <script src="script.js?v=488f120c" defer></script>
+  <script src="script.js?v=c0f28319" defer></script>
 </body>
 </html>

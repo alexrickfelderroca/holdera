@@ -1,0 +1,411 @@
+/* ===========================================================================
+   HOLDERA · integraciones.html — la rejilla de fichas de logotipo
+   Markup: lo GENERA _build/integraciones/build-pagina.js (no editar el HTML).
+
+   COMO SE INTEGRA
+   ---------------
+   APENDAR este archivo entero AL FINAL de `pages.css`. Razon concreta, no
+   estetica: `_build/check-tokens.js` y `_build/contrast.js` llevan la lista de
+   hojas escrita en el codigo, y `pages.css` esta en LAS DOS
+   (check-tokens: styles.css, pages.css, hotel-anim.css, sections.css ·
+    contrast: styles.css, pages.css). Un tercer .css enlazado aparte NO lo
+   mira ningun guardia: pasaria las cinco puertas sin que nadie haya
+   comprobado ni sus tokens ni su contraste — el "verde mentiroso" que este
+   proyecto ya ha pagado en el paso 9 (panel.css) y en el 10.
+   `integraciones.html` ya carga `pages.css`, asi que apendar no toca su <head>.
+   Tras apendar: `node _build/version-assets.js` (el sha1 de pages.css cambia).
+
+   POR QUE SE PUEDE APENDAR AL FINAL SIN ROMPER NADA
+   ------------------------------------------------
+   Ni un selector de aqui existe en styles.css ni en pages.css: todos empiezan
+   por `.pgi`. No hay nada que pisar y nada que le pise, asi que el orden
+   externo da igual. El orden INTERNO si importa y es el de la casa:
+   base -> movil -> movimiento reducido.
+
+   LO QUE ESTA PAGINA NO HACE, Y ES A PROPOSITO
+   --------------------------------------------
+   · No repite el nombre debajo del logotipo. 36 de los 41 "logotipos" son el
+     propio nombre compuesto en Geist (los genera build-logos.js): un pie de
+     ficha con el mismo nombre debajo lo pondria DOS VECES, en la misma letra
+     y dos tamanos. Por eso el nombre solo aparece en texto cuando el dibujo
+     no lo dice: junto a los 5 glifos de marca real y en las 9 fichas sin
+     dibujo. Las tres clases acaban ocupando la misma caja optica.
+   · No es una rejilla de tres tarjetas iguales (prohibida por el CLAUDE.md
+     global): es un directorio de 50 fichas pequenas en `auto-fill`, seis
+     columnas a 1440 y dos a 390, y cada grupo tiene los miembros que tiene
+     (de 2 a 9), asi que la ultima fila de cada bloque queda distinta.
+
+   CONTRASTES MEDIDOS (compuestos sobre su pila real, no sobre el token que uno
+   supone; ver la nota al pie del archivo con los numeros y como se midieron).
+   =========================================================================== */
+
+:root {
+  /* --- medidas ----------------------------------------------------------
+     Ancho MINIMO de columna, no numero de columnas. Con `auto-fill` el
+     navegador pone las que quepan y la pagina no necesita ni una media query
+     para la rejilla. El suelo de 148px no es redondo: el wordmark mas ancho
+     del catalogo es "RoomPriceGenie" (130,07px de viewBox a 24 de alto) y la
+     ficha gasta 14px de padding por lado, asi que 148 deja 120 de hueco y el
+     SVG baja solo con `max-width` sin deformarse. A 390px salen 2 columnas de
+     171px; a 1240 (el ancho del `.container`) salen 6 de ~199px. */
+  --pgi-col: clamp(148px, 14vw, 176px);
+  --pgi-gap: 8px;
+  --pgi-card-h: 96px;
+  /* Alto de dibujo. 24px = la caja del SVG a escala 1: las mayusculas del
+     wordmark miden ~11,5px y el glifo de marca real va a 22 para igualar la
+     mancha (un simbolo lleno pesa mas que una palabra a la misma altura). */
+  --pgi-mark-h: 24px;
+  --pgi-mark-icon: 22px;
+
+  /* --- superficies ------------------------------------------------------ */
+  --pgi-card-bg: var(--sh-surface);
+  --pgi-card-bg-hover: var(--sh-surface-2);
+  --pgi-card-line: var(--sh-border);
+  /* El contorno cuando la ficha esta activa. --sh-control-border (0,36) es el
+     escalon mas bajo que pasa 3:1 contra los cuatro fondos de la hoja. */
+  --pgi-card-line-hover: var(--sh-control-border);
+  /* En oscuro se eleva con un bisel arriba, no con una sombra abajo. */
+  --pgi-card-bevel: var(--sh-bevel);
+  --pgi-card-shadow: var(--shadow-sh);
+
+  /* --- texto ------------------------------------------------------------ */
+  --pgi-mark: var(--sh-text-2);        /* 11,15:1 sobre la ficha en reposo */
+  --pgi-mark-hover: var(--sh-text);    /* 15,67:1 sobre la ficha en hover */
+  --pgi-strong: var(--sh-text);
+  --pgi-quiet: var(--sh-muted);        /*  5,86:1 sobre la ficha */
+  --pgi-rule: var(--accent);           /* decorativo: el filete del grupo */
+}
+
+/* ---------------------------------------------------------------------------
+   Utilidad: texto solo para lector de pantalla.
+   No existia en el sitio (styles.css solo tiene .skip-link) y hace falta para
+   avisar de que el enlace abre una pestana nueva. Va con prefijo del bloque
+   para no inventar una utilidad global que nadie mas mantiene.
+--------------------------------------------------------------------------- */
+.pgi-sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden; white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+/* ---------------------------------------------------------------------------
+   (A) EL INDICE DE FAMILIAS
+   Diez pildoras que saltan a su bloque. `html` ya lleva
+   `scroll-padding-top: calc(var(--nav-h) + 12px)` desde el paso 8, asi que el
+   salto no aterriza debajo de la barra fija y aqui no hay que repetirlo.
+--------------------------------------------------------------------------- */
+
+.pgi-jump {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: start;
+  gap: 12px clamp(20px, 3vw, 40px);
+  margin: 0 0 clamp(40px, 5vw, 64px);
+  padding-bottom: clamp(32px, 4vw, 48px);
+  border-bottom: 1px solid var(--pgi-card-line);
+}
+
+.pgi-jump__lab {
+  margin: 0;
+  padding-top: 13px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pgi-quiet);
+}
+
+.pgi-jump ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pgi-jump a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  /* 44px: el minimo comodo de la casa. Aqui NO es opcional — son diez
+     objetivos pequenos, seguidos y en dos filas en el movil. */
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: var(--r-pill);
+  text-decoration: none;
+  border: 1px solid var(--pgi-card-line-hover);
+  font-size: 13.5px;
+  line-height: 1.3;
+  color: var(--pgi-mark);
+  transition:
+    color var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    background-color var(--t-fast) var(--ease);
+}
+
+.pgi-jump a:hover {
+  color: var(--pgi-strong);
+  border-color: var(--pgi-mark);
+  background: var(--sh-tint);
+}
+
+.pgi-jump b {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--pgi-quiet);
+}
+
+.pgi-jump a:hover b { color: var(--pgi-mark); }
+
+/* ---------------------------------------------------------------------------
+   (B) UN GRUPO
+--------------------------------------------------------------------------- */
+
+.pgi-group + .pgi-group { margin-top: clamp(40px, 4.5vw, 64px); }
+
+/* El ancla aterriza bajo la barra fija salvo que el destino declare su margen
+   de scroll: `scroll-padding-top` en `html` ya lo cubre, y esto es el cinturon
+   por si alguien mete la rejilla en un contenedor con scroll propio. */
+.pgi-group { scroll-margin-top: calc(var(--nav-h) + 24px); }
+
+.pgi-group__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 16px;
+  margin: 0 0 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--pgi-card-line);
+}
+
+.pgi-group__title {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0;
+  font-size: clamp(18px, 1.5vw, 21px);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  font-weight: 500;
+  color: var(--pgi-strong);
+}
+
+/* El unico naranja del bloque, y es decorativo: un filete, no texto. */
+.pgi-group__title::before {
+  content: "";
+  flex: none;
+  width: 2px;
+  height: 14px;
+  background: var(--pgi-rule);
+  transform: translateY(1px);
+}
+
+.pgi-group__n {
+  margin: 0 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pgi-quiet);
+}
+
+.pgi-group__note {
+  margin: 0 0 16px;
+  max-width: 60ch;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--pgi-quiet);
+  text-wrap: pretty;
+}
+
+/* ---------------------------------------------------------------------------
+   (C) LA REJILLA Y LA FICHA
+--------------------------------------------------------------------------- */
+
+.pgi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--pgi-col), 1fr));
+  gap: var(--pgi-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pgi-cell { display: flex; }
+
+.pgi-card {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: var(--pgi-card-h);
+  padding: 20px 14px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--pgi-card-line);
+  background: var(--pgi-card-bg);
+  box-shadow: var(--pgi-card-bevel);
+  color: var(--pgi-mark);
+  text-align: center;
+  /* styles.css no resetea el subrayado de <a> a lo global (solo a: color:inherit):
+     cada componente lo dice. Sin esto, las 14 fichas que llevan TEXTO dentro de
+     un enlace (5 glifos + 9 sin dibujo) salian subrayadas y las 36 de wordmark
+     SVG no, porque un <text> dentro de un <svg> no recibe text-decoration. */
+  text-decoration: none;
+  transition:
+    color var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    background-color var(--t-fast) var(--ease),
+    box-shadow var(--t-fast) var(--ease),
+    transform var(--t-fast) var(--ease);
+}
+
+a.pgi-card:hover,
+a.pgi-card:focus-visible {
+  color: var(--pgi-mark-hover);
+  border-color: var(--pgi-card-line-hover);
+  background: var(--pgi-card-bg-hover);
+  box-shadow: var(--pgi-card-shadow);
+  transform: translateY(-2px);
+}
+
+/* El anillo de foco lo pone `.sheet :focus-visible { outline-color: --sh-text }`
+   de styles.css; aqui solo se le da aire para que no toque el borde. */
+a.pgi-card:focus-visible { outline-offset: 3px; }
+
+/* El SVG con `preserveAspectRatio` por defecto (xMidYMid meet): fijar la
+   altura y dejar `max-width: 100%` hace que un wordmark ancho baje ENTERO y
+   centrado en su caja, nunca aplastado. Es lo que permite que la misma regla
+   sirva para "A3" (21px) y para "RoomPriceGenie" (130px). */
+.pgi-card svg {
+  display: block;
+  height: var(--pgi-mark-h);
+  width: auto;
+  max-width: 100%;
+  fill: currentColor;
+}
+
+.pgi-card[data-mark="icon"] svg {
+  flex: none;
+  height: var(--pgi-mark-icon);
+}
+
+/* Mismo tipo, tamano y peso que el <text> de los wordmark SVG
+   (_build/integraciones/build-logos.js): 16/600/0.2px. Asi las 50 fichas se
+   leen a la misma altura de x aunque 41 sean dibujo y 9 sean texto. */
+.pgi-card__name {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  line-height: 1.25;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+/* La flecha de "esto sale del sitio". Decorativa (aria-hidden): quien no la ve
+   recibe el aviso por el texto de .pgi-sr dentro del enlace. */
+.pgi-card__out {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  color: var(--pgi-quiet);
+  transition: opacity var(--t-fast) var(--ease);
+}
+
+a.pgi-card:hover .pgi-card__out,
+a.pgi-card:focus-visible .pgi-card__out { opacity: 1; }
+
+/* Sin web verificada = sin enlace, y la ficha lo dice callandose: no se
+   ilumina, no se levanta y no tiene flecha. Un hover que no lleva a ningun
+   sitio es una promesa falsa.
+
+   Misma superficie que las demas y lo unico que pierde es el BISEL. Medido:
+   una ficha sobre --sh-tint da #1a1918 y una sobre --sh-surface da #1c1a17,
+   o sea 1,01:1 entre ellas — una diferencia que no existe. Asi que el aviso
+   no es el color, es la elevacion: en esta casa lo que se levanta es lo que
+   se puede tocar (--sh-bevel es el realce superior de una tarjeta elevada),
+   y estas nueve se quedan planas. Apagarlas mas seria ademas mandar el
+   mensaje equivocado: 6 de las 9 son autoridades publicas. */
+.pgi-card--flat {
+  box-shadow: none;
+}
+
+/* ---------------------------------------------------------------------------
+   (D) EL PIE DEL BLOQUE
+--------------------------------------------------------------------------- */
+
+.pgi-foot {
+  margin-top: clamp(48px, 6vw, 80px);
+  padding-top: 24px;
+  border-top: 1px solid var(--pgi-card-line);
+  display: grid;
+  gap: 10px;
+}
+
+.pgi-foot p {
+  margin: 0;
+  max-width: 68ch;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--pgi-quiet);
+  text-wrap: pretty;
+}
+
+/* ---------------------------------------------------------------------------
+   MOVIL (<=900px)
+   La rejilla no necesita nada: `auto-fill` con el suelo de 148px ya da dos
+   columnas a 390. Lo que si cambia es la caja, que a dos columnas se queda
+   alta, y el indice, que pasa a ocupar el ancho entero.
+--------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  :root { --pgi-card-h: 84px; }
+
+  .pgi-jump { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .pgi-jump__lab { padding-top: 0; }
+
+  .pgi-group__n { margin-left: 0; }
+  .pgi-card { padding: 16px 12px; }
+}
+
+@media (max-width: 560px) {
+  /* A 390px la columna mide 171px y el wordmark mas ancho 130: cabe, pero sin
+     aire. Bajar el dibujo a 22 deja 4px mas a cada lado y la ficha respira. */
+  :root { --pgi-mark-h: 22px; --pgi-mark-icon: 20px; }
+  .pgi-card__name { font-size: 15px; }
+}
+
+/* ---------------------------------------------------------------------------
+   MOVIMIENTO REDUCIDO
+   El bloque final de styles.css ya apaga toda animacion y transicion con
+   `!important`. Lo unico que ese bloque no puede saber es que la flecha del
+   enlace externo se revela con `opacity`: sin transicion aparece de golpe, que
+   esta bien, pero el `transform: translateY(-2px)` del hover si sobra porque
+   es movimiento. Se dice aqui y no se confia en el barrido.
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  a.pgi-card:hover,
+  a.pgi-card:focus-visible { transform: none; }
+}
+
+/* ===========================================================================
+   NOTA DE CONTRASTE — de donde salen los numeros
+   ===========================================================================
+   Medidos EN LA PAGINA con `node _build/shoot.js --eval-file _build/a11y-probe.js`
+   (compone cada texto sobre su pila real de fondos; los tokens de la hoja no
+   llevan alfa pero --sh-tint y --sh-border si, y el fondo casi nunca esta en
+   el propio elemento). Umbral WCAG 2.1 AA: 4,5:1 texto normal, 3:1 texto
+   grande y bordes de control.
+
+   Ningun texto de este bloque es "texto grande": el nombre de marca va a 16px
+   en peso 600 y el corte de WCAG para negrita esta en 18,66px. Por eso todo
+   se mide contra 4,5 y no contra 3.
+   =========================================================================== */

@@ -31,6 +31,56 @@
     <priority>0.3</priority>
   </url>
   <url>
+    <loc>https://holdera.es/funciones/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://holdera.es/funciones/operacion-diaria-hotel/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://holdera.es/funciones/estado-de-habitaciones-por-planta/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://holdera.es/funciones/housekeeping-hotel/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://holdera.es/funciones/revenue-adr-revpar-trevpar/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://holdera.es/funciones/calendario-de-reservas-pickup-pace/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://holdera.es/funciones/trazabilidad-de-cifras/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://holdera.es/funciones/definiciones-acordadas/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://holdera.es/funciones/catalogo-de-metricas-hoteleras/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://holdera.es/integraciones.html</loc>
+    <lastmod>2026-09-19</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://holdera.es/panel/</loc>
     <lastmod>2026-09-19</lastmod>
     <priority>0.9</priority>

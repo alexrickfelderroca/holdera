@@ -12,7 +12,8 @@ const fs = require('fs');
 const path = require('path');
 const root = path.join(__dirname, '..');
 const strict = process.argv.includes('--strict');
-const pages = fs.readdirSync(root).filter(f => /\.html$/i.test(f) && !/\.bak$/i.test(f)).sort();
+/* Descubiertas, incluidas las de subcarpeta. Ver _build/site-pages.js. */
+const pages = require('./site-pages').pages;
 let total = 0;
 for (const f of pages) {
   const html = fs.readFileSync(path.join(root, f), 'utf8');

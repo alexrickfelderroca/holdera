@@ -1,9 +1,50 @@
-      <header class="nav" data-enter style="--d:0">
-        <a class="nav__brand" href="index.html" aria-label="Holdera, ir al inicio">
-          <span class="nav__mark"><img src="assets/logo/holdera-monogram-white.png" alt="" width="12" height="25"></span>
-          <span class="nav__name">Holdera</span>
-        </a>
+<!-- ===========================================================================
+     HOLDERA · LOS DOS DESPLEGABLES DE LA BARRA
+     GENERADO por  node _build/parts/build-menus.js  — no editar a mano.
+     Sus fuentes:
+       _build/contenido/features.json          (los 8 nombres y sus frases)
+       _build/integraciones/integraciones.json (los 10 grupos, 50 marcas)
+       assets/img/integraciones/<slug>.svg     (las 24 fichas de logo)
 
+     QUE ES: el <nav class="nav__links"> ENTERO, listo para sustituir al que
+     hoy hay en _build/shell/header.html, con "Cómo funciona" retirada y dos
+     entradas nuevas con desplegable: Funciones e Integraciones.
+
+     COMO SE PEGA
+     ------------
+     1. Sustituye el bloque <nav class="nav__links"> … </nav> de
+        _build/shell/header.html por el de aquí abajo (entre part:nav-links).
+     2. Replica el shell a las páginas: node _build/replicate-shell.js
+        y comprueba con node _build/check-shell.js.
+     3. menus.css se APENDA al final de styles.css (ver la cabecera de ese
+        archivo: check-tokens.js y contrast.js llevan la lista de hojas
+        escrita a mano, y un .css nuevo no lo mira ningún guardia).
+     4. menus.js se carga como <script defer src="menus.js"> DESPUÉS de
+        script.js, o se apenda a script.js: es un IIFE independiente y sale
+        solo si no encuentra ningún [data-menu].
+
+     DESTINOS, comprobados por HTTP el 20-09-2026 contra localhost:4177:
+     /funciones/ y las ocho /funciones/<slug>/ devuelven 200, igual que
+     /integraciones.html. Las diez anclas de grupo son las que esa página
+     escribe de verdad — id="int-channel", "int-pagos", … — no los ids
+     pelados del JSON, que fue el primer intento y no existía ninguno.
+     🔴 Si esas páginas se regeneran con otro esquema de anclas, este menú
+     apunta a un ancla muerta SIN FALLAR: el navegador se queda arriba de la
+     página y nadie se entera. Volver a pasar la comprobación.
+
+     🔴 ESTAS SON LAS INTEGRACIONES DE HOTELGEST. Que el producto de Holdera
+        herede las mismas es lo que dijo Alex; no está verificado contra
+        ninguna fuente pública. Mismo TODO que ya lleva la sección
+        #integraciones de index.html.
+
+     SIN JS: los dos disparadores son <a href> de verdad a /funciones/ y a
+     /integraciones.html, y los paneles llevan el atributo hidden, así que no
+     se ven nunca. menus.js convierte cada <a> en el <button> con
+     aria-expanded / aria-controls que pide un desplegable accesible. Nunca
+     hay un <button> muerto en el HTML.
+     =========================================================================== -->
+
+<!-- part:nav-links -->
         <nav class="nav__links" aria-label="Principal">
           <a href="index.html">Inicio</a>
 
@@ -135,15 +176,4 @@
           <a href="panel/">Panel demo</a>
           <a href="contacto.html">Contacto</a>
         </nav>
-
-        <div class="nav__right">
-          <div class="nav__tz">
-            <span class="nav__tz-label">Barcelona</span>
-            <span class="nav__tz-time" data-clock>—</span>
-          </div>
-          <button type="button" class="btn btn--secondary btn--sm nav__menu" data-drawer-open aria-expanded="false" aria-controls="drawer">
-            <span class="burger" aria-hidden="true"><i></i><i></i></span>
-            <span>Menú</span>
-          </button>
-        </div>
-      </header>
+<!-- /part:nav-links -->

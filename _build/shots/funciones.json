@@ -1,0 +1,14 @@
+[
+  {
+    "path": "/funciones/",
+    "name": "indice"
+  },
+  {
+    "path": "/funciones/housekeeping-hotel/",
+    "name": "housekeeping"
+  },
+  {
+    "path": "/funciones/trazabilidad-de-cifras/",
+    "name": "trazabilidad"
+  }
+]

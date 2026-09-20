@@ -3,31 +3,38 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nosotros: producto de operaciones hoteleras | Holdera</title>
-  <meta name="description" content="Producto propio hecho en Barcelona para la operación diaria de un hotel: una cifra fiable vale más que diez plausibles. Más de 5 años de experiencia.">
+  <!-- Esta pagina vive en una subcarpeta y la cabecera, el drawer y el pie
+       estan COPIADOS del shell con rutas relativas ("index.html", "panel/").
+       <base href="/"> es lo que hace que sigan apuntando a la raiz — el mismo
+       patron que 404.html. Por eso el enlace de salto va absoluto: con base,
+       un "#contenido" a secas iria a la portada. -->
+  <base href="/">
+  <title>Definiciones acordadas antes que pantallas | Holdera</title>
+  <meta name="description" content="Ocupación sobre habitaciones físicas o sobre habitaciones en operación: Holdera enseña las dos, escribe la fórmula y espera a que tu hotel valide la suya.">
   <meta name="theme-color" content="#e5e5e5">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Nosotros — Holdera, producto de operaciones hoteleras">
-  <meta property="og:description" content="Una cifra fiable vale más que diez plausibles. Holdera es un producto propio, hecho en Barcelona, para la operación diaria de un hotel. Más de 5 años de experiencia.">
+  <meta property="og:title" content="Definiciones — Tu convención de OOO y OOS, no la nuestra.">
+  <meta property="og:description" content="Ocupación sobre habitaciones físicas o sobre habitaciones en operación: Holdera enseña las dos, escribe la fórmula y espera a que tu hotel valide la suya.">
   <meta property="og:locale" content="es_ES">
   <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css?v=2dec89dd">
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="pages.css?v=49a2fdfb">
+  <link rel="stylesheet" href="funciones/funciones.css?v=220377c2">
   <script>document.documentElement.classList.add('has-js');</script>
   <!-- seo:head -->
-  <link rel="canonical" href="https://holdera.es/nosotros.html">
+  <link rel="canonical" href="https://holdera.es/funciones/definiciones-acordadas/">
   <meta name="robots" content="index, follow">
   <meta property="og:site_name" content="Holdera">
-  <meta property="og:url" content="https://holdera.es/nosotros.html">
+  <meta property="og:url" content="https://holdera.es/funciones/definiciones-acordadas/">
   <meta property="og:image" content="https://holdera.es/assets/seo/og-default.png">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona.">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Nosotros — Holdera, producto de operaciones hoteleras">
-  <meta name="twitter:description" content="Una cifra fiable vale más que diez plausibles. Holdera es un producto propio, hecho en Barcelona, para la operación diaria de un hotel. Más de 5 años de experiencia.">
+  <meta name="twitter:title" content="Definiciones — Tu convención de OOO y OOS, no la nuestra.">
+  <meta name="twitter:description" content="Ocupación sobre habitaciones físicas o sobre habitaciones en operación: Holdera enseña las dos, escribe la fórmula y espera a que tu hotel valide la suya.">
   <meta name="twitter:image" content="https://holdera.es/assets/seo/og-default.png">
   <meta name="twitter:image:alt" content="Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona.">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
@@ -105,18 +112,15 @@
         "inLanguage": "es-ES"
       },
       {
-        "@type": "AboutPage",
-        "@id": "https://holdera.es/nosotros.html#webpage",
-        "url": "https://holdera.es/nosotros.html",
-        "name": "Nosotros: producto de operaciones hoteleras | Holdera",
-        "description": "Producto propio hecho en Barcelona para la operación diaria de un hotel: una cifra fiable vale más que diez plausibles. Más de 5 años de experiencia.",
+        "@type": "WebPage",
+        "@id": "https://holdera.es/funciones/definiciones-acordadas/#webpage",
+        "url": "https://holdera.es/funciones/definiciones-acordadas/",
+        "name": "Definiciones acordadas antes que pantallas | Holdera",
+        "description": "Ocupación sobre habitaciones físicas o sobre habitaciones en operación: Holdera enseña las dos, escribe la fórmula y espera a que tu hotel valide la suya.",
         "isPartOf": {
           "@id": "https://holdera.es/#website"
         },
         "about": {
-          "@id": "https://holdera.es/#organization"
-        },
-        "mainEntity": {
           "@id": "https://holdera.es/#organization"
         },
         "primaryImageOfPage": {
@@ -126,13 +130,13 @@
           "height": 630
         },
         "breadcrumb": {
-          "@id": "https://holdera.es/nosotros.html#breadcrumb"
+          "@id": "https://holdera.es/funciones/definiciones-acordadas/#breadcrumb"
         },
         "inLanguage": "es-ES"
       },
       {
         "@type": "BreadcrumbList",
-        "@id": "https://holdera.es/nosotros.html#breadcrumb",
+        "@id": "https://holdera.es/funciones/definiciones-acordadas/#breadcrumb",
         "itemListElement": [
           {
             "@type": "ListItem",
@@ -143,8 +147,14 @@
           {
             "@type": "ListItem",
             "position": 2,
-            "name": "Nosotros",
-            "item": "https://holdera.es/nosotros.html"
+            "name": "Funciones",
+            "item": "https://holdera.es/funciones/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Definiciones",
+            "item": "https://holdera.es/funciones/definiciones-acordadas/"
           }
         ]
       }
@@ -154,11 +164,9 @@
   <!-- /seo:head -->
 </head>
 <body class="page">
-  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <a class="skip-link" href="/funciones/definiciones-acordadas/#contenido">Saltar al contenido</a>
   <div class="grain" aria-hidden="true"></div>
 
-  <!-- Cabecera FIJA (paso 6): acompaña al scroll en toda la página. Fuera del
-       hero a propósito: el hero pasa a inert cuando la hoja lo tapa. -->
       <header class="nav" data-enter style="--d:0">
         <a class="nav__brand" href="index.html" aria-label="Holdera, ir al inicio">
           <span class="nav__mark"><img src="assets/logo/holdera-monogram-white.png" alt="" width="12" height="25"></span>
@@ -291,7 +299,7 @@
               </div>
             </div>
 
-          <a href="nosotros.html" class="is-active" aria-current="page">Nosotros</a>
+          <a href="nosotros.html">Nosotros</a>
           <a href="partners.html">Partners</a>
           <a href="panel/">Panel demo</a>
           <a href="contacto.html">Contacto</a>
@@ -309,19 +317,19 @@
         </div>
       </header>
 
-
   <!-- ============ PAGE BAND (light) ============ -->
   <div class="phead">
     <div class="phead__deco" aria-hidden="true"><div class="phead__wordmark">HOLDERA</div></div>
-      </header>
     <div class="container phead__inner">
       <div class="phead__copy">
-        <p class="eyebrow" data-enter style="--d:60"><span class="eyebrow__bar" aria-hidden="true"></span>Nosotros</p>
-        <h1 class="phead__title" id="page-title" data-enter style="--d:140"><span class="ln">Hacemos un producto.</span> <span class="ln">Para hoteles.</span></h1>
+        <nav class="pgf-crumbs" aria-label="Migas de pan" data-enter style="--d:60">
+          <a href="index.html">Inicio</a>
+          <a href="funciones/">Funciones</a>
+          <span aria-current="page">Definiciones</span>
+        </nav>
+        <h1 class="phead__title" id="page-title" data-enter style="--d:140">Primero acordamos qué significa cada cosa</h1>
       </div>
-      <!-- Datos confirmados por Alex: más de 5 años de experiencia, sede en Barcelona,
-           producto propio, panel demo público. Nada más se afirma aquí. -->
-      <p class="phead__lead" data-enter style="--d:260">Holdera es software de operaciones para hoteles: todo tu hotel en una pantalla, y cada cifra unida al registro del que sale. Producto propio, hecho en Barcelona, con más de cinco años de experiencia detrás.</p>
+      <p class="phead__lead" data-enter style="--d:260">Tu convención de OOO y OOS, no la nuestra.</p>
     </div>
     <div class="hero-sentinel" aria-hidden="true"></div>
   </div>
@@ -329,210 +337,106 @@
   <!-- ============ CONTENT SHEET (dark) ============ -->
   <main id="contenido" class="page__main">
 
-    <section class="sheet sheet--intro" id="que-hacemos" aria-labelledby="qh-title">
-      <div class="container split">
-        <div class="split__aside">
-          <p class="tag reveal" data-reveal="up">Qué es Holdera</p>
-          <h2 id="qh-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Una cifra fiable vale más <span class="fade">que diez plausibles.</span></h2>
+    <section class="sheet sheet--intro" id="que-hace" aria-labelledby="qh-title">
+      <div class="container pgf-lede">
+        <div>
+          <p class="tag reveal" data-reveal="up">Función 07 de 08</p>
+          <h2 id="qh-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Qué hace</h2>
+          <aside class="pgf-deep reveal" data-reveal="up" style="--i:2" aria-labelledby="deep-title">
+            <div class="pgf-deep__core">
+              <p class="pgf-deep__k">Pantalla del producto</p>
+              <p class="pgf-deep__name" id="deep-title">Métricas · Ocupación</p>
+              <p class="pgf-deep__note">Ábrela en el panel de demostración y compruébalo tú: está abierto, sin registro.</p>
+              <a class="btn btn--secondary" href="/panel/metrics/occupancy_rate/"><span>Ver una definición en el panel demo</span><span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+              <p class="pgf-deep__url">/panel/metrics/occupancy_rate/</p>
+            </div>
+          </aside>
         </div>
-        <div class="prose reveal" data-reveal="up" style="--i:2">
-          <p>Holdera es un producto, no un encargo a medida: las pantallas con las que se lleva un hotel el día a día —el hotel de hoy, las habitaciones, el housekeeping, el revenue y las reservas— hechas en Barcelona y hoy en fase piloto, con un panel de demostración abierto a cualquiera.</p>
-          <p>Un director de hotel no tiene un problema de cifras: tiene demasiadas, y pocas que pueda defender en una reunión. Por eso enseñamos menos y respondemos siempre a la misma pregunta: <strong>¿de dónde sale esto?</strong> Cualquier número de Holdera se abre y enseña su fórmula, los hechos que entran en ella y el registro exacto del que sale.</p>
-          <p>Y lo que el export de tu PMS no trae, se dice. Una habitación sin tarifa no vale cero euros: vale «no lo sabemos», y así aparece en pantalla. Ese hueco visible es lo que separa un panel bonito de uno que puedes firmar delante de tu propiedad.</p>
-          <p>Estamos en fase piloto y también lo decimos: hay métricas que el producto todavía no calcula porque la fuente no las trae, y están marcadas como tales. Preferimos que lo veas tú en el panel demo antes de contártelo nosotros.</p>
+        <div class="prose reveal" data-reveal="up" style="--i:3">
+            <p>Ocupación sobre las habitaciones físicas y ocupación sobre las que están en operación no son la misma cifra, y la diferencia son tus habitaciones fuera de orden. Holdera enseña las dos, escribe la fórmula de cada una y las marca como pendientes de validar hasta que confirmas cuál es la convención de tu hotel.</p>
+            <p>En el panel las dos conviven: ocupación sobre las habitaciones físicas y ocupación sobre las que están en operación. Cada una con su fórmula escrita, su unidad, su versión de catálogo y su estado de definición.</p>
+            <p>La diferencia no es cosmética: es exactamente tus habitaciones fuera de orden, y crece con ellas. Es la cifra que acaba en el informe que enseñas a tu propiedad, así que la eliges tú y queda escrito cuál elegiste.</p>
         </div>
       </div>
     </section>
 
-    <section class="sheet sheet--process" id="para-quien" aria-labelledby="sec-title">
+    <section class="sheet sheet--process" id="que-contesta" aria-labelledby="qc-title">
       <div class="container">
         <div class="sec__head">
-          <p class="tag reveal" data-reveal="up">Para quién es</p>
-          <h2 id="sec-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Un hotel independiente <span class="fade">que quiere ver claro.</span></h2>
-          <p class="sheet__lead reveal" data-reveal="up" style="--i:2">De treinta a doscientas habitaciones, con un equipo pequeño donde la misma persona mira la ocupación por la mañana y el parte de limpieza por la tarde. Estas son las cuatro mesas que abren Holdera y lo que cada una busca al abrirlo.</p>
+          <p class="tag reveal" data-reveal="up">Qué contesta</p>
+          <h2 id="qc-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Las preguntas <span class="fade">que se hacen a esta hora.</span></h2>
         </div>
-
-        <ol class="sectors">
-          <li class="sector reveal" data-reveal="up">
-            <span class="sector__n" aria-hidden="true">01</span>
-            <div class="sector__head">
-              <h3 class="sector__name">Dirección</h3>
-              <p class="sector__who">General manager: abre Holdera a primera hora para saber en qué estado está el hotel hoy y si el mes va como debería.</p>
-            </div>
-            <ul class="sector__ex" aria-label="Qué mira dirección">
-              <li>Las llegadas y las salidas del día, y cuántas habitaciones quedan por entrar a esta hora.</li>
-              <li>Ocupación, ADR, RevPAR y el TRevPAR del hotel entero en la misma pantalla, sin abrir tres informes.</li>
-              <li>El pace del mes contra el mismo momento del año pasado, antes de sentarse a decidir precios.</li>
-            </ul>
-          </li>
-          <li class="sector reveal" data-reveal="up">
-            <span class="sector__n" aria-hidden="true">02</span>
-            <div class="sector__head">
-              <h3 class="sector__name">Front office</h3>
-              <p class="sector__who">Recepción: lo abre durante el turno, cuando hace falta saber si hay habitación lista para quien acaba de entrar por la puerta.</p>
-            </div>
-            <ul class="sector__ex" aria-label="Qué mira recepción">
-              <li>Qué habitaciones están Vacant Clean (VC) para las llegadas que quedan por venir.</li>
-              <li>Las salidas pendientes y las habitaciones en casa, planta por planta y sobre el plano.</li>
-              <li>Qué está fuera de orden (OOO) y desde cuándo, sin llamar a nadie para preguntarlo.</li>
-            </ul>
-          </li>
-          <li class="sector reveal" data-reveal="up">
-            <span class="sector__n" aria-hidden="true">03</span>
-            <div class="sector__head">
-              <h3 class="sector__name">Housekeeping</h3>
-              <p class="sector__who">Pisos: lo abre para repartir el trabajo del turno y para dar una planta por cerrada.</p>
-            </div>
-            <ul class="sector__ex" aria-label="Qué mira housekeeping">
-              <li>Las Vacant Dirty (VD) que quedan frente a las llegadas previstas para esta tarde.</li>
-              <li>El edificio por plantas, en vez de una lista de cien filas ordenada por número.</li>
-              <li>Cuántas VC hay ya listas, que es exactamente la cifra que recepción va a pedir.</li>
-            </ul>
-          </li>
-          <li class="sector reveal" data-reveal="up">
-            <span class="sector__n" aria-hidden="true">04</span>
-            <div class="sector__head">
-              <h3 class="sector__name">Revenue</h3>
-              <p class="sector__who">Quien pone los precios: lo abre para leer el calendario y entender el ritmo de venta antes de tocar una tarifa.</p>
-            </div>
-            <ul class="sector__ex" aria-label="Qué mira revenue">
-              <li>Las habitaciones on the books de cada noche futura, mes a mes y por tipo de habitación.</li>
-              <li>El pickup de los últimos siete días: lo que ha entrado desde la semana pasada, noche a noche.</li>
-              <li>Una cifra abierta hasta su registro el día que el número no cuadra con lo que esperaba.</li>
-            </ul>
-          </li>
-        </ol>
-
-        <div class="sectors__foot reveal" data-reveal="up">
-          <p>Estamos en fase piloto: el producto está en marcha y crece con los hoteles que lo usan. El panel de demostración es público, no pide registro y enseña un hotel ficticio de cien habitaciones congelado en un instante.</p>
-          <a class="btn btn--secondary" href="panel/">Abrir el panel demo</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="sheet" id="como-trabajamos" aria-labelledby="ct-title">
-      <div class="container split">
-        <div class="split__aside">
-          <p class="tag reveal" data-reveal="up">Cómo trabajamos</p>
-          <h2 id="ct-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Cuatro pasos, <span class="fade">siempre en este orden.</span></h2>
-          <p class="sheet__lead reveal" data-reveal="up" style="--i:2">Es el mismo recorrido para una pantalla suelta y para el hotel entero. Lo que cambia es el tamaño de cada paso, no el orden.</p>
-          <div class="sheet__actions reveal" data-reveal="up" style="--i:3">
-            <a class="btn btn--secondary" href="index.html#conectado">Ver el proceso en la portada</a>
-          </div>
-        </div>
-        <ol class="steps4">
-          <li class="step4 reveal" data-reveal="up">
-            <span class="step4__n" aria-hidden="true">01</span>
-            <h3>Conectamos</h3>
-            <p>Nos pasas un export de tu PMS. No instalamos nada en tu hotel.</p>
-          </li>
-          <li class="step4 reveal" data-reveal="up" style="--i:1">
-            <span class="step4__n" aria-hidden="true">02</span>
-            <h3>Validamos</h3>
-            <p>Repasamos contigo qué significa cada campo: OOO, OOS, habitaciones vendidas, a qué hora cierra el día.</p>
-          </li>
-          <li class="step4 reveal" data-reveal="up">
-            <span class="step4__n" aria-hidden="true">03</span>
-            <h3>Publicamos</h3>
-            <p>Tus pantallas, con tus definiciones y tu vocabulario.</p>
-          </li>
-          <li class="step4 reveal" data-reveal="up" style="--i:1">
-            <span class="step4__n" aria-hidden="true">04</span>
-            <h3>Trazamos</h3>
-            <p>Cada cifra queda unida al registro exacto del que sale, y lo que falte se dice.</p>
-          </li>
+        <ol class="pgf-qa">
+            <li class="pgf-q reveal" data-reveal="up">
+              <span class="pgf-q__n" aria-hidden="true">01</span>
+              <p class="pgf-q__t">¿Las fuera de orden entran o no entran en el denominador?</p>
+            </li>
+            <li class="pgf-q reveal" data-reveal="up">
+              <span class="pgf-q__n" aria-hidden="true">02</span>
+              <p class="pgf-q__t">¿Por qué mi ocupación no coincide con la que da mi PMS?</p>
+            </li>
+            <li class="pgf-q reveal" data-reveal="up">
+              <span class="pgf-q__n" aria-hidden="true">03</span>
+              <p class="pgf-q__t">¿Quién decide la definición, tu hotel o el software?</p>
+            </li>
         </ol>
       </div>
     </section>
 
-    <section class="sheet sheet--process" id="principios" aria-labelledby="pr-title">
-      <div class="container split">
-        <div class="split__aside">
-          <p class="tag reveal" data-reveal="up">Principios</p>
-          <h2 id="pr-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Cinco reglas que <span class="fade">no negociamos.</span></h2>
-          <p class="sheet__lead reveal" data-reveal="up" style="--i:2">Son las que hacen que una cifra de Holdera se pueda llevar a una reunión sin tener que defenderla de memoria.</p>
+    <section class="sheet" id="limite" aria-labelledby="lim-title">
+      <div class="container pgf-limit">
+        <div>
+          <p class="tag reveal" data-reveal="up">Lo que no hace</p>
+          <h2 id="lim-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Hasta que la valides, sale sin validar</h2>
         </div>
-        <ol class="principles">
-          <li class="principle reveal" data-reveal="up">
-            <span class="principle__n" aria-hidden="true">01</span>
-            <div>
-              <h3>Ninguna cifra sin su registro detrás.</h3>
-              <p>Cada número se abre: la fórmula, los hechos que entran en ella, la fecha del dato y el registro exacto del que sale. Lo que no se puede trazar hasta su origen, no se enseña.</p>
-            </div>
-          </li>
-          <li class="principle reveal" data-reveal="up">
-            <span class="principle__n" aria-hidden="true">02</span>
-            <div>
-              <h3>Lo que no sabemos, lo decimos.</h3>
-              <p>Cuando la fuente no trae un dato, la pantalla dice que falta y por qué falta. Un hueco honesto es información; un cero inventado es un error que alguien acabará repitiendo en una reunión.</p>
-            </div>
-          </li>
-          <li class="principle reveal" data-reveal="up">
-            <span class="principle__n" aria-hidden="true">03</span>
-            <div>
-              <h3>Sin jerga: el vocabulario es el tuyo.</h3>
-              <p>Si en tu hotel una habitación bloqueada se llama de otra manera, la pantalla la llama así. No te pedimos que tu equipo aprenda nuestros nombres para poder leer sus propias cifras.</p>
-            </div>
-          </li>
-          <li class="principle reveal" data-reveal="up">
-            <span class="principle__n" aria-hidden="true">04</span>
-            <div>
-              <h3>Tus definiciones, validadas contigo.</h3>
-              <p>A qué hora cierra el día, qué cuenta como habitación disponible, si las fuera de orden salen del denominador. Lo acordamos contigo y por escrito antes de que ninguna cifra aparezca en pantalla.</p>
-            </div>
-          </li>
-          <li class="principle reveal" data-reveal="up">
-            <span class="principle__n" aria-hidden="true">05</span>
-            <div>
-              <h3>Empezamos por una pantalla.</h3>
-              <p>Una pantalla en marcha con tus datos vale más que un proyecto de seis meses en un documento. Lo que te sirve se amplía; lo que no, se apaga sin drama.</p>
-            </div>
-          </li>
-        </ol>
+        <div class="pgf-limit__body reveal" data-reveal="up" style="--i:2">
+          <p>Las definiciones están mapeadas desde una guía de KPIs hotelera y salen marcadas como referencia, a la espera de que tu hotel valide su semántica. Holdera no decide por ti cuál es «tu» ocupación: enseña las dos y espera.</p>
+          <figure class="pgf-cite">
+            <blockquote>Definition status: REFERENCE ONLY</blockquote>
+            <figcaption>Literal del panel, en inglés · Métricas · Occupancy Rate</figcaption>
+          </figure>
+        </div>
       </div>
     </section>
 
-    <section class="sheet" id="equipo" aria-labelledby="eq-title">
+    <section class="sheet sheet--process" id="mas-funciones" aria-labelledby="pag-title">
       <div class="container">
-        <p class="tag reveal" data-reveal="up">Equipo</p>
-        <h2 id="eq-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Quién está <span class="fade">detrás.</span></h2>
-        <div class="team">
-          <!-- TODO (Alex): nombre real del fundador y dos líneas de bio. Si hay foto real, sustituir la
-               baldosa del monograma; nunca una foto de banco de imágenes. -->
-          <div class="card reveal" data-reveal="left">
-            <div class="card__core person">
-              <div class="person__tile" aria-hidden="true"><img src="assets/logo/holdera-monogram-white.png" alt="" width="26" height="54"></div>
-              <div>
-                <p class="person__role">Fundador</p>
-                <h3><span class="ph">[Nombre del fundador]</span></h3>
-                <p><span class="ph">[Una línea sobre su trayectoria: formación y años trabajando con datos de operación.]</span></p>
-                <p><span class="ph">[Una línea sobre qué parte del producto lleva y con qué hoteles habla cada semana.]</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="team__note reveal" data-reveal="right">
-            <!-- TODO (Alex): resto del equipo (nombres y roles), o confirmar que solo aparece el fundador. -->
-            <p>Resto del equipo: <span class="ph">[por confirmar]</span>.</p>
-            <p><span class="ph">[Una frase sobre cómo trabaja el equipo: tamaño, y quién se sienta con el hotel a validar las definiciones.]</span></p>
-          </div>
+        <div class="sec__head">
+          <p class="tag reveal" data-reveal="up">Sigue por aquí</p>
+          <h2 id="pag-title" class="sheet__title reveal" data-reveal="up" style="--i:1">El resto <span class="fade">del producto.</span></h2>
         </div>
+        <nav class="pgf-pager reveal" data-reveal="up" style="--i:2" aria-label="Funciones anterior y siguiente">
+          <a class="pgf-pager__link pgf-pager__link--prev" href="funciones/trazabilidad-de-cifras/" rel="prev">
+            <span class="pgf-pager__k">Anterior</span>
+            <span class="pgf-pager__t">Trazabilidad</span>
+            <span class="pgf-pager__d">Fórmula, entradas, registro y dato en bruto.</span>
+          </a>
+          <a class="pgf-pager__link pgf-pager__link--next" href="funciones/catalogo-de-metricas-hoteleras/" rel="next">
+            <span class="pgf-pager__k">Siguiente</span>
+            <span class="pgf-pager__t">Catálogo de métricas</span>
+            <span class="pgf-pager__d">Lo que falta se dice que falta, con nombre.</span>
+          </a>
+        </nav>
+        <p class="pgf-pager__all reveal" data-reveal="up" style="--i:3">
+          <a class="btn btn--secondary" href="funciones/"><span>Ver las 8 funciones</span><span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+        </p>
       </div>
     </section>
 
-    <section class="sheet sheet--cta" id="contacto" aria-labelledby="cta-title">
+    <section class="sheet sheet--cta" id="hablamos" aria-labelledby="cta-title">
       <div class="container ctaband">
         <div>
-          <p class="tag reveal" data-reveal="up">Contacto</p>
-          <h2 id="cta-title" class="sheet__title reveal" data-reveal="up" style="--i:1">¿Cómo es <span class="fade">tu hotel?</span></h2>
-          <p class="sheet__lead reveal" data-reveal="up" style="--i:2">Cuéntanos cuántas habitaciones tienes, qué PMS usas y qué te gustaría ver en una pantalla. Te decimos qué se puede enseñar con lo que tu PMS ya exporta —y qué no— sin compromiso.</p>
+          <p class="tag reveal" data-reveal="up">Siguiente paso</p>
+          <h2 id="cta-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Ábrelo por dentro <span class="fade">y después hablamos.</span></h2>
+          <p class="sheet__lead reveal" data-reveal="up" style="--i:2">El panel de demostración está abierto: no hay formulario delante. Si después quieres hablarlo, cuéntanos cómo es tu hotel —qué PMS usas, cuántas habitaciones tienes y qué informe estás rehaciendo a mano cada semana.</p>
         </div>
-        <div class="ctaband__actions reveal" data-reveal="right">
-          <a class="btn btn--primary btn--on-dark" href="contacto.html">
-            <span>Habla con nosotros</span>
-            <span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
-          </a>
-          <a class="btn btn--secondary" href="panel/">Ver el panel demo</a>
+        <div class="ctaband__actions reveal" data-reveal="up" style="--i:3">
+          <a class="btn btn--primary btn--on-dark" href="contacto.html"><span>Cuéntanos cómo es tu hotel</span><span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+          <a class="btn btn--secondary" href="panel/"><span>Abrir el panel demo</span></a>
         </div>
+      </div>
+      <div class="container">
+        <p class="pgf-note reveal" data-reveal="up" style="--i:4">Las pantallas que enlazamos son el panel de demostración: un hotel de ejemplo de 100 habitaciones, congelado el jueves 15 de enero de 2026 a las 14:30. Las cifras son de ese hotel, no de ninguno real.</p>
       </div>
     </section>
 
@@ -574,11 +478,6 @@
     </div>
   </footer>
 
-  <!-- Side menu -->
-  <!-- Side menu -->
-  <!-- Side menu -->
-  <!-- Side menu -->
-  <!-- Side menu -->
   <!-- Side menu -->
   <!-- Side menu -->
   <!-- Side menu -->

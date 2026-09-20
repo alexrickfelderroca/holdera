@@ -534,6 +534,654 @@
           ]
         }
       ]
+    },
+    {
+      "file": "funciones/index.html",
+      "path": "/funciones/",
+      "title": "Funciones del software hotelero | Holdera",
+      "description": "Las ocho pantallas de Holdera, una por página: qué hace cada una, qué preguntas contesta y dónde está su límite declarado.",
+      "robots": "index, follow",
+      "sitemap": {
+        "priority": "0.8"
+      },
+      "og": {
+        "type": "website",
+        "title": "Funciones de Holdera — una pantalla, una página",
+        "description": "Las ocho pantallas de Holdera, una por página: qué hace cada una, qué preguntas contesta y dónde está su límite declarado.",
+        "image": "{{SITE}}/assets/seo/og-default.png",
+        "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
+      },
+      "graph": [
+        {
+          "@type": "WebPage",
+          "@id": "{{SITE}}/funciones/#webpage",
+          "url": "{{SITE}}/funciones/",
+          "name": "Funciones del software hotelero | Holdera",
+          "description": "Las ocho pantallas de Holdera, una por página: qué hace cada una, qué preguntas contesta y dónde está su límite declarado.",
+          "isPartOf": {
+            "@id": "{{SITE}}/#website"
+          },
+          "about": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "{{SITE}}/assets/seo/og-default.png",
+            "width": 1200,
+            "height": 630
+          },
+          "breadcrumb": {
+            "@id": "{{SITE}}/funciones/#breadcrumb"
+          },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/funciones/#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "{{SITE}}/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Funciones",
+              "item": "{{SITE}}/funciones/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "funciones/operacion-diaria-hotel/index.html",
+      "path": "/funciones/operacion-diaria-hotel/",
+      "title": "El día del hotel en una pantalla | Holdera",
+      "description": "Llegadas, salidas, habitaciones en casa y listas a la hora en que las miras. Holdera lee la foto intradía de tu PMS y dice de cuándo es cada dato.",
+      "robots": "index, follow",
+      "sitemap": {
+        "priority": "0.7"
+      },
+      "og": {
+        "type": "website",
+        "title": "Hoy — No el cierre de ayer: el hotel a las 14:30.",
+        "description": "Llegadas, salidas, habitaciones en casa y habitaciones listas a la hora en que las miras. Holdera lee la foto intradía de tu PMS y dice de cuándo es cada dato.",
+        "image": "{{SITE}}/assets/seo/og-default.png",
+        "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
+      },
+      "graph": [
+        {
+          "@type": "WebPage",
+          "@id": "{{SITE}}/funciones/operacion-diaria-hotel/#webpage",
+          "url": "{{SITE}}/funciones/operacion-diaria-hotel/",
+          "name": "El día del hotel en una pantalla | Holdera",
+          "description": "Llegadas, salidas, habitaciones en casa y listas a la hora en que las miras. Holdera lee la foto intradía de tu PMS y dice de cuándo es cada dato.",
+          "isPartOf": {
+            "@id": "{{SITE}}/#website"
+          },
+          "about": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "{{SITE}}/assets/seo/og-default.png",
+            "width": 1200,
+            "height": 630
+          },
+          "breadcrumb": {
+            "@id": "{{SITE}}/funciones/operacion-diaria-hotel/#breadcrumb"
+          },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/funciones/operacion-diaria-hotel/#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "{{SITE}}/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Funciones",
+              "item": "{{SITE}}/funciones/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Hoy",
+              "item": "{{SITE}}/funciones/operacion-diaria-hotel/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "funciones/estado-de-habitaciones-por-planta/index.html",
+      "path": "/funciones/estado-de-habitaciones-por-planta/",
+      "title": "Estado de las habitaciones, planta a planta | Holdera",
+      "description": "El hotel dibujado por plantas, con el reparto de estados de cada una y la línea que separa el dato del PMS de la configuración del edificio.",
+      "robots": "index, follow",
+      "sitemap": {
+        "priority": "0.7"
+      },
+      "og": {
+        "type": "website",
+        "title": "Habitaciones — Planta por planta, y qué pasa en cada una.",
+        "description": "El hotel dibujado por plantas, con el reparto de estados de cada una y la línea que separa el dato del PMS de la configuración del edificio.",
+        "image": "{{SITE}}/assets/seo/og-default.png",
+        "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
+      },
+      "graph": [
+        {
+          "@type": "WebPage",
+          "@id": "{{SITE}}/funciones/estado-de-habitaciones-por-planta/#webpage",
+          "url": "{{SITE}}/funciones/estado-de-habitaciones-por-planta/",
+          "name": "Estado de las habitaciones, planta a planta | Holdera",
+          "description": "El hotel dibujado por plantas, con el reparto de estados de cada una y la línea que separa el dato del PMS de la configuración del edificio.",
+          "isPartOf": {
+            "@id": "{{SITE}}/#website"
+          },
+          "about": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "{{SITE}}/assets/seo/og-default.png",
+            "width": 1200,
+            "height": 630
+          },
+          "breadcrumb": {
+            "@id": "{{SITE}}/funciones/estado-de-habitaciones-por-planta/#breadcrumb"
+          },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/funciones/estado-de-habitaciones-por-planta/#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "{{SITE}}/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Funciones",
+              "item": "{{SITE}}/funciones/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Habitaciones",
+              "item": "{{SITE}}/funciones/estado-de-habitaciones-por-planta/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "funciones/housekeeping-hotel/index.html",
+      "path": "/funciones/housekeeping-hotel/",
+      "title": "Housekeeping: VC, VD, IP, OOO y OOS | Holdera",
+      "description": "Vacant Clean, Cleaning, Vacant Dirty, fuera de orden y fuera de servicio, contados aparte y cruzados con las llegadas que faltan por entrar.",
+      "robots": "index, follow",
+      "sitemap": {
+        "priority": "0.7"
+      },
+      "og": {
+        "type": "website",
+        "title": "Housekeeping — Vacante limpia no es lo mismo que vacante.",
+        "description": "Vacant Clean, Cleaning, Vacant Dirty, fuera de orden y fuera de servicio, contados aparte y cruzados con las llegadas que faltan por entrar.",
+        "image": "{{SITE}}/assets/seo/og-default.png",
+        "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
+      },
+      "graph": [
+        {
+          "@type": "WebPage",
+          "@id": "{{SITE}}/funciones/housekeeping-hotel/#webpage",
+          "url": "{{SITE}}/funciones/housekeeping-hotel/",
+          "name": "Housekeeping: VC, VD, IP, OOO y OOS | Holdera",
+          "description": "Vacant Clean, Cleaning, Vacant Dirty, fuera de orden y fuera de servicio, contados aparte y cruzados con las llegadas que faltan por entrar.",
+          "isPartOf": {
+            "@id": "{{SITE}}/#website"
+          },
+          "about": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "{{SITE}}/assets/seo/og-default.png",
+            "width": 1200,
+            "height": 630
+          },
+          "breadcrumb": {
+            "@id": "{{SITE}}/funciones/housekeeping-hotel/#breadcrumb"
+          },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/funciones/housekeeping-hotel/#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "{{SITE}}/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Funciones",
+              "item": "{{SITE}}/funciones/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Housekeeping",
+              "item": "{{SITE}}/funciones/housekeeping-hotel/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "funciones/revenue-adr-revpar-trevpar/index.html",
+      "path": "/funciones/revenue-adr-revpar-trevpar/",
+      "title": "Revenue del hotel: ADR, RevPAR y TRevPAR | Holdera",
+      "description": "Ocupación, ADR, RevPAR y TRevPAR de esta noche, del mes y de las 30 noches que vienen, comparados al mismo punto de la curva de reserva del año pasado.",
+      "robots": "index, follow",
+      "sitemap": {
+        "priority": "0.7"
+      },
+      "og": {
+        "type": "website",
+        "title": "Revenue — Ocupación, ADR, RevPAR y TRevPAR a la vez.",
+        "description": "Ocupación, ADR, RevPAR y TRevPAR de esta noche, del mes y de las 30 noches que vienen, comparados al mismo punto de la curva de reserva del año pasado.",
+        "image": "{{SITE}}/assets/seo/og-default.png",
+        "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
+      },
+      "graph": [
+        {
+          "@type": "WebPage",
+          "@id": "{{SITE}}/funciones/revenue-adr-revpar-trevpar/#webpage",
+          "url": "{{SITE}}/funciones/revenue-adr-revpar-trevpar/",
+          "name": "Revenue del hotel: ADR, RevPAR y TRevPAR | Holdera",
+          "description": "Ocupación, ADR, RevPAR y TRevPAR de esta noche, del mes y de las 30 noches que vienen, comparados al mismo punto de la curva de reserva del año pasado.",
+          "isPartOf": {
+            "@id": "{{SITE}}/#website"
+          },
+          "about": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "{{SITE}}/assets/seo/og-default.png",
+            "width": 1200,
+            "height": 630
+          },
+          "breadcrumb": {
+            "@id": "{{SITE}}/funciones/revenue-adr-revpar-trevpar/#breadcrumb"
+          },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/funciones/revenue-adr-revpar-trevpar/#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "{{SITE}}/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Funciones",
+              "item": "{{SITE}}/funciones/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Revenue",
+              "item": "{{SITE}}/funciones/revenue-adr-revpar-trevpar/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "funciones/calendario-de-reservas-pickup-pace/index.html",
+      "path": "/funciones/calendario-de-reservas-pickup-pace/",
+      "title": "Calendario de reservas, pickup y pace | Holdera",
+      "description": "Ocupación, tarifa y habitaciones on the books noche a noche, con el pickup de los últimos siete días y el ritmo de venta contra el año pasado.",
+      "robots": "index, follow",
+      "sitemap": {
+        "priority": "0.7"
+      },
+      "og": {
+        "type": "website",
+        "title": "Reservas — Ocho meses, y el pickup de los últimos siete días.",
+        "description": "Ocupación, tarifa y habitaciones on the books noche a noche, con el pickup de los últimos siete días y el ritmo de venta contra el año pasado.",
+        "image": "{{SITE}}/assets/seo/og-default.png",
+        "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
+      },
+      "graph": [
+        {
+          "@type": "WebPage",
+          "@id": "{{SITE}}/funciones/calendario-de-reservas-pickup-pace/#webpage",
+          "url": "{{SITE}}/funciones/calendario-de-reservas-pickup-pace/",
+          "name": "Calendario de reservas, pickup y pace | Holdera",
+          "description": "Ocupación, tarifa y habitaciones on the books noche a noche, con el pickup de los últimos siete días y el ritmo de venta contra el año pasado.",
+          "isPartOf": {
+            "@id": "{{SITE}}/#website"
+          },
+          "about": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "{{SITE}}/assets/seo/og-default.png",
+            "width": 1200,
+            "height": 630
+          },
+          "breadcrumb": {
+            "@id": "{{SITE}}/funciones/calendario-de-reservas-pickup-pace/#breadcrumb"
+          },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/funciones/calendario-de-reservas-pickup-pace/#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "{{SITE}}/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Funciones",
+              "item": "{{SITE}}/funciones/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Reservas",
+              "item": "{{SITE}}/funciones/calendario-de-reservas-pickup-pace/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "funciones/trazabilidad-de-cifras/index.html",
+      "path": "/funciones/trazabilidad-de-cifras/",
+      "title": "Trazabilidad: cada cifra hasta su registro | Holdera",
+      "description": "Fórmula, valor de cada entrada, registro normalizado y la fila en bruto con su huella de contenido. Cuatro pasos detrás de cualquier número del panel.",
+      "robots": "index, follow",
+      "sitemap": {
+        "priority": "0.7"
+      },
+      "og": {
+        "type": "website",
+        "title": "Trazabilidad — Fórmula, entradas, registro y dato en bruto.",
+        "description": "Fórmula, valor de cada entrada, registro normalizado y la fila en bruto con su huella de contenido. Cuatro pasos detrás de cualquier número del panel.",
+        "image": "{{SITE}}/assets/seo/og-default.png",
+        "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
+      },
+      "graph": [
+        {
+          "@type": "WebPage",
+          "@id": "{{SITE}}/funciones/trazabilidad-de-cifras/#webpage",
+          "url": "{{SITE}}/funciones/trazabilidad-de-cifras/",
+          "name": "Trazabilidad: cada cifra hasta su registro | Holdera",
+          "description": "Fórmula, valor de cada entrada, registro normalizado y la fila en bruto con su huella de contenido. Cuatro pasos detrás de cualquier número del panel.",
+          "isPartOf": {
+            "@id": "{{SITE}}/#website"
+          },
+          "about": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "{{SITE}}/assets/seo/og-default.png",
+            "width": 1200,
+            "height": 630
+          },
+          "breadcrumb": {
+            "@id": "{{SITE}}/funciones/trazabilidad-de-cifras/#breadcrumb"
+          },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/funciones/trazabilidad-de-cifras/#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "{{SITE}}/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Funciones",
+              "item": "{{SITE}}/funciones/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Trazabilidad",
+              "item": "{{SITE}}/funciones/trazabilidad-de-cifras/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "funciones/definiciones-acordadas/index.html",
+      "path": "/funciones/definiciones-acordadas/",
+      "title": "Definiciones acordadas antes que pantallas | Holdera",
+      "description": "Ocupación sobre habitaciones físicas o sobre habitaciones en operación: Holdera enseña las dos, escribe la fórmula y espera a que tu hotel valide la suya.",
+      "robots": "index, follow",
+      "sitemap": {
+        "priority": "0.7"
+      },
+      "og": {
+        "type": "website",
+        "title": "Definiciones — Tu convención de OOO y OOS, no la nuestra.",
+        "description": "Ocupación sobre habitaciones físicas o sobre habitaciones en operación: Holdera enseña las dos, escribe la fórmula y espera a que tu hotel valide la suya.",
+        "image": "{{SITE}}/assets/seo/og-default.png",
+        "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
+      },
+      "graph": [
+        {
+          "@type": "WebPage",
+          "@id": "{{SITE}}/funciones/definiciones-acordadas/#webpage",
+          "url": "{{SITE}}/funciones/definiciones-acordadas/",
+          "name": "Definiciones acordadas antes que pantallas | Holdera",
+          "description": "Ocupación sobre habitaciones físicas o sobre habitaciones en operación: Holdera enseña las dos, escribe la fórmula y espera a que tu hotel valide la suya.",
+          "isPartOf": {
+            "@id": "{{SITE}}/#website"
+          },
+          "about": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "{{SITE}}/assets/seo/og-default.png",
+            "width": 1200,
+            "height": 630
+          },
+          "breadcrumb": {
+            "@id": "{{SITE}}/funciones/definiciones-acordadas/#breadcrumb"
+          },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/funciones/definiciones-acordadas/#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "{{SITE}}/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Funciones",
+              "item": "{{SITE}}/funciones/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Definiciones",
+              "item": "{{SITE}}/funciones/definiciones-acordadas/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "funciones/catalogo-de-metricas-hoteleras/index.html",
+      "path": "/funciones/catalogo-de-metricas-hoteleras/",
+      "title": "Catálogo de 57 métricas hoteleras | Holdera",
+      "description": "57 KPIs hoteleros con su fórmula, y para cada uno si tu hotel puede calcularlo hoy o qué fuente le falta. Sin estimaciones para rellenar huecos.",
+      "robots": "index, follow",
+      "sitemap": {
+        "priority": "0.7"
+      },
+      "og": {
+        "type": "website",
+        "title": "Catálogo de métricas — Lo que falta se dice que falta, con nombre.",
+        "description": "57 KPIs hoteleros con su fórmula, y para cada uno si tu hotel puede calcularlo hoy o qué fuente le falta. Sin estimaciones para rellenar huecos.",
+        "image": "{{SITE}}/assets/seo/og-default.png",
+        "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
+      },
+      "graph": [
+        {
+          "@type": "WebPage",
+          "@id": "{{SITE}}/funciones/catalogo-de-metricas-hoteleras/#webpage",
+          "url": "{{SITE}}/funciones/catalogo-de-metricas-hoteleras/",
+          "name": "Catálogo de 57 métricas hoteleras | Holdera",
+          "description": "57 KPIs hoteleros con su fórmula, y para cada uno si tu hotel puede calcularlo hoy o qué fuente le falta. Sin estimaciones para rellenar huecos.",
+          "isPartOf": {
+            "@id": "{{SITE}}/#website"
+          },
+          "about": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "{{SITE}}/assets/seo/og-default.png",
+            "width": 1200,
+            "height": 630
+          },
+          "breadcrumb": {
+            "@id": "{{SITE}}/funciones/catalogo-de-metricas-hoteleras/#breadcrumb"
+          },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/funciones/catalogo-de-metricas-hoteleras/#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "{{SITE}}/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Funciones",
+              "item": "{{SITE}}/funciones/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Catálogo de métricas",
+              "item": "{{SITE}}/funciones/catalogo-de-metricas-hoteleras/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "integraciones.html",
+      "path": "/integraciones.html",
+      "title": "Integraciones: 50 sistemas hoteleros | Holdera",
+      "description": "Channel manager, pagos, revenue, cerraduras, TPV, contabilidad y las autoridades a las que declarar: el catálogo entero, por lo que hace cada pieza.",
+      "robots": "index, follow",
+      "sitemap": {
+        "priority": "0.8"
+      },
+      "og": {
+        "type": "website",
+        "title": "Integraciones de Holdera — 50 sistemas hoteleros",
+        "description": "Channel manager, pagos, revenue, cerraduras, TPV, contabilidad y las autoridades a las que declarar: el catálogo entero, por lo que hace cada pieza.",
+        "image": "{{SITE}}/assets/seo/og-default.png",
+        "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
+      },
+      "graph": [
+        {
+          "@type": "WebPage",
+          "@id": "{{SITE}}/integraciones.html#webpage",
+          "url": "{{SITE}}/integraciones.html",
+          "name": "Integraciones: 50 sistemas hoteleros | Holdera",
+          "description": "Channel manager, pagos, revenue, cerraduras, TPV, contabilidad y las autoridades a las que declarar: el catálogo entero, por lo que hace cada pieza.",
+          "isPartOf": {
+            "@id": "{{SITE}}/#website"
+          },
+          "about": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "{{SITE}}/assets/seo/og-default.png",
+            "width": 1200,
+            "height": 630
+          },
+          "breadcrumb": {
+            "@id": "{{SITE}}/integraciones.html#breadcrumb"
+          },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/integraciones.html#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "{{SITE}}/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Integraciones",
+              "item": "{{SITE}}/integraciones.html"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -17,7 +17,10 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const SHELL = path.join(__dirname, 'shell');
-const PAGES = ['index.html', 'nosotros.html', 'partners.html', 'contacto.html', 'aviso-legal.html', 'privacidad.html', '404.html'];
+/* Sexta lista escrita a mano que se quedaba corta: con las paginas nuevas
+   (integraciones.html y las nueve de /funciones/) replicaba 14 bloques y
+   check-shell.js encontraba 20 diferencias. Ver _build/site-pages.js. */
+const { conShell: PAGES } = require('./site-pages');
 
 const SNIPPETS = {
   header: { file: 'header.html', start: '<header class="nav"', end: '</header>' },

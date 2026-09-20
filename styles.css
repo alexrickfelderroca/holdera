@@ -1792,3 +1792,403 @@ main {
 @media (max-width: 900px) and (prefers-reduced-motion: reduce) {
   .has-js .deck__stage { height: auto; }
 }
+
+
+/* ==========================================================================
+   MENUS DESPLEGABLES (Funciones e Integraciones) — _build/parts/menus.css
+   Apilado aqui, no en archivo aparte: las 17 paginas ya cargan styles.css.
+   Para editarlo, se edita el part y se vuelve a apilar. */
+/* ===========================================================================
+   HOLDERA · LOS DOS DESPLEGABLES DE LA BARRA  —  menus.css
+
+   COMO SE INTEGRA (leer antes de pegar)
+   -------------------------------------
+   APENDAR ESTE ARCHIVO ENTERO AL FINAL DE styles.css. No es estetica: los
+   guardias `_build/check-tokens.js` y `_build/contrast.js` llevan la lista de
+   hojas ESCRITA A MANO (hoy ['styles.css','pages.css','hotel-anim.css',
+   'sections.css']), asi que un .css nuevo no lo mira ninguno — pasaria las
+   cinco puertas sin que nadie haya comprobado ni sus tokens ni su contraste,
+   que es justo la clase de verde mentiroso que este proyecto ya ha pagado dos
+   veces. Si se prefiere archivo aparte, hay que anadirlo a esas dos listas Y
+   al <link> de las siete paginas.
+
+   POR QUE SE PUEDE APENDAR AL FINAL SIN ROMPER NADA
+   ------------------------------------------------
+   1. Lo unico que este archivo le discute a styles.css es el aspecto del
+      disparador. `.nav__links > a` (0,2,0) y `.nav__links > .mnu__trigger`
+      (0,2,0) empatan en especificidad, asi que gana la ultima del archivo —
+      y tiene que ganar la de aqui, porque menus.js sustituye el <a> por un
+      <button> y la regla de styles.css deja de aplicarle. Las dos declaran
+      lo MISMO; la de aqui existe para que el boton no se caiga al estilo por
+      defecto del navegador.
+   2. El orden INTERNO si importa, y es el de la casa: base -> movil ->
+      movimiento reducido. El bloque de movimiento reducido va el ultimo por
+      la trampa del paso 8 (dos @media con la misma especificidad: gana la
+      que va despues en el archivo).
+
+   LA DECISION DE COLOR QUE HAY QUE ENTENDER ANTES DE TOCAR NADA
+   -------------------------------------------------------------
+   🔴 El panel es OPACO y su paleta NO cambia con el estado de la barra.
+   La barra tiene tres vestidos que escribe script.js: `is-scrolled` (cristal
+   claro --nav-glass-light sobre el hero gris), `is-over-sheet` (cristal
+   oscuro --nav-glass sobre la hoja) e `is-veiled` (sin cristal, sobre el
+   telon del escaparate). Un panel translucido tendria que leerse encima de
+   los tres fondos distintos, y eso son tres auditorias de contraste que
+   caducan cada vez que alguien cambia un fondo. Un panel opaco de tinta
+   (--panel, el mismo cuerpo que el drawer) tiene UN solo juego de ratios,
+   medido una vez y valido en las tres situaciones. Es ademas lo que ya dice
+   el sistema: el grupo --on-ink-* existe precisamente para "superficies
+   oscuras sobre pagina clara".
+
+   Ratios medidos sobre --panel #23201c (calculados, y comprobados despues en
+   pagina con _build/a11y-probe.js):
+     --on-ink-text   #f4f4f4  14,75:1   nombres, logos en hover
+     --on-ink-text-2 #c9c9c9   9,79:1   descripciones, logos en reposo
+     --on-ink-muted  #8f8f8f   5,01:1   rotulos de categoria (11px)
+     --accent-ink    #f59b45   7,46:1   el enlace "ver todas" y los hovers
+   Sobre la ficha (--mnu-tile, blanco al 5% => #2e2b27) bajan un escalon:
+     --on-ink-text   12,81:1   --on-ink-text-2  8,51:1
+   🔴 --on-ink-muted sobre la FICHA mide 4,36:1 y NO llega a 4,5. Por eso los
+   rotulos de categoria van sobre el panel desnudo y nunca dentro de una
+   ficha, y por eso las descripciones son --on-ink-text-2 y no --on-ink-muted:
+   la fila se tinta en hover y --on-ink-muted se caeria al pasar el raton.
+   =========================================================================== */
+
+:root {
+  /* Cuerpo del panel: el mismo del drawer. Opaco a proposito (ver arriba). */
+  --mnu-surface: var(--panel);
+  /* Relleno de una ficha de logo y su hover. Son las dos unicas capas alfa
+     nuevas de este archivo; todo lo demas es alias de un token que ya existe. */
+  --mnu-tile: rgba(255, 255, 255, 0.05);
+  --mnu-tile-hover: rgba(255, 255, 255, 0.09);
+  /* El pie del panel, medio escalon por encima del cuerpo.
+     🔴 0.02 NO es un numero suelto: la nota del pie va en --on-ink-muted, que
+     es el unico texto del panel sin holgura. Medido sobre --panel:
+        0.02 -> 4,75:1    0.03 -> 4,62:1    0.04 -> 4,48:1  SUSPENSO
+     A partir de 0.04 el pie ilumina lo justo para tirar la nota por debajo de
+     4,5. Si hace falta un pie mas claro, lo que sube es el TEXTO a
+     --mnu-text-2, no el fondo. */
+  --mnu-foot: rgba(255, 255, 255, 0.02);
+  --mnu-hairline: var(--on-ink-border);
+  --mnu-edge: var(--on-ink-border-strong);
+  --mnu-text: var(--on-ink-text);
+  --mnu-text-2: var(--on-ink-text-2);
+  --mnu-muted: var(--on-ink-muted);
+  --mnu-accent: var(--accent-ink);
+  /* Sombra APILADA, nunca de una capa (prohibido por el CLAUDE.md global):
+     bisel arriba + asiento + dos caidas. Es la misma receta que --shadow-ink,
+     con mas alcance porque el panel flota mas alto. */
+  --mnu-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 2px 4px rgba(0, 0, 0, 0.28),
+    0 18px 40px -18px rgba(0, 0, 0, 0.55),
+    0 52px 96px -44px rgba(0, 0, 0, 0.50);
+
+  /* Anchos. El de integraciones es mas ancho porque lleva cuatro columnas de
+     fichas; los dos se recortan al viewport, que por debajo de 901px ya no
+     existe (ahi la barra esconde .nav__links y manda el drawer). */
+  --mnu-w-fn: 780px;
+  --mnu-w-ints: 1020px;
+  /* Separacion entre el borde inferior de la barra y el panel. 6px: lo justo
+     para que se lea como una pieza aparte sin abrir un pasillo por el que el
+     raton se salga de camino al panel. */
+  --mnu-drop: 6px;
+  /* La X del panel. La reescribe menus.js sobre el propio panel al abrirlo,
+     para que cuelgue de SU disparador. Se declara aqui y no como segundo
+     argumento de var() por dos motivos: el valor por defecto (centrado en la
+     barra, que es lo que se ve si el JS no llega) vive donde viven todos los
+     valores de este proyecto, y `_build/check-tokens.js` no mira los .js de
+     _build/parts, asi que un token que solo existiera en JS saldria como
+     "usado y nunca definido" en cuanto esto se apende a styles.css. */
+  --mnu-x: 50%;
+  /* Alto de dibujo de un logotipo dentro de la ficha. El wordmark viaja en una
+     caja de 24 cuya caja de mayusculas ocupa ~11,5 (0,72em de un cuerpo 16):
+     a 22px las mayusculas miden 10,6px, del tamano del texto de la barra. Un
+     simbolo lleno a ese alto se leeria enano, asi que va mas grande: 18 es
+     1,7x la altura de mayuscula del wordmark. La primera prueba lo dejo en 15
+     y en la captura las dos fichas con simbolo (Redsys, Stripe) pesaban
+     visiblemente menos que las 22 de wordmark de su misma columna. */
+  --mnu-mark: 22px;
+  --mnu-mark-icon: 18px;
+}
+
+/* --------------------------------------------------------------------------
+   El disparador en la barra
+   Mismo aspecto que .nav__links > a, repetido aqui porque menus.js sustituye
+   el <a> por un <button> en cuanto arranca y aquella regla deja de aplicarle.
+   Sin JS el selector cae sobre el <a> y declara lo mismo: no hay salto.
+   -------------------------------------------------------------------------- */
+.nav__links > .mnu__trigger {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 6px;
+  margin: 0; padding: 8px 0; border: 0; background: none; cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 500; line-height: 1.25;
+  letter-spacing: inherit;
+  color: var(--text-2); text-decoration: none;
+  transition: color var(--t-fast) var(--ease);
+}
+.nav__links > .mnu__trigger:hover,
+.nav__links > .mnu__trigger[aria-expanded="true"] { color: var(--text); }
+
+/* Sobre tinta: el escaparate y la hoja comparten la paleta on-ink. Repetido
+   por el mismo motivo que arriba (el <button> no es un <a>). */
+.nav.is-veiled .nav__links > .mnu__trigger,
+.nav.is-over-sheet .nav__links > .mnu__trigger { color: var(--mnu-text-2); }
+.nav.is-veiled .nav__links > .mnu__trigger:hover,
+.nav.is-over-sheet .nav__links > .mnu__trigger:hover,
+.nav.is-veiled .nav__links > .mnu__trigger[aria-expanded="true"],
+.nav.is-over-sheet .nav__links > .mnu__trigger[aria-expanded="true"] { color: var(--mnu-text); }
+
+.mnu__chev {
+  display: inline-flex; margin-top: 1px;
+  transition: transform var(--t-fast) var(--ease);
+}
+.mnu__trigger[aria-expanded="true"] .mnu__chev { transform: rotate(180deg); }
+
+/* --------------------------------------------------------------------------
+   El panel
+
+   Se posiciona contra .nav (que es position: fixed desde el paso 6): ni
+   .nav__links ni el propio disparador introducen contexto de posicion, de modo
+   que el ancestro posicionado mas cercano ES la barra. Asi `top: 100%` sigue a
+   la barra cuando se comprime de 76px a 64px al hacer scroll, sin que nadie
+   tenga que recalcular nada.
+
+   La X la escribe menus.js en --mnu-x al abrir: el panel arranca bajo SU
+   disparador (como en la referencia, cada desplegable cuelga de su entrada) y
+   se recorta para no salirse del margen. El valor por defecto, 50%, es el que
+   se ve si el JS no llega a escribirlo — centrado en la barra, que es el unico
+   sitio razonable sin saber de quien cuelga.
+
+   z-index: var(--z-nav). Dentro del contexto de apilamiento de la barra basta
+   con estar por encima de sus hermanos (el boton MENU va despues en el DOM);
+   hacia fuera manda el 30 de la barra, que ya esta por encima de la hoja (10)
+   y por debajo del grano (60) y del drawer (80). No hay ningun z-index suelto.
+   -------------------------------------------------------------------------- */
+.mnu__panel {
+  position: absolute;
+  top: calc(100% + var(--mnu-drop));
+  left: var(--mnu-x);
+  z-index: var(--z-nav);
+  width: min(var(--mnu-w-fn), calc(100vw - var(--gutter) * 2));
+  max-height: calc(100dvh - var(--nav-h) - 32px);
+  overflow-y: auto;
+  background: var(--mnu-surface);
+  color: var(--mnu-text-2);
+  border: 1px solid var(--mnu-edge);
+  border-radius: var(--r-lg);
+  box-shadow: var(--mnu-shadow);
+  text-align: left;
+  /* 220ms y ease-out: es un elemento que ENTRA (tabla de motion de la casa,
+     150-250ms para una micro-interaccion). Al cerrar no hay animacion: el
+     panel se va con el atributo hidden y desaparece en el acto, que es lo que
+     un menu tiene que hacer. */
+  animation: mnu-in 220ms var(--ease) both;
+}
+.mnu__panel--ints { width: min(var(--mnu-w-ints), calc(100vw - var(--gutter) * 2)); }
+
+@keyframes mnu-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* El foco dentro del panel se ve sobre tinta, igual que en el drawer. */
+.mnu__panel :focus-visible { outline-color: var(--mnu-text); }
+
+.mnu__inner { padding: 24px 24px 20px; }
+.mnu__cols { display: grid; }
+.mnu__cols--fn { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 24px; }
+.mnu__cols--ints { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px 16px; }
+
+.mnu__cat {
+  margin: 0 0 8px; padding: 0 8px;
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 500; line-height: 1.4;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--mnu-muted);
+}
+/* La categoria de integraciones SI es un enlace (lleva al ancla de su grupo en
+   la pagina entera), asi que sube un escalon de color: tiene que leerse como
+   algo en lo que se puede pulsar, no como un rotulo. */
+.mnu__cat--link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--mnu-text-2); text-decoration: none;
+  transition: color var(--t-fast) var(--ease);
+}
+.mnu__cat--link:hover { color: var(--mnu-accent); }
+.mnu__cat--link .mnu__arrow { opacity: 0; transform: translateX(-4px); transition: opacity var(--t-fast) var(--ease), transform var(--t-fast) var(--ease); }
+.mnu__cat--link:hover .mnu__arrow { opacity: 1; transform: none; }
+
+.mnu__list { list-style: none; margin: 0; padding: 0; }
+
+/* Una entrada: NOMBRE CORTO arriba y frase debajo, que es como lo hace la
+   referencia. Los titulos de features.json son frases enteras y no caben en
+   un menu; los nombres cortos se derivan del campo `clave` (ver menus.html). */
+.mnu__item {
+  position: relative; display: block;
+  padding: 8px 8px 8px 12px;
+  border-radius: var(--r-sm);
+  text-decoration: none; color: inherit;
+  transition: background-color var(--t-fast) var(--ease);
+}
+/* La cuna de acento que aparece por la izquierda al apuntar una entrada. Va
+   como pseudo-elemento y no como border-left para que no descuadre el texto. */
+.mnu__item::before {
+  content: ""; position: absolute; left: 4px; top: 10px; bottom: 10px; width: 2px;
+  border-radius: var(--r-pill); background: var(--mnu-accent);
+  opacity: 0; transform: scaleY(0.4); transform-origin: 50% 50%;
+  transition: opacity var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.mnu__item:hover, .mnu__item:focus-visible { background: var(--mnu-tile); }
+.mnu__item:hover::before, .mnu__item:focus-visible::before { opacity: 1; transform: none; }
+
+.mnu__name {
+  display: block;
+  font-size: 14px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.35;
+  color: var(--mnu-text);
+}
+.mnu__desc {
+  display: block; margin-top: 2px;
+  font-size: 12px; line-height: 1.45;
+  color: var(--mnu-text-2);
+}
+
+/* --------------------------------------------------------------------------
+   Fichas de logo (el desplegable de integraciones)
+   Los SVG van EN LINEA, no como <img src>: un SVG externo no hereda ni el
+   color del documento (currentColor se resolveria a negro) ni la fuente, y 36
+   de las 41 marcas son wordmarks dibujados con <text>. Por eso el tamano de
+   letra se declara aqui, en unidades de usuario del viewBox: es lo mismo que
+   hace la tira del hero en _build/parts/integraciones.css.
+   -------------------------------------------------------------------------- */
+.mnu__tiles { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+/* 🔴 La ficha NO reacciona al raton, y es a proposito. En la referencia cada
+   logotipo enlaza a la pagina de esa integracion; aqui esas paginas no
+   existen, asi que una ficha es un dato, no un control. Darle hover seria
+   prometer un clic que no lleva a ninguna parte — y meter 24 paradas de
+   tabulacion en un menu. Lo unico que se puede pulsar en la columna es el
+   rotulo de categoria, y ese si se enciende y saca su flecha. */
+.mnu__tile {
+  display: flex; align-items: center; gap: 8px;
+  min-height: 40px; padding: 8px 12px;
+  border-radius: var(--r-sm);
+  background: var(--mnu-tile);
+  box-shadow: inset 0 0 0 1px var(--mnu-hairline);
+  color: var(--mnu-text-2);
+}
+.mnu__logo { display: block; height: var(--mnu-mark); width: auto; max-width: 100%; fill: currentColor; }
+.mnu__tile[data-mark="icon"] .mnu__logo { height: var(--mnu-mark-icon); flex: none; }
+.mnu__logo text { font-family: var(--font); font-size: 16px; font-weight: 600; letter-spacing: 0.2px; }
+/* Solo las cinco marcas que tienen simbolo real llevan el nombre escrito al
+   lado; las otras 36 son wordmarks y ya lo dicen ellas. 14px/600 no es un
+   capricho: es lo que iguala la altura de mayuscula (10,1px) y el peso del
+   wordmark de al lado, que viaja a font-size 16 dentro de una caja de 22. */
+.mnu__brand { font-size: 14px; font-weight: 600; letter-spacing: 0.0125em; }
+
+/* Las seis categorias que no caben como fichas siguen nombradas, con enlace a
+   su ancla. Un menu que esconde seis de diez grupos miente sobre el catalogo. */
+.mnu__mores {
+  list-style: none; margin: 16px 0 0; padding: 12px 8px 0;
+  border-top: 1px solid var(--mnu-hairline);
+  display: flex; flex-wrap: wrap; gap: 4px 20px;
+}
+.mnu__more {
+  font-size: 12px; color: var(--mnu-text-2); text-decoration: none;
+  transition: color var(--t-fast) var(--ease);
+}
+.mnu__more:hover { color: var(--mnu-accent); }
+
+/* --------------------------------------------------------------------------
+   El pie del panel
+   -------------------------------------------------------------------------- */
+.mnu__foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  padding: 12px 24px; min-height: 52px;
+  background: var(--mnu-foot);
+  border-top: 1px solid var(--mnu-hairline);
+}
+.mnu__note { margin: 0; font-size: 12px; line-height: 1.45; color: var(--mnu-muted); }
+.mnu__all {
+  flex: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 500; letter-spacing: -0.005em;
+  color: var(--mnu-accent); text-decoration: none;
+  transition: color var(--t-fast) var(--ease);
+}
+.mnu__all:hover { color: var(--mnu-text); }
+.mnu__arrow { display: inline-flex; transition: transform var(--t-fast) var(--ease); }
+.mnu__all:hover .mnu__arrow { transform: translateX(3px); }
+
+/* --------------------------------------------------------------------------
+   Los mismos dos menus DENTRO DEL DRAWER (movil y tablet)
+
+   La fila sigue siendo un .mrow__link con su .mrow__band, asi que el efecto
+   de banda que ya escribe script.js la sigue cogiendo. Lo unico nuevo es el
+   chevron y la lista desplegable que cuelga debajo.
+   -------------------------------------------------------------------------- */
+.msub { display: block; }
+.msub__head { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+/* El disparador del drawer tambien pasa de <a> a <button>: hay que devolverle
+   lo que el navegador le quita a un boton. */
+.drawer button.msub__head {
+  margin: 0; padding: 0; border-left: 0; border-right: 0; border-bottom: 0;
+  background: none; font: inherit; text-align: left; cursor: pointer;
+  color: var(--on-ink-text);
+}
+.msub__head .mrow__label { flex: 1 1 auto; }
+.msub__chev {
+  flex: none; display: inline-flex; margin-right: var(--gutter);
+  color: var(--mnu-muted);
+  transition: transform var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.msub__head[aria-expanded="true"] .msub__chev { transform: rotate(180deg); color: var(--mnu-text); }
+
+.msub__list {
+  display: flex; flex-direction: column;
+  padding: 8px var(--gutter) 16px;
+  background: var(--mnu-tile);
+}
+.msub__item {
+  display: block; padding: 10px 12px; min-height: 44px;
+  border-radius: var(--r-sm); text-decoration: none; color: inherit;
+  transition: background-color var(--t-fast) var(--ease);
+}
+.msub__item:hover { background: var(--mnu-tile-hover); }
+.msub__name { display: block; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; color: var(--mnu-text); }
+.msub__desc { display: block; margin-top: 2px; font-size: 13px; line-height: 1.45; color: var(--mnu-text-2); }
+.msub__all {
+  display: inline-flex; align-items: center; gap: 8px; align-self: flex-start;
+  margin-top: 8px; padding: 10px 12px; min-height: 44px;
+  font-size: 14px; font-weight: 500;
+  color: var(--mnu-accent); text-decoration: none;
+}
+.msub__all:hover { color: var(--mnu-text); }
+
+/* --------------------------------------------------------------------------
+   Movil / tablet
+   -------------------------------------------------------------------------- */
+@media (max-width: 1080px) {
+  /* La barra aprieta el hueco entre entradas a 16px a partir de aqui; el panel
+     estrecha con ella para no tocar los margenes. */
+  :root { --mnu-w-ints: 900px; }
+}
+@media (max-width: 900px) {
+  /* Por debajo de 901px .nav__links es display:none, asi que los dos paneles
+     no se pintan nunca: manda el drawer. Esto es cinturon y tirantes por si
+     alguien cambia aquel breakpoint sin mirar aqui. */
+  .mnu__panel { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Movimiento reducido
+   El bloque que cierra styles.css ya apaga toda animacion con
+   `*, *::before, *::after { animation: none !important }`, y ese !important le
+   gana a esta hoja aunque vaya despues. Se repite aqui, explicito, porque este
+   archivo puede acabar en otro sitio y porque una entrada que aparece de golpe
+   es EXACTAMENTE lo que se quiere: el panel sigue abriendose, sin deslizarse.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .mnu__panel { animation: none; }
+  .mnu__chev, .msub__chev, .mnu__arrow, .mnu__item::before,
+  .mnu__cat--link .mnu__arrow { transition: none; }
+}

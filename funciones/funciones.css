@@ -1,0 +1,261 @@
+/* ==========================================================================
+   HOLDERA — pagina-funcion.css
+   Las nueve paginas de /funciones/ : el indice y las ocho funciones.
+
+   Se genera junto a las paginas: `node _build/contenido/build-funciones.js`
+   copia este archivo a `funciones/funciones.css`, que es lo que sirven las
+   paginas (el .htaccess deniega /_build/). ESTE es el original; la copia se
+   reescribe en cada ejecucion, asi que no se edita alli.
+
+   Arte: la misma direccion que pages.css, sin inventar una segunda. Banda
+   clara arriba (paleta del hero), hoja calida casi negra debajo, Geist,
+   filetes de un pixel, micro-etiquetas en mono y UN solo naranja. Lo unico
+   nuevo es el ritmo: estas paginas son cortas y responden cuatro preguntas
+   seguidas — que hace, que contesta, que NO hace, y por donde sigues.
+
+   Color: todo sale de :root (styles.css y pages.css). Los cuatro valores que
+   no existian estan abajo con prefijo --pgf-* y con su motivo escrito. No hay
+   ni un literal de color fuera de ese bloque: greparlo antes de publicar.
+   ========================================================================== */
+:root {
+  /* medidas */
+  --pgf-aside-max: 460px; /* techo de la tarjeta del enlace al panel */
+  --pgf-num: 64px;      /* la canaleta del numero en las listas numeradas */
+  --pgf-rule: 2px;      /* el filete de acento del bloque "lo que no hace" */
+
+  /* La barra "/" entre migas de pan, sobre la banda clara. Es aria-hidden y
+     puramente decorativa, asi que le basta con separarse del fondo; usar
+     --text-muted la pondria al mismo peso que el enlace y --border (0.10) la
+     hace desaparecer sobre el suelo #cbcbcb del degradado. */
+  --pgf-crumb-sep: rgba(20, 20, 20, 0.28);
+
+  /* El contorno discontinuo de la cita literal del panel. NO es un control:
+     --sh-control-border (0.36) esta calculado para cosas que se pueden pulsar
+     y aqui se leeria como un boton. Este es el escalon decorativo. */
+  --pgf-stamp-border: rgba(255, 250, 242, 0.16);
+
+  /* El lavado de una fila del indice al pasar el raton. --sh-tint (0.035) es
+     el relleno en reposo de esas mismas filas, asi que no puede ser tambien
+     el hover: no se notaria el cambio. Un escalon por encima. */
+  --pgf-row-hover: rgba(255, 250, 242, 0.05);
+}
+
+/* --------------------------------------------------------------------------
+   Migas de pan — sustituyen al .eyebrow en la banda clara
+   -------------------------------------------------------------------------- */
+.pgf-crumbs {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0 8px;
+  /* los enlaces miden 44px de alto por ergonomia tactil; el margen negativo
+     devuelve el bloque a su sitio optico sin tocar el tamano de letra */
+  margin: -10px 0 12px;
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+}
+.pgf-crumbs a, .pgf-crumbs span { display: inline-flex; align-items: center; min-height: 44px; }
+.pgf-crumbs a { color: var(--text-2); text-decoration: none; transition: color var(--t-fast) var(--ease); }
+.pgf-crumbs a:hover { color: var(--text); }
+.pgf-crumbs [aria-current="page"] { color: var(--text); }
+.pgf-crumbs > * + *::before { content: "/"; margin-right: 8px; color: var(--pgf-crumb-sep); }
+
+/* --------------------------------------------------------------------------
+   "Que hace" — columna de titulo + tarjeta de la pantalla | prosa
+
+   La primera version ponia la prosa a la izquierda y la tarjeta a la derecha,
+   con el titulo encima de la prosa a tamano de .sheet__title (74px). Medido a
+   1440: la prosa se para en sus 58ch (577px) dentro de una columna de 830 y el
+   titulo, que son dos palabras, dejaba media pantalla vacia. Las proporciones
+   5fr/7fr son las de .split en pages.css, que es el mismo problema ya resuelto
+   en nosotros.html: titulo corto a la izquierda, texto largo a la derecha.
+   -------------------------------------------------------------------------- */
+.pgf-lede {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(32px, 6vw, 112px); align-items: start;
+}
+.pgf-lede .sheet__title { max-width: 12ch; font-size: clamp(34px, 3.9vw, 56px); }
+
+/* la tarjeta de bisel doble de la casa (6px de marco + nucleo), aqui con el
+   enlace profundo a la pantalla que la funcion describe */
+.pgf-deep {
+  margin-top: clamp(24px, 3vw, 40px); max-width: var(--pgf-aside-max);
+  padding: 6px; border-radius: var(--r-xl);
+  background: var(--sh-tint); border: 1px solid var(--sh-border);
+  box-shadow: var(--shadow-sh);
+}
+.pgf-deep__core {
+  border-radius: calc(var(--r-xl) - 6px);
+  background: var(--sh-surface); box-shadow: var(--sh-bevel);
+  padding: clamp(24px, 2.4vw, 32px);
+}
+.pgf-deep__k {
+  margin: 0 0 10px; display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--sh-text-2);
+}
+.pgf-deep__k::before { content: ""; width: 1px; height: 13px; background: var(--accent-ink); }
+.pgf-deep__name {
+  margin: 0 0 14px;
+  font-size: clamp(24px, 2.2vw, 30px); line-height: 1.1; letter-spacing: -0.025em; font-weight: 500;
+  color: var(--sh-text);
+}
+.pgf-deep__note { margin: 0 0 20px; font-size: 14px; line-height: 1.55; color: var(--sh-muted); }
+/* 🔴 El label es largo ("Abrir el catálogo en el panel demo") y .btn lleva
+   white-space: nowrap del sistema: su MIN-CONTENT son 305px, que con el
+   relleno de la tarjeta (44), el bisel (12) y el borde (2) son 363. Dentro de
+   un grid, una pista `1fr` es `minmax(auto, 1fr)` y NO baja de ese
+   min-content: a 360px la columna entera se salia 23px por la derecha. Y NO
+   se ve con un check de scrollWidth, porque styles.css pone `overflow: clip`
+   en `main` y el desbordamiento queda recortado, sin barra horizontal — hay
+   que mirar los rects, no el ancho del documento. Los dos arreglos hacen
+   falta: aqui que el label pueda partirse, y minmax(0,1fr) en la pista. */
+.pgf-deep .btn { width: 100%; justify-content: space-between; white-space: normal; text-align: left; }
+.pgf-deep__url {
+  margin: 14px 0 0; padding-top: 14px; border-top: 1px solid var(--sh-border);
+  font-family: var(--font-mono); font-size: 11.5px; line-height: 1.5; color: var(--sh-muted);
+  overflow-wrap: anywhere;
+}
+
+/* --------------------------------------------------------------------------
+   "Que contesta" — las preguntas en grande, una por fila
+   -------------------------------------------------------------------------- */
+.pgf-qa { list-style: none; margin: 0; padding: 0; }
+.pgf-q {
+  display: grid; grid-template-columns: var(--pgf-num) minmax(0, 1fr);
+  gap: 12px clamp(20px, 3vw, 48px);
+  padding: clamp(24px, 3vw, 40px) 0; border-top: 1px solid var(--sh-border);
+}
+.pgf-q:last-child { border-bottom: 1px solid var(--sh-border); }
+.pgf-q__n {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em;
+  color: var(--accent-ink); padding-top: 0.6em;
+}
+.pgf-q__t {
+  margin: 0; max-width: 26ch;
+  font-size: clamp(21px, 2.2vw, 33px); line-height: 1.16; letter-spacing: -0.025em; font-weight: 500;
+  color: var(--sh-text); text-wrap: balance;
+}
+
+/* --------------------------------------------------------------------------
+   "Lo que no hace" — el limite declarado, con su cita literal del panel
+   -------------------------------------------------------------------------- */
+.pgf-limit {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(28px, 4vw, 72px); align-items: start;
+}
+.pgf-limit .sheet__title { max-width: 13ch; font-size: clamp(30px, 3.4vw, 48px); }
+.pgf-limit__body { border-left: var(--pgf-rule) solid var(--accent-ink); padding-left: clamp(20px, 2.5vw, 32px); }
+.pgf-limit__body p { margin: 0; max-width: 54ch; font-size: clamp(16.5px, 1.35vw, 20px); line-height: 1.6; color: var(--sh-text-2); }
+
+.pgf-cite {
+  margin: clamp(24px, 3vw, 32px) 0 0; padding: 20px 22px;
+  border: 1px dashed var(--pgf-stamp-border); border-radius: var(--r-md);
+  background: var(--sh-tint);
+}
+.pgf-cite blockquote { margin: 0; font-family: var(--font-mono); font-size: 13.5px; line-height: 1.6; color: var(--sh-text); }
+.pgf-cite figcaption {
+  margin-top: 12px; font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sh-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Indice: las ocho, con nombre simple + descripcion corta
+   -------------------------------------------------------------------------- */
+.pgf-list { list-style: none; margin: 0; padding: 0; }
+.pgf-item { border-top: 1px solid var(--sh-border); }
+.pgf-item:last-child { border-bottom: 1px solid var(--sh-border); }
+.pgf-item > a {
+  display: grid; grid-template-columns: var(--pgf-num) minmax(0, 1fr) max-content 44px;
+  align-items: center; gap: clamp(16px, 3vw, 48px);
+  padding: clamp(24px, 2.8vw, 36px) clamp(12px, 1.4vw, 20px);
+  margin-inline: calc(-1 * clamp(12px, 1.4vw, 20px));
+  border-radius: var(--r-md); text-decoration: none; color: var(--sh-text);
+  transition: background-color var(--t-fast) var(--ease);
+}
+.pgf-item > a:hover { background: var(--pgf-row-hover); }
+.pgf-item__n { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; color: var(--accent-ink); align-self: start; padding-top: 0.5em; }
+.pgf-item__t { display: block; font-size: clamp(26px, 3vw, 42px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.05; }
+.pgf-item__d { display: block; margin-top: 10px; max-width: 54ch; font-size: clamp(15px, 1.2vw, 17px); line-height: 1.5; color: var(--sh-muted); }
+/* La pantalla del panel va en su PROPIA columna, alineada a la derecha. Antes
+   iba apilada bajo la descripcion y la fila dejaba ~500px de vacio entre el
+   texto y el aro de la flecha; ahora ese hueco lo ocupa el dato. */
+.pgf-item__s {
+  display: block; text-align: right; white-space: nowrap;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--sh-text-2);
+}
+.pgf-go {
+  width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+  border: 1px solid var(--sh-control-border); color: var(--sh-text);
+  transition: background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.pgf-item > a:hover .pgf-go { background: var(--sh-text); color: var(--ink); transform: translate(2px, -1px); }
+
+/* --------------------------------------------------------------------------
+   Pie de pagina de la funcion: anterior / siguiente / indice
+   -------------------------------------------------------------------------- */
+.pgf-pager { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(16px, 2vw, 24px); }
+.pgf-pager__link {
+  display: grid; align-content: start; gap: 10px;
+  padding: clamp(22px, 2.6vw, 34px);
+  border-radius: var(--r-lg); border: 1px solid var(--sh-border); background: var(--sh-tint);
+  text-decoration: none; color: var(--sh-text);
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.pgf-pager__link:hover { background: var(--pgf-row-hover); border-color: var(--sh-control-border); transform: translateY(-2px); }
+.pgf-pager__link--next { grid-column: 2; text-align: right; }
+.pgf-pager__k {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sh-muted);
+}
+.pgf-pager__link--next .pgf-pager__k { justify-content: flex-end; }
+.pgf-pager__t { font-size: clamp(18px, 1.7vw, 24px); line-height: 1.18; letter-spacing: -0.02em; font-weight: 500; }
+.pgf-pager__d { font-size: 14.5px; line-height: 1.55; color: var(--sh-muted); }
+.pgf-pager__all { margin: clamp(24px, 3vw, 36px) 0 0; padding-top: 20px; border-top: 1px solid var(--sh-border); }
+
+/* nota al pie de la hoja: de que hotel son las cifras que se acaban de leer */
+.pgf-note {
+  display: flex; gap: 14px; margin: clamp(32px, 4vw, 48px) 0 0; padding-top: 20px;
+  border-top: 1px solid var(--sh-border);
+  max-width: 62ch; font-size: 14px; line-height: 1.6; color: var(--sh-muted);
+}
+.pgf-note::before { content: ""; flex: none; width: 1px; background: var(--accent-ink); }
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 1100px) {
+  /* la pantalla deja de tener columna propia y vuelve bajo la descripcion:
+     a 1024 el nombre mas largo ("Métricas · Ocupación") se comia el titulo */
+  .pgf-item > a { grid-template-columns: var(--pgf-num) minmax(0, 1fr) 44px; }
+  .pgf-item__s { grid-column: 2; grid-row: 2; text-align: left; margin-top: 12px; white-space: normal; }
+  .pgf-item__c { grid-column: 2; grid-row: 1; }
+  .pgf-item__n { grid-row: 1 / span 2; }
+  .pgf-go { grid-column: 3; grid-row: 1 / span 2; }
+}
+@media (max-width: 900px) {
+  /* minmax(0,1fr), no 1fr: ver la nota del boton de .pgf-deep */
+  .pgf-lede, .pgf-limit, .pgf-pager { grid-template-columns: minmax(0, 1fr); }
+  .pgf-lede .sheet__title { max-width: none; }
+  .pgf-deep { max-width: none; }
+  .pgf-pager__link--next { grid-column: auto; text-align: left; }
+  .pgf-pager__link--next .pgf-pager__k { justify-content: flex-start; }
+  .pgf-limit .sheet__title { max-width: none; }
+  .pgf-q { grid-template-columns: 40px minmax(0, 1fr); }
+  .pgf-q__t { max-width: none; }
+  .pgf-item > a { grid-template-columns: 40px minmax(0, 1fr); }
+  .pgf-item__d, .pgf-item__s { max-width: none; }
+  .pgf-go { display: none; }
+}
+@media (max-width: 560px) {
+  .pgf-limit__body { padding-left: 16px; }
+  .pgf-deep__core { padding: 22px; }
+  .pgf-cite { padding: 16px 18px; }
+}
+
+/* --------------------------------------------------------------------------
+   Movimiento reducido — styles.css ya anula toda transicion; se repite aqui
+   para que el desplazamiento del hover no sobreviva por descuido.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .pgf-pager__link:hover { transform: none; }
+  .pgf-item > a:hover .pgf-go { transform: none; }
+}

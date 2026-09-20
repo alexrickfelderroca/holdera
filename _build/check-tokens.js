@@ -38,12 +38,18 @@ const exists = (f) => {
    7.58:1 on ink") is documentation, not a colour literal, and flagging it is
    the same false-positive failure mode that made the first contrast.js
    untrustworthy — a guard that cries wolf stops being read. */
-const CSS_FILES = ['styles.css', 'pages.css', 'hotel-anim.css', 'sections.css'].filter(exists);
-const HTML_FILES = fs.readdirSync(root).filter(f => /\.html$/i.test(f) && !/\.bak$/i.test(f));
+/* Descubiertas de lo que las paginas ENLAZAN, no escritas a mano: la lista
+   manual ya se quedo corta dos veces hoy (hotel-anim.css, sections.css) y
+   volvia a quedarse corta con funciones/funciones.css. Ver site-pages.js. */
+const CSS_FILES = require('./site-pages').assets().css;
+/* Antes hacia readdirSync de la RAIZ y no veia ninguna pagina en subcarpeta
+   (/funciones/<slug>/index.html). Una pagina que el guardia no abre es una
+   pagina donde un literal de color pasa sin que nadie lo vea. */
+const HTML_FILES = require('./site-pages').pages;
 /* Every script that can touch a token. Miss one and rule 1 turns into a liar:
    fish.js reads --fish-core and writes --persp, so leaving it out reported four
    perfectly-used tokens as orphans and four runtime properties as undefined. */
-const JS_FILES = ['brain.js', 'script.js', 'waves.js', 'hotel-anim.js'].filter(exists);
+const JS_FILES = require('./site-pages').assets().js;
 
 if (faltan.length) {
   console.error('AVISO  listados y no encontrados: ' + faltan.join(', '));

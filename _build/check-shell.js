@@ -14,7 +14,10 @@ const fs = require('fs');
 const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const SHELL = path.join(__dirname, 'shell');
-const PAGES = ['index.html', 'nosotros.html', 'partners.html', 'contacto.html', 'aviso-legal.html', 'privacidad.html', '404.html'];
+/* La lista ya no se escribe a mano: una pagina nueva que nadie anada aqui
+   pasaria esta puerta en verde sin que nadie compare su shell. Ver el porque
+   completo en _build/site-pages.js. */
+const { conShell: PAGES } = require('./site-pages');
 
 const norm = s => s
   .replace(/<!--[\s\S]*?-->/g, '')

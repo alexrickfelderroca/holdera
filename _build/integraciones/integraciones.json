@@ -6,7 +6,8 @@
     "robots": "https://hotelgest.com/robots.txt permite explícitamente a ClaudeBot y anthropic-ai.",
     "webs_oficiales": "Cada dominio se probó por HTTP el 20-09-2026. Solo se anota `web` si respondió 2xx y el <title> o la URL final mencionan la marca; el resto queda en null con su motivo en `nota_web`.",
     "atribucion_a_holdera": "🔴 PENDIENTE DE CONFIRMAR. Estas son las integraciones de HOTELGEST. Que Holdera comparta las mismas es lo que dijo Alex; no se ha podido verificar contra ninguna fuente pública. Nada aquí demuestra que el producto de Holdera esté conectado hoy a ninguna de ellas.",
-    "marcas": "Las marcas pertenecen a sus respectivos titulares. No implica acuerdo comercial, patrocinio ni respaldo."
+    "marcas": "Las marcas pertenecen a sus respectivos titulares. No implica acuerdo comercial, patrocinio ni respaldo.",
+    "confirmacion_de_alex": "Alex confirmo el 20-09-2026, por instruccion expresa, que Holdera se integra con las 50. El catalogo procede de Hotelgest, con quien colabora. La verificacion tecnica de cada una NO esta hecha en este repositorio: la fuente de la afirmacion es el propietario del negocio."
   },
   "totales": {
     "catalogo_completo": 50,
@@ -14,8 +15,9 @@
     "autoridades_y_estandares": 6,
     "modulos_propios_de_hotelgest": 3,
     "en_la_marquesina": 41,
-    "con_web_verificada": 41,
-    "sin_web_verificada": 9
+    "con_web_verificada": 39,
+    "sin_web_verificada": 11,
+    "nota": "Derivados del propio array integraciones. Si se quita o anade un enlace, hay que volver a pasar este calculo: build-pagina.js compara la cifra declarada con la real y falla si no cuadran."
   },
   "grupos": [
     {
@@ -148,13 +150,13 @@
       "nombre": "YieldPlanet",
       "categoria": "Channel manager",
       "slug": "yieldplanet",
-      "web": "https://www.yieldplanet.com/",
       "grupo": "channel",
       "tipo": "Channel Manager",
       "origen": "software-de-tercero",
       "en_marquesina": true,
       "nombre_en_origen": "YieldPlanet",
-      "cat_en_origen": "channel"
+      "cat_en_origen": "channel",
+      "nota_web": "Sin enlace: su dominio no respondia el 20-09-2026 (comprobado con UA de navegador y siguiendo redirecciones)."
     },
     {
       "nombre": "Channex",
@@ -281,13 +283,13 @@
       "nombre": "Dataria",
       "categoria": "Revenue management",
       "slug": "dataria",
-      "web": "https://dataria.es/",
       "grupo": "revenue",
       "tipo": "Revenue Management",
       "origen": "software-de-tercero",
       "en_marquesina": true,
       "nombre_en_origen": "Dataria",
-      "cat_en_origen": "revenue"
+      "cat_en_origen": "revenue",
+      "nota_web": "Sin enlace: su dominio no respondia el 20-09-2026 (comprobado con UA de navegador y siguiendo redirecciones)."
     },
     {
       "nombre": "PriceLabs",
@@ -330,13 +332,14 @@
       "nombre": "Revtool",
       "categoria": "Revenue management",
       "slug": "revtool",
-      "web": "https://revtool.es/",
+      "web": "https://totalprofitjourney.com/revtool",
       "grupo": "revenue",
       "tipo": "Revenue Management",
       "origen": "software-de-tercero",
       "en_marquesina": true,
       "nombre_en_origen": "Revtool",
-      "cat_en_origen": "revenue"
+      "cat_en_origen": "revenue",
+      "nota_web": "revtool.es redirige 301 aqui (comprobado 20-09-2026)."
     },
     {
       "nombre": "TheNetRevenue",

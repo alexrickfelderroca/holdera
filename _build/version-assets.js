@@ -44,10 +44,10 @@ const path = require('path');
 const crypto = require('crypto');
 
 const ROOT = path.resolve(__dirname, '..');
-const PAGES = [
-  'index.html', 'nosotros.html', 'partners.html', 'contacto.html',
-  'aviso-legal.html', 'privacidad.html', '404.html',
-];
+/* Descubiertas, no escritas a mano: una pagina que no este en esta lista
+   sirve el css y el js SIN sellar, y el CDN de Hostinger le da la copia vieja
+   siete dias. Ver _build/site-pages.js. */
+const { pages: PAGES } = require('./site-pages');
 
 const hashes = new Map();
 function hashOf(file) {
