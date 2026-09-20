@@ -210,7 +210,20 @@
   height: var(--ha-seam-h);
   pointer-events: none;
 }
-.ha--seam::before {
+/* 🔴 La rampa de ARRIBA solo existe si hay algo oscuro encima que fundir.
+ *
+ * En holdera.es este bloque es el PRIMER hijo de <main>, y encima no hay hoja
+ * oscura: esta el hero claro. La rampa pintaba entonces una banda negra de
+ * 180 px con las esquinas redondeadas de la hoja, cayendo desde --sh-bg sobre
+ * un hero gris claro — justo lo contrario de la costura suave que pretende.
+ *
+ * `:not(:first-child)` en vez de quitar la regla: la de ABAJO sigue haciendo
+ * falta (debajo viene #conectado, que si es hoja oscura), y asi el bloque se
+ * corrige solo si algun dia deja de ir el primero. */
+/* Sin `content` el pseudo ni se crea: si solo se le quita el fondo sigue
+   habiendo una caja de 180 px a z-index 30 encima del escenario. */
+.ha--seam:first-child::before { content: none; }
+.ha--seam:not(:first-child)::before {
   top: 0;
   background: linear-gradient(180deg,
     var(--ha-seam-0) 0%, var(--ha-seam-1) 32%,
