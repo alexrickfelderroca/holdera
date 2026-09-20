@@ -2,7 +2,5 @@
   { "path": "/index.html?park=0",     "name": "01a-home-hero" },
   { "path": "/index.html?park=3200",  "name": "01b-home-recorrido" },
   { "path": "/index.html?park=8000",  "name": "01c-home-recorrido-medio" },
-  { "path": "/index.html?park=12500", "name": "01d-home-conectado" },
-  { "path": "/index.html?park=15000", "name": "01e-home-faq" },
-  { "path": "/index.html?park=16600", "name": "01f-home-cta-pie" }
+  { "path": "/index.html?park=11000", "name": "01d-home-recorrido-pie" }
 ]

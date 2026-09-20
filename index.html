@@ -14,8 +14,8 @@
   <link rel="stylesheet" href="styles.css?v=8b614adc">
   <!-- El recorrido del hotel. Va DESPUES de styles.css: lee sus tokens del :root. -->
   <link rel="stylesheet" href="hotel-anim.css?v=4d1b9ac0">
-  <!-- Las tres secciones nuevas (conectado · funciones · preguntas). -->
-  <link rel="stylesheet" href="sections.css?v=8d8d7e40">
+  <!-- La marquesina de integraciones del hero y el menú de la nav. -->
+  <link rel="stylesheet" href="sections.css?v=7d558d42">
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
   <script>document.documentElement.classList.add('has-js');</script>
   <!-- seo:head -->
@@ -585,10 +585,11 @@
      entre dos <section class="sheet"> cualesquiera.
 
      Depende de:  <link rel="stylesheet" href="hotel-anim.css?v=4d1b9ac0">   (tras styles.css)
-                  <script src="hotel-anim.js?v=6b954b34" defer></script>
+                  <script src="hotel-anim.js?v=c4a95f7f" defer></script>
 
-     Todos los id llevan prefijo "ha-" porque index.html ya usa #producto,
-     #inicio, #contacto, #como-trabajamos y cinco #producto-*.
+     Todos los id llevan prefijo "ha-" para no chocar con los de la portada
+     (#inicio es el hero). Enumerarlos aqui no sirve: la lista se queda vieja
+     cada vez que una seccion entra o sale — el prefijo es lo que aguanta.
      La clase .reveal del original es aqui .ha-reveal: en holdera .reveal ya
      existe con otra semantica y la gobierna script.js.
 
@@ -757,309 +758,6 @@
     </div>
   </div>
 </section>
-
-<!-- ==========================================================================
-     BLOQUE: «Todo tu hotel, conectado» — qué entra, qué enciende y qué se
-     queda a oscuras sin ello.
-     CSS: _build/parts/opera.css  (tokens --op-*)
-     Hoja: OSCURA (va dentro de <main>, sobre --sh-bg).
-
-     COHERENCIA CON partners.html — leerlo antes de tocar esto:
-       · Las cuatro fuentes de la columna «lo que ya entra» son literalmente
-         las cuatro de partners.html, con los mismos nombres. Allí se dice
-         «cuatro fuentes, ni una más»: aquí no se puede añadir una quinta a
-         esa lista sin contradecir la página que ya está publicada.
-       · Todo lo demás (contabilidad, POS por ticket, distribución, nóminas,
-         contadores, encuestas, pagos, cerraduras) va en la segunda columna,
-         que es la de lo que NO se lee hoy.
-       · Sin conexión en vivo y sin contraseñas de tus sistemas: eso también
-         está publicado allí y aquí se repite igual.
-
-     Las cuentas de la columna derecha salen del catálogo de métricas del
-     panel: 57 definidas, 13 con valor en el hotel de la demo, 44 sin valor.
-     Los 18 / 9 / 5 / 3 / 3 / 3 / 2 son el recuento de las fuentes que nombra
-     cada una de esas 44 — y se solapan, porque hay métricas que esperan a dos
-     sitios a la vez. Está dicho en la nota del final del bloque.
-     ========================================================================== -->
-<section class="sheet op" id="conectado" aria-labelledby="op-title">
-  <div class="container">
-    <p class="tag reveal" data-reveal="up">Todo tu hotel</p>
-    <h2 id="op-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Conectado hasta donde llega. <span class="fade">Y dicho hasta dónde llega.</span></h2>
-    <p class="sheet__lead reveal" data-reveal="up" style="--i:2">Cualquiera puede dibujar un esquema con veinte cajas conectadas. Esto es el de verdad: las cuatro cosas que Holdera lee hoy, qué se enciende con cada una y qué pantalla se queda apagada si falta — y al lado, sin adornos, todo lo que todavía no lee y cuántas métricas están esperando a eso.</p>
-  </div>
-
-  <div class="container op__grid">
-
-    <!-- ------------------------------------------------ lo que ya entra -->
-    <div class="op__col op__col--in reveal" data-reveal="up">
-      <h3 class="op__ch"><span class="op__ch-dot" aria-hidden="true"></span>Lo que ya entra</h3>
-      <p class="op__cnote">Cuatro archivos que tu hotel ya sabe generar. Ninguno es un sistema nuevo que tu equipo tenga que aprender.</p>
-
-      <ol class="op__srcs">
-        <li class="op-src">
-          <p class="op-src__n" aria-hidden="true">01</p>
-          <h4 class="op-src__name">PMS · el cierre del día</h4>
-          <p class="op-src__what">Una fila por noche cerrada: habitaciones físicas, vendidas, ocupadas, fuera de orden y fuera de servicio, y el ingreso de alojamiento de esa noche.</p>
-          <p class="op-src__on"><span class="op-src__lab">Enciende</span>Ocupación, ADR y RevPAR de cada noche cerrada, y el histórico contra el que se compara el mes.</p>
-          <p class="op-src__off"><span class="op-src__lab">Sin esto</span>No hay histórico: ni medias, ni comparación con el año pasado. Se dice en pantalla en vez de enseñar un cero.</p>
-        </li>
-
-        <li class="op-src">
-          <p class="op-src__n" aria-hidden="true">02</p>
-          <h4 class="op-src__name">PMS · la foto intradía</h4>
-          <p class="op-src__what">El estado del hotel a una hora concreta: llegadas, salidas, habitaciones en casa y el estado de limpieza de las vacías.</p>
-          <p class="op-src__on"><span class="op-src__lab">Enciende</span>El hotel de hoy planta por planta, el housekeeping y las llegadas que todavía no tienen habitación lista.</p>
-          <p class="op-src__off"><span class="op-src__lab">Sin esto</span>El día de hoy no existe: solo se pueden enseñar noches ya cerradas, y Holdera lo advierte.</p>
-        </li>
-
-        <li class="op-src">
-          <p class="op-src__n" aria-hidden="true">03</p>
-          <h4 class="op-src__name">Reservas · las noches futuras</h4>
-          <p class="op-src__what">Las habitaciones on the books de cada noche que aún no ha llegado, por tipo, con la fecha en que se tomó la lectura. Dos lecturas separadas en el tiempo son lo que hace posible el pickup.</p>
-          <p class="op-src__on"><span class="op-src__lab">Enciende</span>El calendario mes a mes, el pickup de los últimos siete días y el ritmo de venta contra el año pasado.</p>
-          <p class="op-src__off"><span class="op-src__lab">Sin esto</span>El calendario se queda en histórico: ni pickup, ni pace. No se estima; se dice que no está.</p>
-        </li>
-
-        <li class="op-src">
-          <p class="op-src__n" aria-hidden="true">04</p>
-          <h4 class="op-src__name">Otros departamentos</h4>
-          <p class="op-src__what">El ingreso que no es alojamiento —restauración, spa, parking, lavandería— como total por día y por departamento, cerrado con la misma fecha que tu PMS usa para el día.</p>
-          <p class="op-src__on"><span class="op-src__lab">Enciende</span>El TRevPAR de verdad: el ingreso total del hotel por habitación disponible, no solo la cama.</p>
-          <p class="op-src__off"><span class="op-src__lab">Sin esto</span>Se enseña el RevPAR y el TRevPAR queda marcado como incompleto. En el panel de demostración esos importes van <em>modelados</em> desde supuestos declarados, y cada supuesto está impreso detrás de la cifra.</p>
-        </li>
-      </ol>
-
-      <p class="op__live">Y nada de esto se queda conectado. Holdera lee el archivo que tu hotel exporta, lo procesa y lo publica; entre un export y el siguiente la pantalla sigue diciendo lo mismo, y por eso cada pantalla lleva escrito de cuándo es su dato. <a class="op__link" href="partners.html">Las cuatro vías por las que puede llegarnos ese archivo</a>.</p>
-    </div>
-
-    <!-- --------------------------------------- lo que todavía no entra -->
-    <div class="op__col op__col--out reveal" data-reveal="up" style="--i:2">
-      <h3 class="op__ch op__ch--out"><span class="op__ch-dot op__ch-dot--out" aria-hidden="true"></span>Lo que todavía no entra</h3>
-      <p class="op__cnote">Del catálogo de 57 métricas, en el hotel de la demo 13 tienen valor y 44 salen sin cifra. Cada una dice a qué está esperando. Estos son los huecos grandes.</p>
-
-      <dl class="op__gaps">
-        <div class="op-gap">
-          <dt class="op-gap__k"><span class="op-gap__name">Contabilidad · el libro mayor</span><span class="op-gap__n"><b>18</b> métricas</span></dt>
-          <dd class="op-gap__v">Holdera llega hoy hasta el <strong>ingreso</strong>. El beneficio no: sin el mapeo de cuentas validado no hay GOP, ni GOPPAR, ni GOPPOR, ni coste por habitación ocupada, ni márgenes. Es el hueco más grande del catálogo, y con diferencia.</dd>
-        </div>
-
-        <div class="op-gap">
-          <dt class="op-gap__k"><span class="op-gap__name">POS · el ticket, no el total</span><span class="op-gap__n"><b>9</b> métricas</span></dt>
-          <dd class="op-gap__v">Con el total del día por departamento sale el TRevPAR. Lo que no sale es lo que pasa dentro del restaurante: ticket medio, ingreso por asiento y hora, coste de comida y de bebida. Para eso hacen falta los tickets y el inventario, no una suma.</dd>
-        </div>
-
-        <div class="op-gap">
-          <dt class="op-gap__k"><span class="op-gap__name">Distribución · canales y comisiones</span><span class="op-gap__n"><b>2</b> métricas</span></dt>
-          <dd class="op-gap__v">Si tu libro de reservas trae el canal, la mezcla por canal y el peso de la venta directa se ven. Lo que ese canal te cuesta, no: el coste de distribución necesita las comisiones, y esas viven entre tu channel manager y tu contabilidad. El reparto de GDS y turoperación tampoco sale sin el detalle de distribución.</dd>
-        </div>
-
-        <div class="op-gap">
-          <dt class="op-gap__k"><span class="op-gap__name">Mercado · tu comp set</span><span class="op-gap__n"><b>3</b> métricas</span></dt>
-          <dd class="op-gap__v">MPI, ARI y RGI comparan tu hotel con su competencia, y esa competencia no está en ningún archivo tuyo. Sin una fuente de mercado contratada, esas tres casillas se quedan vacías y dicen por qué.</dd>
-        </div>
-
-        <div class="op-gap">
-          <dt class="op-gap__k"><span class="op-gap__name">Personas · nóminas y fichajes</span><span class="op-gap__n"><b>5</b> métricas</span></dt>
-          <dd class="op-gap__v">Productividad, coste de personal sobre ingreso, horas extra, coste de plantilla por habitación ocupada. Hoy Holdera ve cuánta gente hay desplegada en la demo, no cuánto cuesta.</dd>
-        </div>
-
-        <div class="op-gap">
-          <dt class="op-gap__k"><span class="op-gap__name">Huésped · encuestas y CRM</span><span class="op-gap__n"><b>3</b> métricas</span></dt>
-          <dd class="op-gap__v">NPS, satisfacción y repetición salen de preguntarle al huésped y de un histórico de clientes. Ninguna de las dos cosas se puede deducir de un export de habitaciones, y no se van a estimar.</dd>
-        </div>
-
-        <div class="op-gap">
-          <dt class="op-gap__k"><span class="op-gap__name">Edificio · contadores de luz y agua</span><span class="op-gap__n"><b>3</b> métricas</span></dt>
-          <dd class="op-gap__v">Consumo por habitación ocupada e intensidad energética e hídrica. Hace falta el contador o la factura; no hay manera honesta de repartir un consumo que nadie ha medido.</dd>
-        </div>
-
-        <div class="op-gap op-gap--none">
-          <dt class="op-gap__k"><span class="op-gap__name">Pagos y cerraduras</span><span class="op-gap__n">ninguna</span></dt>
-          <dd class="op-gap__v">No se conectan, y hoy no hacen falta. Holdera no cobra, no concilia cobros y no abre puertas: del dinero solo necesita el ingreso del día, que ya viene en el cierre del PMS, y de las entradas se queda con lo que registra el PMS, no con lo que registra la cerradura.</dd>
-        </div>
-      </dl>
-
-      <p class="op__foot">Los números no suman 44 a propósito: hay métricas que esperan a dos sitios a la vez y aparecen en los dos. La lista completa, con el nombre de cada una y lo que le falta, está abierta en el panel — <a class="op__link" href="/panel/metrics/">el catálogo de las 57</a>.</p>
-    </div>
-
-  </div>
-</section>
-
-
-<!-- ==========================================================================
-     BLOQUE: Preguntas frecuentes
-     Fuente de contenido: _build/contenido/faq.json  (12 preguntas)
-     JSON-LD:             _build/contenido/faq-jsonld.json  (8 preguntas —
-                          las cuatro con marcador se quedan fuera a propósito)
-     CSS:                 _build/parts/faq.css  (tokens --faq-*)
-     Hoja: OSCURA (va dentro de <main>, sobre --sh-bg).
-
-     · <details>/<summary> nativo: abre y cierra sin una línea de JavaScript.
-     · El texto de cada respuesta es IDÉNTICO al de faq.json, porque el de
-       faq.json es el que viaja en el dato estructurado. Si cambias uno,
-       cambia el otro y vuelve a generar el JSON-LD:
-           node _build/contenido/build-faq-jsonld.js
-     · Cuatro respuestas llevan un marcador «[… por confirmar]». Ese formato
-       es el del resto del sitio y es el que reconoce la expresión regular de
-       _build/check-placeholders.js — no le metas nada detrás de «confirmar»
-       dentro del corchete o el guardia deja de verlo.
-     ========================================================================== -->
-<section class="sheet faq" id="preguntas" aria-labelledby="faq-title">
-  <div class="container faq__grid">
-
-    <div class="faq__intro">
-      <p class="tag reveal" data-reveal="up">Preguntas</p>
-      <h2 id="faq-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Lo que se pregunta <span class="fade">antes de sentarse.</span></h2>
-      <p class="sheet__lead reveal" data-reveal="up" style="--i:2">Doce preguntas reales de dirección de hotel, contestadas hasta donde llega lo que hay. No hay respuesta de compromiso: donde Holdera todavía no ha decidido algo, lo pone y ya está.</p>
-      <p class="faq__legend reveal" data-reveal="up" style="--i:3">
-        <span class="faq__legend-sample" data-placeholder>[… por confirmar]</span>
-        Cuatro de las doce llevan un hueco escrito así. Son decisiones abiertas —precio, permanencia, dónde vive el dato, multipropiedad— y preferimos el hueco a una frase que suene bien.
-      </p>
-    </div>
-
-    <div class="faq__list reveal" data-reveal="up">
-
-      <details class="faq__item" id="faq-sustituye">
-        <summary class="faq__q">¿Holdera sustituye a mi PMS o se conecta con él?<span class="faq__sign" aria-hidden="true"></span></summary>
-        <div class="faq__a">
-          <p>Se conecta, y en una sola dirección: lee. Holdera no gestiona reservas, no bloquea habitaciones, no cobra y no escribe nada en tus sistemas. Tu PMS sigue siendo donde ocurre la operación; Holdera es donde la ves junta y con su origen al lado. Si un día dejas de usarlo, tu PMS se queda exactamente como estaba.</p>
-        </div>
-      </details>
-
-      <details class="faq__item" id="faq-que-pms">
-        <summary class="faq__q">¿Con qué PMS funciona?<span class="faq__sign" aria-hidden="true"></span></summary>
-        <div class="faq__a">
-          <p>La pregunta que decide no es la marca, es qué informes sabe sacar. Holdera necesita cuatro cosas: el cierre del día, la foto intradía, las noches ya vendidas por delante y el ingreso de los departamentos que no son alojamiento. Si tu PMS puede generar eso, aunque sea en un CSV, funciona. No publicamos una lista de PMS «certificados» porque no la tenemos: mándanos un informe de ejemplo y te decimos qué pantallas se encienden con él y cuáles no.</p>
-        </div>
-      </details>
-
-      <details class="faq__item" id="faq-falta-dato">
-        <summary class="faq__q">¿Y si mi PMS no exporta uno de esos datos?<span class="faq__sign" aria-hidden="true"></span></summary>
-        <div class="faq__a">
-          <p>Entonces esa parte no se enciende, y la pantalla lo dice. Sin la foto intradía no hay «hoy»: solo noches ya cerradas. Sin las noches futuras no hay pickup ni ritmo de venta. Sin el ingreso de restauración y spa se enseña el RevPAR y el TRevPAR queda marcado como incompleto, que es la cifra que más se falsea cuando solo se cuentan las habitaciones. Lo que no se hace nunca es estimar el hueco y enseñarlo como si fuera un dato.</p>
-        </div>
-      </details>
-
-      <details class="faq__item" id="faq-puesta-en-marcha">
-        <summary class="faq__q">¿Cuánto tarda en estar funcionando?<span class="faq__sign" aria-hidden="true"></span></summary>
-        <div class="faq__a">
-          <p>Depende de por dónde entre el dato, y hay cuatro vías. Por la más simple —descargas el informe de tu PMS y nos lo pasas— ver tus propios números en pantalla es cuestión de días y no hace falta que nadie toque tu sistema. Lo demás (que el export salga solo cada noche, repasar contigo las definiciones) depende de tu PMS y de quién lo administre, así que la fecha te la damos después de ver tu export, no antes de verlo.</p>
-        </div>
-      </details>
-
-      <details class="faq__item" id="faq-que-datos">
-        <summary class="faq__q">¿Qué datos salen exactamente de mi hotel?<span class="faq__sign" aria-hidden="true"></span></summary>
-        <div class="faq__a">
-          <p>Cifras de habitaciones y de dinero por día, no expedientes. Del cierre diario: habitaciones físicas, vendidas, ocupadas, fuera de orden, fuera de servicio y el ingreso de alojamiento de esa noche. De la foto intradía: llegadas, salidas y el estado de limpieza de las habitaciones. De las noches futuras: habitaciones on the books por noche y por tipo, con la fecha en que se tomó la lectura. Y de los otros departamentos, el total por día. Nada de eso necesita el nombre de nadie.</p>
-        </div>
-      </details>
-
-      <!-- TODO (Alex): ubicación del dato, plazo de conservación y control de acceso interno. -->
-      <details class="faq__item faq__item--todo" id="faq-donde-se-guardan">
-        <summary class="faq__q">¿Dónde se guardan esos datos y quién puede verlos?<span class="faq__sign" aria-hidden="true"></span></summary>
-        <div class="faq__a">
-          <p>Lo que sí está decidido: Holdera no se queda conectado a tus sistemas y nunca te pide sus contraseñas. Si hace falta un acceso, es uno propio, de solo lectura, acotado a los campos que hayamos acordado, y lo puedes revocar cuando quieras. Lo que todavía no está cerrado por escrito es dónde se alojan tus datos, cuánto tiempo se conservan y quién de nuestro lado puede abrirlos: <span class="faq__todo" data-placeholder>[ubicación del dato, plazo de conservación y control de acceso por confirmar]</span>. Preferimos dejarlo en blanco a publicar una política que aún no existe.</p>
-        </div>
-      </details>
-
-      <details class="faq__item" id="faq-datos-personales">
-        <summary class="faq__q">¿Qué pasa con los datos personales de los huéspedes?<span class="faq__sign" aria-hidden="true"></span></summary>
-        <div class="faq__a">
-          <p>Holdera trabaja con agregados: cuántas habitaciones, en qué estado y por cuánto. Para calcular ocupación, ADR, RevPAR o pickup no hace falta ni un nombre, y por defecto no se piden. En el panel de demostración hay una pantalla de huéspedes con algo de detalle individual —lo justo para atender a alguien que está esperando en recepción, y con la inicial del apellido—; si en tu hotel ese detalle sobra, esa pantalla sencillamente no se enciende, porque sin la fuente no hay pantalla. La parte legal y de custodia está en la pregunta anterior, que es la que todavía tiene decisiones abiertas.</p>
-        </div>
-      </details>
-
-      <!-- TODO (Alex): precio y modelo de facturación. -->
-      <details class="faq__item faq__item--todo" id="faq-precio">
-        <summary class="faq__q">¿Cuánto cuesta y cómo se factura?<span class="faq__sign" aria-hidden="true"></span></summary>
-        <div class="faq__a">
-          <p><span class="faq__todo" data-placeholder>[Precio y modelo de facturación por confirmar]</span>. Holdera está en fase piloto y el precio todavía no está publicado. Poner aquí una cifra de adorno sería exactamente lo contrario de lo que hace el producto, así que no la vas a encontrar: cuéntanos cuántas habitaciones tienes y qué exporta tu PMS y lo hablamos con tu caso delante.</p>
-        </div>
-      </details>
-
-      <!-- TODO (Alex): permanencia y condiciones de baja. -->
-      <details class="faq__item faq__item--todo" id="faq-permanencia">
-        <summary class="faq__q">¿Hay permanencia?<span class="faq__sign" aria-hidden="true"></span></summary>
-        <div class="faq__a">
-          <p><span class="faq__todo" data-placeholder>[Condiciones de permanencia y de baja por confirmar]</span>. No hay todavía una política escrita y preferimos decirlo a improvisarla. Lo que sí es cierto por cómo está montado el producto: Holdera lee y no escribe, así que el día que lo dejes tu PMS y tus datos siguen donde estaban, porque nunca dejaron de estar ahí.</p>
-        </div>
-      </details>
-
-      <!-- TODO (Alex): si la vista de grupo multipropiedad entra en el alcance, y cuándo. -->
-      <details class="faq__item faq__item--todo" id="faq-varios-hoteles">
-        <summary class="faq__q">¿Funciona con varios hoteles?<span class="faq__sign" aria-hidden="true"></span></summary>
-        <div class="faq__a">
-          <p>Hoy el producto está pensado y probado sobre un hotel: el panel enseña una propiedad, con sus plantas y sus habitaciones. Y las definiciones se acuerdan hotel por hotel a propósito, porque dos hoteles del mismo grupo rara vez cuentan igual las habitaciones fuera de orden — sumarlos antes de acordar eso es fabricar una cifra que no significa nada. Una vista de grupo que consolide varias propiedades: <span class="faq__todo" data-placeholder>[alcance y fecha por confirmar]</span>. Si tienes varios, dínoslo al escribir: cambia bastante la conversación.</p>
-        </div>
-      </details>
-
-      <details class="faq__item" id="faq-no-cuadra">
-        <summary class="faq__q">¿Y si una cifra no me cuadra?<span class="faq__sign" aria-hidden="true"></span></summary>
-        <div class="faq__a">
-          <p>Se abre. Cada número lleva detrás la fórmula, el valor que tomó cada entrada, el registro ya normalizado y la fila en bruto tal como entró, con su identificador de origen. Casi nunca el desacuerdo es un error de cálculo: es una definición distinta —tú cuentas las fuera de orden dentro del denominador y la pantalla las cuenta fuera, o tu día cierra a otra hora—. Eso se corrige en la definición y el histórico se vuelve a calcular con ella. Y mientras una definición no esté validada contigo, la cifra sale marcada como pendiente de validar en vez de pasar por definitiva.</p>
-        </div>
-      </details>
-
-      <details class="faq__item" id="faq-ia">
-        <summary class="faq__q">¿Esto es inteligencia artificial? ¿Decide algo por su cuenta?<span class="faq__sign" aria-hidden="true"></span></summary>
-        <div class="faq__a">
-          <p>No decide nada y no actúa fuera del panel: no cambia tarifas, no escribe en tu PMS y no manda correos. Hay una pantalla que cruza señales del propio hotel y propone algo —en la demo, que hay trece minutos de espera en el restaurante mientras una planta tiene capacidad libre— y lo enseña por etapas: qué observa, cómo lo explica, qué recomienda y qué pasaría si se hiciera. Decides tú. El caso queda registrado y, cuando se cierra, se compara lo que se predijo con lo que acabó pasando.</p>
-        </div>
-      </details>
-
-    </div>
-  </div>
-</section>
-
-
-
-
-
-    <section class="sheet sheet--cta" id="contacto" aria-labelledby="cta-title">
-      <div class="container cta">
-        <div class="cta__text">
-          <p class="tag reveal" data-reveal="up">Contacto</p>
-          <h2 id="cta-title" class="sheet__title reveal" data-reveal="up" style="--i:1">¿Cómo es <span class="fade">tu hotel?</span></h2>
-          <p class="sheet__lead reveal" data-reveal="up" style="--i:2">Cuéntanos cuántas habitaciones tienes, qué miras cada mañana y qué cifra nunca acabas de fiarte. Miramos juntos qué exporta tu PMS y te decimos qué pantallas saldrían de ahí, sin compromiso.</p>
-        </div>
-        <!-- TODO (Alex): conectar el envío (Formspree / Netlify Forms / correo) y confirmar email y teléfono de contacto -->
-        <form class="form reveal" data-reveal="right" novalidate>
-          <div class="form__shell">
-            <div class="form__field">
-              <label for="f-nombre">Nombre</label>
-              <input id="f-nombre" name="nombre" type="text" autocomplete="name" required>
-              <p class="field__err" id="err-nombre" hidden>Escribe tu nombre.</p>
-            </div>
-            <div class="form__field">
-              <label for="f-email">Email</label>
-              <input id="f-email" name="email" type="email" autocomplete="email" required>
-              <p class="field__err" id="err-email" hidden>Escribe un email válido, por ejemplo nombre@empresa.es.</p>
-            </div>
-            <div class="form__field form__field--full">
-              <label for="f-msg">¿Qué te gustaría ver en una pantalla?</label>
-              <textarea id="f-msg" name="mensaje" rows="4" required></textarea>
-              <p class="field__err" id="err-msg" hidden>Cuéntanos brevemente qué te gustaría ver en una pantalla.</p>
-            </div>
-            <div class="form__field form__field--full form__consent">
-              <input id="f-consent" name="consentimiento" type="checkbox" required>
-              <label for="f-consent">Acepto que Holdera utilice estos datos únicamente para responder a mi solicitud.</label>
-              <p class="field__err" id="err-consent" hidden>Necesitamos tu consentimiento para poder responderte.</p>
-            </div>
-            <p class="form__legal">Responsable: Holdera · Finalidad: atender tu consulta · Puedes ejercer tus derechos de acceso, rectificación y supresión contactando con nosotros.</p>
-            <!-- TODO (Alex): razón social, NIF, domicilio y páginas de Aviso legal / Política de privacidad (LSSI art. 10, RGPD art. 13); enlazar desde aquí y desde el footer -->
-            <p class="form__error" role="alert" hidden>Revisa los campos marcados: necesitamos tu nombre, un email válido, qué te gustaría ver y tu consentimiento.</p>
-            <button class="btn btn--primary btn--on-dark form__submit" type="submit">
-              <span>Enviar</span>
-              <span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
-            </button>
-          </div>
-          <div class="form__done" hidden aria-live="polite" tabindex="-1">
-            <span class="form__done-mark" aria-hidden="true">!</span>
-            <p><strong>El formulario todavía no está conectado.</strong> Tus datos no se han enviado a ninguna parte. Estamos terminando de configurarlo. Disculpa las molestias.</p>
-          </div>
-        </form>
-      </div>
-    </section>
 
   </main>
 
@@ -1250,7 +948,7 @@
   <!-- El recorrido del hotel: WebGL no, canvas no; SVG + CSS y su propio
        lector de scroll. Pide el plano y los datos medidos en diferido y
        solo en escritorio sin movimiento reducido. -->
-  <script src="hotel-anim.js?v=6b954b34" defer></script>
+  <script src="hotel-anim.js?v=c4a95f7f" defer></script>
   <!-- GSAP + ScrollTrigger (cdnjs) los inyecta script.js SOLO en escritorio y
        sin movimiento reducido: son la capa opcional del scroll del hero y en
        móvil no se usan (42 KB menos por visita). La página nunca los espera. -->

@@ -26,8 +26,10 @@
  *  3. `.reveal` -> `.ha-reveal`. En holdera `.reveal[data-reveal]` ya existe
  *     con otra semantica y lo observa script.js.
  *
- *  4. Todos los id llevan prefijo `ha-`: index.html ya tiene #producto,
- *     #contacto, #inicio, #como-trabajamos y cinco #producto-*.
+ *  4. Todos los id llevan prefijo `ha-` para no chocar con los de la portada
+ *     (#inicio es el hero). Enumerarlos aqui no sirve: la lista se queda
+ *     vieja cada vez que una seccion entra o sale — el prefijo es lo que
+ *     aguanta.
  *
  * QUE SE HA AÑADIDO
  *
