@@ -1,6 +1,18 @@
 /*
  * _build/integraciones/build-aside.js
  *
+ * 🔴 RETIRADO el mismo día (20-09-2026): el bloque que este script generaba
+ * —la rejilla de 9 logotipos en la columna derecha del hero— se sustituyó por
+ * una lista vertical de 4 categorías en texto (Channel manager, Revenue
+ * management, Pasarelas de pago, Llaves y accesos), cada una un enlace directo
+ * a su grupo en integraciones.html. Encargo de Alex: "con tantos botones no
+ * hace falta, solo con las categorías a nivel vertical es suficiente".
+ * El marcado vivo está a mano en index.html (bloque `.hints`); este script ya
+ * NO representa lo que hay en la página. Se conserva por si algún día vuelve
+ * a hacer falta una rejilla de logotipos ahí — no lo ejecutes sin releer antes
+ * el bloque `.hints` de index.html, porque sobrescribiría el diseño nuevo.
+ *
+ * ---- comentario original, para contexto histórico ----
  * La TERCERA pieza de integraciones: la rejilla compacta que va en la columna
  * derecha del hero, donde hasta ahora estaba la cadena de evidencia (.trace).
  * Encargo de Alex (20-09-2026): "vuelve a poner las tecnologias con las que

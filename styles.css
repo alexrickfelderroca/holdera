@@ -1416,8 +1416,6 @@ main {
   .hero__aside {
     max-height: calc(100dvh - clamp(84px, 11vh, 120px) - var(--bar-inset) - var(--bar-h) - 26px);
   }
-  .hints__item { min-height: 44px; }
-  .hints__link { min-height: 36px; }
 }
 
 /* nav has to give way before the centre column touches the right one */

@@ -700,130 +700,79 @@
    porque hero-fit.js no es de esta tarea.
    =========================================================================== */
 /* ===========================================================================
-   INTEGRACIONES · rejilla de la columna derecha del hero (.hints)
+   INTEGRACIONES · columna derecha del hero (.hints)
 
    Ocupa el hueco que dejo .trace (la cadena de evidencia 01-04). Vive sobre
    el HERO CLARO, no sobre la hoja oscura: los colores salen de --text /
    --text-muted / --border, no del grupo --sh-*.
 
-   Los nueve dibujos son <svg> en currentColor, asi que el color lo pone esta
-   hoja y no hay ni un literal dentro del marcado generado.
+   🔴 Encargo de Alex (20-09-2026): la rejilla de 9 logotipos se sustituye por
+   CUATRO categorias en texto, en vertical, cada una un enlace directo a su
+   grupo en integraciones.html. Sin logotipos y sin un boton "ver todas"
+   aparte: la fila ENTERA es el enlace, asi que un boton mas no anadia nada.
    =========================================================================== */
 
 .hints {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .hints__label {
-  margin: 0;
+  margin: 0 0 4px;
   font-size: 12px;
   line-height: 1.4;
   letter-spacing: 0.01em;
   color: var(--text-muted);
-  text-align: right;
+  text-align: left;
 }
 
-.hints__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
+.hints__cats {
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 0;
   list-style: none;
-  /* El filete de separacion es el propio hueco de la rejilla sobre un fondo
-     de borde: una sola linea de 1px entre celdas, sin dobles. */
-  background: var(--border);
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  overflow: hidden;
+  border-top: 1px solid var(--border);
 }
 
-.hints__item {
+.hints__cat {
   display: flex;
   align-items: center;
-  justify-content: center;
-  min-height: 56px;
-  padding: 10px 8px;
-  background: var(--w-60);
-  color: var(--text-muted);
-  transition: color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
-}
-
-/* La marca se pinta por MASCARA, no con un <svg> incrustado.
-   ---------------------------------------------------------------------
-   Los 41 dibujos de assets/img/integraciones/ son monocromos, asi que
-   sirven de mascara: la silueta la pone el archivo y el color, este CSS.
-   `--mark` y `--mark-ratio` los declara el bloque generado del final de
-   styles.css, uno por `data-brand`.
-
-   Incrustarlos costaba 12 KB brotli en index.html (18.885 -> 30.845), un
-   63 % mas de documento bloqueante por una rejilla decorativa del aside.
-   Asi el documento se queda igual y los archivos se cachean aparte —
-   ademas los comparte la pagina de integraciones. */
-.hints__mark {
-  display: block;
-  height: 13px;
-  aspect-ratio: var(--mark-ratio, 3 / 1);
-  max-width: 100%;
-  background-color: currentColor;
-  -webkit-mask-image: var(--mark);
-  mask-image: var(--mark);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  transition: background-color var(--t-fast) var(--ease);
-}
-
-/* 🔴 EL HOVER CAMBIA LA MARCA, NO LA CELDA.
-   Antes la celda entera se aclaraba (`background: var(--w-84)`) y la marca
-   solo pasaba de gris a tinta: el rectangulo gritaba y el logotipo no decia
-   nada. Ahora la celda no se mueve y la marca toma SU color, que es lo que
-   dice "estas sobre esta".
-
-   `--brand` solo existe para las marcas cuyo color publica su empresa (ver
-   el bloque generado). Para el resto el respaldo es `--text`, o sea el
-   mismo oscurecimiento de siempre: ninguna se queda sin respuesta. */
-.hints__item:hover .hints__mark,
-.hints__item:focus-within .hints__mark {
-  background-color: var(--brand, var(--text));
-}
-
-.hints__link {
-  align-self: flex-end;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 16px;
   /* 44px de alto tactil sin tocar el tamano de letra (ergonomia del paso 8). */
   min-height: 44px;
-  padding: 4px 0;
-  font-size: 13px;
+  padding: 11px 2px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
   color: var(--text);
   text-decoration: none;
-  border-bottom: 1px solid transparent;
+  transition: color var(--t-fast) var(--ease);
 }
-.hints__link:hover { border-bottom-color: var(--text); }
+/* --accent-hero, no --accent: es texto sobre el hero claro y --accent mide
+   2,26:1 ahi (ver la nota de hotel-anim.css). Mismo token que usa el hover de
+   la lista de servicios del hero. */
+.hints__cat:hover,
+.hints__cat:focus-visible { color: var(--accent-hero); }
 
-.hints__arrow {
+.hints__cat-arrow {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
+  flex: none;
   border: 1px solid var(--border-strong);
   border-radius: var(--r-pill);
-  transition: transform var(--t-fast) var(--ease);
+  color: var(--text-muted);
+  transition: transform var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
 }
-.hints__link:hover .hints__arrow { transform: translateX(3px); }
-
-@media (max-width: 900px) {
-  .hints__label { text-align: left; }
-  .hints__link { align-self: flex-start; }
-  .hints__item { min-height: 52px; }
+.hints__cat:hover .hints__cat-arrow,
+.hints__cat:focus-visible .hints__cat-arrow {
+  transform: translateX(3px);
+  border-color: var(--accent-hero);
+  color: var(--accent-hero);
 }
 
 /* ===========================================================================

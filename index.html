@@ -11,11 +11,11 @@
   <meta property="og:description" content="Habitaciones, llegadas, salidas y housekeeping sobre el plano del hotel; ocupación, ADR, RevPAR y TRevPAR con su calendario de reservas. Cada cifra se abre y enseña el registro del que sale.">
   <meta property="og:locale" content="es_ES">
   <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=8b614adc">
+  <link rel="stylesheet" href="styles.css?v=fb3a0c1c">
   <!-- El recorrido del hotel. Va DESPUES de styles.css: lee sus tokens del :root. -->
   <link rel="stylesheet" href="hotel-anim.css?v=c71fa0c0">
   <!-- La marquesina de integraciones del hero y el menú de la nav. -->
-  <link rel="stylesheet" href="sections.css?v=7d558d42">
+  <link rel="stylesheet" href="sections.css?v=89efe631">
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
   <script>document.documentElement.classList.add('has-js');</script>
   <!-- seo:head -->
@@ -545,31 +545,24 @@
              El rótulo es un <p> y no un encabezado a propósito: el hero se rastrea
              y un h3 decorativo aquí rompería el esquema h1 -> h2. -->
         <!-- ===========================================================================
-             INTEGRACIONES · rejilla compacta de la columna derecha del hero.
-             GENERADO por node _build/integraciones/build-aside.js — no editar a mano.
+             INTEGRACIONES · columna derecha del hero.
 
-             Sustituye al bloque .trace (la cadena de evidencia 01-04), que se movio de
-             sitio. Son nueve marcas, UNA POR CATEGORIA, no las nueve mas conocidas:
-             asi la rejilla dice "reservas, cobro, tarifa, llave, TPV, contabilidad,
-             huesped, domotica y normativa" en vez de repetir channel managers.
-
-             Los dibujos son los mismos <svg> de la tira inferior (misma fuente).
-             Van en currentColor y heredan el color del contenedor.
+             🔴 YA NO es la rejilla de 9 logotipos que generaba
+             _build/integraciones/build-aside.js (ver ese archivo: su comentario de
+             cabecera explica por qué quedó retirado). Encargo de Alex (20-09-2026):
+             "con tantos botones no hace falta, solo con las categorías a nivel
+             vertical es suficiente". Ahora son CUATRO categorías en texto, cada una
+             un enlace directo a su grupo dentro de integraciones.html — no hace
+             falta un botón "ver todas" aparte, el enlace ya está en cada fila.
              =========================================================================== -->
         <div class="hints" data-enter style="--d:520">
           <p class="hints__label">Nos integramos con</p>
-          <ul class="hints__grid">
-            <li class="hints__item" data-brand="siteminder" title="Channel manager"><span class="hints__mark" role="img" aria-label="SiteMinder"></span></li>
-            <li class="hints__item" data-brand="redsys" title="Pasarelas de pago"><span class="hints__mark" role="img" aria-label="Redsys"></span></li>
-            <li class="hints__item" data-brand="pricelabs" title="Revenue management"><span class="hints__mark" role="img" aria-label="PriceLabs"></span></li>
-            <li class="hints__item" data-brand="salto-ks" title="Llaves y accesos"><span class="hints__mark" role="img" aria-label="Salto KS"></span></li>
-            <li class="hints__item" data-brand="revo" title="TPV, restauración y spa"><span class="hints__mark" role="img" aria-label="Revo"></span></li>
-            <li class="hints__item" data-brand="hijiffy" title="CRM y huésped"><span class="hints__mark" role="img" aria-label="HiJiffy"></span></li>
-            <li class="hints__item" data-brand="holded" title="Contabilidad y ERP"><span class="hints__mark" role="img" aria-label="Holded"></span></li>
-            <li class="hints__item" data-brand="hubos" title="Housekeeping y domótica"><span class="hints__mark" role="img" aria-label="HubOS"></span></li>
-            <li class="hints__item" data-brand="stripe" title="Pasarelas de pago"><span class="hints__mark" role="img" aria-label="Stripe"></span></li>
+          <ul class="hints__cats">
+            <li><a class="hints__cat" href="integraciones.html#int-channel">Channel manager<span class="hints__cat-arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a></li>
+            <li><a class="hints__cat" href="integraciones.html#int-revenue">Revenue management<span class="hints__cat-arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a></li>
+            <li><a class="hints__cat" href="integraciones.html#int-pagos">Pasarelas de pago<span class="hints__cat-arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a></li>
+            <li><a class="hints__cat" href="integraciones.html#int-accesos">Llaves y accesos<span class="hints__cat-arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a></li>
           </ul>
-          <a class="hints__link" href="/integraciones.html">Ver las 50 integraciones<span class="hints__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
         </div>
        </div>
       </aside>
@@ -631,7 +624,7 @@
             <span class="ha-eyebrow__bar" aria-hidden="true"></span>El recorrido
           </p>
           <h2 class="ha-lead ha-reveal" data-ha-delay="1" id="ha-title">
-            Un mismo sistema, y cada equipo del hotel viendo lo que le toca.
+            Este es nuestro sistema.
           </h2>
 
           <!-- El plano dibujandose de una vez, para cuando no hay recorrido
@@ -659,12 +652,12 @@
         <div class="ha-hud" id="ha-hud">
           <div class="ha-tabs-wrap">
             <span class="ha-dash" id="ha-dash" aria-hidden="true"></span>
-            <div class="ha-tabs" id="ha-tabs" aria-label="Departamentos del hotel">
-              <button type="button" class="ha-tab" id="ha-tab-front" data-dept="front">Recepción</button>
-              <button type="button" class="ha-tab" id="ha-tab-back" data-dept="back">Operaciones</button>
-              <button type="button" class="ha-tab" id="ha-tab-sales" data-dept="sales">Ventas</button>
-              <button type="button" class="ha-tab" id="ha-tab-food" data-dept="food">Restauración</button>
-              <button type="button" class="ha-tab" id="ha-tab-mgmt" data-dept="mgmt">Dirección</button>
+            <div class="ha-tabs" id="ha-tabs" aria-label="Cómo funciona Holdera">
+              <button type="button" class="ha-tab" id="ha-tab-front" data-dept="front">El reto</button>
+              <button type="button" class="ha-tab" id="ha-tab-back" data-dept="back">Connect</button>
+              <button type="button" class="ha-tab" id="ha-tab-sales" data-dept="sales">Core</button>
+              <button type="button" class="ha-tab" id="ha-tab-food" data-dept="food">Intelligence</button>
+              <button type="button" class="ha-tab" id="ha-tab-mgmt" data-dept="mgmt">En conjunto</button>
             </div>
           </div>
           <div class="ha-card" id="ha-card">
@@ -682,8 +675,8 @@
           <li class="ha-item" data-dept="front">
             <div class="ha-item__body">
               <p class="ha-item__num">01</p>
-              <h3 class="ha-item__title">Recepción</h3>
-              <p class="ha-item__text">Llegadas, salidas y qué habitaciones están listas para entrar. Lo que pasa hoy, en una sola pantalla.</p>
+              <h3 class="ha-item__title">Cada área ve su parte del hotel</h3>
+              <p class="ha-item__text">PMS, housekeeping, revenue, personal. Cada sistema hace bien lo suyo, y nadie ve el conjunto. Holdera nace para eso.</p>
             </div>
             <div class="ha-media" data-dept="front" data-lottie="lottie/product-1.json"
                  style="--ha-lottie-w:321px; --ha-lottie-h:184px; aspect-ratio: 321 / 184;" aria-hidden="true"></div>
@@ -692,8 +685,8 @@
           <li class="ha-item" data-dept="back">
             <div class="ha-item__body">
               <p class="ha-item__num">02</p>
-              <h3 class="ha-item__title">Operaciones</h3>
-              <p class="ha-item__text">El estado de cada habitación, planta a planta: limpia, sucia, en limpieza, ocupada o fuera de servicio.</p>
+              <h3 class="ha-item__title">Holdera Connect</h3>
+              <p class="ha-item__text">Se conecta a tu PMS y al resto de sistemas que ya usas: channel manager, revenue management, pasarelas de pago, llaves y accesos. Sin sustituir nada.</p>
             </div>
             <div class="ha-media" data-dept="back" data-lottie="lottie/product-2.json"
                  style="--ha-lottie-w:306px; --ha-lottie-h:128px; aspect-ratio: 306 / 128;" aria-hidden="true"></div>
@@ -702,8 +695,8 @@
           <li class="ha-item" data-dept="sales">
             <div class="ha-item__body">
               <p class="ha-item__num">03</p>
-              <h3 class="ha-item__title">Ventas</h3>
-              <p class="ha-item__text">Ocupación, ADR y RevPAR, y el ritmo de reservas comparado con el mismo momento del año pasado.</p>
+              <h3 class="ha-item__title">Holdera Core</h3>
+              <p class="ha-item__text">El motor que ordena la operación diaria: habitaciones, llegadas, salidas y housekeeping, planta a planta, con el estado real de cada una.</p>
             </div>
             <div class="ha-media" data-dept="sales" data-lottie="lottie/product-3.json"
                  style="--ha-lottie-w:304px; --ha-lottie-h:205px; aspect-ratio: 304 / 205;" aria-hidden="true"></div>
@@ -712,8 +705,8 @@
           <li class="ha-item" data-dept="food">
             <div class="ha-item__body">
               <p class="ha-item__num">04</p>
-              <h3 class="ha-item__title">Restauración</h3>
-              <p class="ha-item__text">Lo que aporta cada departamento más allá de la habitación, con los supuestos del cálculo a la vista.</p>
+              <h3 class="ha-item__title">Holdera Intelligence</h3>
+              <p class="ha-item__text">Relaciona lo que ocurre en distintas áreas —ocupación, personal, restauración— y lo explica con la fórmula y el registro del que sale cada cifra.</p>
             </div>
             <div class="ha-media" data-dept="food" data-lottie="lottie/product-4.json"
                  style="--ha-lottie-w:324px; --ha-lottie-h:152px; aspect-ratio: 324 / 152;" aria-hidden="true"></div>
@@ -722,8 +715,8 @@
           <li class="ha-item" data-dept="mgmt">
             <div class="ha-item__body">
               <p class="ha-item__num">05</p>
-              <h3 class="ha-item__title">Dirección</h3>
-              <p class="ha-item__text">Cada indicador con su fórmula, sus entradas y el registro en bruto del que sale. Y cuando el dato no está, lo dice.</p>
+              <h3 class="ha-item__title">Todo conectado, con su origen</h3>
+              <p class="ha-item__text">Connect trae el dato, Core lo ordena, Intelligence lo explica. Cada cifra, siempre trazable hasta su fuente.</p>
             </div>
             <div class="ha-media" data-dept="mgmt" data-lottie="lottie/product-5.json"
                  style="--ha-lottie-w:306px; --ha-lottie-h:65px; aspect-ratio: 306 / 65;" aria-hidden="true"></div>
