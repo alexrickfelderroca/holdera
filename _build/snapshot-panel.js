@@ -275,9 +275,25 @@ function extractLinks(html) {
  */
 const BACKLINK_STYLE = `
 <style data-holdera-chrome>
+  /* 🔴 Este enlace FLOTA sobre la barra lateral, asi que tiene que pagar
+     su sitio. Hasta el paso 13 el hueco de encima del pie estaba vacio y
+     se colaba ahi gratis; con el interruptor de apariencia ya no lo esta,
+     y medido a 1440x900 el enlace (751-804) caia DENTRO del interruptor
+     (730-814), tapandolo entero.
+
+     La reserva no es un numero escrito a ojo: el propio enlace se mide al
+     montarse y escribe --holdera-back-space (ver BACKLINK). Los 81px
+     del respaldo son el caso medido —53 de alto + 16 abajo + 12 de aire—
+     y solo se usan si el script no llega a correr. Va en la barra, no en
+     el pie, porque hay paginas sin pie (syncMode === undefined) y ahi
+     el interruptor baja hasta el fondo. */
+  .shell {
+    padding-bottom: var(--holdera-back-space, 81px);
+  }
+
   .holdera-site-back {
     position: fixed; z-index: 9999;
-    left: 12px; bottom: 96px; width: 212px;
+    left: 12px; bottom: 16px; width: 212px;
     display: flex; align-items: center; gap: 10px;
     padding: 9px 14px; min-height: 44px; box-sizing: border-box;
     border: 1px solid var(--label-4, rgba(60,60,67,.56));
@@ -307,6 +323,9 @@ const BACKLINK_STYLE = `
 
   @media (max-width: 900px) {
     body { padding-bottom: 76px; }
+    /* En el movil la barra lateral es una cabecera horizontal y el enlace
+       se va a la esquina de abajo: ahi no tapa nada y la reserva sobra. */
+    .shell { padding-bottom: var(--sp-3, 12px); }
     .holdera-site-back {
       left: auto; right: 12px; bottom: 12px; width: auto;
       border-radius: 999px;
@@ -343,6 +362,12 @@ const BACKLINK = `<script data-holdera-chrome>
     a.setAttribute('data-holdera-chrome', '');
     a.innerHTML = HTML;
     document.body.appendChild(a);
+    /* El hueco que hay que reservarle en la barra lateral, medido sobre el
+       enlace ya pintado: su alto + los 16 de abajo + 12 de aire. Si el
+       texto creciera (otro idioma, otra fuente), la reserva crece con el. */
+    try {
+      document.documentElement.style.setProperty('--holdera-back-space', (a.offsetHeight + 28) + 'px');
+    } catch (e) { /* sin layout todavia: se queda el respaldo del CSS */ }
   }
   function start() {
     mount();
@@ -463,6 +488,86 @@ function robotsFor(route) {
     : '\n<meta name="robots" content="noindex,follow" data-holdera-chrome>';
 }
 
+/*
+ * 🔴 LOS LIMITES DE SUSPENSE QUE LLEGARON POR STREAMING SE RESUELVEN AQUI.
+ * ==================================================================
+ * `RoomsStage` usa `useSearchParams()`, asi que vive dentro de un
+ * `<Suspense>` (Next lo exige). En SSR con streaming, React NO escribe
+ * ese contenido en su sitio: lo manda al final del body dentro de
+ * `<div hidden id="S:0">` y deja un hueco marcado
+ * `<!--$?--><template id="B:0"></template><!--/$-->`; luego un
+ * `$RC("B:0","S:0")` en linea lo mueve en el navegador.
+ *
+ * En un servidor eso dura un suspiro. En una captura estatica es un
+ * defecto permanente, y de los caros — MEDIDO en /panel/rooms/502/:
+ *
+ *   1. React 19 no revela al llamar a $RC: encola y programa el pase con
+ *      `requestAnimationFrame` (es el hueco de una view transition). El
+ *      modelo del hotel aparece DESPUES del primer pintado, no con el.
+ *      Eso es exactamente lo que se ve como "la animacion tarda en entrar
+ *      y parece que la pagina se esta refrescando".
+ *   2. Hasta que se revela, el escenario no esta hidratado: sus enlaces
+ *      —habitaciones, plantas, zonas— son <a href> pelados. Un clic ahi
+ *      no es una navegacion blanda, es una RECARGA ENTERA, y en la pagina
+ *      nueva vuelve a empezar la espera. Eso es "clico la 508 y no me
+ *      deja, tengo que clicar varias veces".
+ *   3. El escenario vive en el layout de /rooms justo para NO desmontarse
+ *      al cambiar de habitacion (paso 12). Una recarga lo desmonta, asi
+ *      que el movimiento de camara no ocurre nunca.
+ *
+ * La captura no tiene ninguna razon para heredar eso: el contenido ya
+ * esta en el archivo, solo que en el sitio equivocado. Esto hace, en
+ * tiempo de construccion, lo que `$RC` haria en el navegador — mover el
+ * contenido a su hueco y marcar el limite como completo—, y entonces la
+ * pagina llega entera desde el primer byte y React la hidrata de una vez.
+ *
+ * El `$RC("B:0","S:0")` de la pagina se queda donde esta y no estorba:
+ * su primer paso es `document.getElementById("S:0")`, que ya no existe,
+ * y ahi se acaba la funcion.
+ *
+ * Si algo no cuadra —falta el hueco, los <div> no cierran— se devuelve el
+ * HTML TAL CUAL y se avisa. Una pagina con el defecto viejo es mucho
+ * mejor que una pagina rota en silencio.
+ */
+function divBlockEnd(html, from) {
+  const tag = /<div[\s>]|<\/div>/g;
+  tag.lastIndex = from;
+  let depth = 1;
+  let m;
+  while ((m = tag.exec(html))) {
+    depth += m[0] === '</div>' ? -1 : 1;
+    if (depth === 0) return m.index + '</div>'.length;
+  }
+  return -1;
+}
+
+function settleStreamedBoundaries(html, route) {
+  let out = html;
+  for (let guard = 0; guard < 24; guard++) {
+    const holder = /<div hidden id="S:(\d+)">/.exec(out);
+    if (!holder) return out;
+
+    const openEnd = holder.index + holder[0].length;
+    const holderEnd = divBlockEnd(out, openEnd);
+    if (holderEnd === -1) {
+      console.warn(`  ! ${route}: <div hidden id="S:${holder[1]}"> sin cierre; se deja el HTML como estaba`);
+      return html;
+    }
+    const content = out.slice(openEnd, holderEnd - '</div>'.length);
+    const slot = `<!--$?--><template id="B:${holder[1]}"></template><!--/$-->`;
+
+    const withoutHolder = out.slice(0, holder.index) + out.slice(holderEnd);
+    const at = withoutHolder.indexOf(slot);
+    if (at === -1) {
+      console.warn(`  ! ${route}: no aparece el hueco de B:${holder[1]}; se deja el HTML como estaba`);
+      return html;
+    }
+    out = `${withoutHolder.slice(0, at)}<!--$-->${content}<!--/$-->${withoutHolder.slice(at + slot.length)}`;
+  }
+  console.warn(`  ! ${route}: mas de 24 limites diferidos, algo va mal; se deja el HTML como estaba`);
+  return html;
+}
+
 /**
  * Un href logico -> su sitio dentro del snapshot. Devuelve null si no hay que
  * tocarlo (los assets de Next ya vienen con el prefijo correcto).
@@ -527,7 +632,12 @@ function rewriteRsc(text, discovered) {
   });
 }
 
-function rewrite(html, discovered, robots = '') {
+function rewrite(html, discovered, robots = '', route = '') {
+  // Lo primero: el contenido que llego por streaming, a su sitio. Todo lo
+  // que viene despues (enlaces, flight data) opera sobre el HTML ya entero,
+  // asi que ninguna reescritura se salta lo que estaba en el limbo.
+  html = settleStreamedBoundaries(html, route);
+
   // Assets de Next: /_next/... -> <MOUNT>_next/...
   html = html.split('"/_next/').join(`"${MOUNT}_next/`);
   html = html.split('(/_next/').join(`(${MOUNT}_next/`);
@@ -643,7 +753,7 @@ async function main() {
   // Segunda pasada: ahora que se conocen TODAS las rutas, reescribir enlaces.
   let htmlBytes = 0;
   for (const [route, html] of pages) {
-    const rewritten = rewrite(html, pages.keys(), robotsFor(route));
+    const rewritten = rewrite(html, pages.keys(), robotsFor(route), route);
     htmlBytes += Buffer.byteLength(rewritten);
     writeFile(routeToFile(route), rewritten);
   }
@@ -809,4 +919,11 @@ async function main() {
   process.exit(failed.length ? 1 : 0);
 }
 
-main().catch(e => { console.error(e); process.exit(1); });
+/* `require`d en vez de ejecutado: solo se exponen las piezas puras, para
+ * que `_build/settle-check.js` pueda probarlas contra las paginas ya
+ * capturadas sin volver a levantar el producto entero. */
+if (require.main === module) {
+  main().catch(e => { console.error(e); process.exit(1); });
+} else {
+  module.exports = { settleStreamedBoundaries, divBlockEnd };
+}
