@@ -183,6 +183,39 @@ async function main() {
           const t0 = Date.now();
           while (!loaded && Date.now() - t0 < 20000) await sleep(60);
           cdp.off('Page.loadEventFired');
+
+          /* 🔴 La pestana tiene que estar EN PRIMER PLANO antes de esperar.
+           *
+           * Esta herramienta abre su propia pestana justamente para no pisar la
+           * de nadie (paso 11) — pero una pestana de fondo esta OCULTA, y en una
+           * pestana oculta Chrome NO ejecuta requestAnimationFrame. La entrada
+           * del hero de holdera.es se arma asi:
+           *     setTimeout(ready, 900) -> requestAnimationFrame(() => hero.classList.add('is-ready'))
+           * el setTimeout SI dispara, el rAF NO, y `is-ready` no llega nunca: el
+           * hero se captura con sus 12 [data-enter] a opacity 0, o sea VACIO.
+           * Medido el 20-09-2026: capturas identicas antes y despues de editar
+           * index.html, las dos sin titular, sin botones y sin cerebro.
+           *
+           * Un fallo de la herramienta que se lee como un fallo de la pagina es
+           * peor que no tener herramienta, porque manda a arreglar lo que no
+           * esta roto.
+           *
+           * Que NO lo arregla, probado uno a uno el 20-09-2026:
+           *   Page.bringToFront      -> document.hidden seguia true
+           *   Page.startScreencast   -> igual (era adorno; retirado)
+           * Que SI lo arregla, y hacen falta las dos:
+           *   Emulation.setFocusEmulationEnabled + Page.setWebLifecycleState
+           *
+           * Sonda usada: rafDispara false -> true, visibilityState hidden ->
+           * visible, y .hero pasa de "hero" a "hero is-ready is-settled".
+           * Comprobado en 1440x900 y en 390x844.
+           *
+           * Ojo: esto marca la pestana como activa durante la captura.
+           */
+          try { await cdp.send('Page.bringToFront'); } catch (e) {}
+          try { await cdp.send('Emulation.setFocusEmulationEnabled', { enabled: true }); } catch (e) {}
+          try { await cdp.send('Page.setWebLifecycleState', { state: 'active' }); } catch (e) {}
+
           await sleep(WAIT);
 
           let extra = null;

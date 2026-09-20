@@ -27,7 +27,20 @@ const TITLE_MAX = 60;
 const DESC_MAX = 155;
 const DESC_MIN = 70;
 const BRAND_SUFFIX = '| Holdera';
-const FORBIDDEN = ['aggregateRating', 'review', 'reviews', 'ratingValue', 'telephone', 'email', 'contactPoint', 'faxNumber', 'streetAddress', 'postalCode', 'priceRange', 'offers', 'potentialAction'];
+// Prohibidas sin más: no hay reseñas, ni precios, ni domicilio confirmado. Que
+// aparezca cualquiera de estas es que alguien inventó un dato.
+const FORBIDDEN = ['aggregateRating', 'review', 'reviews', 'ratingValue', 'faxNumber', 'streetAddress', 'postalCode', 'priceRange', 'offers', 'potentialAction'];
+
+// email / telephone / contactPoint estuvieron en FORBIDDEN desde el paso 5 porque
+// eran marcadores. Alex los confirmó el 20-09-2026, así que dejan de estar prohibidos
+// y pasan a estar FIJADOS: el valor tiene que ser exactamente el confirmado.
+// Cambiar la prohibición por una comprobación de valor es más fuerte, no más débil —
+// antes la puerta sólo sabía decir "no hay dato", ahora caza además un dato EQUIVOCADO
+// (un email de otro proyecto, un teléfono con el prefijo mal, un mailto: colado aquí).
+const CONFIRMED = {
+  email: 'info@holdera.es',
+  telephone: '+34607836960',
+};
 
 const REQUIRED = {
   Organization: ['name', 'url', 'logo'],
@@ -154,6 +167,9 @@ function validate(meta, SITE, opts) {
     walk(graph, (obj, p) => {
       Object.keys(obj).forEach((k) => {
         if (FORBIDDEN.indexOf(k) >= 0) err(tag + 'propiedad prohibida "' + k + '" en ' + p + ' (dato no confirmado)');
+        if (CONFIRMED[k] !== undefined && typeof obj[k] === 'string' && obj[k] !== CONFIRMED[k]) {
+          err(tag + '"' + k + '" en ' + p + ' vale "' + obj[k] + '" y el dato confirmado es "' + CONFIRMED[k] + '"');
+        }
       });
       const nt = types(obj);
       nt.forEach((ty) => {

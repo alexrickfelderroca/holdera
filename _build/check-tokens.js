@@ -15,27 +15,56 @@ const fs = require('fs');
 const path = require('path');
 
 const root = path.join(__dirname, '..');
-const exists = f => fs.existsSync(path.join(root, f));
+/* 🔴 `exists` NO puede filtrar en silencio.
+ *
+ * Trampa ya documentada (paso 9): las listas de abajo estan escritas a mano, y
+ * un `.filter(existsSync)` mudo convierte un archivo que ya no existe en un
+ * hueco invisible. Asi es como este guardia y contrast.js siguieron nombrando
+ * panel.css y panel.js durante semanas, saliendo con codigo 0 y mintiendo
+ * sobre lo que vigilaban. Hoy volvia a pasar: fish.js esta aparcado desde el
+ * paso 5 y planet.js se retiro con la seccion del planeta, y la lista seguia
+ * nombrando a los dos.
+ *
+ * Ahora avisa por stderr. No hace fallar la puerta —un archivo retirado a
+ * proposito es legitimo— pero deja de ser invisible. */
+const faltan = [];
+const exists = (f) => {
+  const ok = fs.existsSync(path.join(root, f));
+  if (!ok) faltan.push(f);
+  return ok;
+};
 
 /* Comments are stripped first. A hex quoted in a comment ("#f08a24 measures
    7.58:1 on ink") is documentation, not a colour literal, and flagging it is
    the same false-positive failure mode that made the first contrast.js
    untrustworthy — a guard that cries wolf stops being read. */
-const CSS_FILES = ['styles.css', 'pages.css'].filter(exists);
+const CSS_FILES = ['styles.css', 'pages.css', 'hotel-anim.css', 'sections.css'].filter(exists);
 const HTML_FILES = fs.readdirSync(root).filter(f => /\.html$/i.test(f) && !/\.bak$/i.test(f));
 /* Every script that can touch a token. Miss one and rule 1 turns into a liar:
    fish.js reads --fish-core and writes --persp, so leaving it out reported four
    perfectly-used tokens as orphans and four runtime properties as undefined. */
-const JS_FILES = ['brain.js', 'fish.js', 'planet.js', 'script.js', 'waves.js'].filter(exists);
+const JS_FILES = ['brain.js', 'script.js', 'waves.js', 'hotel-anim.js'].filter(exists);
+
+if (faltan.length) {
+  console.error('AVISO  listados y no encontrados: ' + faltan.join(', '));
+  console.error('       o se recupera el archivo, o se quita el nombre de la lista.');
+}
 
 const stripCss = s => s.replace(/\/\*[\s\S]*?\*\//g, '');
 const stripHtml = s => s.replace(/<!--[\s\S]*?-->/g, '');
+/* Los comentarios del JS tambien se quitan, por el mismo motivo que los del CSS.
+   Sin esto, un comentario que EXPLICA el mecanismo —hotel-anim.js documenta su
+   sonda como `color: var(--token, fallback)`— se leia como una referencia y
+   `--token` salia listado como "usado pero nunca definido". Un falso positivo
+   es peor que no tener guardia: en cuanto uno no te puedes creer, dejas de leer
+   la lista entera y tampoco ves el fallo de verdad. */
+const stripJs = s => s.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
 
 const cssBy = {};
 CSS_FILES.forEach(f => { cssBy[f] = stripCss(fs.readFileSync(path.join(root, f), 'utf8')); });
 const htmlBy = {};
 HTML_FILES.forEach(f => { htmlBy[f] = stripHtml(fs.readFileSync(path.join(root, f), 'utf8')); });
-const js = JS_FILES.map(f => fs.readFileSync(path.join(root, f), 'utf8')).join('\n');
+const js = stripJs(JS_FILES.map(f => fs.readFileSync(path.join(root, f), 'utf8')).join('\n'));
 
 /* Split every stylesheet into its :root block(s) and the rest. A file may
    declare :root more than once (a stylesheet may keep semantic tokens apart from
@@ -75,13 +104,19 @@ for (const m of rootBlock.matchAll(/^\s*(--[a-z0-9-]+)\s*:/gim)) defined.add(m[1
    legitimately "defined" even though they never appear in :root. */
 const local = new Set();
 for (const m of rest.matchAll(/(--[a-z0-9-]+)\s*:/gi)) local.add(m[1]);
-for (const m of html.matchAll(/style="[^"]*?(--[a-z0-9-]+)\s*:/gi)) local.add(m[1]);
+/* Un style="..." puede declarar VARIAS propiedades, y antes solo se leia la
+   primera: el `[^"]*?` es perezoso y para en cuanto encuentra una. Con
+   style="--ha-lottie-w:321px; --ha-lottie-h:184px" se registraba la w y la h
+   se reportaba como "usada pero nunca definida" — falso positivo. Se extrae
+   cada atributo entero y se recorren todas sus declaraciones. */
+const styleAttrs = [...html.matchAll(/style="([^"]*)"/gi)].map(m => m[1]);
+for (const attr of styleAttrs) for (const m of attr.matchAll(/(--[a-z0-9-]+)\s*:/gi)) local.add(m[1]);
 
 const used = new Set();
 for (const src of [rest, rootBlock, html, js]) {
   for (const m of src.matchAll(/var\(\s*(--[a-z0-9-]+)/gi)) used.add(m[1]);
 }
-for (const m of html.matchAll(/style="[^"]*?(--[a-z0-9-]+)\s*:/gi)) used.add(m[1]);
+for (const attr of styleAttrs) for (const m of attr.matchAll(/(--[a-z0-9-]+)\s*:/gi)) used.add(m[1]);
 
 /* A token can be consumed by JavaScript without any var() ever appearing.
    getPropertyValue('--brain-crown') is how the WebGL modules read brand colour
