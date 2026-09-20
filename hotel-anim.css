@@ -109,15 +109,26 @@
     0 1px 2px rgba(28, 25, 22, 0.10),
     0 8px 20px -10px rgba(28, 25, 22, 0.22);
 
-  /* --- la costura con la hoja oscura ---
-     La animacion se pega dentro de <main>, que es la hoja casi negra. Un corte
-     recto claro/oscuro esta prohibido por la casa (>=3 paradas o >=120 px de
+  /* --- la costura con la hoja ---
+     Un corte recto esta prohibido por la casa (>=3 paradas o >=120 px de
      solape): estas rampas son 180 px con cuatro paradas a cada lado. Se apagan
-     quitando la clase .ha--seam del <section>. */
+     quitando la clase .ha--seam del <section>.
+
+     🔴 Las paradas 1 y 2 van DERIVADAS de los dos extremos, y no se eligen a
+     ojo. Nacieron como #4a453f y #9b958c porque la hoja era casi negra y la
+     rampa tenia que bajar hasta ella. Al pasar la web a paleta clara nadie las
+     volvio a derivar, y siguieron ahi: entre dos extremos claros (L 0,914 y
+     L 0,784) la rampa CAIA a L 0,061 y volvia a subir, o sea una franja oscura
+     de 180 px en mitad de una pagina clara, justo encima del pie. Medido en
+     pixel: rgb(250,249,247) -> rgb(90,85,79) -> rgb(247,245,241).
+     Ahora son la interpolacion lineal de --sh-bg a --bg en 32% y 64%, asi que
+     la rampa es monotona (0,914 -> 0,867 -> 0,822 -> 0,784) y la costura hace
+     lo que dice: fundir, no manchar. Si algun dia vuelve una hoja oscura, se
+     vuelven a derivar de sus extremos — no se copian de aqui. */
   --ha-seam-h: 180px;
   --ha-seam-0: var(--sh-bg, #f7f5f1);
-  --ha-seam-1: #4a453f;
-  --ha-seam-2: #9b958c;
+  --ha-seam-1: #f1efed;
+  --ha-seam-2: #eaeae9;
   --ha-seam-3: var(--bg, #e5e5e5);
 
   /* --- geometria y ritmo --- */
