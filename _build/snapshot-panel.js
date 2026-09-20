@@ -99,14 +99,16 @@ function normalizeRoute(raw) {
  * Con basePath, Next normaliza la barra final con un 308 (/panel/ -> /panel).
  * Hay que seguir la redireccion o todo el crawl se queda en cuerpos vacios.
  */
-function get(url, depth = 0) {
+function get(url, depth = 0, reqHeaders = undefined) {
   return new Promise((resolve, reject) => {
-    http.get(url, res => {
+    // http.get(url, options, cb): la forma soportada para mandar cabeceras.
+    // Pegarlas a un objeto URL no vale, Node solo copia los campos que conoce.
+    http.get(url, { headers: reqHeaders || {} }, res => {
       const { statusCode: status, headers } = res;
       if ([301, 302, 307, 308].includes(status) && headers.location && depth < 5) {
         res.resume();
         const next = new URL(headers.location, url).href;
-        return resolve(get(next, depth + 1));
+        return resolve(get(next, depth + 1, reqHeaders));
       }
       const chunks = [];
       res.on('data', c => chunks.push(c));
@@ -166,6 +168,20 @@ function slugFromParams(params) {
 function routeToHref(route) {
   const file = routeToFile(route);
   return MOUNT + file.replace(/index\.html$/, '');
+}
+
+/**
+ * La MISMA ruta, pero SIN montar: lo que espera el router.
+ *
+ * Un <Link href> guarda la ruta logica y el router le pone el basePath al
+ * navegar. Si en el flight data se escribe la ruta ya montada, el router la
+ * monta OTRA VEZ y sale /panel/panel/date-2026-01-14/. El atributo href del
+ * DOM, en cambio, tiene que ir montado: lo usa el navegador tal cual.
+ * Dos destinos para la misma ruta, y por eso hay dos funciones.
+ */
+function routeToLogicalHref(route) {
+  const file = routeToFile(route);
+  return '/' + file.replace(/index\.html$/, '');
 }
 
 /**
@@ -353,6 +369,48 @@ const BACKLINK = `<script data-holdera-chrome>
  * slug() es la copia en navegador de slugFromParams(): si cambia una, cambia
  * la otra o el shim pedira archivos que no existen.
  */
+/**
+ * Los enlaces que el snapshot MOVIO de sitio, y por que el router no puede
+ * seguirlos.
+ *
+ * El conmutador de fecha y hora es UN parametro en el servidor y UNA CARPETA
+ * por combinacion en estatico: /?date=2026-01-14 vive en
+ * /panel/date-2026-01-14/. Esa carpeta no es una ruta que la aplicacion
+ * conozca, asi que si el router navega a ella recibe un payload cuyo arbol es
+ * el de "/" y no encaja: la URL cambia y la pagina se queda como estaba —
+ * el 15 de enero bajo una URL que dice 14.
+ *
+ * Asi que ese clic se le quita al router: el atributo href del DOM ya apunta
+ * al archivo correcto, y una navegacion normal del navegador lo sirve. Se
+ * pierde la transicion suave en ESOS enlaces (son un conmutador, no un
+ * recorrido por el hotel) y se gana que el dia que se ve sea el que dice la
+ * URL. Todo lo demas —habitaciones, plantas, zonas, secciones— sigue siendo
+ * navegacion blanda, que es donde esta la camara.
+ *
+ * En captura (`true`) para llegar antes que el manejador de React.
+ */
+function movedLinks(routes) {
+  const moved = [...routes].filter(r => r.includes('?')).map(routeToHref);
+  if (!moved.length) return '';
+  return `<script data-holdera-chrome>
+(function () {
+  var MOVED = ${JSON.stringify(moved)};
+  var set = {};
+  for (var i = 0; i < MOVED.length; i++) set[MOVED[i]] = 1;
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a) return;
+    var href = a.getAttribute('href');
+    if (!set[href]) return;
+    e.preventDefault();
+    e.stopPropagation();
+    location.assign(href);
+  }, true);
+})();
+</script>`;
+}
+
 function fetchShim() {
   return `<script data-holdera-chrome>
 (function () {
@@ -405,6 +463,70 @@ function robotsFor(route) {
     : '\n<meta name="robots" content="noindex,follow" data-holdera-chrome>';
 }
 
+/**
+ * Un href logico -> su sitio dentro del snapshot. Devuelve null si no hay que
+ * tocarlo (los assets de Next ya vienen con el prefijo correcto).
+ *
+ * Una sola pasada sobre TODOS los href absolutos, no una sustitucion por ruta
+ * conocida: si no, un enlace con query que no se capturo —/intelligence/studio
+ * ?metric=adr, uno por cada una de las 57 metricas— no coincide con ninguna
+ * ruta, se queda absoluto y en el sitio publicado se va a un 404 de holdera.es.
+ * Cuando la combinacion exacta no existe, se cae a la pagina base.
+ */
+function resolveHref(href, captured, { mounted = true } = {}) {
+  if (href.startsWith(`${SRC_BASE}/_next/`) || href.startsWith('/_next/')) return null;
+
+  const to = mounted ? routeToHref : routeToLogicalHref;
+  const base = mounted ? MOUNT : '/';
+
+  const [withQuery, hash] = href.split('#');
+  const suffix = hash ? '#' + hash : '';
+  const logical = stripSrcBase(withQuery);
+
+  const canon = canonicalRoute(logical);
+  if (captured.has(canon)) return `${to(canon)}${suffix}`;
+
+  const bare = canonicalRoute(logical.split('?')[0]);
+  if (captured.has(bare)) return `${to(bare)}${suffix}`;
+
+  // Rutas sin barra final que si existen con ella, y viceversa.
+  const alt = bare.endsWith('/') ? bare.slice(0, -1) : bare + '/';
+  if (captured.has(alt)) return `${to(alt)}${suffix}`;
+
+  if (bare === '/icon.svg') {
+    const q = withQuery.includes('?') ? '?' + withQuery.split('?')[1] : '';
+    return `${MOUNT}icon.svg${q}`;
+  }
+
+  // Nada coincide: al menos que no se salga del panel.
+  return base;
+}
+
+/**
+ * El payload RSC, con los mismos enlaces reescritos que el HTML.
+ *
+ * En el flight payload los href van como JSON plano ("href":"/rooms/501") y
+ * SIN basePath ni barra final: el router se los pone al navegar. Los unicos
+ * que hay que tocar son los que el snapshot movio de sitio — los que llevan
+ * query, que en estatico viven en una carpeta con nombre propio
+ * (/?date=2026-01-14 -> /panel/date-2026-01-14/). Sin esta pasada, el
+ * conmutador de fecha y hora navegaria a una URL con query y el servidor
+ * estatico devolveria el dia por defecto: datos de otro dia bajo una URL que
+ * dice otra cosa, que es justo lo que este producto no hace.
+ */
+function rewriteRsc(text, discovered) {
+  const captured = new Set(discovered);
+  return text.replace(/"href":"(\/[^"]*)"/g, (whole, href) => {
+    // Un enlace con query se deja EXACTAMENTE como esta: su carpeta no es una
+    // ruta que el router conozca, asi que de ese clic se encarga el
+    // interceptor (movedLinks) con una navegacion normal del navegador.
+    if (href.includes('?')) return whole;
+    // El resto, sin montar: quien lee esto es el router y el basePath lo pone el.
+    const target = resolveHref(href, captured, { mounted: false });
+    return target === null ? whole : `"href":"${target}"`;
+  });
+}
+
 function rewrite(html, discovered, robots = '') {
   // Assets de Next: /_next/... -> <MOUNT>_next/...
   html = html.split('"/_next/').join(`"${MOUNT}_next/`);
@@ -419,30 +541,31 @@ function rewrite(html, discovered, robots = '') {
   // Cuando la combinacion exacta no existe, se cae a la pagina base.
   const captured = new Set(discovered);
   html = html.replace(/href="(\/[^"]*)"/g, (whole, href) => {
-    // Los assets de Next ya vienen con el prefijo correcto: no se tocan.
-    if (href.startsWith(`${SRC_BASE}/_next/`) || href.startsWith('/_next/')) return whole;
+    const target = resolveHref(href, captured);
+    return target === null ? whole : `href="${target}"`;
+  });
 
-    const [withQuery, hash] = href.split('#');
-    const suffix = hash ? '#' + hash : '';
-    const logical = stripSrcBase(withQuery);
-
-    const canon = canonicalRoute(logical);
-    if (captured.has(canon)) return `href="${routeToHref(canon)}${suffix}"`;
-
-    const bare = canonicalRoute(logical.split('?')[0]);
-    if (captured.has(bare)) return `href="${routeToHref(bare)}${suffix}"`;
-
-    // Rutas sin barra final que si existen con ella, y viceversa.
-    const alt = bare.endsWith('/') ? bare.slice(0, -1) : bare + '/';
-    if (captured.has(alt)) return `href="${routeToHref(alt)}${suffix}"`;
-
-    if (bare === '/icon.svg') {
-      const q = withQuery.includes('?') ? '?' + withQuery.split('?')[1] : '';
-      return `href="${MOUNT}icon.svg${q}"`;
-    }
-
-    // Nada coincide: al menos que no se salga del panel.
-    return `href="${MOUNT}"`;
+  /*
+   * Y LOS MISMOS ENLACES DENTRO DEL FLIGHT DATA EN LINEA.
+   *
+   * El HTML lleva los enlaces DOS veces: el atributo href que se ve, y el
+   * payload RSC que va incrustado en un <script> para hidratar. Al pulsar un
+   * <Link>, quien navega es el router con el href de sus PROPS —o sea el del
+   * payload—, no con el atributo del DOM. Reescribir solo el atributo dejaba
+   * el conmutador de fecha y hora empujando a "/?date=2026-01-14", una URL con
+   * query que en estatico no existe: el servidor devolvia la pagina por
+   * defecto y se veia el 15 de enero bajo una URL que decia 14. Datos de un
+   * dia bajo la URL de otro es exactamente lo que este producto no hace.
+   *
+   * Dentro del <script> las comillas van escapadas, de ahi el \\" del patron.
+   */
+  html = html.replace(/\\"href\\":\\"(\/[^"\\]*)\\"/g, (whole, href) => {
+    // Igual que en el payload: los enlaces con query se quedan como estan y
+    // los recoge el interceptor. El resto, sin montar, porque el router le
+    // pone el basePath — escribir aqui la ruta montada daba /panel/panel/...
+    if (href.includes('?')) return whole;
+    const target = resolveHref(href, captured, { mounted: false });
+    return target === null ? whole : `\\"href\\":\\"${target}\\"`;
   });
 
   // Enlace de vuelta al sitio. Va DENTRO de la barra lateral del producto,
@@ -456,7 +579,9 @@ function rewrite(html, discovered, robots = '') {
 
   const headClose = html.indexOf('</head>');
   if (headClose !== -1) {
-    html = html.slice(0, headClose) + BACKLINK_STYLE + robots + fetchShim() + html.slice(headClose);
+    // `captured`, no `discovered`: discovered es un ITERADOR y arriba ya se
+    // consumio al construir el Set. Pasarlo otra vez daba una lista vacia.
+    html = html.slice(0, headClose) + BACKLINK_STYLE + robots + fetchShim() + movedLinks(captured) + html.slice(headClose);
   }
 
   return html;
@@ -522,6 +647,49 @@ async function main() {
     htmlBytes += Buffer.byteLength(rewritten);
     writeFile(routeToFile(route), rewritten);
   }
+
+  /*
+   * Tercera pasada: el PAYLOAD RSC de cada pagina.
+   *
+   * Sin esto la demo se siente como un sitio de los noventa y no como el
+   * producto. El router del App Router no navega leyendo el HTML: pide a la
+   * misma URL un flight payload (cabecera `RSC: 1`). Un servidor estatico le
+   * devolvia el documento HTML, el router veia que no es un payload y se
+   * rendia haciendo una navegacion DURA — recarga entera. Consecuencia
+   * visible: la escena del hotel se DESMONTA y se vuelve a montar, asi que el
+   * movimiento de camara de 760 ms entre planta y habitacion no ocurre nunca.
+   * En Vercel, con servidor de Next detras, la misma navegacion es blanda y la
+   * camara entra en la habitacion.
+   *
+   * Se guarda junto al index.html como index.rsc, y el .htaccess lo sirve
+   * cuando la peticion trae la cabecera RSC (mod_rewrite con %{HTTP:RSC}).
+   * El payload que se captura es el de ARBOL COMPLETO —se pide sin
+   * Next-Router-State-Tree—, que es el unico que sirve viniendo de cualquier
+   * pagina: uno parcial solo vale para el arbol desde el que se pidio.
+   */
+  let rscBytes = 0;
+  let rscCount = 0;
+  const rscFailed = [];
+  for (const route of pages.keys()) {
+    let res;
+    try {
+      res = await get(ORIGIN + SRC_BASE + route, 0, { RSC: '1' });
+    } catch (e) {
+      rscFailed.push({ route, error: e.message });
+      continue;
+    }
+    if (res.status !== 200 || !res.type.includes('text/x-component')) {
+      rscFailed.push({ route, status: res.status, type: res.type });
+      continue;
+    }
+    const payload = rewriteRsc(res.body.toString('utf8'), pages.keys());
+    rscBytes += Buffer.byteLength(payload);
+    rscCount++;
+    writeFile(routeToFile(route).replace(/index\.html$/, 'index.rsc'), payload);
+    if (rscCount % 50 === 0) console.log(`  ${rscCount} payloads RSC`);
+  }
+  console.log(`payloads RSC: ${rscCount}${rscFailed.length ? ` · ${rscFailed.length} sin capturar` : ''}`);
+  if (rscFailed.length) for (const f of rscFailed.slice(0, 5)) console.log('  FALLO', f.route, f.status || f.error, f.type || '');
 
   // Assets de Next, mas el favicon del producto (unica ruta suelta fuera de /_next/).
   //
@@ -621,6 +789,7 @@ async function main() {
   console.log('resumen');
   console.log(`  paginas  ${pages.size}`);
   console.log(`  HTML     ${(htmlBytes / 1024 / 1024).toFixed(2)} MB`);
+  console.log(`  RSC      ${(rscBytes / 1024 / 1024).toFixed(2)} MB  (${rscCount} payloads)`);
   console.log(`  assets   ${(assetBytes / 1024 / 1024).toFixed(2)} MB  (${assets.size} archivos)`);
   console.log(`  api      ${apiSaved.length} respuestas`);
   if (failed.length) {

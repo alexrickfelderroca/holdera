@@ -45,6 +45,44 @@ RedirectMatch 404 ^/.+\.md$
 </IfModule>
 
 
+# ─────────────────────────────── navegacion del panel sin recargar (paso 12)
+# El router del App Router de Next no navega leyendo el HTML: pide a la MISMA
+# URL un flight payload, con la cabecera `RSC: 1`. Un servidor estatico le
+# devolvia el documento HTML, el router veia que no es un payload y se rendia
+# haciendo una navegacion DURA: recarga entera de la pagina.
+#
+# Se nota sobre todo en el hotel: la escena 3D vive en el layout de /rooms y
+# NO deberia desmontarse al ir de planta a habitacion —la camara anima el
+# cambio en 760 ms—, pero con una recarga se desmonta y se vuelve a montar, asi
+# que el movimiento no ocurre nunca. Comparado con la misma demo servida por
+# Next (holdera.vercel.app) la diferencia es exactamente esa.
+#
+# `node _build/snapshot-panel.js` guarda ahora el payload de cada pagina como
+# index.rsc junto a su index.html. Esta regla lo sirve cuando la peticion trae
+# la cabecera. El tipo text/x-component es obligatorio: el cliente de Next
+# comprueba el Content-Type y, si no es ese, vuelve a rendirse.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTP:RSC} =1
+  RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}index.rsc -f
+  RewriteRule ^ %{REQUEST_URI}index.rsc [L]
+</IfModule>
+
+<IfModule mod_mime.c>
+  AddType text/x-component .rsc
+</IfModule>
+
+# El payload y el HTML son DOS respuestas para la misma URL, distinguidas solo
+# por una cabecera de peticion. Sin este Vary, un intermediario puede servir a
+# un navegador el payload que cacheo para el router, o al reves.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(rsc)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+    Header set Vary "RSC, Next-Router-State-Tree, Next-Router-Prefetch"
+  </FilesMatch>
+</IfModule>
+
+
 # ──────────────────────────────────────────────── panel.html -> /panel/ (paso 9)
 # El panel demo viejo vivio en /panel.html desde el paso 5, estuvo indexado y
 # salio en el sitemap durante diez dias. En el paso 9 lo sustituye el producto
@@ -81,6 +119,9 @@ Redirect 301 /panel.html /panel/
   </FilesMatch>
   <FilesMatch "\.html$">
     Header set Cache-Control "public, max-age=0, must-revalidate"
+    # La misma URL responde HTML a un navegador y un payload RSC al router
+    # (paso 12): sin Vary, un intermediario puede darle a uno lo del otro.
+    Header append Vary "RSC"
   </FilesMatch>
 </IfModule>
 

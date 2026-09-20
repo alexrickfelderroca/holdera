@@ -2,10 +2,16 @@
 const http = require('http'), fs = require('fs'), path = require('path');
 const root = path.resolve(__dirname, '..');
 const port = Number(process.argv[2]) || 4177;
-const mime = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.avif': 'image/avif', '.woff2': 'font/woff2', '.json': 'application/json', '.mp4': 'video/mp4', '.ico': 'image/x-icon', '.txt': 'text/plain', '.xml': 'application/xml' };
+const mime = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.avif': 'image/avif', '.woff2': 'font/woff2', '.json': 'application/json', '.mp4': 'video/mp4', '.ico': 'image/x-icon', '.txt': 'text/plain', '.xml': 'application/xml', '.rsc': 'text/x-component' };
 http.createServer((req, res) => {
   let p = decodeURIComponent(req.url.split('?')[0]);
-  if (p.endsWith('/')) p += 'index.html';
+  /* Peticion de navegacion del router de Next: pide el payload RSC, no el HTML.
+     Sin esto el router recibe un documento HTML donde espera un flight payload,
+     se rinde y hace una navegacion DURA (recarga entera): la escena del hotel
+     se desmonta y no hay movimiento de camara. Es lo que hace el .htaccess en
+     produccion. */
+  const wantsRsc = req.headers.rsc === '1' || req.headers.rsc === '?1';
+  if (p.endsWith('/')) p += wantsRsc ? 'index.rsc' : 'index.html';
   const file = path.join(root, p);
   if (!file.startsWith(root)) { res.writeHead(403); return res.end(); }
   fs.stat(file, (err, st) => {

@@ -50,6 +50,16 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   let worst = { ratio: 99, name: '' };
   try {
     await send('Page.enable');
+    await send('Runtime.enable');
+    /*
+     * La pestana de /json/new nace en segundo plano y Chrome estrangula los
+     * temporizadores de una pagina que no se ve: el escaparate no llega a
+     * armarse y los cinco titulos salen "no visible title". Traerla al frente
+     * y mantener un screencast la mantiene "visible" para el compositor.
+     */
+    await send('Page.bringToFront').catch(() => {});
+    await send('Page.startScreencast', { format: 'jpeg', quality: 10, maxWidth: 200, maxHeight: 200, everyNthFrame: 30 }).catch(() => {});
+    await send('Emulation.setFocusEmulationEnabled', { enabled: true }).catch(() => {});
     await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
     await send('Page.navigate', { url: BASE + '/index.html' });
     await sleep(3200);

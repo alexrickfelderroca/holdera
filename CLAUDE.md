@@ -73,6 +73,13 @@ Empresa propia de Alex (no cliente externo). Holdera diseña e integra sistemas 
   9. **Iconos redibujados con la geometría de SF Symbols** (retícula de 16, trazo 1,6, misma caja óptica de 13 para todos) y dos glifos nuevos que dicen mejor lo que son: Reservas lleva la rejilla del mes entera, History pasa de un segundo gráfico de barras a `clock.arrow.circlepath`.
   - **Resultado medido**: 0 fallos de contraste en 18 pantallas × claro y oscuro × 1440 y 390 (3.032 elementos de texto por pasada en escritorio, 5.572 en móvil), 0 scroll horizontal a 390/1024/1180/1366/1440/1920, Lighthouse móvil en `/panel/` accesibilidad 100 · buenas prácticas 100 · SEO 100, 384 de 385 pruebas (la que falla es la de entorno de siempre).
 
+- **Paso 12 (hecho, 20-09-2026): el panel vuelve a navegar sin recargar, y la cámara entra en la habitación.** Alex comparó la demo servida por Next (holdera.vercel.app) con la nuestra: «cuando entras a una habitación, en el suyo es mucho más smooth». Tenía razón, y eran **dos fallos distintos**, los dos de raíz y los dos anteriores a esta sesión.
+  1. 🔴 **La navegación era DURA.** El router del App Router no navega leyendo el HTML: pide a la MISMA URL un flight payload, con la cabecera `RSC: 1`. El host estático le devolvía el documento HTML —355 KB donde Vercel manda 340 bytes de payload—, el router veía que no es lo que pidió y se rendía recargando la página entera. Consecuencia visible: la escena 3D, que vive en el layout de `/rooms` y **no debería desmontarse**, se desmontaba y se volvía a montar, así que el movimiento de cámara de 760 ms no ocurría nunca. Arreglo: `snapshot-panel.js` guarda ahora el payload de cada página como `index.rsc` junto a su `index.html` (260 payloads, 9,9 MB) y el `.htaccess` lo sirve con `RewriteCond %{HTTP:RSC} =1`.
+  2. 🔴 **Y aun recargando, la cámara nunca entraba.** `viewFromPath` compara con `/^\/rooms\/([^/]+)$/`, y el despliegue compila con `trailingSlash`, así que `usePathname()` devuelve `/rooms/502/` **con barra final**: no casa, y la vista caía en `{kind:"building"}`. Lo mismo en las zonas de Ground Floor (`/operations/restaurant/`). Roto desde el paso 9; en `next dev`, que no lleva barra final, no se ve. Arreglo: `routePath()` en `spatialNavigation.ts`, normalizando en un solo sitio.
+  3. **De propina, un fallo de datos que ya estaba**: el conmutador de fecha te llevaba a `?date=2026-01-14` y te enseñaba el **15** de enero. El `<Link>` guarda su href en las props —el flight data—, no en el atributo del DOM, así que reescribir solo el atributo no cambiaba a dónde navegaba el router. Ahora se reescribe también el flight data, y los enlaces con query (cuya carpeta no es una ruta que la app conozca) se le quitan al router con un interceptor de clic: navegación normal del navegador al archivo correcto.
+  - **Medido** con `node _build/nav-check.js`, que pone una marca en `window`, pulsa el enlace y mira si sobrevive: **0/8 en holdera.es antes, 8/8 después**. El negativo es la prueba de que el verificador sirve.
+  - 🔴 **Los arreglos 2 y 3 viven en el FUENTE del producto, que está gitignorado** (`routePath()` en `app/components/hotel/spatialNavigation.ts`, y sus dos llamadas en `RoomsStage.tsx` y `OperationsStage.tsx`). Al repositorio solo llega su EFECTO, la carpeta `panel/` capturada. Si esa carpeta de producto se pierde, el arreglo se pierde con ella y volver a capturar reintroduce el fallo. Es el mismo aviso que ya estaba en la lista de pendientes sobre versionar el producto aparte, ahora con un caso concreto detrás.
+
 - Idioma del contenido: **español**, registro **tú** en toda la página. (Alex no ha confirmado si quiere también EN.)
 - Web REAL, no demo: nada inventado. Todo lo no confirmado lleva `<!-- TODO -->` en `index.html` y está en la lista de abajo.
 - Datos confirmados por Alex (07-09-2026): "más de 5 años de experiencia", sede en Barcelona.
@@ -128,6 +135,7 @@ Empresa propia de Alex (no cliente externo). Holdera diseña e integra sistemas 
 - `_build/showcase-contrast.js` (paso 11) — mide los cinco títulos del escaparate del hero sobre la obra, poniéndolos transparentes primero. Hay que repasarlo cada vez que cambien las capturas del panel.
 - `_build/lcp-bench.js` (paso 11) — LCP/FCP/CLS medianos por URL con la misma emulación, para comparar dos versiones sin que una traza suelta decida.
 - `_build/producto-shots.js` (paso 11) — las cinco capturas en bruto del escaparate, desde el panel ya capturado. La de trazabilidad abre el cajón de Evidence antes de disparar.
+- `_build/nav-check.js` (paso 12) — comprueba CÓMO navega el panel, no solo que navegue: pone una marca en `window`, pulsa el enlace y mira si el documento sobrevivió (navegación blanda) o se recargó (dura), más si la escena es el mismo nodo del DOM y si la cámara cambió de nivel. Ocho pasos. Se pasa contra `http://localhost:4177` o contra `--base https://holdera.es`.
 - `_build/gates.js` — pasa las cinco puertas de una vez; con `--fix` reinyecta el SEO, regenera el sitemap y sella los assets antes de comprobar. `_build/replicate-shell.js` copia la cabecera/drawer/pie de `_build/shell/` a las siete páginas (lo que `check-shell.js` solo comprueba), y `_build/shell/build-drawer.js` genera el drawer, que son 56 URLs de tesela por página escritas a mano.
 - `_build/measure.html` — sonda de contraste sobre píxeles REALES de una captura. Es lo único que puede medir el título del escaparate, que se lee sobre cinco obras distintas con `filter` y scrim encima.
 - `_build/frames.html` — extractor de fotogramas de los mp4 de referencia que pasa Alex.
@@ -283,6 +291,80 @@ Empresa propia de Alex (no cliente externo). Holdera diseña e integra sistemas 
 - **`sharp` vive ahora en el producto.** `HOLDERA_SHARP_PATH` apuntaba a `…/aplomo/site/node_modules`, que ya no existe; la ruta buena es `holdera-product-hotel-operations-v1/holdera-product-hotel-operations-v1/node_modules` (Next 16 lo trae). Es lo que usa `_build/producto-art.js`.
 - **Un agente que edita su propio validador merece una lectura, no una alarma automática.** El de SEO tocó `validate-meta.js` — que no era suyo — pero no relajó nada: trasladó la regla de «cinco nodos Service» a «exactamente un SoftwareApplication con cinco features» y añadió una que prohíbe que vuelva ningún Service. Lo único que había que corregir es que esa última regla vivía dentro de la rama de `index.html`, así que un Service reapareciendo en cualquier otra página pasaba entero.
 - **Chrome es de todos.** Con ocho agentes verificando a la vez, `select_page` y la llamada siguiente pueden quedar separadas por la navegación de otro: navegué sin querer la pestaña de un agente a `holdera.es` a mitad de su verificación. Cada uno con su `isolatedContext`, y la verificación visual **al final**, cuando no queda nadie más dentro.
+
+## Trampas del paso 12 (navegación blanda en un panel estático)
+
+- 🔴 **El router de Next no lee el HTML: pide un payload.** Cualquier panel de
+  Next capturado en archivos navega DURO por defecto, porque el servidor
+  estático contesta con el documento donde el router espera
+  `text/x-component`. El sintoma no es "va lento": es que **el estado del
+  cliente se pierde** — aquí, la escena 3D montada en el layout. Para verlo:
+  `curl -sL -H "RSC: 1" <url>` y mirar el `Content-Type`.
+- **Next redirige las peticiones RSC sin `?_rsc=`.** Un `curl -H "RSC: 1"`
+  sin `-L` devuelve 0 bytes y un 307 a la misma URL con el parámetro. El
+  parámetro es solo una clave de caché: el servidor estático lo ignora y la
+  regla se apoya en la CABECERA, no en la query.
+- 🔴 **Los payloads hay que capturarlos POR EL PROXY**, igual que el HTML. Con
+  `basePath`, los Server Components se llaman a sí mismos por `/panel/api/…`;
+  contra `localhost:3000` directo el payload sale en 21 KB (página vacía) en
+  vez de 31 KB. Es la misma trampa del paso 9, en su versión RSC.
+- 🔴 **Un `<Link>` navega con el href de sus PROPS, no con el del DOM.** El
+  HTML lleva los enlaces dos veces: el atributo que se ve y el flight data que
+  hidrata. Reescribir solo el atributo deja al router yendo a la URL original.
+  Por eso el conmutador de fecha enseñaba el 15 bajo `?date=2026-01-14`.
+- 🔴 **En el flight data el href va SIN montar.** El router le pone el
+  `basePath` al navegar, así que escribir ahí la ruta ya montada da
+  `/panel/panel/date-2026-01-14/`. Dos destinos para la misma ruta:
+  `routeToHref()` (montada, para el atributo del DOM) y
+  `routeToLogicalHref()` (sin montar, para el payload).
+- 🔴 **Las carpetas que inventa el snapshot no son rutas de la aplicación.**
+  `/panel/date-2026-01-14/` no existe en el árbol de Next: si el router
+  navega ahí, recibe un payload cuyo árbol es el de `/`, la URL cambia y la
+  página se queda como estaba. Por eso esos clics se le quitan al router
+  (interceptor en captura) y los hace el navegador. Las rutas REALES
+  —habitaciones, plantas, zonas, secciones— sí navegan blando, que es donde
+  está la cámara.
+- 🔴 **Un iterador se consume una sola vez.** `rewrite()` recibe
+  `pages.keys()`; al construir el `Set` se agota, así que pasarlo otra vez
+  más abajo daba una lista vacía y el interceptor se inyectaba sin ningún
+  enlace. Silencioso: el HTML salía bien, solo que sin la etiqueta.
+- 🔴 **Un `width: max-content` dentro de una rejilla ENSANCHA la pista.** El
+  conmutador Overview/Reservas medía 490px a un viewport de 390 y el
+  `max-width: 100%` se resolvía contra esos 490. Acotado a escritorio.
+- **`String.replace()` y el escape `$` + comilla invertida.** Ya estaba
+  escrito para `$$`; esta vez el texto de reemplazo llevaba `` $` `` dentro de
+  un comentario y me inyectó la cabecera del archivo en mitad de una función.
+  Con una FUNCIÓN de reemplazo no pasa: ahí el `$` no es especial.
+- **Una navegación dura mata el contexto de CDP a mitad del `evaluate`.** El
+  error «Execution context was destroyed» NO es un fallo del script: es
+  exactamente la señal que se está midiendo. `nav-check.js` la captura y la
+  cuenta como "navegación dura".
+- 🔴 **Un servidor de comparación mal montado miente a lo grande.** Para medir
+  el panel viejo copié `serve.js` DENTRO de su carpeta, y `serve.js` resuelve
+  su raíz como `__dirname/..`: servía la carpeta de arriba y todo eran 404.
+  La medida salió «LCP 712 ms» y parecía que el rediseño lo había
+  multiplicado por cinco. Bien montado: 3.121 ms el viejo, 3.886 ms el nuevo.
+- 🔴🔴 **Una pestaña de `/json/new` nace EN SEGUNDO PLANO, y en segundo plano
+  React no termina de hidratar.** Chrome estrangula los temporizadores de una
+  página que no se ve, así que el planificador de React no llega a tener
+  turno: **medido, la barra lateral tenía su fibra a los 500 ms y los 20
+  enlaces de habitación seguían a CERO a los 10 segundos.** Un `<Link>` sin
+  hidratar es un `<a href>` normal, el navegador lo sigue, y el verificador
+  informaba de una «navegación dura» que en un navegador de verdad no existe:
+  8/8 en una pestaña visible, 4/8 en la oculta, de forma reproducible. Perdí
+  una hora persiguiendo un fallo del panel que era del arnés.
+  **`Page.bringToFront` NO basta** si la ventana está tapada; lo que funciona
+  es mantener un `Page.startScreencast` activo, que obliga al compositor a
+  producir fotogramas. Lo llevan `nav-check.js` y `showcase-contrast.js`, y el
+  mismo síntoma explicaba que el medidor del escaparate devolviera
+  «no visible title» en las cinco pantallas.
+- **Y por eso hay que esperar a la fibra DEL ENLACE que se va a pulsar**, no a
+  la de uno cualquiera: la barra lateral hidrata en 250 ms y la escena del
+  hotel bastante después. Esperar por `.shell-nav-item` daba por listo un
+  `a.hs-room-link` que aún no lo estaba.
+- **`Object.keys(el)` vale para ver la fibra de React, pero comprueba el
+  elemento concreto**: sobre un nodo que aún no ha hidratado devuelve `[]`, y
+  eso se confunde fácilmente con «este navegador no expone la fibra».
 
 ## Trampas del paso 11 (el panel sobre la HIG de Apple)
 
