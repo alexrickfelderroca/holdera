@@ -238,41 +238,68 @@ function extractLinks(html) {
  * Va en position:fixed y fuera del flujo: no toca el layout de ninguna pantalla.
  */
 /**
- * Colores tomados del sistema visual v3 del producto para que no parezca un
- * injerto. El borde es #7a766d y no el #3b3732 del producto porque ESTE control
- * se identifica solo por su contorno —su fondo mide 1,24:1 contra el lienzo— y
- * WCAG 1.4.11 pide 3:1. Medido: borde 3,54:1 sobre la pastilla y 4,40:1 sobre
- * el lienzo; texto 13,48:1; la linea ambar 7,99:1.
+ * La pastilla se viste con los TOKENS del panel, no con literales.
  *
- * En escritorio se coloca en el hueco vacio de la barra lateral (232px de
- * ancho; entre el final de la navegacion y el bloque "DATA SOURCE" hay 216px),
- * asi que flota sin taparle nada a nadie. Por debajo de 900px la barra lateral
- * se convierte en una tira horizontal y la pastilla se va abajo a la derecha,
- * con hueco al final del body para no cubrir el ultimo contenido.
+ * Antes llevaba los colores del sistema v3 escritos a mano (#25211b sobre
+ * #7a766d): en el panel v5, que es claro y ademas tiene modo oscuro, eso era
+ * un injerto oscuro en una pagina clara — exactamente el "app dentro de la
+ * app" contra el que avisa la HIG. Leyendo var(--bg-group), var(--label) y
+ * compania, la pastilla cambia de piel con el resto y no hay un segundo sitio
+ * donde mantener la paleta. Cada var lleva su valor de reserva por si el
+ * bloque de tokens no ha cargado todavia.
+ *
+ * WCAG 1.4.11: el control se identifica por su contorno, asi que el borde usa
+ * --label-4, el escalon medido a 3:1 sobre las dos superficies (3,12:1 en
+ * claro, 3,00:1 en oscuro). El fondo es opaco, no un fill translucido: un
+ * fill sobre el lienzo compone a 1,1:1 y no dibujaria frontera ninguna.
+ *
+ * En escritorio se coloca en el hueco vacio de la barra lateral; por debajo de
+ * 900px la barra se convierte en una tira horizontal y la pastilla se va abajo
+ * a la derecha, con hueco al final del body para no cubrir el ultimo contenido.
  */
 const BACKLINK_STYLE = `
 <style data-holdera-chrome>
   .holdera-site-back {
     position: fixed; z-index: 9999;
-    left: 12px; bottom: 100px; width: 208px;
-    display: flex; align-items: center; gap: 8px;
-    padding: 10px 12px; min-height: 44px; box-sizing: border-box;
-    border: 1px solid #7a766d; border-radius: 10px;
-    background: #25211b; color: #f1ebdf;
-    font: 500 12px/1.3 system-ui, sans-serif; text-decoration: none;
+    left: 12px; bottom: 96px; width: 212px;
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 14px; min-height: 44px; box-sizing: border-box;
+    border: 1px solid var(--label-4, rgba(60,60,67,.56));
+    border-radius: 14px;
+    background: var(--bg-group, #ffffff);
+    color: var(--label, #000000);
+    font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+    font-size: 13px; font-weight: 600; line-height: 1.38; letter-spacing: -0.006em;
+    text-decoration: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 1px rgba(0,0,0,.04);
+    transition: background 180ms cubic-bezier(.25,.1,.25,1);
   }
-  .holdera-site-back b { font-weight: 500; }
-  .holdera-site-back em { font-style: normal; color: #f0a862; display: block; font-size: 11px; }
-  .holdera-site-back:hover { background: #2f2a22; }
-  .holdera-site-back:focus-visible { outline: 2px solid #f1ebdf; outline-offset: 2px; }
+  .holdera-site-back > span:first-child {
+    flex: 0 0 auto; font-size: 15px; line-height: 1;
+    color: var(--accent-label, #a15e00);
+  }
+  .holdera-site-back b { font-weight: 600; }
+  .holdera-site-back em {
+    font-style: normal; display: block;
+    font-size: 11px; font-weight: 400;
+    color: var(--label-3, rgba(60,60,67,.72));
+  }
+  .holdera-site-back:hover { background: var(--bg-elevated, #ffffff); }
+  .holdera-site-back:focus-visible {
+    outline: 2px solid var(--accent-label, #a15e00); outline-offset: 2px;
+  }
 
   @media (max-width: 900px) {
     body { padding-bottom: 76px; }
     .holdera-site-back {
       left: auto; right: 12px; bottom: 12px; width: auto;
       border-radius: 999px;
-      box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 8px 24px rgba(0,0,0,.5);
+      box-shadow: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px -8px rgba(0,0,0,.24);
     }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .holdera-site-back { transition: none; }
   }
 </style>`;
 

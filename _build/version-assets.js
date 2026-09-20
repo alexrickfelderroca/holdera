@@ -23,6 +23,20 @@
  * despues de cualquier cambio en un css o un js, junto a las demas puertas.
  *
  * Solo toca rutas LOCALES: cdnjs y demas externos se quedan como estan.
+ *
+ * PASO 11 — TAMBIEN SELLA LAS IMAGENES DEL ESCAPARATE.
+ * El .htaccess sirve .webp como `immutable, max-age=31536000`: el navegador
+ * ni siquiera REVALIDA. Los veinte archivos de `assets/img/producto/` son
+ * capturas del panel, asi que cambian en cada rediseño del panel — y con la
+ * URL igual se quedarian rancios UN AÑO en cada maquina que haya visitado
+ * holdera.es. Es la trampa del paso 8 con otra ropa, y peor: el css caduca a
+ * los siete dias, esto no caduca.
+ *
+ * Se sellan solo las de `assets/img/producto/`, que son las que cambian con
+ * el producto, y se leen tanto de `src=` como de `data-bg=` (el escaparate
+ * las pide en diferido por ese atributo). El resto de imagenes del sitio —el
+ * logo, el poster del cerebro, las texturas del planeta— son estables y su
+ * `immutable` es justo lo que se quiere.
  */
 
 const fs = require('fs');
@@ -49,6 +63,10 @@ function hashOf(file) {
 // Solo rutas relativas sin barra ni protocolo: nada de //cdn, http, /abs.
 const RE = /\b(href|src)="(?!https?:|\/\/|\/)([A-Za-z0-9_\-./]+\.(?:css|js))(?:\?v=[0-9a-f]+)?"/g;
 
+// La obra del escaparate, en src= y en data-bg=. Acotada a assets/img/producto/
+// a proposito: son las unicas imagenes que cambian con el producto.
+const RE_ART = /\b(src|data-bg)="(assets\/img\/producto\/[A-Za-z0-9_\-.]+\.webp)(?:\?v=[0-9a-f]+)?"/g;
+
 let changed = 0;
 const report = [];
 
@@ -57,12 +75,13 @@ for (const page of PAGES) {
   if (!fs.existsSync(file)) { console.error('ABORTADO: falta ' + page); process.exit(1); }
   const before = fs.readFileSync(file, 'utf8');
   const seen = [];
-  const after = before.replace(RE, (match, attr, asset) => {
+  const stamp = (match, attr, asset) => {
     const h = hashOf(asset);
     if (!h) { seen.push(asset + ' (NO EXISTE, sin sellar)'); return match; }
     seen.push(asset + ' -> ' + h);
     return `${attr}="${asset}?v=${h}"`;
-  });
+  };
+  const after = before.replace(RE, stamp).replace(RE_ART, stamp);
   if (after !== before) { fs.writeFileSync(file, after); changed++; }
   report.push({ page, assets: seen });
 }

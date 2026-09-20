@@ -53,6 +53,25 @@ const FRAMES = [
   { slot: 'c', w: 1040, h: 694, top: 0.58, left: 0.34, quality: 80 },
 ];
 
+/**
+ * Encuadre por pantalla, cuando el sujeto no está donde el encuadre general
+ * lo busca.
+ *
+ * Cuatro de las cinco se leen de izquierda a derecha, así que un recorte
+ * anclado al borde de inicio cae sobre contenido. La de trazabilidad es la
+ * excepción: su sujeto es la hoja de Evidence, que flota contra el borde
+ * DERECHO, y el encuadre general recortaba la página atenuada de al lado —
+ * 9 KB de gris plano, que es lo que lo delató. Aquí se desplaza a la derecha
+ * para que los tres paneles caigan sobre la hoja.
+ */
+const FRAME_OVERRIDES = {
+  trazabilidad: {
+    a: { top: 0, left: 0.57 },
+    b: { top: 0.08, left: 0.36 },
+    c: { top: 0.3, left: 0.36 },
+  },
+};
+
 async function main() {
   if (!fs.existsSync(RAW)) {
     console.error(`No existe ${RAW}. Guarda ahí las capturas <clave>-full.png antes de convertir.`);
@@ -75,7 +94,9 @@ async function main() {
     const W = meta.width ?? 0;
     const H = meta.height ?? 0;
 
-    for (const frame of FRAMES) {
+    for (const base of FRAMES) {
+      const over = (FRAME_OVERRIDES[key] || {})[base.slot];
+      const frame = over ? { ...base, ...over } : base;
       // El recorte nunca puede salirse de la imagen: se escala a lo que haya
       // y se ancla dentro. Una pantalla corta da un recorte más apretado, no
       // un error.

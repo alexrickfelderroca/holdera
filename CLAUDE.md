@@ -61,6 +61,18 @@ Empresa propia de Alex (no cliente externo). Holdera diseña e integra sistemas 
   7. **La web gira entera al producto**: fuera los cinco servicios de agencia, el submenú «Servicios», los ocho logotipos de tecnología (afirmaban integraciones que no existen, y dos de ellos IA que el producto no tiene), las estrellas decorativas y «+30 empresas automatizadas». El hero es «Todo tu hotel. Cada cifra, con su origen.», la lista del hero son las cinco pantallas del producto, y el hueco de los logos lo ocupa la cadena de evidencia (01 Fórmula · 02 Hechos · 03 Registro · 04 Dato en bruto). `partners.html` deja de ser un muro de logos y pasa a ser «cómo se conecta»: cuatro fuentes, qué enciende cada una y **qué no se puede enseñar sin ella**.
   8. **El escaparate del hero enseña el producto, no fotos de banco.** `assets/img/producto/*.webp` (20 archivos, 805 KB, los mismos tamaños que la obra anterior) son capturas del panel ya rediseñado, recortadas por `_build/producto-art.js` desde cinco capturas de página entera.
   - **Resultado**: `tsc` limpio, 384 de 385 tests en verde (el que falla es de entorno, ver trampas), las cinco puertas pasan, Lighthouse móvil 100/100/100 en la home y en `/panel/`, sin scroll horizontal a 390px y con el orden de encabezados correcto.
+- **Paso 11 (hecho, 20-09-2026): el panel se reconstruye sobre las Human Interface Guidelines de Apple.** Encargo de Alex en una sola noche: «reinventa entera la sección del panel demo, centrada por completo en el diseño de Apple; el calendario, inspírate en la app Calendario». No es "inspirado en": la escalera tipográfica, el sistema de color, los materiales, la geometría de los controles y las curvas de movimiento son de Apple, leídas de la HIG entera (172 páginas descargadas de su API de documentación, porque la web es JS y WebFetch no la ve) y, donde la HIG da un número, se usa ese número. Doctrina del producto intacta: el color sigue siendo estado y nunca dirección, la traza sigue acabando en el registro RAW, y lo que falta sigue faltando.
+  1. **La idea que reorganiza la pantalla: dos capas.** Una capa FUNCIONAL translúcida —barra lateral, barra superior, hojas, controles flotantes— que flota sobre una capa de CONTENIDO opaca que nunca es cristal. Antes todo pesaba lo mismo: un rectángulo blanco con un filete de 1px. Es literal de la HIG («Don't use Liquid Glass in the content layer»).
+  2. **Tipografía**: la escalera Dynamic Type de iOS/iPadOS «Large (default)» — Large Title 34/41 … Caption 2 11/13 — con la tabla de tracking de Apple pasada a em. El cuerpo sube de 14 a 15px y la jerarquía por fin existe. **Fuera las versales**: 52 reglas ponían micro-etiquetas en mayúsculas con tracking; Apple no lo hace casi en ningún sitio y a 11px se leen peor que un Footnote normal.
+  3. **Color**: la paleta del sistema (systemOrange/Green/Red/Brown/Gray) con sus jerarquías label / fill / separator / grouped background. El acento sigue siendo el naranja de Holdera — la HIG lo bendice explícitamente— y systemOrange #FF9500 resulta ser casi gemelo del #f08a24 del sitio. Un relleno de acento lleva TINTA encima (7,74:1), nunca blanco (2,20:1).
+  4. **Forma y elevación**: radios concéntricos, cápsulas para los controles, `corner-shape: squircle` donde el navegador lo tiene (Chrome 139+), y **el contenido agrupado NO proyecta sombra**: la profundidad es el escalón de fondo y el separador. La sombra queda para lo que flota de verdad (el pulgar del control segmentado, los popovers, las hojas).
+  5. **Movimiento**: los muelles de SwiftUI escritos como `linear()` de CSS, generados de la ecuación del muelle (`.snappy` respuesta 0,4 amortiguación 0,85; `.smooth` respuesta 0,5 crítico), no béziers a ojo.
+  6. **Modo oscuro completo**, desde el primer día. La rampa oscura de Apple desplazada un escalón para no usar #000000 (prohibido por el CLAUDE.md global): lienzo #1C1C1E, tarjetas #2C2C2E, elevado #3A3A3C.
+  7. **El calendario de Reservas es Calendario de Apple**: el mes es un Title 1 con un par de chevrons en cápsula, los meses son un control segmentado, la rejilla es UNA superficie continua sin canaletas, y **el estado vive en el NÚMERO del día** — hoy es un círculo relleno de acento. Lo que no tiene Calendario y se queda porque es el producto: cada noche con su ocupación, su tarifa y su pickup.
+  8. **Evidence deja de ser una isla oscura** y pasa a ser una hoja de inspector flotante en el material del sistema: la voz MONO y la cadena de linaje son lo que dice «esto es técnico», no la oscuridad. La HIG llama a lo otro «an app within the app». **La escena del hotel sí se queda oscura**: sus 42 materiales y su luz interior cálida SON la señal de «in house».
+  9. **Iconos redibujados con la geometría de SF Symbols** (retícula de 16, trazo 1,6, misma caja óptica de 13 para todos) y dos glifos nuevos que dicen mejor lo que son: Reservas lleva la rejilla del mes entera, History pasa de un segundo gráfico de barras a `clock.arrow.circlepath`.
+  - **Resultado medido**: 0 fallos de contraste en 18 pantallas × claro y oscuro × 1440 y 390 (3.032 elementos de texto por pasada en escritorio, 5.572 en móvil), 0 scroll horizontal a 390/1024/1180/1366/1440/1920, Lighthouse móvil en `/panel/` accesibilidad 100 · buenas prácticas 100 · SEO 100, 384 de 385 pruebas (la que falla es la de entorno de siempre).
+
 - Idioma del contenido: **español**, registro **tú** en toda la página. (Alex no ha confirmado si quiere también EN.)
 - Web REAL, no demo: nada inventado. Todo lo no confirmado lleva `<!-- TODO -->` en `index.html` y está en la lista de abajo.
 - Datos confirmados por Alex (07-09-2026): "más de 5 años de experiencia", sede en Barcelona.
@@ -111,6 +123,11 @@ Empresa propia de Alex (no cliente externo). Holdera diseña e integra sistemas 
 - `_build/migrations/patch-step5.js`, `patch-step5b.js`, `patch-fonts.js` — las migraciones del paso 5 (una sola ejecución; fallan si se repiten).
 - `waves.js` — el tejido de líneas Perlin del hero. canvas2d a mano, sin CDN. Puerto fiel del algoritmo de la referencia (Grad/dot2/perlin2/fade/lerp y el modelo de fuerza de `movePoints`); lo que cambia es el color, la densidad y la máscara. Expone `window.HolderaWaves.setTone(bool)` para que el escaparate le cambie el hilo de tinta a claro.
 - `_build/producto-art.js` — el conversor de esas capturas: recorta cada PNG de página entera en los cuatro encuadres (fondo 1600x1067, panel vertical 694x1040, dos horizontales 1040x694) por FRACCIONES del alto, no por píxeles, porque las cinco pantallas miden alturas muy distintas. Necesita `sharp` vía `NODE_PATH` (lo trae el producto).
+- `_build/shoot.js` (paso 11) — capturas por lotes contra el Chrome de trabajo por CDP, en su propia pestaña: lista de rutas, varios viewports, claro y oscuro, `--eval`/`--eval-file` para medir algo en cada página y `--no-full` para solo el viewport. Es lo que hace posible verificar 18 pantallas × 2 esquemas × 2 tamaños sin pedir captura a captura.
+- `_build/a11y-probe.js` (paso 11) — auditoría de contraste EN LA PÁGINA: compone cada texto sobre su pila real de fondos (los `--label-*` llevan alfa y el fondo casi nunca está en el propio elemento) y lista los que no llegan a 4,5:1 (o 3:1 si el texto es grande). Se pasa con `--eval-file`.
+- `_build/showcase-contrast.js` (paso 11) — mide los cinco títulos del escaparate del hero sobre la obra, poniéndolos transparentes primero. Hay que repasarlo cada vez que cambien las capturas del panel.
+- `_build/lcp-bench.js` (paso 11) — LCP/FCP/CLS medianos por URL con la misma emulación, para comparar dos versiones sin que una traza suelta decida.
+- `_build/producto-shots.js` (paso 11) — las cinco capturas en bruto del escaparate, desde el panel ya capturado. La de trazabilidad abre el cajón de Evidence antes de disparar.
 - `_build/gates.js` — pasa las cinco puertas de una vez; con `--fix` reinyecta el SEO, regenera el sitemap y sella los assets antes de comprobar. `_build/replicate-shell.js` copia la cabecera/drawer/pie de `_build/shell/` a las siete páginas (lo que `check-shell.js` solo comprueba), y `_build/shell/build-drawer.js` genera el drawer, que son 56 URLs de tesela por página escritas a mano.
 - `_build/measure.html` — sonda de contraste sobre píxeles REALES de una captura. Es lo único que puede medir el título del escaparate, que se lee sobre cinco obras distintas con `filter` y scrim encima.
 - `_build/frames.html` — extractor de fotogramas de los mp4 de referencia que pasa Alex.
@@ -266,6 +283,107 @@ Empresa propia de Alex (no cliente externo). Holdera diseña e integra sistemas 
 - **`sharp` vive ahora en el producto.** `HOLDERA_SHARP_PATH` apuntaba a `…/aplomo/site/node_modules`, que ya no existe; la ruta buena es `holdera-product-hotel-operations-v1/holdera-product-hotel-operations-v1/node_modules` (Next 16 lo trae). Es lo que usa `_build/producto-art.js`.
 - **Un agente que edita su propio validador merece una lectura, no una alarma automática.** El de SEO tocó `validate-meta.js` — que no era suyo — pero no relajó nada: trasladó la regla de «cinco nodos Service» a «exactamente un SoftwareApplication con cinco features» y añadió una que prohíbe que vuelva ningún Service. Lo único que había que corregir es que esa última regla vivía dentro de la rama de `index.html`, así que un Service reapareciendo en cualquier otra página pasaba entero.
 - **Chrome es de todos.** Con ocho agentes verificando a la vez, `select_page` y la llamada siguiente pueden quedar separadas por la navegación de otro: navegué sin querer la pestaña de un agente a `holdera.es` a mitad de su verificación. Cada uno con su `isolatedContext`, y la verificación visual **al final**, cuando no queda nadie más dentro.
+
+## Trampas del paso 11 (el panel sobre la HIG de Apple)
+
+- 🔴 **La HIG no se puede leer con WebFetch: la web es JS y devuelve el
+  título y nada más.** Detrás hay una API de documentación que sirve el
+  contenido en JSON: `https://developer.apple.com/tutorials/data/design/human-interface-guidelines/<slug>.json`.
+  Partiendo de la raíz y siguiendo las referencias salen **las 172 páginas**.
+  El extractor está en el scratchpad de aquella sesión; si hace falta otra vez,
+  son 60 líneas: leer `topicSections`, resolver `references`, y renderizar
+  `primaryContentSections` (párrafos, listas, tablas y `tabNavigator`).
+- 🔴 **Los alfas de etiqueta de Apple NO pasan WCAG.** `secondaryLabel` es
+  `rgba(60,60,67,.60)` y mide **3,44:1** sobre blanco. Copiarlos tal cual mete
+  un suspenso de accesibilidad en cada pantalla. La rampa hay que re-derivarla
+  al alfa que alcanza el ratio — y contra el fondo REAL, no contra el que uno
+  supone: la primera derivación midió sobre blanco y sobre el lienzo agrupado,
+  y la auditoría en página encontró **146 fallos**, todos del mismo tipo: el
+  texto no estaba sobre blanco, estaba sobre un FILL o un TINT puesto encima.
+  Los valores buenos salen de medir sobre blanco, el lienzo agrupado,
+  `--fill-3`, `--fill-4` y cada tinte de estado, y quedarse con el peor.
+- 🔴 **`_build/a11y-probe.js` es la herramienta que lo caza, y mide COMPUESTO.**
+  Recorre cada elemento con texto propio, sube por los ancestros acumulando
+  cada capa translúcida hasta encontrar una opaca, compone el frente (que casi
+  siempre lleva alfa) sobre esa pila y calcula el ratio. Se pasa con
+  `node _build/shoot.js --eval-file _build/a11y-probe.js`. Probado: encontró
+  146 fallos reales antes del arreglo y 0 después.
+- 🔴 **En oscuro, un tinte sobre otro tinte crea una tercera superficie que
+  nadie diseñó.** Una bandera «Today» dentro de una celda SELECCIONADA acabó
+  sobre #785521 y el texto a 3,26:1. La regla: dentro de un bloque tintado el
+  texto SUBE un escalón (a `--label-2`), no el tinte baja.
+- 🔴 **Una regla sin media query, escrita 5.000 líneas más abajo, gana a la
+  media query que colapsa el layout.** El bloque v5 redefinió `.app` con
+  `grid-template-columns: var(--shell-width) minmax(0,1fr)` y se comió el
+  `.app { grid-template-columns: 1fr }` de la línea 3563: a 390px el móvil
+  medía **`260px 130px`** y toda la aplicación se iba de lado dentro de una
+  columna de 130. Es la trampa del «gana la última del archivo» por el otro
+  lado. Se cura restableciendo el colapso DESPUÉS, nunca moviendo el bloque v5
+  arriba.
+- 🔴 **Un `inline-flex` con `overflow-x: auto` no cabe: toma su ancho
+  INTRÍNSECO.** Los controles segmentados de seis segmentos medían 445px
+  pasara lo que pasara con el viewport, y el `overflow` no cambiaba nada
+  porque la caja misma era lo ancho. Hace falta `max-width: 100%` además.
+- 🔴 **Pintar un contenedor creyendo que es su línea.** Pasó dos veces:
+  `.trend-guide` (717×306) llenó todo el área del gráfico de un lavado de
+  tinta al 34 % —la línea es `.trend-guide-line`, de 1px— y
+  `.chain-connector` convirtió cada etiqueta del linaje («computed by»,
+  «from») en una barra gris de lado a lado. Antes de dar un `background` a
+  algo que suena a «regla», mira su caja.
+- 🔴 **La cadena de Evidence YA dibuja su espina**, como pareja:
+  `.chain-link::before` es el raíl gris y `::after` es el haz verde que baja
+  trazándolo, los dos anclados en `--rail-x`. Redefinir `::before` deja el haz
+  bajando por la nada.
+- **`revenue.css` y `bookings.css` cargan DESPUÉS de `globals.css`**, así que
+  a igualdad de especificidad ganan ellas. Todo lo que la capa global cambie
+  para esas dos superficies hay que volver a decirlo allí — por eso cada una
+  tiene su propia sección v5. Lo mismo con `.metric-row-name .metric-short`
+  (0,2,0) frente a un `.metric-short` suelto.
+- **`tests/app/spatial.test.tsx` lee el ÚLTIMO bloque de `prefers-reduced-motion`
+  del archivo** y exige que apague la cámara, los trazos de la escena y las
+  view transitions. Es el instinto correcto —el último bloque es el que gana—
+  así que el bloque final de v5 lo restablece todo y es el que hay que editar
+  a partir de ahora.
+- **Un `<dl>` solo admite dt/dd (o un `<div>` que los envuelva).** Los
+  `<p class="bkd-note">` dentro de `.bkd-figures` y el `<p class="chain-help">`
+  dentro de `.ev-kv` rompían el árbol de accesibilidad: Lighthouse bajaba
+  `definition-list` y `agent-accessibility-tree` a 0 (accesibilidad 97,
+  agentic 50 en Reservas). La nota es una SEGUNDA descripción del mismo
+  término, o sea un segundo `<dd>` — y entonces hay que decirle que no herede
+  los 22px de `.bkd-figures dd`.
+- **El escaparate del hero se mide con el título en `color: transparent`.**
+  `node _build/showcase-contrast.js` lo hace entero: dispara el hover con
+  `pointerType: 'mouse'` (sin eso los oyentes lo ignoran), pone el título
+  transparente, captura y mide los píxeles de la caja de los GLIFOS. Con la
+  obra nueva: peor 9,35:1 contra un mínimo de 3:1.
+- **`_build/shoot.js` y `_build/lcp-bench.js` hablan CDP directamente contra
+  el Chrome de trabajo (:9222) y abren su PROPIA pestaña.** Verificar un
+  rediseño son decenas de pantallas por dos viewports y dos esquemas; pedirlas
+  una a una por el MCP es lentísimo y, con otra sesión viva, la pestaña
+  seleccionada puede cambiar a mitad.
+- 🔴 **Un servidor de comparación mal montado miente a lo grande.** Para medir
+  el panel viejo contra el nuevo copié `serve.js` DENTRO de la carpeta del
+  panel viejo — y `serve.js` resuelve su raíz como `__dirname/..`, así que
+  servía la carpeta de arriba y todo eran 404. La medida salió «LCP 712 ms» y
+  parecía que el rediseño lo había multiplicado por cinco. Montado bien: 3.121
+  ms el viejo, 3.886 ms el nuevo, sin comprimir y con la CPU a 4×; son +76 KB
+  de CSS en crudo, que con brotli son ~8 KB. **Una comprobación que no cuadra
+  no se explica, se investiga.**
+- **El bloque v4 NO se puede borrar aunque sus 87 tokens estén todos
+  redeclarados por v5**: dentro vive la isla de tokens de `.hs`, que es lo que
+  mantiene la escena del hotel sobre el fondo para el que se pintaron sus 42
+  materiales.
+- 🔴 **Las imágenes del escaparate se sirven `immutable` UN AÑO, y son
+  capturas del panel.** El `.htaccess` da a los `.webp`
+  `Cache-Control: public, max-age=31536000, immutable`: el navegador ni
+  siquiera revalida. Los veinte archivos de `assets/img/producto/` cambian en
+  cada rediseño del panel, así que con la URL igual se quedan rancios un año
+  en cada máquina que ya haya visitado holdera.es — la trampa del paso 8, y
+  peor, porque el css caduca a los siete días y esto no caduca. Desde el paso
+  11 `node _build/version-assets.js` **también los sella**, leyendo `src=` y
+  `data-bg=` (el escaparate los pide en diferido por ese atributo), acotado a
+  `assets/img/producto/`. El resto de imágenes del sitio son estables y su
+  `immutable` es justo lo que se quiere.
 
 ## Trampas de este proyecto (cuestan tiempo si se olvidan)
 - **Nunca uses `String.replace()` con `$$` en el texto de reemplazo**: `$$` es un escape y se convierte en `$`. Rompió tres veces los helpers `$$(...)` de `script.js` (los selectores de lista quedaron como `$(...)` y reventó todo el JS). Usa `split(a).join(b)`.

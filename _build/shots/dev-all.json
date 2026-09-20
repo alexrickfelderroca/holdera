@@ -1,0 +1,74 @@
+[
+ {
+  "path": "/",
+  "name": "01-today"
+ },
+ {
+  "path": "/rooms",
+  "name": "02-rooms"
+ },
+ {
+  "path": "/rooms/601",
+  "name": "03-room-601"
+ },
+ {
+  "path": "/rooms/floor/F5",
+  "name": "04-floor-F5"
+ },
+ {
+  "path": "/operations",
+  "name": "05-operations"
+ },
+ {
+  "path": "/operations/restaurant",
+  "name": "06-ops-restaurant"
+ },
+ {
+  "path": "/operations/occupancy?businessDate=2026-01-14",
+  "name": "07-occupancy"
+ },
+ {
+  "path": "/revenue",
+  "name": "08-revenue"
+ },
+ {
+  "path": "/revenue/bookings",
+  "name": "09-bookings"
+ },
+ {
+  "path": "/intelligence",
+  "name": "10-intelligence"
+ },
+ {
+  "path": "/intelligence/cases",
+  "name": "11-cases"
+ },
+ {
+  "path": "/intelligence/studio",
+  "name": "12-studio"
+ },
+ {
+  "path": "/metrics",
+  "name": "13-metrics"
+ },
+ {
+  "path": "/overview",
+  "name": "14-overview"
+ },
+ {
+  "path": "/guests",
+  "name": "15-guests"
+ },
+ {
+  "path": "/team",
+  "name": "16-team"
+ },
+ {
+  "path": "/metrics/occupancy_rate",
+  "name": "17-metric-detail"
+ },
+ {
+  "path": "/rooms?layer=housekeeping",
+  "name": "18-housekeeping"
+ }
+]

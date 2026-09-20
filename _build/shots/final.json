@@ -1,0 +1,74 @@
+[
+ {
+  "path": "/panel/",
+  "name": "01-today"
+ },
+ {
+  "path": "/panel/rooms/",
+  "name": "02-rooms"
+ },
+ {
+  "path": "/panel/rooms/601/",
+  "name": "03-room"
+ },
+ {
+  "path": "/panel/rooms/floor/F5/",
+  "name": "04-floor"
+ },
+ {
+  "path": "/panel/operations/",
+  "name": "05-ops"
+ },
+ {
+  "path": "/panel/operations/restaurant/",
+  "name": "06-rest"
+ },
+ {
+  "path": "/panel/operations/occupancy/businessdate-2026-01-14/",
+  "name": "07-occ"
+ },
+ {
+  "path": "/panel/revenue/",
+  "name": "08-revenue"
+ },
+ {
+  "path": "/panel/revenue/bookings/",
+  "name": "09-bookings"
+ },
+ {
+  "path": "/panel/intelligence/",
+  "name": "10-intel"
+ },
+ {
+  "path": "/panel/intelligence/cases/",
+  "name": "11-cases"
+ },
+ {
+  "path": "/panel/intelligence/studio/",
+  "name": "12-studio"
+ },
+ {
+  "path": "/panel/metrics/",
+  "name": "13-metrics"
+ },
+ {
+  "path": "/panel/overview/",
+  "name": "14-overview"
+ },
+ {
+  "path": "/panel/guests/",
+  "name": "15-guests"
+ },
+ {
+  "path": "/panel/team/",
+  "name": "16-team"
+ },
+ {
+  "path": "/panel/metrics/occupancy_rate/",
+  "name": "17-metric"
+ },
+ {
+  "path": "/panel/rooms/layer-housekeeping/",
+  "name": "18-hk"
+ }
+]
