@@ -409,3 +409,279 @@ a.pgi-card:focus-visible .pgi-card__out { opacity: 1; }
    en peso 600 y el corte de WCAG para negrita esta en 18,66px. Por eso todo
    se mide contra 4,5 y no contra 3.
    =========================================================================== */
+
+/* ===========================================================================
+   (F) EL CARRIL DEL CATALOGO — buscador y familias
+   ===========================================================================
+   La pagina tenia diez familias y cincuenta fichas en 5,7 pantallas de scroll,
+   y ninguna forma de encontrar una marca por su nombre. La `.pgi-jump` que
+   habia era una fila de anclas que se quedaba arriba y desaparecia al bajar.
+
+   La idea del carril pegajoso con buscador y familias con recuento es del
+   catalogo de Hotelgest que paso Alex. Lo que NO se ha copiado: sus tejas de
+   color por marca (aqui los dibujos son monocromos, que es la direccion de
+   arte de esta casa) ni su tarjeta promocional metida dentro de la rejilla.
+
+   Sin JavaScript el carril sigue siendo lo que era: una lista de anclas. El
+   buscador se pinta solo bajo `.has-js`.
+--------------------------------------------------------------------------- */
+
+.pgi-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 48px);
+  margin-bottom: clamp(40px, 5vw, 64px);
+}
+
+@media (min-width: 1100px) {
+  .pgi-layout {
+    grid-template-columns: 15.5rem minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+.pgi-col { min-width: 0; }
+
+/* --- El carril ------------------------------------------------------------ */
+
+@media (min-width: 1100px) {
+  .pgi-rail {
+    position: sticky;
+    /* Debajo de la cabecera fija, con aire. */
+    top: calc(var(--nav-h) + 20px);
+  }
+}
+
+.pgi-rail__in {
+  /* Bisel doble: una caja exterior con su filete y el nucleo dentro. Es el
+     mismo recurso que las fichas, para que el carril se lea como parte del
+     mismo mueble y no como un widget pegado. */
+  padding: clamp(16px, 2vw, 20px);
+  border: 1px solid var(--pgi-card-line);
+  border-radius: var(--r-md);
+  background: var(--pgi-card-bg);
+  box-shadow: var(--pgi-card-bevel);
+}
+
+.pgi-rail__lab {
+  margin: 0 0 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pgi-quiet);
+}
+
+.pgi-rail__lab + .pgi-rail__cats { margin-top: 8px; }
+
+.pgi-rail__n {
+  margin: 0 0 16px;
+  font-size: 14px;
+  color: var(--pgi-quiet);
+  font-variant-numeric: tabular-nums;
+}
+
+.pgi-rail__n b {
+  font-weight: 600;
+  color: var(--pgi-strong);
+}
+
+/* --- El buscador ---------------------------------------------------------- */
+
+/* Sin JS no filtra nada, asi que no existe. */
+.pgi-search { display: none; }
+.has-js .pgi-search {
+  position: relative;
+  display: block;
+  margin-bottom: clamp(18px, 2.5vw, 24px);
+}
+
+.pgi-search__ico {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 12px;
+  transform: translateY(-50%);
+  color: var(--pgi-quiet);
+  pointer-events: none;
+}
+
+.pgi-search__in {
+  /* 44px de alto: se teclea con el pulgar. */
+  inline-size: 100%;
+  min-block-size: 44px;
+  padding: 0 12px 0 35px;
+  border: 1px solid var(--sh-field-border, var(--pgi-card-line-hover));
+  border-radius: var(--r-pill);
+  background: var(--sh-surface);
+  color: var(--pgi-strong);
+  font: inherit;
+  font-size: 15px;
+  transition: border-color var(--t-fast) var(--ease);
+}
+
+.pgi-search__in::placeholder { color: var(--pgi-quiet); }
+
+.pgi-search__in:focus-visible {
+  outline: 2px solid var(--pgi-strong);
+  outline-offset: 2px;
+  border-color: var(--pgi-strong);
+}
+
+/* La cruz nativa de `type="search"` en WebKit es gris fijo y no sigue al tema. */
+.pgi-search__in::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* --- Las familias --------------------------------------------------------- */
+
+.pgi-rail__cats {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pgi-cat {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-block-size: 44px;
+  padding: 0 12px;
+  border-radius: var(--r-md);
+  color: var(--pgi-quiet);
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 1.3;
+  transition:
+    background var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease);
+}
+
+.pgi-cat b {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--pgi-quiet);
+  font-variant-numeric: tabular-nums;
+}
+
+.pgi-cat:hover {
+  background: var(--sh-tint);
+  color: var(--pgi-strong);
+}
+
+/* La familia activa se marca con TINTA, no con el naranja: el acento de esta
+   casa señala una accion, y esto es un estado. */
+.pgi-cat.is-on {
+  background: var(--sh-tint);
+  color: var(--pgi-strong);
+  font-weight: 600;
+}
+
+.pgi-cat.is-on b { color: var(--pgi-mark); }
+
+.pgi-cat:focus-visible {
+  outline: 2px solid var(--pgi-strong);
+  outline-offset: -2px;
+}
+
+/* --- Lo que el filtro esconde --------------------------------------------- */
+
+.pgi-cell.is-out,
+.pgi-group.is-out { display: none; }
+
+/* --- Nada encontrado ------------------------------------------------------- */
+
+.pgi-empty {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin: 0;
+  padding: clamp(24px, 4vw, 40px);
+  border: 1px dashed var(--pgi-card-line-hover);
+  border-radius: var(--r-md);
+  color: var(--pgi-quiet);
+  font-size: 15px;
+}
+
+.pgi-empty[hidden] { display: none; }
+
+.pgi-empty__q {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  color: var(--pgi-strong);
+}
+
+.pgi-empty__all {
+  min-block-size: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--pgi-card-line-hover);
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--pgi-strong);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    background var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease);
+}
+
+.pgi-empty__all:hover {
+  background: var(--sh-tint);
+  border-color: var(--pgi-mark);
+}
+
+.pgi-empty__all:focus-visible {
+  outline: 2px solid var(--pgi-strong);
+  outline-offset: 2px;
+}
+
+/* --- Movil: el carril se tumba -------------------------------------------- */
+
+@media (max-width: 1099px) {
+  .pgi-rail__in {
+    padding: clamp(14px, 3vw, 18px);
+  }
+
+  /* Las familias pasan a una fila de capsulas que se desliza, que es lo que
+     ya hacia la `.pgi-jump` de antes y lo que se espera en un movil. */
+  .pgi-rail__cats {
+    flex-direction: row;
+    gap: 8px;
+    overflow-x: auto;
+    /* Una celda de rejilla o de flex NO baja de su ancho minimo aunque tenga
+       overflow: hace falta decirselo. Es la misma trampa que mordio en el
+       panel el mismo dia. */
+    min-inline-size: 0;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+  }
+
+  .pgi-rail__cats::-webkit-scrollbar { display: none; }
+
+  .pgi-cat {
+    flex: none;
+    border: 1px solid var(--pgi-card-line-hover);
+    border-radius: var(--r-pill);
+    padding: 0 16px;
+    white-space: nowrap;
+    scroll-snap-align: start;
+  }
+
+  .pgi-cat.is-on { border-color: var(--pgi-mark); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pgi-cat,
+  .pgi-search__in,
+  .pgi-empty__all { transition: none; }
+}

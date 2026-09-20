@@ -112,8 +112,25 @@ const grupos = cat.grupos.map((g) => {
     let svg = null;
     if (fs.existsSync(svgPath)) svg = fs.readFileSync(svgPath, 'utf8').trim();
 
-    /* icon = marca real (caja de 24 con un <path>) · word = wordmark (<text>) */
-    const marca = !svg ? 'texto' : (svg.includes('<text') ? 'word' : 'icon');
+    /* 🔴 La pregunta NO es "¿este SVG lleva <text>?" sino "¿este dibujo YA
+       dice el nombre de la marca?". Durante un tiempo dieron lo mismo, porque
+       los unicos dibujos sin <text> eran cinco iconos cuadrados. Desde que la
+       tuberia de logotipos trae los oficiales, ya no: el de SiteMinder es un
+       logotipo completo de proporcion 7,07 que dice "SiteMinder" dentro.
+
+       Clasificarlo como `icon` le ponia el nombre OTRA VEZ al lado y, peor,
+       le daba `flex: none` en la hoja — asi que no podia encogerse y se salia
+       33px por la izquierda de su ficha. Medido en pantalla.
+
+       La proporcion lo separa limpiamente sobre los 41 dibujos actuales:
+       por debajo de 2 solo hay iconos cuadrados (Stripe 0,71 · Redsys 1,0 ·
+       Sage 1,79), y de 2 en adelante todo son logotipos que se explican solos
+       (SAP 2,02 es el mas estrecho). */
+    const vb = svg && /viewBox="([\d.\s-]+)"/.exec(svg);
+    const caja = vb ? vb[1].trim().split(/\s+/).map(Number) : null;
+    const proporcion = caja && caja[3] ? caja[2] / caja[3] : 0;
+    const seExplicaSolo = Boolean(svg) && (svg.includes('<text') || proporcion >= 2);
+    const marca = !svg ? 'texto' : (seExplicaSolo ? 'word' : 'icon');
     return { ...it, svg, marca };
   }).filter(Boolean);
   return { ...g, items };
@@ -174,7 +191,14 @@ function incrustar(it) {
   return s;
 }
 
-function ficha(it) {
+/* Sin tildes y en minusculas: "Agora" tiene que salir tecleando "agora" y
+   "Autoridades" tecleando "autoridades". `NFD` separa la tilde de la letra y
+   el rango Unicode se la lleva. */
+const plano = (s) => String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+function ficha(it, g) {
+  const busca = plano([it.nombre, it.tipo, g && g.titulo].filter(Boolean).join(' '));
+  const attrs = ` data-group="${esc(g ? g.id : '')}" data-find="${esc(busca)}"`;
   const dentro = [];
   if (it.svg) dentro.push(incrustar(it));
   if (it.marca !== 'word') dentro.push(`<span class="pgi-card__name">${esc(it.nombre)}</span>`);
@@ -185,7 +209,7 @@ function ficha(it) {
     + '<path d="M5 11 11 5M6 5h5v5"/></svg></span>';
 
   if (it.web) {
-    return `          <li class="pgi-cell">\n`
+    return `          <li class="pgi-cell"${attrs}>\n`
       + `            <a class="pgi-card" data-mark="${it.marca}" href="${esc(it.web)}" target="_blank" rel="noopener">`
       + cuerpo
       + `<span class="pgi-sr"> (nueva pestaña)</span>`
@@ -193,7 +217,7 @@ function ficha(it) {
       + `</a>\n`
       + `          </li>`;
   }
-  return `          <li class="pgi-cell">\n`
+  return `          <li class="pgi-cell"${attrs}>\n`
     + `            <div class="pgi-card pgi-card--flat" data-mark="${it.marca}">${cuerpo}</div>\n`
     + `          </li>`;
 }
@@ -212,14 +236,49 @@ function bloque(g, i) {
           <p class="pgi-group__n">${n} ${n === 1 ? 'sistema' : 'sistemas'}</p>
         </div>${nota}
         <ul class="pgi-grid">
-${g.items.map(ficha).join('\n')}
+${g.items.map((it) => ficha(it, g)).join('\n')}
         </ul>
       </section>`;
 }
 
-const SALTOS = grupos.map((g) =>
-  `        <li><a href="#int-${g.id}">${esc(g.titulo)} <b>${g.items.length}</b></a></li>`
-).join('\n');
+/* El carril: lo que la pagina no tenia y sin lo cual 50 fichas en 5,7
+   pantallas no se pueden recorrer. La idea es la del catalogo de Hotelgest
+   que paso Alex (buscador arriba, familias con su recuento debajo, todo
+   pegajoso mientras se baja); lo que cambia es TODO lo demas — aqui no hay
+   teja de color por marca ni tarjeta promocional intercalada, que es lo que
+   convertiria esta pagina en un SaaS cualquiera.
+
+   Sin JavaScript sigue siendo exactamente lo que era: una lista de anclas que
+   salta a cada familia. El buscador solo aparece con `.has-js`, porque un
+   campo de busqueda que no busca es peor que no tenerlo. */
+const CATS = [
+  `            <li><a class="pgi-cat is-on" href="#catalogo" data-cat="">Todas <b>${total}</b></a></li>`,
+].concat(grupos.map((g) =>
+  `            <li><a class="pgi-cat" href="#int-${g.id}" data-cat="${esc(g.id)}">${esc(g.titulo)} <b>${g.items.length}</b></a></li>`
+)).join('\n');
+
+const LUPA = '<svg class="pgi-search__ico" viewBox="0 0 16 16" width="15" height="15" fill="none" '
+  + 'stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">'
+  + '<circle cx="7.2" cy="7.2" r="4.6"/><path d="m10.6 10.6 2.8 2.8"/></svg>';
+
+const RAIL = `        <aside class="pgi-rail" aria-labelledby="pgi-rail-t">
+          <div class="pgi-rail__in">
+            <p class="pgi-rail__lab" id="pgi-rail-t">Catálogo</p>
+            <p class="pgi-rail__n"><b>${total}</b> integraciones</p>
+
+            <div class="pgi-search">
+              <label class="pgi-sr" for="pgi-q">Buscar una integración por nombre o familia</label>
+              ${LUPA}
+              <input id="pgi-q" class="pgi-search__in" type="search" placeholder="Nombre o palabra clave…"
+                     autocomplete="off" autocapitalize="off" spellcheck="false">
+            </div>
+
+            <p class="pgi-rail__lab">Familias</p>
+            <ul class="pgi-rail__cats">
+${CATS}
+            </ul>
+          </div>
+        </aside>`;
 
 /* --- 5. la pagina --------------------------------------------------------- */
 
@@ -284,21 +343,30 @@ ${HEADER}
           <p class="sheet__lead reveal" data-reveal="up" style="--i:2">Diez familias de sistemas. Salta a la que te interese o bájalas todas. Cada ficha lleva a la web del fabricante cuando hemos podido verificarla.</p>
         </div>
 
-        <nav class="pgi-jump reveal" data-reveal="up" aria-label="Familias de integraciones">
-          <p class="pgi-jump__lab">Ir a</p>
-          <ul>
-${SALTOS}
-          </ul>
-        </nav>
+
 
         <!-- TODO (Alex): confirmar que el producto de Holdera hereda de verdad
              este catálogo antes de darlo por definitivo. La procedencia está
              anotada en _build/integraciones/integraciones.json, clave "procedencia":
              la lista es la de Hotelgest y esa herencia no se ha podido
              verificar contra ninguna fuente pública. -->
-        <div class="pgi">
+      <div class="pgi-layout">
+${RAIL}
+
+        <div class="pgi-col">
+          <div class="pgi">
 ${grupos.map(bloque).join('\n\n')}
+          </div>
+
+          <!-- Estado vacio: lo pinta el filtro cuando no queda ninguna ficha.
+               Una rejilla que se queda en blanco sin decir nada se lee como
+               una pagina rota. -->
+          <p class="pgi-empty" hidden>
+            <span>Ninguna integración coincide con <b class="pgi-empty__q"></b>.</span>
+            <button class="pgi-empty__all" type="button">Ver las ${total}</button>
+          </p>
         </div>
+      </div>
 
         <div class="pgi-foot reveal" data-reveal="up">
           <p class="pgi-foot__legal">Las marcas y los logotipos pertenecen a sus respectivos titulares. Aparecer en esta lista no implica acuerdo comercial, patrocinio ni respaldo.</p>
@@ -331,6 +399,9 @@ ${FOOTER}
 ${DRAWER}
 
   <script src="script.js" defer></script>
+  <!-- Solo esta pagina: el filtro del catalogo. Fuera de script.js a proposito,
+       que lo cargan las ocho paginas y esto solo sirve aqui. -->
+  <script src="integraciones.js" defer></script>
 </body>
 </html>
 `;
@@ -348,6 +419,24 @@ const fichas = (html.match(/class="pgi-card(?:"| pgi-card--flat")/g) || []).leng
 const bloques = (html.match(/class="pgi-group reveal"/g) || []).length;
 const enlaces = (html.match(/class="pgi-card" data-mark/g) || []).length;
 
+/* El carril tiene que nombrar TODAS las familias mas "Todas". Si alguien
+   anade un grupo y el carril se queda corto, el catalogo pasa a tener una
+   familia inalcanzable desde el filtro — y en pantalla no se nota. */
+const cats = (html.match(/class="pgi-cat[ "]/g) || []).length;
+if (cats !== cat.grupos.length + 1) {
+  console.error(`ERROR el carril lista ${cats} filtros y se esperaban ${cat.grupos.length + 1} (las `
+    + `${cat.grupos.length} familias mas "Todas")`);
+  process.exit(1);
+}
+
+/* Cada ficha tiene que ser buscable: sin `data-find` el filtro la esconde
+   para siempre en cuanto alguien teclee una letra. */
+const buscables = (html.match(/ data-find="/g) || []).length;
+if (buscables !== cat.totales.catalogo_completo) {
+  console.error(`ERROR ${buscables} fichas son buscables y hay ${cat.totales.catalogo_completo}`);
+  process.exit(1);
+}
+
 if (fichas !== cat.totales.catalogo_completo || bloques !== cat.grupos.length) {
   console.error(`ERROR el HTML sale con ${fichas} fichas y ${bloques} grupos; se esperaban `
     + `${cat.totales.catalogo_completo} y ${cat.grupos.length}`);
@@ -360,5 +449,6 @@ console.log((DRY ? '[dry-run] ' : '') + 'integraciones.html');
 console.log(`  ${bloques} grupos · ${fichas} fichas · ${Math.round(html.length / 1024)} KB`);
 console.log(`  marca real ${cuenta.icon} · wordmark ${cuenta.word} · sin dibujo ${cuenta.texto}`);
 console.log(`  con enlace ${enlaces} · sin enlace ${fichas - enlaces}`);
+console.log(`  carril: ${cats} filtros · ${buscables} fichas buscables`);
 console.log('  el <head> lleva el bloque seo:head VACIO — pasa node _build/seo-inject.js');
 console.log('  y sella los assets:            node _build/version-assets.js');
