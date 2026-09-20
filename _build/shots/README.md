@@ -16,3 +16,6 @@ Uso:
     node _build/serve.js 4177 &
     node _build/shoot.js --routes _build/shots/final.json --out .screenshots/lo-que-sea --vp 1440x900 --dark
     node _build/shoot.js --routes _build/shots/final.json --out .screenshots/a11y --no-full --eval-file _build/a11y-probe.js
+- `live.json` — las cuatro pantallas que se comprueban contra `https://holdera.es`
+  después de desplegar. Ojo: la primera petición de una pestaña nueva se come el
+  control antibot de Hostinger ("Checking your browser…"); la segunda pasa.

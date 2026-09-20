@@ -1,0 +1,6 @@
+[
+ {"path":"/panel/","name":"live-01-today"},
+ {"path":"/panel/revenue/bookings/","name":"live-09-bookings"},
+ {"path":"/panel/revenue/","name":"live-08-revenue"},
+ {"path":"/panel/metrics/","name":"live-13-metrics"}
+]
