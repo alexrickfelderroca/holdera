@@ -2,9 +2,7 @@
  * _build/parts/build-menus.js  —  node _build/parts/build-menus.js
  *
  * Genera _build/parts/menus.html y menus-drawer.html desde los datos reales:
-   _build/contenido/features.json y _build/integraciones/integraciones.json +
-   assets/img/integraciones/<slug>.svg (inline, para que currentColor y Geist
-   funcionen: un <img src=".svg"> no hereda ni el color ni la fuente). */
+   _build/contenido/features.json y _build/integraciones/integraciones.json. */
 const fs = require('fs');
 const path = require('path');
 
@@ -34,29 +32,12 @@ const COLUMNAS = [
   { titulo: 'La cifra y su origen', claves: ['trazabilidad', 'definiciones', 'catalogo'] },
 ];
 
-/* --- integraciones: que grupos salen en el desplegable ---------------------
-   No caben los 50. Salen las cuatro categorias con mas marcas reconocibles
-   (24 fichas); las otras seis quedan como enlaces de texto en el pie del
-   panel, y el CTA lleva a la pagina entera. Es lo que hace la referencia con
-   su "+27 more integrations". */
-const GRUPOS_FICHA = ['channel', 'revenue', 'pagos', 'accesos'];
+/* --- integraciones: las cuatro entradas del desplegable -------------------
+   El menu es deliberadamente un indice compacto. El catalogo completo vive
+   en integraciones.html; aqui solo se enlazan sus cuatro grupos principales. */
+const GRUPOS_MENU = ['channel', 'revenue', 'pagos', 'accesos'];
 
-const byNombre = new Map(ints.integraciones.map((i) => [i.nombre, i]));
 const grupoPorId = new Map(ints.grupos.map((g) => [g.id, g]));
-
-function svgInline(slug, nombre) {
-  const f = path.join(ROOT, 'assets/img/integraciones', slug + '.svg');
-  if (!fs.existsSync(f)) return null;
-  let s = fs.readFileSync(f, 'utf8').trim();
-  // fuera el xmlns (va inline en HTML), el fill (lo pone el CSS con currentColor)
-  // y los atributos de fuente del <text> (los hereda del documento: Geist).
-  s = s.replace(' xmlns="http://www.w3.org/2000/svg"', '');
-  s = s.replace(' fill="currentColor"', '');
-  s = s.replace(/ font-family="[^"]*"/, '').replace(/ font-size="[^"]*"/, '').replace(/ font-weight="[^"]*"/, '').replace(/ letter-spacing="[^"]*"/, '');
-  s = s.replace('<svg ', '<svg class="mnu__logo" ');
-  const esIcono = !s.includes('<text');
-  return { svg: s, esIcono, nombre };
-}
 
 /* Reindenta un bloque para pegarlo dentro de otro: quita la sangria minima que
    trae y le pone la del destino. La primera linea va sin tocar porque ya la
@@ -97,7 +78,7 @@ ${cols}
         </div>
       </div>
       <div class="mnu__foot">
-        <p class="mnu__note">Ocho funciones. Cada una abre su pantalla en el panel demo.</p>
+        <p class="mnu__note">Ocho funciones. Cada una con su página, y su pantalla en el panel demo.</p>
         <a class="mnu__all" href="/funciones/">Ver todas las funciones${FLECHA}</a>
       </div>
     </div>`;
@@ -105,52 +86,20 @@ ${cols}
 
 /* ====================== (B) PANEL DE INTEGRACIONES ====================== */
 function panelIntegraciones() {
-  let fichas = 0;
-  const cols = GRUPOS_FICHA.map((gid) => {
+  const items = GRUPOS_MENU.map((gid) => {
     const g = grupoPorId.get(gid);
-    const tiles = g.integraciones.map((nombre) => {
-      const it = byNombre.get(nombre);
-      const marca = it && it.slug ? svgInline(it.slug, nombre) : null;
-      fichas++;
-      if (!marca) {
-        // sin SVG: la ficha es el nombre en texto, nunca un hueco vacio
-        return `              <li class="mnu__tile" data-mark="text"><span class="mnu__brand">${esc(nombre)}</span></li>`;
-      }
-      if (marca.esIcono) {
-        return `              <li class="mnu__tile" data-mark="icon">${marca.svg}<span class="mnu__brand">${esc(nombre)}</span></li>`;
-      }
-      return `              <li class="mnu__tile">${marca.svg}</li>`;
-    }).join('\n');
-    return `          <div class="mnu__col">
-            <a class="mnu__cat mnu__cat--link" href="/integraciones.html#int-${g.id}">${esc(g.titulo)}${FLECHA}</a>
-            <ul class="mnu__tiles">
-${tiles}
-            </ul>
-          </div>`;
+    return `          <li><a class="mnu__item mnu__int-item" href="/integraciones.html#int-${g.id}">
+            <span class="mnu__name">${esc(g.titulo)}</span>${FLECHA}
+          </a></li>`;
   }).join('\n');
 
-  const resto = ints.grupos.filter((g) => !GRUPOS_FICHA.includes(g.id));
-  const restoLinks = resto.map((g) =>
-    `          <li><a class="mnu__more" href="/integraciones.html#int-${g.id}">${esc(g.titulo)}</a></li>`
-  ).join('\n');
-
-  return {
-    fichas,
-    html: `<div class="mnu__panel mnu__panel--ints" id="mnu-integraciones" data-menu-panel hidden>
-      <div class="mnu__inner">
-        <div class="mnu__cols mnu__cols--ints">
-${cols}
-        </div>
-        <ul class="mnu__mores">
-${restoLinks}
+  return `<div class="mnu__panel mnu__panel--ints" id="mnu-integraciones" data-menu-panel hidden>
+      <div class="mnu__inner mnu__inner--ints">
+        <ul class="mnu__list">
+${items}
         </ul>
       </div>
-      <div class="mnu__foot">
-        <p class="mnu__note">Las marcas pertenecen a sus respectivos titulares.</p>
-        <a class="mnu__all" href="/integraciones.html">Ver las ${ints.totales.catalogo_completo} integraciones${FLECHA}</a>
-      </div>
-    </div>`,
-  };
+    </div>`;
 }
 
 const pInts = panelIntegraciones();
@@ -161,8 +110,7 @@ const menus = `<!-- ============================================================
      GENERADO por  node _build/parts/build-menus.js  — no editar a mano.
      Sus fuentes:
        _build/contenido/features.json          (los 8 nombres y sus frases)
-       _build/integraciones/integraciones.json (los 10 grupos, 50 marcas)
-       assets/img/integraciones/<slug>.svg     (las 24 fichas de logo)
+       _build/integraciones/integraciones.json (los nombres de los grupos)
 
      QUE ES: el <nav class="nav__links"> ENTERO, listo para sustituir al que
      hoy hay en _build/shell/header.html, con "Cómo funciona" retirada y dos
@@ -210,7 +158,7 @@ const menus = `<!-- ============================================================
           ${indent(panelFunciones(), 10)}
 
           <a class="mnu__trigger" href="/integraciones.html" data-menu="mnu-integraciones">Integraciones${CHEV}</a>
-          ${indent(pInts.html, 10)}
+          ${indent(pInts, 10)}
 
           <a href="nosotros.html">Nosotros</a>
           <a href="partners.html">Partners</a>
@@ -225,8 +173,7 @@ function filaDrawer(id, etiqueta, href, i, banda, sub) {
   return `        <div class="msub" data-msub>
           <a class="mrow__link msub__head" href="${href}" data-msub-trigger data-msub-panel="${id}" style="--i:${i}">
             <span class="mrow__label">${esc(etiqueta)}</span>
-            <span class="msub__chev" aria-hidden="true"><svg viewBox="0 0 12 8" width="12" height="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 2 6 6.25 10.5 2"/></svg></span>
-            ${banda}
+            <span class="msub__chev" aria-hidden="true"><svg viewBox="0 0 12 8" width="12" height="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 2 6 6.25 10.5 2"/></svg></span>${banda ? `\n            ${banda}` : ''}
           </a>
           <div class="msub__list" id="${id}" hidden>
 ${sub}
@@ -239,10 +186,6 @@ const bandaFn = '<span class="mrow__band" aria-hidden="true"><span class="mrow__
     .concat(['Hoy', 'Habitaciones', 'Housekeeping', 'Revenue', 'Reservas', 'Trazabilidad', 'Definiciones', 'Catálogo de métricas'])
     .map((w) => `<span>${esc(w)}</span>`).join('') + '</span></span></span>';
 
-const marcasBanda = GRUPOS_FICHA.flatMap((g) => grupoPorId.get(g).integraciones).slice(0, 10);
-const bandaInts = '<span class="mrow__band" aria-hidden="true"><span class="mrow__track"><span class="mrow__inner" aria-hidden="true">' +
-  marcasBanda.concat(marcasBanda).map((w) => `<span>${esc(w)}</span>`).join('') + '</span></span></span>';
-
 const subFn = feat.features.map((f) =>
   `            <a class="msub__item" href="/funciones/${f.slug}/">
               <span class="msub__name">${esc(CORTO[f.clave])}</span>
@@ -250,23 +193,11 @@ const subFn = feat.features.map((f) =>
             </a>`
 ).join('\n') + `\n            <a class="msub__all" href="/funciones/">Ver todas las funciones${FLECHA}</a>`;
 
-/* El recuento de cada grupo NO puede decir «marcas» a secas: dos de los diez
-   no lo son. `normativa` son SES Hospedajes, Verifactu, los Mossos… —
-   organismos y estandares, no empresas con las que uno se integre
-   comercialmente— y `modulos` son piezas del propio PMS, cosa que el JSON dice
-   con todas sus letras en su campo `nota`. Llamarlos marcas seria inventar. */
-function cuenta(g) {
-  const n = g.integraciones.length;
-  if (g.id === 'modulos') return n + ' piezas del propio PMS';
-  if (g.id === 'normativa') return n + ' organismos y estándares';
-  return n + (n === 1 ? ' integración' : ' integraciones');
-}
-const subInts = ints.grupos.map((g) =>
+const subInts = GRUPOS_MENU.map((gid) => grupoPorId.get(gid)).map((g) =>
   `            <a class="msub__item" href="/integraciones.html#int-${g.id}">
               <span class="msub__name">${esc(g.titulo)}</span>
-              <span class="msub__desc">${esc(cuenta(g))}</span>
             </a>`
-).join('\n') + `\n            <a class="msub__all" href="/integraciones.html">Ver las ${ints.totales.catalogo_completo} integraciones${FLECHA}</a>`;
+).join('\n');
 
 const drawer = `<!-- ===========================================================================
      HOLDERA · LOS DOS DESPLEGABLES, VERSIÓN DRAWER
@@ -293,7 +224,7 @@ const drawer = `<!-- ===========================================================
 
 <!-- part:drawer-rows -->
 ${filaDrawer('msub-funciones', 'Funciones', '/funciones/', 1, bandaFn, subFn)}
-${filaDrawer('msub-integraciones', 'Integraciones', '/integraciones.html', 2, bandaInts, subInts)}
+${filaDrawer('msub-integraciones', 'Integraciones', '/integraciones.html', 2, '', subInts)}
 <!-- /part:drawer-rows -->
 `;
 
@@ -301,6 +232,4 @@ fs.writeFileSync(path.join(ROOT, '_build/parts/menus.html'), menus, 'utf8');
 fs.writeFileSync(path.join(ROOT, '_build/parts/menus-drawer.html'), drawer, 'utf8');
 console.log('menus.html         ' + menus.length + ' bytes');
 console.log('menus-drawer.html  ' + drawer.length + ' bytes');
-console.log('fichas de logo en el desplegable: ' + pInts.fichas);
-console.log('grupos con ficha: ' + GRUPOS_FICHA.join(', '));
-console.log('grupos solo en el pie: ' + ints.grupos.filter((g) => !GRUPOS_FICHA.includes(g.id)).map((g) => g.id).join(', '));
+console.log('grupos en el desplegable: ' + GRUPOS_MENU.join(', '));

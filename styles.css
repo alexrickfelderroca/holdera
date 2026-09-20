@@ -1679,11 +1679,11 @@ main {
     0 18px 40px -18px rgba(0, 0, 0, 0.55),
     0 52px 96px -44px rgba(0, 0, 0, 0.50);
 
-  /* Anchos. El de integraciones es mas ancho porque lleva cuatro columnas de
-     fichas; los dos se recortan al viewport, que por debajo de 901px ya no
-     existe (ahi la barra esconde .nav__links y manda el drawer). */
+  /* Anchos. Integraciones es un indice vertical deliberadamente compacto;
+     los dos se recortan al viewport, que por debajo de 901px ya no existe
+     (ahi la barra esconde .nav__links y manda el drawer). */
   --mnu-w-fn: 780px;
-  --mnu-w-ints: 1020px;
+  --mnu-w-ints: 320px;
   /* Separacion entre el borde inferior de la barra y el panel. 6px: lo justo
      para que se lea como una pieza aparte sin abrir un pasillo por el que el
      raton se salga de camino al panel. */
@@ -1696,15 +1696,6 @@ main {
      _build/parts, asi que un token que solo existiera en JS saldria como
      "usado y nunca definido" en cuanto esto se apende a styles.css. */
   --mnu-x: 50%;
-  /* Alto de dibujo de un logotipo dentro de la ficha. El wordmark viaja en una
-     caja de 24 cuya caja de mayusculas ocupa ~11,5 (0,72em de un cuerpo 16):
-     a 22px las mayusculas miden 10,6px, del tamano del texto de la barra. Un
-     simbolo lleno a ese alto se leeria enano, asi que va mas grande: 18 es
-     1,7x la altura de mayuscula del wordmark. La primera prueba lo dejo en 15
-     y en la captura las dos fichas con simbolo (Redsys, Stripe) pesaban
-     visiblemente menos que las 22 de wordmark de su misma columna. */
-  --mnu-mark: 22px;
-  --mnu-mark-icon: 18px;
 }
 
 /* --------------------------------------------------------------------------
@@ -1791,9 +1782,9 @@ main {
 .mnu__panel :focus-visible { outline-color: var(--mnu-text); }
 
 .mnu__inner { padding: 24px 24px 20px; }
+.mnu__inner--ints { padding: 10px; }
 .mnu__cols { display: grid; }
 .mnu__cols--fn { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 24px; }
-.mnu__cols--ints { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px 16px; }
 
 .mnu__cat {
   margin: 0 0 8px; padding: 0 8px;
@@ -1802,18 +1793,6 @@ main {
   text-transform: uppercase; letter-spacing: 0.14em;
   color: var(--mnu-muted);
 }
-/* La categoria de integraciones SI es un enlace (lleva al ancla de su grupo en
-   la pagina entera), asi que sube un escalon de color: tiene que leerse como
-   algo en lo que se puede pulsar, no como un rotulo. */
-.mnu__cat--link {
-  display: inline-flex; align-items: center; gap: 6px;
-  color: var(--mnu-text-2); text-decoration: none;
-  transition: color var(--t-fast) var(--ease);
-}
-.mnu__cat--link:hover { color: var(--mnu-accent); }
-.mnu__cat--link .mnu__arrow { opacity: 0; transform: translateX(-4px); transition: opacity var(--t-fast) var(--ease), transform var(--t-fast) var(--ease); }
-.mnu__cat--link:hover .mnu__arrow { opacity: 1; transform: none; }
-
 .mnu__list { list-style: none; margin: 0; padding: 0; }
 
 /* Una entrada: NOMBRE CORTO arriba y frase debajo, que es como lo hace la
@@ -1848,50 +1827,15 @@ main {
   color: var(--mnu-text-2);
 }
 
-/* --------------------------------------------------------------------------
-   Fichas de logo (el desplegable de integraciones)
-   Los SVG van EN LINEA, no como <img src>: un SVG externo no hereda ni el
-   color del documento (currentColor se resolveria a negro) ni la fuente, y 36
-   de las 41 marcas son wordmarks dibujados con <text>. Por eso el tamano de
-   letra se declara aqui, en unidades de usuario del viewBox: es lo mismo que
-   hace la tira del hero en _build/parts/integraciones.css.
-   -------------------------------------------------------------------------- */
-.mnu__tiles { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
-/* 🔴 La ficha NO reacciona al raton, y es a proposito. En la referencia cada
-   logotipo enlaza a la pagina de esa integracion; aqui esas paginas no
-   existen, asi que una ficha es un dato, no un control. Darle hover seria
-   prometer un clic que no lleva a ninguna parte — y meter 24 paradas de
-   tabulacion en un menu. Lo unico que se puede pulsar en la columna es el
-   rotulo de categoria, y ese si se enciende y saca su flecha. */
-.mnu__tile {
-  display: flex; align-items: center; gap: 8px;
-  min-height: 40px; padding: 8px 12px;
-  border-radius: var(--r-sm);
-  background: var(--mnu-tile);
-  box-shadow: inset 0 0 0 1px var(--mnu-hairline);
-  color: var(--mnu-text-2);
+/* Integraciones usa la misma cuna de acento que las funciones, pero cada
+   entrada ocupa toda la anchura y remata con una flecha hacia su seccion. */
+.mnu__int-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  min-height: 44px; padding: 10px 12px;
 }
-.mnu__logo { display: block; height: var(--mnu-mark); width: auto; max-width: 100%; fill: currentColor; }
-.mnu__tile[data-mark="icon"] .mnu__logo { height: var(--mnu-mark-icon); flex: none; }
-.mnu__logo text { font-family: var(--font); font-size: 16px; font-weight: 600; letter-spacing: 0.2px; }
-/* Solo las cinco marcas que tienen simbolo real llevan el nombre escrito al
-   lado; las otras 36 son wordmarks y ya lo dicen ellas. 14px/600 no es un
-   capricho: es lo que iguala la altura de mayuscula (10,1px) y el peso del
-   wordmark de al lado, que viaja a font-size 16 dentro de una caja de 22. */
-.mnu__brand { font-size: 14px; font-weight: 600; letter-spacing: 0.0125em; }
-
-/* Las seis categorias que no caben como fichas siguen nombradas, con enlace a
-   su ancla. Un menu que esconde seis de diez grupos miente sobre el catalogo. */
-.mnu__mores {
-  list-style: none; margin: 16px 0 0; padding: 12px 8px 0;
-  border-top: 1px solid var(--mnu-hairline);
-  display: flex; flex-wrap: wrap; gap: 4px 20px;
-}
-.mnu__more {
-  font-size: 12px; color: var(--mnu-text-2); text-decoration: none;
-  transition: color var(--t-fast) var(--ease);
-}
-.mnu__more:hover { color: var(--mnu-accent); }
+.mnu__int-item .mnu__arrow { opacity: 0.65; transform: translateX(-2px); }
+.mnu__int-item:hover .mnu__arrow,
+.mnu__int-item:focus-visible .mnu__arrow { opacity: 1; transform: translateX(2px); }
 
 /* --------------------------------------------------------------------------
    El pie del panel
@@ -1962,11 +1906,6 @@ main {
 /* --------------------------------------------------------------------------
    Movil / tablet
    -------------------------------------------------------------------------- */
-@media (max-width: 1080px) {
-  /* La barra aprieta el hueco entre entradas a 16px a partir de aqui; el panel
-     estrecha con ella para no tocar los margenes. */
-  :root { --mnu-w-ints: 900px; }
-}
 @media (max-width: 900px) {
   /* Por debajo de 901px .nav__links es display:none, asi que los dos paneles
      no se pintan nunca: manda el drawer. Esto es cinturon y tirantes por si
@@ -1984,8 +1923,7 @@ main {
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   .mnu__panel { animation: none; }
-  .mnu__chev, .msub__chev, .mnu__arrow, .mnu__item::before,
-  .mnu__cat--link .mnu__arrow { transition: none; }
+  .mnu__chev, .msub__chev, .mnu__arrow, .mnu__item::before { transition: none; }
 }
 
 /* logos:brand-start */

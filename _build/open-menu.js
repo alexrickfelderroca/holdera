@@ -40,11 +40,10 @@
   const r = panel.getBoundingClientRect();
   const cs = getComputedStyle(panel);
 
-  // Cuántas teselas del panel son ENLACES de verdad. Es el diagnóstico del
-  // «no te deja clicar»: una tesela que no es <a> no lleva a ninguna parte por
-  // muy clicable que parezca.
-  const teselas = panel.querySelectorAll('.mnu__tile');
-  const teselasEnlace = panel.querySelectorAll('.mnu__tile a');
+  // Cuántas opciones del panel son ENLACES de verdad. Es el diagnóstico del
+  // «no te deja clicar»: las cuatro deben llevar a su ancla del catálogo.
+  const opciones = panel.querySelectorAll('.mnu__int-item');
+  const opcionesEnlace = panel.querySelectorAll('a.mnu__int-item[href]');
 
   return JSON.stringify({
     menu: cual,
@@ -53,8 +52,8 @@
     caja: { x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.width), h: Math.round(r.height) },
     fondo: cs.backgroundColor,
     color_texto: cs.color,
-    teselas: teselas.length,
-    teselas_que_son_enlace: teselasEnlace.length,
+    opciones: opciones.length,
+    opciones_que_son_enlace: opcionesEnlace.length,
     hueco_disparador_panel: Math.round(r.y - trigger.getBoundingClientRect().bottom),
   });
 })()
