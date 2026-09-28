@@ -91,6 +91,8 @@ const FRASES = [
   ['Same night last year, total revenue', 'LY total revenue'],
   ['Same night last year', 'LY'],
   ['Nights still on the books are excluded: a night that is still filling would drag its weekday down.', 'OTB nights excluded.'],
+  // Reservas (ES): «noche a noche» pasa a «por fecha» (reunión del 28-09-2026)
+  ['Parte del ingreso de habitación por canal, noche a noche.', 'Parte del ingreso de habitación por canal, por fecha.'],
   // Reservations
   ['The reservation book, night by night: what is on the books, at what rate, what has come in this week and how the same night stood a year ago.', 'OTB, ADR and pickup night by night, each against STLY.'],
   ['Each figure carries last year beside it, and says which last year it is: the same point in the booking curve, or how the month finished.', 'Each figure against STLY and LY final.'],

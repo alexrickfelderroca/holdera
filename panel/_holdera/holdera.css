@@ -94,3 +94,17 @@
 @media (prefers-reduced-motion: reduce) {
   .hx-tip, .hx-tip.is-below { transition: none; transform: none; }
 }
+
+/* Rate against occupancy: lectura para un hotelero (28-09-2026).
+   Frase con la conclusión, ejes con título y valores redondos, leyenda en
+   palabras, y una línea que une la noche elegida con la misma noche del año pasado. */
+.rv-chart-frame { position: relative; }
+.rv-grid-take { margin: 0; font-size: var(--t-subhead); line-height: 1.45; color: var(--label-2); }
+.rv-grid-take strong { color: var(--label); font-weight: var(--w-semibold); }
+.rv-axis-title { position: absolute; top: 0; left: 0; font-size: var(--t-caption-1); font-weight: var(--w-semibold); color: var(--label-2); }
+.rv-axis-caption { margin: 0; text-align: right; font-size: var(--t-caption-1); font-weight: var(--w-semibold); color: var(--label-2); }
+.rv-link { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 4 3; vector-effect: non-scaling-stroke; }
+.rv-plot .rv-point.is-ly-selected { opacity: 1; background: transparent; border: 2px solid var(--label-2); block-size: 11px; inline-size: 11px; margin-block-start: -5.5px; margin-inline-start: -5.5px; z-index: 1; }
+.rv-readout-list .rv-vs { font-size: var(--t-footnote); color: var(--label-3); }
+.rv-axis-x.is-values span:last-child { transform: translate(-100%); }
+@media (max-width: 600px) { .rv-axis-x.is-values span:nth-child(even) { display: none; } }
