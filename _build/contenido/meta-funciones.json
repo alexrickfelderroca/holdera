@@ -68,7 +68,7 @@
       "file": "funciones/operacion-diaria-hotel/index.html",
       "path": "/funciones/operacion-diaria-hotel/",
       "title": "El día del hotel en una pantalla | Holdera",
-      "description": "Llegadas y salidas hechas y pendientes, huéspedes in house y habitaciones VC frente a los due in, con la hora de cada lectura del PMS.",
+      "description": "Llegadas y salidas hechas y pendientes, huéspedes in house y habitaciones VC frente a las llegadas del día, con la hora de cada lectura del PMS.",
       "robots": "index, follow",
       "sitemap": {
         "priority": "0.7"
@@ -76,7 +76,7 @@
       "og": {
         "type": "website",
         "title": "Hoy — Llegadas, salidas e in house, a la hora que lo miras.",
-        "description": "Llegadas y salidas hechas y pendientes, huéspedes in house y habitaciones VC frente a los due in, con la hora de cada lectura del PMS.",
+        "description": "Llegadas y salidas hechas y pendientes, huéspedes in house y habitaciones VC frente a las llegadas del día, con la hora de cada lectura del PMS.",
         "image": "{{SITE}}/assets/seo/og-default.png",
         "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
@@ -86,7 +86,7 @@
           "@id": "{{SITE}}/funciones/operacion-diaria-hotel/#webpage",
           "url": "{{SITE}}/funciones/operacion-diaria-hotel/",
           "name": "El día del hotel en una pantalla | Holdera",
-          "description": "Llegadas y salidas hechas y pendientes, huéspedes in house y habitaciones VC frente a los due in, con la hora de cada lectura del PMS.",
+          "description": "Llegadas y salidas hechas y pendientes, huéspedes in house y habitaciones VC frente a las llegadas del día, con la hora de cada lectura del PMS.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },
@@ -134,7 +134,7 @@
       "file": "funciones/estado-de-habitaciones-por-planta/index.html",
       "path": "/funciones/estado-de-habitaciones-por-planta/",
       "title": "Estado de las habitaciones, planta a planta | Holdera",
-      "description": "Cada planta con su reparto de ocupadas, VC, VD, IP y OOO, y el plano con el estado de cada habitación. Las OOO salen del inventario; las OOS, no.",
+      "description": "Cada planta con su reparto de OCC, VC, VD, IP y OOO, y el plano con el estado de cada habitación. Las OOO salen del inventario; las OOS, no.",
       "robots": "index, follow",
       "sitemap": {
         "priority": "0.7"
@@ -142,7 +142,7 @@
       "og": {
         "type": "website",
         "title": "Habitaciones — Cada planta, con el estado de cada habitación.",
-        "description": "Cada planta con su reparto de ocupadas, VC, VD, IP y OOO, y el plano con el estado de cada habitación. Las OOO salen del inventario; las OOS, no.",
+        "description": "Cada planta con su reparto de OCC, VC, VD, IP y OOO, y el plano con el estado de cada habitación. Las OOO salen del inventario; las OOS, no.",
         "image": "{{SITE}}/assets/seo/og-default.png",
         "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
@@ -152,7 +152,7 @@
           "@id": "{{SITE}}/funciones/estado-de-habitaciones-por-planta/#webpage",
           "url": "{{SITE}}/funciones/estado-de-habitaciones-por-planta/",
           "name": "Estado de las habitaciones, planta a planta | Holdera",
-          "description": "Cada planta con su reparto de ocupadas, VC, VD, IP y OOO, y el plano con el estado de cada habitación. Las OOO salen del inventario; las OOS, no.",
+          "description": "Cada planta con su reparto de OCC, VC, VD, IP y OOO, y el plano con el estado de cada habitación. Las OOO salen del inventario; las OOS, no.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },
@@ -200,7 +200,7 @@
       "file": "funciones/housekeeping-hotel/index.html",
       "path": "/funciones/housekeeping-hotel/",
       "title": "Housekeeping: VC, VD, IP, OOO y OOS | Holdera",
-      "description": "Room inventory status por planta: VC, VD, IP, OOO y OOS, cruzado con los due in del día para saber si las habitaciones listas cubren las llegadas.",
+      "description": "Room inventory status por planta: VC, VD, IP, OOO y OOS, cruzado con las llegadas del día para saber si las habitaciones listas cubren las llegadas.",
       "robots": "index, follow",
       "sitemap": {
         "priority": "0.7"
@@ -208,7 +208,7 @@
       "og": {
         "type": "website",
         "title": "Housekeeping — VC, VD, IP, OOO y OOS, planta a planta.",
-        "description": "Room inventory status por planta: VC, VD, IP, OOO y OOS, cruzado con los due in del día para saber si las habitaciones listas cubren las llegadas.",
+        "description": "Room inventory status por planta: VC, VD, IP, OOO y OOS, cruzado con las llegadas del día para saber si las habitaciones listas cubren las llegadas.",
         "image": "{{SITE}}/assets/seo/og-default.png",
         "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
@@ -218,7 +218,7 @@
           "@id": "{{SITE}}/funciones/housekeeping-hotel/#webpage",
           "url": "{{SITE}}/funciones/housekeeping-hotel/",
           "name": "Housekeeping: VC, VD, IP, OOO y OOS | Holdera",
-          "description": "Room inventory status por planta: VC, VD, IP, OOO y OOS, cruzado con los due in del día para saber si las habitaciones listas cubren las llegadas.",
+          "description": "Room inventory status por planta: VC, VD, IP, OOO y OOS, cruzado con las llegadas del día para saber si las habitaciones listas cubren las llegadas.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },
@@ -332,15 +332,15 @@
       "file": "funciones/calendario-de-reservas-pickup-pace/index.html",
       "path": "/funciones/calendario-de-reservas-pickup-pace/",
       "title": "Calendario de reservas, pickup y pace | Holdera",
-      "description": "Calendario noche a noche con Occ, ADR y habitaciones OTB, booking pace, pickup de la última semana y ADR contra STLY.",
+      "description": "Calendario por fecha con Occ, ADR y habitaciones OTB, booking pace, pickup de la última semana y ADR contra STLY.",
       "robots": "index, follow",
       "sitemap": {
         "priority": "0.7"
       },
       "og": {
         "type": "website",
-        "title": "Reservas — Noche a noche: Occ, ADR y habitaciones OTB.",
-        "description": "Calendario noche a noche con Occ, ADR y habitaciones OTB, booking pace, pickup de la última semana y ADR contra STLY.",
+        "title": "Reservas — Por fecha: Occ, ADR y habitaciones OTB.",
+        "description": "Calendario por fecha con Occ, ADR y habitaciones OTB, booking pace, pickup de la última semana y ADR contra STLY.",
         "image": "{{SITE}}/assets/seo/og-default.png",
         "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
@@ -350,7 +350,7 @@
           "@id": "{{SITE}}/funciones/calendario-de-reservas-pickup-pace/#webpage",
           "url": "{{SITE}}/funciones/calendario-de-reservas-pickup-pace/",
           "name": "Calendario de reservas, pickup y pace | Holdera",
-          "description": "Calendario noche a noche con Occ, ADR y habitaciones OTB, booking pace, pickup de la última semana y ADR contra STLY.",
+          "description": "Calendario por fecha con Occ, ADR y habitaciones OTB, booking pace, pickup de la última semana y ADR contra STLY.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },
@@ -769,8 +769,8 @@
             {
               "@type": "DefinedTerm",
               "@id": "{{SITE}}/glosario/#t-due-in",
-              "name": "Due in",
-              "termCode": "Due in",
+              "name": "Llegadas",
+              "termCode": "Llegadas",
               "description": "Llegadas previstas hoy que aún no han hecho check-in.",
               "inDefinedTermSet": {
                 "@id": "{{SITE}}/glosario/#glosario"
@@ -779,8 +779,8 @@
             {
               "@type": "DefinedTerm",
               "@id": "{{SITE}}/glosario/#t-due-out",
-              "name": "Due out",
-              "termCode": "Due out",
+              "name": "Salidas",
+              "termCode": "Salidas",
               "description": "Salidas previstas hoy que aún no han hecho check-out.",
               "inDefinedTermSet": {
                 "@id": "{{SITE}}/glosario/#glosario"

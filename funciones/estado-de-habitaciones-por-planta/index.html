@@ -10,11 +10,11 @@
        un "#contenido" a secas iria a la portada. -->
   <base href="/">
   <title>Estado de las habitaciones, planta a planta | Holdera</title>
-  <meta name="description" content="Cada planta con su reparto de ocupadas, VC, VD, IP y OOO, y el plano con el estado de cada habitación. Las OOO salen del inventario; las OOS, no.">
+  <meta name="description" content="Cada planta con su reparto de OCC, VC, VD, IP y OOO, y el plano con el estado de cada habitación. Las OOO salen del inventario; las OOS, no.">
   <meta name="theme-color" content="#e5e5e5">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Habitaciones — Cada planta, con el estado de cada habitación.">
-  <meta property="og:description" content="Cada planta con su reparto de ocupadas, VC, VD, IP y OOO, y el plano con el estado de cada habitación. Las OOO salen del inventario; las OOS, no.">
+  <meta property="og:description" content="Cada planta con su reparto de OCC, VC, VD, IP y OOO, y el plano con el estado de cada habitación. Las OOO salen del inventario; las OOS, no.">
   <meta property="og:locale" content="es_ES">
   <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css?v=b1a15fd7">
@@ -34,7 +34,7 @@
   <meta property="og:image:alt" content="Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Habitaciones — Cada planta, con el estado de cada habitación.">
-  <meta name="twitter:description" content="Cada planta con su reparto de ocupadas, VC, VD, IP y OOO, y el plano con el estado de cada habitación. Las OOO salen del inventario; las OOS, no.">
+  <meta name="twitter:description" content="Cada planta con su reparto de OCC, VC, VD, IP y OOO, y el plano con el estado de cada habitación. Las OOO salen del inventario; las OOS, no.">
   <meta name="twitter:image" content="https://holdera.es/assets/seo/og-default.png">
   <meta name="twitter:image:alt" content="Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona.">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
@@ -116,7 +116,7 @@
         "@id": "https://holdera.es/funciones/estado-de-habitaciones-por-planta/#webpage",
         "url": "https://holdera.es/funciones/estado-de-habitaciones-por-planta/",
         "name": "Estado de las habitaciones, planta a planta | Holdera",
-        "description": "Cada planta con su reparto de ocupadas, VC, VD, IP y OOO, y el plano con el estado de cada habitación. Las OOO salen del inventario; las OOS, no.",
+        "description": "Cada planta con su reparto de OCC, VC, VD, IP y OOO, y el plano con el estado de cada habitación. Las OOO salen del inventario; las OOS, no.",
         "isPartOf": {
           "@id": "https://holdera.es/#website"
         },
@@ -211,7 +211,7 @@
                       <li><a class="mnu__item mnu__item--ic" href="/funciones/calendario-de-reservas-pickup-pace/">
                         <svg class="sic sic--reservas" width="24" height="24" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="8" y="11" width="32" height="29" rx="2"/><path d="M8 19h32M16 7v7M32 7v7"/><rect class="sic-a sic-af" x="12" y="23.5" width="4.5" height="4.5" rx="1"/><rect class="sic-a sic-af" x="19.5" y="23.5" width="4.5" height="4.5" rx="1"/><rect class="sic-a sic-af" x="27" y="23.5" width="4.5" height="4.5" rx="1"/><rect x="12" y="31" width="4.5" height="4.5" rx="1"/><rect x="19.5" y="31" width="4.5" height="4.5" rx="1"/></svg>
                         <span class="mnu__txt"><span class="mnu__name">Reservas</span>
-                        <span class="mnu__desc">Noche a noche: Occ, ADR y habitaciones OTB.</span></span>
+                        <span class="mnu__desc">Por fecha: Occ, ADR y habitaciones OTB.</span></span>
                       </a></li>
                     </ul>
                   </div>
@@ -309,20 +309,20 @@
             <span class="pgf-ic"><svg class="sic sic--habitaciones" width="40" height="40" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="11" y="7" width="26" height="34" rx="1.5"/><path d="M11 15.5h26M11 24h26M11 32.5h26"/><path d="M21 41v-4.5h6V41"/><rect class="sic-a" x="15" y="18" width="7" height="3.5" rx="0.8"/></svg></span>
             <h2 id="pt-title" class="pgf-screen__title">Room status por planta</h2>
           </div>
-          <p class="pgf-screen__lead reveal" data-reveal="up" style="--i:2">Cada planta con su reparto: ocupadas, <abbr class="term" data-term="vc" title="Vacant Clean">VC</abbr>, <abbr class="term" data-term="vd" title="Vacant Dirty">VD</abbr>, <abbr class="term" data-term="ip" title="Cleaning in progress">IP</abbr> y <abbr class="term" data-term="ooo" title="Out of Order">OOO</abbr>. Al entrar en una, el plano con cada habitación en su sitio y su estado.</p>
+          <p class="pgf-screen__lead reveal" data-reveal="up" style="--i:2">Cada planta con su reparto: <abbr class="term" data-term="occupied" title="Habitación con huésped alojado.">OCC</abbr>, <abbr class="term" data-term="vc" title="Vacant Clean">VC</abbr>, <abbr class="term" data-term="vd" title="Vacant Dirty">VD</abbr>, <abbr class="term" data-term="ip" title="Cleaning in progress">IP</abbr> y <abbr class="term" data-term="ooo" title="Out of Order">OOO</abbr>. Al entrar en una, el plano con cada habitación en su localización y su estado.</p>
           <ol class="pgf-points reveal" data-reveal="up" style="--i:3">
             <li class="pgf-point">
               <span class="pgf-point__n" aria-hidden="true">01</span>
               <div>
                 <p class="pgf-point__t">Reparto por planta</p>
-                <p class="pgf-point__d">Ocupadas, <abbr class="term" data-term="vc" title="Vacant Clean">VC</abbr>, <abbr class="term" data-term="vd" title="Vacant Dirty">VD</abbr> y <abbr class="term" data-term="ooo" title="Out of Order">OOO</abbr>, de un vistazo.</p>
+                <p class="pgf-point__d"><abbr class="term" data-term="occupied" title="Habitación con huésped alojado.">OCC</abbr>, <abbr class="term" data-term="vc" title="Vacant Clean">VC</abbr>, <abbr class="term" data-term="vd" title="Vacant Dirty">VD</abbr> y <abbr class="term" data-term="ooo" title="Out of Order">OOO</abbr>, de un vistazo.</p>
               </div>
             </li>
             <li class="pgf-point">
               <span class="pgf-point__n" aria-hidden="true">02</span>
               <div>
                 <p class="pgf-point__t">Plano de cada planta</p>
-                <p class="pgf-point__d">Cada habitación en su sitio, con su número y su estado.</p>
+                <p class="pgf-point__d">Cada habitación en su localización, con su número y su estado.</p>
               </div>
             </li>
             <li class="pgf-point">
@@ -357,6 +357,10 @@
         </div>
         <dl class="gl-list reveal" data-reveal="up" style="--i:2">
             <div class="gl-row">
+              <dt class="gl-term"><span class="gl-code">Occupied</span><span class="gl-es">Ocupada</span></dt>
+              <dd class="gl-def">Habitación con huésped alojado.</dd>
+            </div>
+            <div class="gl-row">
               <dt class="gl-term"><span class="gl-code">VC</span><span class="gl-en">Vacant Clean</span><span class="gl-es">Libre y limpia</span></dt>
               <dd class="gl-def">Libre, limpia y lista para vender.</dd>
             </div>
@@ -375,10 +379,6 @@
             <div class="gl-row">
               <dt class="gl-term"><span class="gl-code">OOS</span><span class="gl-en">Out of Service</span><span class="gl-es">Fuera de servicio</span></dt>
               <dd class="gl-def">Bloqueo breve por mantenimiento menor: sigue en el inventario disponible.</dd>
-            </div>
-            <div class="gl-row">
-              <dt class="gl-term"><span class="gl-code">Occupied</span><span class="gl-es">Ocupada</span></dt>
-              <dd class="gl-def">Habitación con huésped alojado.</dd>
             </div>
             <div class="gl-row">
               <dt class="gl-term"><span class="gl-code">Habitaciones disponibles</span><span class="gl-en">Rooms available</span></dt>
@@ -518,7 +518,7 @@
             <a class="msub__item msub__item--ic" href="/funciones/calendario-de-reservas-pickup-pace/">
               <svg class="sic sic--reservas" width="24" height="24" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="8" y="11" width="32" height="29" rx="2"/><path d="M8 19h32M16 7v7M32 7v7"/><rect class="sic-a sic-af" x="12" y="23.5" width="4.5" height="4.5" rx="1"/><rect class="sic-a sic-af" x="19.5" y="23.5" width="4.5" height="4.5" rx="1"/><rect class="sic-a sic-af" x="27" y="23.5" width="4.5" height="4.5" rx="1"/><rect x="12" y="31" width="4.5" height="4.5" rx="1"/><rect x="19.5" y="31" width="4.5" height="4.5" rx="1"/></svg>
               <span class="msub__txt"><span class="msub__name">Reservas</span>
-              <span class="msub__desc">Noche a noche: Occ, ADR y habitaciones OTB.</span></span>
+              <span class="msub__desc">Por fecha: Occ, ADR y habitaciones OTB.</span></span>
             </a>
             <a class="msub__item msub__item--ic" href="/funciones/trazabilidad-de-cifras/">
               <svg class="sic sic--trazabilidad" width="24" height="24" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle class="sic-a" cx="12" cy="24" r="4.5"/><path d="M16.5 24H30M21 24c4 0 4.5-10 9-10M21 24c4 0 4.5 10 9 10"/><rect x="30" y="11" width="9" height="6" rx="1.2"/><rect x="30" y="21" width="9" height="6" rx="1.2"/><rect x="30" y="31" width="9" height="6" rx="1.2"/></svg>
@@ -585,6 +585,6 @@
   <!-- /drawer -->
 
   <script src="script.js?v=19570da1" defer></script>
-  <script src="terminos.js?v=c9c1c77f" defer></script>
+  <script src="terminos.js?v=bc692f4b" defer></script>
 </body>
 </html>

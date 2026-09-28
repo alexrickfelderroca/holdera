@@ -32,11 +32,11 @@
       "nombre": "Hoy",
       "titulo": "El día del hotel, en una pantalla",
       "frase": "Llegadas, salidas e [[in house]], a la hora que lo miras.",
-      "resumen": "Llegadas y salidas hechas y pendientes, huéspedes [[in house]] y habitaciones [[VC]] frente a los [[due in]]. Cada dato lleva la hora de la lectura del [[PMS]].",
+      "resumen": "Llegadas y salidas hechas y pendientes, huéspedes [[in house]] y habitaciones [[VC]] frente a las [[llegadas del día|due-in]]. Cada dato lleva la hora de la lectura del [[PMS]].",
       "encuadre": "Front office, hoy",
       "puntos": [
-        { "t": "Llegadas y salidas", "d": "Hechas y pendientes: [[due in]] y [[due out]]." },
-        { "t": "[[VC]] frente a [[due in]]", "d": "Si las habitaciones listas cubren las llegadas que faltan." },
+        { "t": "Llegadas y salidas", "d": "Las hechas y las pendientes." },
+        { "t": "[[VC]] frente a [[llegadas del día|due-in]]", "d": "Si las habitaciones listas cubren las llegadas que faltan." },
         { "t": "[[Occ]] de esta noche", "d": "En [[OTB]] hasta el [[night audit]]." }
       ],
       "terminos": [],
@@ -46,7 +46,7 @@
       "captura": "hoy",
       "slug": "operacion-diaria-hotel",
       "title": "El día del hotel en una pantalla | Holdera",
-      "metaDescription": "Llegadas y salidas hechas y pendientes, huéspedes in house y habitaciones VC frente a los due in, con la hora de cada lectura del PMS."
+      "metaDescription": "Llegadas y salidas hechas y pendientes, huéspedes in house y habitaciones VC frente a las llegadas del día, con la hora de cada lectura del PMS."
     },
     {
       "clave": "habitaciones",
@@ -54,11 +54,11 @@
       "nombre": "Habitaciones",
       "titulo": "Habitaciones, planta a planta",
       "frase": "Cada planta, con el estado de cada habitación.",
-      "resumen": "Cada planta con su reparto: ocupadas, [[VC]], [[VD]], [[IP]] y [[OOO]]. Al entrar en una, el plano con cada habitación en su sitio y su estado.",
+      "resumen": "Cada planta con su reparto: [[OCC|occupied]], [[VC]], [[VD]], [[IP]] y [[OOO]]. Al entrar en una, el plano con cada habitación en su localización y su estado.",
       "encuadre": "Room status por planta",
       "puntos": [
-        { "t": "Reparto por planta", "d": "Ocupadas, [[VC]], [[VD]] y [[OOO]], de un vistazo." },
-        { "t": "Plano de cada planta", "d": "Cada habitación en su sitio, con su número y su estado." },
+        { "t": "Reparto por planta", "d": "[[OCC|occupied]], [[VC]], [[VD]] y [[OOO]], de un vistazo." },
+        { "t": "Plano de cada planta", "d": "Cada habitación en su localización, con su número y su estado." },
         { "t": "[[OOO]] y [[OOS]]", "d": "Las [[OOO]] salen del inventario disponible; las [[OOS]], no." }
       ],
       "terminos": ["occupied", "disponibles"],
@@ -68,7 +68,7 @@
       "captura": "habitaciones",
       "slug": "estado-de-habitaciones-por-planta",
       "title": "Estado de las habitaciones, planta a planta | Holdera",
-      "metaDescription": "Cada planta con su reparto de ocupadas, VC, VD, IP y OOO, y el plano con el estado de cada habitación. Las OOO salen del inventario; las OOS, no."
+      "metaDescription": "Cada planta con su reparto de OCC, VC, VD, IP y OOO, y el plano con el estado de cada habitación. Las OOO salen del inventario; las OOS, no."
     },
     {
       "clave": "housekeeping",
@@ -76,12 +76,12 @@
       "nombre": "Housekeeping",
       "titulo": "Housekeeping por estado de habitación",
       "frase": "[[VC]], [[VD]], [[IP]], [[OOO]] y [[OOS]], planta a planta.",
-      "resumen": "El estado de cada habitación por planta, cruzado con los [[due in]] del día: cuántas [[VC]] hay y si cubren las llegadas pendientes.",
+      "resumen": "El estado de cada habitación por planta, cruzado con las [[llegadas del día|due-in]]: cuántas [[VC]] hay y si cubren las llegadas pendientes.",
       "encuadre": "Room inventory status",
       "puntos": [
         { "t": "[[VC]], [[VD]] e [[IP]] por planta", "d": "Dónde está el trabajo del turno." },
-        { "t": "[[VC]] frente a [[due in]]", "d": "Si las habitaciones listas cubren las llegadas pendientes." },
-        { "t": "[[OOO]] y [[OOS]], aparte", "d": "Bloqueos que no son trabajo de pisos." }
+        { "t": "[[VC]] frente a [[llegadas del día|due-in]]", "d": "Si las habitaciones listas cubren las llegadas pendientes." },
+        { "t": "[[OOO]] y [[OOS]]", "d": "Bloqueos que no son trabajo de pisos." }
       ],
       "terminos": ["occupied"],
       "pantalla": "Housekeeping",
@@ -90,7 +90,7 @@
       "captura": "housekeeping",
       "slug": "housekeeping-hotel",
       "title": "Housekeeping: VC, VD, IP, OOO y OOS | Holdera",
-      "metaDescription": "Room inventory status por planta: VC, VD, IP, OOO y OOS, cruzado con los due in del día para saber si las habitaciones listas cubren las llegadas."
+      "metaDescription": "Room inventory status por planta: VC, VD, IP, OOO y OOS, cruzado con las llegadas del día para saber si las habitaciones listas cubren las llegadas."
     },
     {
       "clave": "revenue",
@@ -119,8 +119,8 @@
       "orden": 5,
       "nombre": "Reservas",
       "titulo": "Reservas: [[OTB]], [[pickup]] y [[booking pace]]",
-      "frase": "Noche a noche: [[Occ]], [[ADR]] y habitaciones [[OTB]].",
-      "resumen": "Calendario noche a noche con [[Occ]], [[ADR]] y habitaciones [[OTB]]; al abrir una noche, su desglose por tipo de habitación, canal y departamento. En la misma vista, [[booking pace]], [[pickup]] y comparación vs [[STLY]].",
+      "frase": "Por fecha: [[Occ]], [[ADR]] y habitaciones [[OTB]].",
+      "resumen": "Calendario por fecha con [[Occ]], [[ADR]] y habitaciones [[OTB]]; al abrir una fecha, su desglose por tipo de habitación y canal. En la misma vista, [[booking pace]], [[pickup]] y comparación vs [[STLY]].",
       "encuadre": "Booking pace y pickup",
       "puntos": [
         { "t": "Noches con [[Occ]] baja en [[OTB]]", "d": "Las fechas que van por debajo, de un vistazo." },
@@ -133,7 +133,7 @@
       "captura": "reservas",
       "slug": "calendario-de-reservas-pickup-pace",
       "title": "Calendario de reservas, pickup y pace | Holdera",
-      "metaDescription": "Calendario noche a noche con Occ, ADR y habitaciones OTB, booking pace, pickup de la última semana y ADR contra STLY."
+      "metaDescription": "Calendario por fecha con Occ, ADR y habitaciones OTB, booking pace, pickup de la última semana y ADR contra STLY."
     },
     {
       "clave": "trazabilidad",
