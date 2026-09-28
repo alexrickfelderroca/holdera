@@ -156,13 +156,17 @@
 .sector__name { margin: 0 0 12px; font-size: clamp(26px, 2.6vw, 40px); line-height: 1.05; letter-spacing: -0.03em; font-weight: 500; }
 .sector__who { margin: 0; font-size: 14px; line-height: 1.55; color: var(--sh-muted); max-width: 30ch; }
 .sector__ex { list-style: none; margin: 0; padding: 0; }
+/* La raya va en posición absoluta, no como columna de una rejilla: con las
+   siglas en <abbr>, cada trozo de texto y cada sigla pasaban a ser una celda
+   de la rejilla y la frase se partía en columnas (29-09-2026). */
 .sector__ex li {
-  display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 16px; align-items: start;
-  padding: 14px 0; border-top: 1px solid var(--sh-border);
+  position: relative;
+  padding: 14px 0 14px 32px; border-top: 1px solid var(--sh-border);
   font-size: clamp(15px, 1.15vw, 17px); line-height: 1.5; color: var(--sh-text-2);
 }
 .sector__ex li:first-child { border-top: 0; padding-top: 6px; }
-.sector__ex li::before { content: ""; width: 16px; height: 1px; margin-top: 0.75em; background: var(--accent-ink); }
+.sector__ex li::before { content: ""; position: absolute; left: 0; top: calc(14px + 0.75em); width: 16px; height: 1px; background: var(--accent-ink); }
+.sector__ex li:first-child::before { top: calc(6px + 0.75em); }
 .sectors__foot {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px;
   margin-top: clamp(32px, 4vw, 48px);
