@@ -82,6 +82,10 @@ const FRASES = [
   ['What one occupied room is worth across the whole hotel tonight.', 'Whole-hotel revenue per occupied room.'],
   ['Total Revenue per Available Room: rooms, F&B, spa and other services', 'Rooms + F&B + spa + other'],
   // Revenue: gráficos
+  // El gráfico de tarifa y ocupación pasa a comparar cada noche cerrada con la
+  // misma noche del año pasado, en cuadrantes (reunión del 28-09-2026).
+  ['Rate against occupancy', 'Rate and occupancy vs last year'],
+  ['Every night in view', 'Closed nights vs last year'],
   ['This year, rooms on the books', 'OTB this year'],
   ['Same point last year', 'STLY'],
   ['Last year, final for these nights', 'LY final'],

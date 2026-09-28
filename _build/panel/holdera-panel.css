@@ -108,3 +108,25 @@
 .rv-readout-list .rv-vs { font-size: var(--t-footnote); color: var(--label-3); }
 .rv-axis-x.is-values span:last-child { transform: translate(-100%); }
 @media (max-width: 600px) { .rv-axis-x.is-values span:nth-child(even) { display: none; } }
+
+/* Rate and occupancy vs last year: cuadrantes (29-09-2026). */
+/* Cada noche cerrada contra la misma noche del año pasado: a la derecha más
+   ocupación, arriba más tarifa. Los cuatro cuadrantes llevan su nombre y
+   cuántas noches caen en cada uno. */
+.rv-plot.is-quad { cursor: pointer; }
+.rv-chart-frame:has(.is-quad) { padding-top: 1.75rem; }
+.rv-zero { stroke: var(--label-2); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.rv-quad-bg { stroke: none; }
+.rv-quad-bg.is-up { fill: var(--signal); opacity: .08; }
+.rv-quad-bg.is-down { fill: var(--label-3); opacity: .08; }
+.rv-quad { position: absolute; max-inline-size: 45%; font-size: var(--t-caption-1); line-height: 1.35; color: var(--label-2); pointer-events: none; }
+.rv-quad b { font-size: var(--t-subhead); font-weight: var(--w-semibold); color: var(--label); }
+.rv-quad.is-tr { top: 8px; right: 10px; text-align: right; }
+.rv-quad.is-tl { top: 8px; left: 10px; }
+.rv-quad.is-br { bottom: 8px; right: 10px; text-align: right; }
+.rv-quad.is-bl { bottom: 8px; left: 10px; }
+.rv-plot .rv-point.is-q-up { background: var(--signal); }
+.rv-plot .rv-point.is-q-rate, .rv-plot .rv-point.is-q-fill { background: var(--accent); }
+.rv-plot .rv-point.is-q-down { background: var(--label-3); }
+.rv-basis.is-q-up { color: var(--signal); }
+@media (max-width: 600px) { .rv-quad { display: none; } }
