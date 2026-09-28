@@ -76,6 +76,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://holdera.es/glosario/</loc>
+    <lastmod>2026-09-19</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://holdera.es/integraciones.html</loc>
     <lastmod>2026-09-19</lastmod>
     <priority>0.8</priority>

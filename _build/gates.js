@@ -30,6 +30,8 @@ const CHECKS = [
   ['node', ['_build/contrast.js'], 'contraste WCAG de los pares vigilados'],
   ['node', ['_build/check-shell.js'], 'cabecera, drawer y pie idénticos en las 7 páginas'],
   ['node', ['_build/seo/validate-meta.js'], 'títulos <= 60 y descripciones <= 155 caracteres'],
+  ['node', ['_build/contenido/check-terminos.js'], 'cada término en negrita tiene su definición y su ventana (paso 14)'],
+  ['node', ['_build/panel-copy.js', '--check'], 'el panel capturado lleva las siglas, las ventanas y sin las explicaciones largas (paso 14)'],
   ['node', ['_build/check-placeholders.js', ...(strict ? ['--strict'] : [])], 'marcadores de contacto'],
 ];
 

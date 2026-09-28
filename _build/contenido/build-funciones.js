@@ -1,221 +1,147 @@
 /*
  * _build/contenido/build-funciones.js
- * Genera las NUEVE paginas de /funciones/ : el indice y las ocho funciones.
+ * Genera las páginas de /funciones/ (el índice y las ocho funciones) y
+ * /glosario/, los menús de Funciones de la cabecera y del drawer, y los datos
+ * de las ventanas de términos.
  *
  *   node _build/contenido/build-funciones.js
+ *   node _build/replicate-shell.js        (lleva los menús nuevos a TODAS las páginas)
  *
- * Que escribe (y reescribe entero en cada ejecucion — es idempotente):
+ * Qué escribe (y reescribe entero en cada ejecución — es idempotente):
  *   funciones/index.html
- *   funciones/<slug>/index.html          x8, slugs de features.json
- *   funciones/funciones.css              copia de _build/parts/pagina-funcion.css
- *   _build/contenido/meta-funciones.json fragmento para _build/seo/meta.json
+ *   funciones/<slug>/index.html           x8, slugs de features.json
+ *   glosario/index.html                   el catálogo de definiciones
+ *   funciones/funciones.css               copia de _build/parts/pagina-funcion.css
+ *   terminos.js                           el bloque terms:data, desde glosario.json
+ *   _build/shell/header.html + drawer.html + footer.html   los menús de Funciones
+ *   _build/contenido/meta-funciones.json  el fragmento SEO de estas diez páginas
+ *   _build/seo/meta.json                  y ese fragmento, ya fundido en su sitio
  *
- * De donde sale el contenido:
- *   - _build/contenido/features.json es LA fuente del titulo, la frase, el
- *     parrafo, la pantalla, el enlace al panel, las preguntas y el SEO. No se
- *     reescribe aqui.
- *   - AMPLIACION (abajo) es lo que esta pagina anade al parrafo: dos parrafos
- *     mas, el limite declarado y una cita LITERAL del panel. Cada cita lleva
- *     escrito de que pantalla sale y se ha copiado del HTML servido en
- *     http://localhost:4177/panel/... , no de memoria.
+ * De dónde sale el contenido:
+ *   - features.json: nombre, título, frase, resumen, encuadre, puntos,
+ *     pantalla, enlace y SEO de cada función. Con marcadores [[ADR]].
+ *   - glosario.json: todos los términos (vía terminos-lib.js).
+ *   - iconos.js: los ocho iconos de sección del diseño de Alex.
  *
- * Tres trampas de este proyecto que estan resueltas aqui:
+ * Paso 14 (28-09-2026) — la reunión con Alex, en una línea por nota del PDF:
+ *   · «no es lenguaje hotelero, se tiene que comprimir, demasiado texto»:
+ *     el cuerpo de cada función son ahora dos líneas y dos a cuatro puntos;
+ *   · «el lenguaje técnico en bold, y una ventana al poner el cursor»: los
+ *     marcadores [[…]] salen como <abbr class="term"> y terminos.js pone la
+ *     ventana;
+ *   · «rehacer la estructura entera; catálogo de definiciones (estilo el
+ *     catálogo de KPIs de mi padre)»: cada función acaba en el catálogo de
+ *     SUS términos, y /glosario/ es el catálogo entero;
+ *   · «lo que no hace … why do we need this explanation? remove it»: el bloque
+ *     «Lo que no hace» y su cita literal en inglés desaparecen de las ocho;
+ *   · «esto tendría que estar bajo el encuadre de room inventory status y se
+ *     podría enseñar una foto»: cada pantalla lleva su encuadre hotelero como
+ *     título y la captura del panel al lado;
+ *   · «la web tiene que ser genérica»: fuera todo lo que dependía de los datos
+ *     del hotel de la demo (el 14:30, «de diciembre a julio», los 364 días…).
  *
- *   1. <base href="/">. La cabecera, el drawer y el pie estan COPIADOS desde
- *      _build/shell/*.html y usan rutas RELATIVAS (href="index.html",
- *      href="panel/"). Desde /funciones/<slug>/ esas rutas resolverian a
- *      /funciones/<slug>/index.html. El patron del sitio para eso es el de
- *      404.html: <base href="/"> en el <head> y los href del shell INTACTOS
- *      (check-shell.js compara caracter a caracter contra _build/shell/).
- *
- *   2. Con <base href="/"> un href="#contenido" a secas apunta a LA RAIZ
- *      (/#contenido), no a esta pagina. El enlace de salto va absoluto:
- *      href="/funciones/<slug>/#contenido". Mismo motivo que en 404.html.
- *
- *   3. styles.css estiliza el elemento `main` a pelo como la hoja deslizante
- *      del inicio (margin-top:-100dvh, radio, sombra). pages.css lo corrige
- *      (.page main{margin-top:calc(-1*var(--pg-lid))}), asi que el <body>
- *      lleva class="page" y la pagina carga pages.css SIEMPRE.
- *
- * El CSS, y como desaparece solo: el .htaccess deniega /_build/, asi que la
- * parte no se puede servir desde ahi. Mientras no este fundida en pages.css,
- * este script la copia a funciones/funciones.css y las nueve paginas la cargan
- * detras de pages.css. En cuanto alguien pegue la parte dentro de pages.css
- * —que es lo que el orquestador hizo con la de integraciones, y lo preferible
- * porque pages.css SI lo escanea check-tokens.js—, la siguiente ejecucion
- * detecta el token --pgf-row-hover alli, quita el <link> de las nueve paginas
- * y borra la copia. No hay que tocar nada aqui.
- *
- * Re-ejecutalo despues de CUALQUIER cambio en _build/shell/: replicate-shell.js
- * todavia lleva la lista de siete paginas escrita a mano y no toca estas nueve.
+ * Tres trampas de este proyecto que siguen resueltas aquí:
+ *   1. <base href="/">: el shell va COPIADO con rutas relativas; desde una
+ *      subcarpeta solo apuntan bien con base. Es el patrón de 404.html.
+ *   2. Con base, un href="#contenido" a secas va a la portada: el enlace de
+ *      salto va absoluto.
+ *   3. styles.css estiliza `main` como la hoja deslizante de la home; pages.css
+ *      lo corrige para <body class="page">, así que se carga SIEMPRE.
  */
 'use strict';
 
 const fs = require('fs');
 const path = require('path');
+const lib = require('./terminos-lib');
+const { icon } = require('./iconos');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const SHELL = path.join(ROOT, '_build', 'shell');
 const OUT_DIR = path.join(ROOT, 'funciones');
+const GL_DIR = path.join(ROOT, 'glosario');
 const CSS_SRC = path.join(ROOT, '_build', 'parts', 'pagina-funcion.css');
+const SHOTS = path.join(ROOT, 'assets', 'img', 'funciones');
+const META_JSON = path.join(ROOT, '_build', 'seo', 'meta.json');
 
-/* ¿Esta la parte ya fundida dentro de pages.css?
- *
- * El orquestador funde las partes de _build/parts/ dentro de pages.css — es lo
- * que hizo con la de integraciones (--pgi-*). Mientras no lo haya hecho con
- * esta, las paginas necesitan servirla aparte, porque el .htaccess deniega
- * /_build/. En cuanto este dentro, el <link> sobra y la copia tambien.
- *
- * Se detecta por un token propio en vez de por un comentario: los comentarios
- * se pierden al minificar o al reordenar, un token no. Volver a ejecutar el
- * generador despues de fundir la parte quita el enlace solo. */
 const PAGES_CSS = path.join(ROOT, 'pages.css');
 const CSS_FUNDIDO =
   fs.existsSync(PAGES_CSS) && fs.readFileSync(PAGES_CSS, 'utf8').indexOf('--pgf-row-hover') >= 0;
 
-const FEATURES = JSON.parse(fs.readFileSync(path.join(__dirname, 'features.json'), 'utf8'));
-const header = fs.readFileSync(path.join(SHELL, 'header.html'), 'utf8').replace(/\s+$/, '');
-const drawer = fs.readFileSync(path.join(SHELL, 'drawer.html'), 'utf8').replace(/\s+$/, '');
-const footer = fs.readFileSync(path.join(SHELL, 'footer.html'), 'utf8').replace(/\s+$/, '');
-
-/* Nunca String.replace con '$$' en el reemplazo: '$$' es un escape y se
-   convierte en '$'. Trampa documentada de este proyecto. split/join siempre. */
-const esc = (s) => String(s).split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;');
-const escAttr = (s) => esc(s).split('"').join('&quot;');
-const dosDigitos = (n) => String(n).padStart(2, '0');
-
-/* --------------------------------------------------------------------------
-   El nombre SIMPLE de cada funcion: el que va en el menu desplegable, en las
-   migas de pan y en el indice. Sale del campo `pantalla` de features.json,
-   con dos excepciones: "Metricas" y "Metricas · Ocupacion" son la misma
-   palabra para dos paginas distintas, y un desplegable con dos entradas
-   iguales no se puede usar.
-   -------------------------------------------------------------------------- */
-const NOMBRE_CORTO = {
-  hoy: 'Hoy',
-  habitaciones: 'Habitaciones',
-  housekeeping: 'Housekeeping',
-  revenue: 'Revenue',
-  reservas: 'Reservas',
-  trazabilidad: 'Trazabilidad',
-  definiciones: 'Definiciones',
-  catalogo: 'Catálogo de métricas',
-};
-
-/* metaDescription de 159 caracteres: el maximo del sitio son 155
-   (_build/seo/validate-meta.js, DESC_MAX). Se recorta AQUI y no en
-   features.json para no tocar la fuente de otro agente; la frase es la misma
-   sin el segundo "habitaciones". */
-const META_DESC_OVERRIDE = {
-  hoy: 'Llegadas, salidas, habitaciones en casa y listas a la hora en que las miras. Holdera lee la foto intradía de tu PMS y dice de cuándo es cada dato.',
-};
-
-/* --------------------------------------------------------------------------
-   AMPLIACION — lo que esta pagina anade al parrafo de features.json.
-
-   Regla: nada que el producto no haga. Todo lo de aqui esta leido del panel
-   capturado que se sirve en /panel/ (hotel de demostracion congelado el
-   jueves 15 de enero de 2026 a las 14:30) o del CLAUDE.md del proyecto.
-   `cita` es texto LITERAL del panel — esta en ingles porque el producto esta
-   en ingles, y la pagina lo dice al presentarlo.
-   -------------------------------------------------------------------------- */
-const AMPLIACION = {
-  hoy: {
-    cuerpo: [
-      'El día no es una sola cifra. La pantalla parte las llegadas en las que ya han entrado y las que faltan, las salidas en las que ya se han ido y las que quedan, y pone al lado las habitaciones que están listas para recibir. Así la pregunta de recepción —¿me llega con lo que tengo limpio?— se contesta mirando, no sumando.',
-      'Debajo, el hotel entero por plantas, con lo que ocurre en cada una. Y la hora, siempre: lo que ves es un instante concreto del export de tu PMS, no «ahora mismo», y eso también sale escrito en pantalla.',
-    ],
-    limiteTitulo: 'Una proyección no se enseña como un hecho',
-    limite: 'La ocupación de esta noche todavía no ha ocurrido: sale marcada como no cerrada y con su definición todavía sin validar, no redondeada a un número limpio. Entre un export y el siguiente Holdera no rellena el hueco — enseña la hora de la foto y espera.',
-    cita: { texto: 'Not final · Definition pending', donde: 'Hoy · ocupación de esta noche' },
-  },
-  habitaciones: {
-    cuerpo: [
-      'Cada planta trae su reparto en una línea —ocupadas, vacantes, fuera de orden—, así que la que va retrasada se ve antes de abrir nada. Al entrar en una, las habitaciones aparecen colocadas como están en el edificio, con su número y su estado.',
-      'Y lo que no es habitación —cocina, spa, recepción, restaurante— está en el modelo, pero vacío de dato mientras la fuente no lo cubra. Aparece diciéndolo, en vez de con un cero que parecería un dato.',
-    ],
-    limiteTitulo: 'El plano es configuración; los totales son el dato',
-    limite: 'Los recuentos por estado vienen de la foto del PMS. Qué habitación concreta tiene cada estado es, en la demo, una distribución ilustrativa del edificio de ejemplo, y el panel lo escribe en pantalla en vez de dejarte creer que estás viendo la 203 de verdad.',
-    cita: { texto: "The totals are the snapshot's; which room holds each state is an illustrative distribution, not data.", donde: 'Hoy · el hotel ahora' },
-  },
-  housekeeping: {
-    cuerpo: [
-      'Los estados se cuentan por separado y se cruzan con las llegadas: si las Vacant Clean cubren las que todavía faltan por entrar, lo dice; si no, también. Y el reparto baja a planta, que es como se organiza un turno.',
-      'La leyenda va en la misma pantalla y no en un manual —VC vacante limpia, IP en limpieza, VD vacante sucia—, y las fuera de orden y fuera de servicio se cuentan aparte porque no son trabajo de pisos.',
-    ],
-    limiteTitulo: 'Lo que la fuente no cubre sale vacío',
-    limite: 'Holdera lee el estado, no lo inventa: una habitación sin estado sale como sin estado, nunca como limpia. Y las zonas comunes que el export no incluye aparecen en el modelo con el hueco escrito al lado.',
-    cita: { texto: 'No zone operations from this source', donde: 'Housekeeping · zonas comunes' },
-  },
-  revenue: {
-    cuerpo: [
-      'Tres periodos en la misma fila —esta noche, el mes en curso y las treinta noches que vienen—, cada uno con su comparación al mismo punto de la curva del año pasado. Debajo, el TRevPAR con su reparto por departamentos, el gráfico de las sesenta y una noches y las tablas de mezcla por tipo de habitación y por canal.',
-      'Cualquiera de esas cifras se abre en su detalle: qué mide, la fórmula con el valor que tomó cada entrada, y de dónde sale. La fórmula se lee del catálogo de métricas, así que hay una sola definición por métrica en todo el producto.',
-    ],
-    limiteTitulo: 'Lo que no viene del PMS va etiquetado',
-    limite: 'El ingreso de habitación sale del libro de reservas. Restauración, spa y el resto de servicios están modelados a partir de supuestos declarados, y cada supuesto se imprime en el detalle de la cifra. Mientras tu POS no esté conectado, eso es lo que hay, y así se dice.',
-    cita: { texto: 'Food and beverage, spa and other services are modelled from declared assumptions — every one of them is printed in the detail behind this figure.', donde: 'Revenue · TRevPAR' },
-  },
-  reservas: {
-    cuerpo: [
-      'El calendario va de diciembre a julio y cada noche trae su ocupación, su tarifa y las habitaciones que tiene vendidas. Al elegir una noche se abre su desglose por tipo de habitación, por canal y por departamento.',
-      'Encima, dos lecturas del ritmo: lo que ha entrado en los últimos siete días, y la ocupación noche a noche contra la misma noche del año pasado —364 días atrás, para que coincida el día de la semana.',
-    ],
-    limiteTitulo: 'La línea de este año termina hoy',
-    limite: 'Las noches posteriores a hoy enseñan lo que hay vendido ahora, no cómo va a acabar la noche. Holdera no pronostica: la única referencia de lo que viene es cómo terminó el año pasado, que ya es un hecho cerrado.',
-    cita: { texto: 'Nights after today show what is on the books right now, not what the night will finish at.', donde: 'Reservas · pace' },
-  },
-  trazabilidad: {
-    cuerpo: [
-      'Los cuatro pasos son literales. La fórmula: «Occupied Rooms / (Physical Rooms − OOO Rooms)». Las entradas, con el valor que tomó cada una y el registro del que sale. El registro ya normalizado. Y la fila en bruto tal como entró, con su identificador de origen, su número de versión y su huella de contenido.',
-      'Esa huella es lo que hace que el último paso no sea una promesa: si el dato de origen cambia, la huella cambia, y la cifra que colgaba de él deja de cuadrar sola.',
-    ],
-    limiteTitulo: 'Hoy la cadena llega entera en la ocupación',
-    limite: 'Las métricas de ocupación son las que Holdera guarda con su linaje completo, y son las que puedes abrir hasta la fila en bruto. El resto del panel enseña su fórmula y el valor de cada entrada; el último escalón se completa según se conecta cada fuente. Preferimos decírtelo a que lo descubras tú.',
-    cita: { texto: 'Traceable to the source record', donde: 'Traza · un día cerrado' },
-  },
-  definiciones: {
-    cuerpo: [
-      'En el panel las dos conviven: ocupación sobre las habitaciones físicas y ocupación sobre las que están en operación. Cada una con su fórmula escrita, su unidad, su versión de catálogo y su estado de definición.',
-      'La diferencia no es cosmética: es exactamente tus habitaciones fuera de orden, y crece con ellas. Es la cifra que acaba en el informe que enseñas a tu propiedad, así que la eliges tú y queda escrito cuál elegiste.',
-    ],
-    limiteTitulo: 'Hasta que la valides, sale sin validar',
-    limite: 'Las definiciones están mapeadas desde una guía de KPIs hotelera y salen marcadas como referencia, a la espera de que tu hotel valide su semántica. Holdera no decide por ti cuál es «tu» ocupación: enseña las dos y espera.',
-    cita: { texto: 'Definition status: REFERENCE ONLY', donde: 'Métricas · Occupancy Rate' },
-  },
-  catalogo: {
-    cuerpo: [
-      'Cada métrica trae su fórmula, su unidad, su prioridad y su estado: si el hotel puede calcularla hoy, qué le falta, o si depende de una fuente externa. El filtro deja pedir justo eso —enséñame las que no puedo calcular— y la lista contesta con nombres, no con un aviso genérico.',
-      'Sirve para planificar la conexión al revés de como suele hacerse: primero qué quieres poder medir, y después qué fuente hay que traer para poder medirlo.',
-    ],
-    limiteTitulo: 'Un hueco se enseña como hueco',
-    limite: 'Ninguna casilla vacía se rellena con una estimación ni con un cero. Donde falta el dato aparece la fuente que falta —contabilidad, POS, una fuente de mercado— y la métrica se queda sin valor hasta que esa fuente exista.',
-    cita: { texto: 'Missing inputs · External source required · Future capability', donde: 'Métricas · estados del catálogo' },
-  },
-};
-
-/* La nota del pie de hoja: de que hotel son las cifras que se acaban de leer.
-   Misma redaccion en las nueve paginas a proposito. */
-const NOTA_DEMO = 'Las pantallas que enlazamos son el panel de demostración: un hotel de ejemplo de 100 habitaciones, congelado el jueves 15 de enero de 2026 a las 14:30. Las cifras son de ese hotel, no de ninguno real.';
-
-const IMG_ALT = 'Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona.';
-
-const INDICE = {
-  slug: null,
-  path: '/funciones/',
-  nombre: 'Funciones',
-  title: 'Funciones del software hotelero | Holdera',
-  metaDescription: 'Las ocho pantallas de Holdera, una por página: qué hace cada una, qué preguntas contesta y dónde está su límite declarado.',
-  h1: '<span class="ln">Ocho pantallas.</span> <span class="ln">Y lo que contesta cada una.</span>',
-  lead: 'El producto entero, una función por página: qué hace, qué preguntas responde y dónde está su límite. Todas se pueden abrir por dentro en el panel de demostración.',
-};
-
-/* -------------------------------------------------------------------------- */
-const features = FEATURES.features.slice().sort((a, b) => a.orden - b.orden);
+const SRC = JSON.parse(fs.readFileSync(path.join(__dirname, 'features.json'), 'utf8'));
+const features = SRC.features.slice().sort((a, b) => a.orden - b.orden);
 const total = features.length;
+const byClave = new Map(features.map((f) => [f.clave, f]));
+const grupoDe = new Map();
+for (const g of SRC.grupos) for (const c of g.claves) grupoDe.set(c, g);
+
+const { esc, render, plain } = lib;
+const escAttr = lib.escAttr;
+const dosDigitos = (n) => String(n).padStart(2, '0');
 
 const flecha = (clase) =>
   `<span class="${clase}" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>`;
+const flechaMenu = `<span class="mnu__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>`;
+
+/* La nota del pie de hoja. Genérica a propósito (nota de Alex: «la web tiene
+   que ser genérica»): de qué son las pantallas enlazadas, sin fechas ni horas
+   del hotel de la demo. */
+const NOTA_DEMO = 'Las pantallas enlazadas son las del panel de demostración: un hotel ficticio de 100 habitaciones. Ninguna cifra es de un hotel real.';
+const IMG_ALT = 'Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona.';
+
+const INDICE = {
+  path: '/funciones/',
+  title: 'Funciones del software hotelero | Holdera',
+  metaDescription: 'Las ocho pantallas de Holdera, una por página: qué KPIs enseña cada una, en qué términos, y su captura del panel demo.',
+  h1: '<span class="ln">Ocho pantallas,</span> <span class="ln">un solo hotel.</span>',
+  lead: 'Operación, revenue y trazabilidad, pantalla a pantalla.',
+};
+
+const GLOSARIO = {
+  path: '/glosario/',
+  title: 'Glosario de KPIs hoteleros: ADR, RevPAR, OTB | Holdera',
+  metaDescription: 'Definición y fórmula de 57 KPIs hoteleros y de las siglas del día a día: ADR, RevPAR, TRevPAR, GOPPAR, OTB, STLY, MTD, VC, VD, OOO, OOS y más.',
+};
+
+/* ------------------------------------------------------------ capturas */
+/* Ancho y alto de un .webp leídos de su cabecera, para que el <img> lleve
+   width/height reales (sin ellos la página salta al llegar la imagen: CLS). */
+function webpSize(file) {
+  const b = fs.readFileSync(file);
+  if (b.toString('ascii', 0, 4) !== 'RIFF' || b.toString('ascii', 8, 12) !== 'WEBP') throw new Error('No es WebP: ' + file);
+  const kind = b.toString('ascii', 12, 16);
+  if (kind === 'VP8X') return { w: 1 + b.readUIntLE(24, 3), h: 1 + b.readUIntLE(27, 3) };
+  if (kind === 'VP8 ') return { w: b.readUInt16LE(26) & 0x3fff, h: b.readUInt16LE(28) & 0x3fff };
+  if (kind === 'VP8L') {
+    const n = b.readUInt32LE(21);
+    return { w: (n & 0x3fff) + 1, h: ((n >> 14) & 0x3fff) + 1 };
+  }
+  throw new Error('WebP desconocido: ' + file);
+}
+
+function captura(f) {
+  const rel = `assets/img/funciones/${f.captura}.webp`;
+  const full = path.join(ROOT, rel);
+  if (!fs.existsSync(full)) {
+    console.warn(`  AVISO: falta ${rel} — la página sale sin captura. Genérala con node _build/funciones-shots.js`);
+    return '';
+  }
+  const { w, h } = webpSize(full);
+  /* El enlace de la imagen es un atajo de ratón: el enlace de verdad, con su
+     texto, es el botón de al lado. Por eso va fuera del orden de tabulación y
+     del árbol de accesibilidad (no dos paradas para el mismo destino). */
+  return `
+        <figure class="pgf-shot reveal" data-reveal="up" style="--i:2">
+          <a class="pgf-shot__frame" href="${escAttr(f.enlace)}" tabindex="-1" aria-hidden="true">
+            <img src="${rel}" width="${w}" height="${h}" alt="" loading="lazy" decoding="async">
+          </a>
+          <figcaption>Panel demo · ${esc(f.pantalla)}</figcaption>
+        </figure>`;
+}
+
+/* ------------------------------------------------------------- piezas */
+const header = () => fs.readFileSync(path.join(SHELL, 'header.html'), 'utf8').replace(/\s+$/, '');
+const drawer = () => fs.readFileSync(path.join(SHELL, 'drawer.html'), 'utf8').replace(/\s+$/, '');
+const footer = () => fs.readFileSync(path.join(SHELL, 'footer.html'), 'utf8').replace(/\s+$/, '');
 
 function head(o) {
   return `<!DOCTYPE html>
@@ -246,26 +172,41 @@ function head(o) {
 </head>`;
 }
 
-function migas(actual) {
-  const filas = [
-    '<a href="index.html">Inicio</a>',
-    actual === null
-      ? '<span aria-current="page">Funciones</span>'
-      : '<a href="funciones/">Funciones</a>',
-  ];
-  if (actual !== null) filas.push(`<span aria-current="page">${esc(actual)}</span>`);
+function migas(actual, seccion) {
+  const filas = ['<a href="index.html">Inicio</a>'];
+  if (seccion === 'glosario') filas.push('<span aria-current="page">Glosario</span>');
+  else if (actual === null) filas.push('<span aria-current="page">Funciones</span>');
+  else {
+    filas.push('<a href="funciones/">Funciones</a>');
+    filas.push(`<span aria-current="page">${esc(actual)}</span>`);
+  }
   return `<nav class="pgf-crumbs" aria-label="Migas de pan" data-enter style="--d:60">
           ${filas.join('\n          ')}
         </nav>`;
 }
 
-function cta(url) {
-  return `    <section class="sheet sheet--cta" id="hablamos" aria-labelledby="cta-title">
+function banda(crumbs, h1, lead) {
+  return `  <!-- ============ PAGE BAND (light) ============ -->
+  <div class="phead">
+    <div class="phead__deco" aria-hidden="true"><div class="phead__wordmark">HOLDERA</div></div>
+    <div class="container phead__inner">
+      <div class="phead__copy">
+        ${crumbs}
+        <h1 class="phead__title" id="page-title" data-enter style="--d:140">${h1}</h1>
+      </div>
+      <p class="phead__lead" data-enter style="--d:260">${lead}</p>
+    </div>
+    <div class="hero-sentinel" aria-hidden="true"></div>
+  </div>`;
+}
+
+function cta() {
+  return `    <section class="sheet sheet--cta pgf-sec" id="hablamos" aria-labelledby="cta-title">
       <div class="container ctaband">
         <div>
           <p class="tag reveal" data-reveal="up">Siguiente paso</p>
           <h2 id="cta-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Ábrelo por dentro <span class="fade">y después hablamos.</span></h2>
-          <p class="sheet__lead reveal" data-reveal="up" style="--i:2">El panel de demostración está abierto: no hay formulario delante. Si después quieres hablarlo, cuéntanos cómo es tu hotel —qué PMS usas, cuántas habitaciones tienes y qué informe estás rehaciendo a mano cada semana.</p>
+          <p class="sheet__lead reveal" data-reveal="up" style="--i:2">${render('El panel demo está abierto, sin registro. Si encaja, cuéntanos qué [[PMS]] usas y cuántas habitaciones tienes.', 'cta')}</p>
         </div>
         <div class="ctaband__actions reveal" data-reveal="up" style="--i:3">
           <a class="btn btn--primary btn--on-dark" href="contacto.html"><span>Cuéntanos cómo es tu hotel</span>${flecha('btn__icon')}</a>
@@ -280,125 +221,124 @@ function cta(url) {
 `;
 }
 
-function pie(url) {
-  return `${footer}
+function pie() {
+  return `${footer()}
 
-${drawer}
+${drawer()}
 
   <script src="script.js" defer></script>
+  <script src="terminos.js" defer></script>
 </body>
 </html>
 `;
 }
 
-/* --------------------------------------------------------------------------
-   Una pagina de funcion
-   -------------------------------------------------------------------------- */
+/* ---------------------------------------------------- catálogo de términos */
+function fila(t, conPanel) {
+  const en = t.en && t.en.toLowerCase() !== t.t.toLowerCase() ? `<span class="gl-en">${esc(t.en)}</span>` : '';
+  const es = t.es ? `<span class="gl-es">${esc(t.es)}</span>` : '';
+  const f = t.f ? `<dd class="gl-f"><span class="gl-k">Fórmula</span>${esc(t.f)}</dd>` : '';
+  let meta = '';
+  if (t.tipo === 'kpi') {
+    const bits = [];
+    if (t.u) bits.push(`<span>Unidad: ${esc(t.u)}</span>`);
+    if (conPanel) bits.push(`<a href="panel/metrics/${escAttr(t.id)}/" aria-label="${escAttr(t.t)} en el panel demo">En el panel${flecha('gl-arrow')}</a>`);
+    if (bits.length) meta = `<dd class="gl-meta">${bits.join('')}</dd>`;
+  }
+  return `<dt class="gl-term"><span class="gl-code">${esc(t.t)}</span>${en}${es}</dt>
+              <dd class="gl-def">${esc(t.def)}</dd>${f ? '\n              ' + f : ''}${meta ? '\n              ' + meta : ''}`;
+}
+
+function idsDe(f) {
+  const textos = [f.titulo, f.frase, f.resumen, f.encuadre, ...f.puntos.flatMap((p) => [p.t, p.d])];
+  const out = [];
+  for (const s of textos) for (const id of lib.ids(s, f.clave)) if (!out.includes(id)) out.push(id);
+  for (const k of f.terminos || []) {
+    const t = lib.mustTerm(k, f.clave + '.terminos');
+    if (!out.includes(t.id)) out.push(t.id);
+  }
+  return out;
+}
+
+/* ------------------------------------------------------------ una función */
 function paginaFuncion(f, i) {
-  const corto = NOMBRE_CORTO[f.clave];
-  const amp = AMPLIACION[f.clave];
   const url = `/funciones/${f.slug}/`;
   const prev = i > 0 ? features[i - 1] : null;
   const next = i < total - 1 ? features[i + 1] : null;
+  const g = grupoDe.get(f.clave);
 
-  const preguntas = f.contesta.map((q, k) => `            <li class="pgf-q reveal" data-reveal="up">
-              <span class="pgf-q__n" aria-hidden="true">${dosDigitos(k + 1)}</span>
-              <p class="pgf-q__t">${esc(q)}</p>
+  const puntos = f.puntos.map((p, k) => `            <li class="pgf-point">
+              <span class="pgf-point__n" aria-hidden="true">${dosDigitos(k + 1)}</span>
+              <div>
+                <p class="pgf-point__t">${render(p.t, f.clave)}</p>
+                <p class="pgf-point__d">${render(p.d, f.clave)}</p>
+              </div>
             </li>`).join('\n');
 
-  const cuerpo = [f.parrafo].concat(amp.cuerpo)
-    .map((p) => `            <p>${esc(p)}</p>`).join('\n');
+  const terminos = idsDe(f).map((id) => lib.term(id));
+  const filas = terminos.map((t) => `            <div class="gl-row">
+              ${fila(t, true)}
+            </div>`).join('\n');
 
-  const pagerLink = (feat, tipo) => {
-    const c = NOMBRE_CORTO[feat.clave];
-    const etiqueta = tipo === 'prev' ? 'Anterior' : 'Siguiente';
-    return `          <a class="pgf-pager__link pgf-pager__link--${tipo}" href="funciones/${feat.slug}/" rel="${tipo}">
-            <span class="pgf-pager__k">${esc(etiqueta)}</span>
-            <span class="pgf-pager__t">${esc(c)}</span>
-            <span class="pgf-pager__d">${esc(feat.frase)}</span>
+  const pagerLink = (feat, tipo) => `          <a class="pgf-pager__link pgf-pager__link--${tipo}" href="funciones/${feat.slug}/" rel="${tipo}">
+            <span class="pgf-pager__k">${tipo === 'prev' ? 'Anterior' : 'Siguiente'}</span>
+            <span class="pgf-pager__row">${icon(feat.clave, 28)}<span class="pgf-pager__t">${esc(feat.nombre)}</span></span>
+            <span class="pgf-pager__d">${esc(plain(feat.frase))}</span>
           </a>`;
-  };
-  const pager = [prev ? pagerLink(prev, 'prev') : '', next ? pagerLink(next, 'next') : '']
-    .filter(Boolean).join('\n');
+  const pager = [prev ? pagerLink(prev, 'prev') : '', next ? pagerLink(next, 'next') : ''].filter(Boolean).join('\n');
 
   return `${head({
     title: f.title,
-    description: META_DESC_OVERRIDE[f.clave] || f.metaDescription,
-    ogTitle: `${corto} — ${f.frase}`,
+    description: f.metaDescription,
+    ogTitle: `${f.nombre} — ${plain(f.frase)}`,
     ogDescription: f.metaDescription,
   })}
 <body class="page">
   <a class="skip-link" href="${url}#contenido">Saltar al contenido</a>
   <div class="grain" aria-hidden="true"></div>
 
-${header}
+${header()}
 
-  <!-- ============ PAGE BAND (light) ============ -->
-  <div class="phead">
-    <div class="phead__deco" aria-hidden="true"><div class="phead__wordmark">HOLDERA</div></div>
-    <div class="container phead__inner">
-      <div class="phead__copy">
-        ${migas(corto)}
-        <h1 class="phead__title" id="page-title" data-enter style="--d:140">${esc(f.titulo)}</h1>
-      </div>
-      <p class="phead__lead" data-enter style="--d:260">${esc(f.frase)}</p>
-    </div>
-    <div class="hero-sentinel" aria-hidden="true"></div>
-  </div>
+${banda(migas(f.nombre), render(f.titulo, f.clave), render(f.frase, f.clave))}
 
-  <!-- ============ CONTENT SHEET (dark) ============ -->
+  <!-- ============ CONTENT SHEET ============ -->
   <main id="contenido" class="page__main">
 
-    <section class="sheet sheet--intro" id="que-hace" aria-labelledby="qh-title">
-      <div class="container pgf-lede">
-        <div>
-          <p class="tag reveal" data-reveal="up">Función ${dosDigitos(f.orden)} de ${dosDigitos(total)}</p>
-          <h2 id="qh-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Qué hace</h2>
-          <aside class="pgf-deep reveal" data-reveal="up" style="--i:2" aria-labelledby="deep-title">
-            <div class="pgf-deep__core">
-              <p class="pgf-deep__k">Pantalla del producto</p>
-              <p class="pgf-deep__name" id="deep-title">${esc(f.pantalla)}</p>
-              <p class="pgf-deep__note">Ábrela en el panel de demostración y compruébalo tú: está abierto, sin registro.</p>
-              <a class="btn btn--secondary" href="${escAttr(f.enlace)}"><span>${esc(f.enlaceEtiqueta)}</span>${flecha('btn__icon')}</a>
-              <p class="pgf-deep__url">${esc(f.enlace)}</p>
-            </div>
-          </aside>
-        </div>
-        <div class="prose reveal" data-reveal="up" style="--i:3">
-${cuerpo}
-        </div>
+    <section class="sheet sheet--intro pgf-sec" id="pantalla" aria-labelledby="pt-title">
+      <div class="container pgf-screen">
+        <div class="pgf-screen__copy">
+          <p class="tag reveal" data-reveal="up">Función ${dosDigitos(f.orden)} de ${dosDigitos(total)} · ${esc(g.nombre)}</p>
+          <div class="pgf-screen__head reveal" data-reveal="up" style="--i:1">
+            <span class="pgf-ic">${icon(f.clave, 40)}</span>
+            <h2 id="pt-title" class="pgf-screen__title">${render(f.encuadre, f.clave)}</h2>
+          </div>
+          <p class="pgf-screen__lead reveal" data-reveal="up" style="--i:2">${render(f.resumen, f.clave)}</p>
+          <ol class="pgf-points reveal" data-reveal="up" style="--i:3">
+${puntos}
+          </ol>
+          <p class="pgf-screen__cta reveal" data-reveal="up" style="--i:4">
+            <a class="btn btn--secondary" href="${escAttr(f.enlace)}"><span>${esc(f.enlaceEtiqueta)}</span>${flecha('btn__icon')}</a>
+          </p>
+        </div>${captura(f)}
       </div>
     </section>
 
-    <section class="sheet sheet--process" id="que-contesta" aria-labelledby="qc-title">
+    <section class="sheet sheet--process pgf-sec" id="terminos" aria-labelledby="tm-title">
       <div class="container">
-        <div class="sec__head">
-          <p class="tag reveal" data-reveal="up">Qué contesta</p>
-          <h2 id="qc-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Las preguntas <span class="fade">que se hacen a esta hora.</span></h2>
+        <div class="pgf-terms__head">
+          <div>
+            <p class="tag reveal" data-reveal="up">Términos de esta pantalla</p>
+            <h2 id="tm-title" class="sheet__title reveal" data-reveal="up" style="--i:1">KPIs y siglas, <span class="fade">definidos.</span></h2>
+          </div>
+          <a class="btn btn--secondary reveal" data-reveal="up" style="--i:2" href="glosario/"><span>Ver el glosario completo</span>${flecha('btn__icon')}</a>
         </div>
-        <ol class="pgf-qa">
-${preguntas}
-        </ol>
+        <dl class="gl-list reveal" data-reveal="up" style="--i:2">
+${filas}
+        </dl>
       </div>
     </section>
 
-    <section class="sheet" id="limite" aria-labelledby="lim-title">
-      <div class="container pgf-limit">
-        <div>
-          <p class="tag reveal" data-reveal="up">Lo que no hace</p>
-          <h2 id="lim-title" class="sheet__title reveal" data-reveal="up" style="--i:1">${esc(amp.limiteTitulo)}</h2>
-        </div>
-        <div class="pgf-limit__body reveal" data-reveal="up" style="--i:2">
-          <p>${esc(amp.limite)}</p>
-          <figure class="pgf-cite">
-            <blockquote>${esc(amp.cita.texto)}</blockquote>
-            <figcaption>Literal del panel, en inglés · ${esc(amp.cita.donde)}</figcaption>
-          </figure>
-        </div>
-      </div>
-    </section>
-
-    <section class="sheet sheet--process" id="mas-funciones" aria-labelledby="pag-title">
+    <section class="sheet pgf-sec" id="mas-funciones" aria-labelledby="pag-title">
       <div class="container">
         <div class="sec__head">
           <p class="tag reveal" data-reveal="up">Sigue por aquí</p>
@@ -409,32 +349,39 @@ ${pager}
         </nav>
         <p class="pgf-pager__all reveal" data-reveal="up" style="--i:3">
           <a class="btn btn--secondary" href="funciones/"><span>Ver las ${esc(String(total))} funciones</span>${flecha('btn__icon')}</a>
+          <a class="btn btn--secondary" href="glosario/"><span>Glosario de KPIs</span>${flecha('btn__icon')}</a>
         </p>
       </div>
     </section>
 
-${cta(url)}  </main>
+${cta()}  </main>
 
-${pie(url)}`;
+${pie()}`;
 }
 
-/* --------------------------------------------------------------------------
-   El indice
-   -------------------------------------------------------------------------- */
+/* ------------------------------------------------------------- el índice */
 function paginaIndice() {
-  const filas = features.map((f) => {
-    const corto = NOMBRE_CORTO[f.clave];
-    return `          <li class="pgf-item reveal" data-reveal="up">
-            <a href="funciones/${f.slug}/">
-              <span class="pgf-item__n" aria-hidden="true">${dosDigitos(f.orden)}</span>
-              <span class="pgf-item__c">
-                <span class="pgf-item__t">${esc(corto)}</span>
-                <span class="pgf-item__d">${esc(f.frase)}</span>
-              </span>
-              <span class="pgf-item__s">Pantalla · ${esc(f.pantalla)}</span>
-              ${flecha('pgf-go')}
-            </a>
-          </li>`;
+  const grupos = SRC.grupos.map((g) => {
+    const filas = g.claves.map((c) => {
+      const f = byClave.get(c);
+      return `            <li class="pgf-item reveal" data-reveal="up">
+              <a href="funciones/${f.slug}/">
+                <span class="pgf-item__ic"><span class="pgf-ic">${icon(f.clave, 40)}</span></span>
+                <span class="pgf-item__c">
+                  <span class="pgf-item__t">${esc(f.nombre)}</span>
+                  <span class="pgf-item__d">${esc(plain(f.frase))}</span>
+                </span>
+                <span class="pgf-item__s">Pantalla · ${esc(f.pantalla)}</span>
+                ${flecha('pgf-go')}
+              </a>
+            </li>`;
+    }).join('\n');
+    return `        <div class="pgf-group">
+          <h3 class="pgf-group__t reveal" data-reveal="up">${esc(g.nombre)}</h3>
+          <ol class="pgf-list">
+${filas}
+          </ol>
+        </div>`;
   }).join('\n');
 
   return `${head({
@@ -447,55 +394,233 @@ function paginaIndice() {
   <a class="skip-link" href="${INDICE.path}#contenido">Saltar al contenido</a>
   <div class="grain" aria-hidden="true"></div>
 
-${header}
+${header()}
 
-  <!-- ============ PAGE BAND (light) ============ -->
-  <div class="phead">
-    <div class="phead__deco" aria-hidden="true"><div class="phead__wordmark">HOLDERA</div></div>
-    <div class="container phead__inner">
-      <div class="phead__copy">
-        ${migas(null)}
-        <h1 class="phead__title" id="page-title" data-enter style="--d:140">${INDICE.h1}</h1>
-      </div>
-      <p class="phead__lead" data-enter style="--d:260">${esc(INDICE.lead)}</p>
-    </div>
-    <div class="hero-sentinel" aria-hidden="true"></div>
-  </div>
+${banda(migas(null), INDICE.h1, esc(INDICE.lead))}
 
-  <!-- ============ CONTENT SHEET (dark) ============ -->
+  <!-- ============ CONTENT SHEET ============ -->
   <main id="contenido" class="page__main">
 
-    <section class="sheet sheet--intro" id="todas" aria-labelledby="todas-title">
+    <section class="sheet sheet--intro pgf-sec" id="todas" aria-labelledby="todas-title">
       <div class="container">
         <div class="sec__head">
           <p class="tag reveal" data-reveal="up">El producto, por partes</p>
           <h2 id="todas-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Una función <span class="fade">por página.</span></h2>
-          <p class="sheet__lead reveal" data-reveal="up" style="--i:2">Ninguna promete nada que no puedas abrir en el panel. Cada una acaba diciendo dónde está su límite, que es la parte que no suele estar escrita.</p>
+          <p class="sheet__lead reveal" data-reveal="up" style="--i:2">Cada una con su captura del panel demo y sus KPIs definidos.</p>
         </div>
-        <ol class="pgf-list">
-${filas}
-        </ol>
+        <div class="pgf-groups">
+${grupos}
+        </div>
+        <div class="pgf-gl-cta reveal" data-reveal="up">
+          <p><strong>Glosario de KPIs y términos</strong>${render('Las 57 fórmulas y todas las siglas: [[ADR]], [[RevPAR]], [[OTB]], [[STLY]], [[OOO]]…', 'indice')}</p>
+          <a class="btn btn--secondary" href="glosario/"><span>Abrir el glosario</span>${flecha('btn__icon')}</a>
+        </div>
       </div>
     </section>
 
-${cta(INDICE.path)}  </main>
+${cta()}  </main>
 
-${pie(INDICE.path)}`;
+${pie()}`;
 }
 
-/* --------------------------------------------------------------------------
-   meta.json — el fragmento que funde el orquestador
-   -------------------------------------------------------------------------- */
+/* ------------------------------------------------------------ el glosario */
+function paginaGlosario() {
+  const grupos = lib.DATA.grupos;
+  const porGrupo = (id) => lib.DATA.terminos.filter((t) => t.grupo === id);
+  const nTerm = lib.DATA.terminos.filter((t) => t.tipo !== 'kpi').length;
+  const nKpi = lib.DATA.terminos.filter((t) => t.tipo === 'kpi').length;
+
+  const chips = (tipo) => grupos.filter((g) => g.tipo === tipo)
+    .map((g) => `<li><a href="glosario/#g-${g.id}">${esc(g.nombre)}</a></li>`).join('');
+
+  const bloque = (g) => {
+    const lista = porGrupo(g.id);
+    const filas = lista.map((t) => `            <div class="gl-row" id="t-${escAttr(t.id)}" data-gl-row>
+              ${fila(t, true)}
+            </div>`).join('\n');
+    return `        <section class="gl-group" id="g-${g.id}" data-gl-group aria-labelledby="g-${g.id}-t">
+          <h3 class="gl-group__t" id="g-${g.id}-t">${esc(g.nombre)} <span class="gl-group__n">${lista.length}</span></h3>
+          <dl class="gl-list">
+${filas}
+          </dl>
+        </section>`;
+  };
+
+  const parte = (tipo) => grupos.filter((g) => g.tipo === tipo).map(bloque).join('\n');
+
+  return `${head({
+    title: GLOSARIO.title,
+    description: GLOSARIO.metaDescription,
+    ogTitle: 'Glosario de KPIs hoteleros — Holdera',
+    ogDescription: GLOSARIO.metaDescription,
+  })}
+<body class="page">
+  <a class="skip-link" href="${GLOSARIO.path}#contenido">Saltar al contenido</a>
+  <div class="grain" aria-hidden="true"></div>
+
+${header()}
+
+${banda(migas(null, 'glosario'), '<span class="ln">Glosario de KPIs</span> <span class="ln">y términos hoteleros.</span>', esc(`${nKpi} KPIs y ${nTerm} términos del día a día, cada uno con su definición y, si es un KPI, su fórmula.`))}
+
+  <!-- ============ CONTENT SHEET ============ -->
+  <main id="contenido" class="page__main">
+
+    <section class="sheet sheet--intro pgf-sec" id="catalogo" aria-labelledby="gl-title">
+      <div class="container">
+        <div class="gl-top">
+          <div>
+            <p class="tag reveal" data-reveal="up">Catálogo de definiciones</p>
+            <h2 id="gl-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Cada término, <span class="fade">con su fórmula.</span></h2>
+          </div>
+          <div class="gl-tools" role="search">
+            <label class="gl-search" for="gl-q">
+              <span class="gl-search__k">Buscar un término</span>
+              <input id="gl-q" type="search" placeholder="ADR, pickup, OOO…" autocomplete="off" spellcheck="false" data-gl-filter>
+            </label>
+            <p class="gl-count" data-gl-count aria-live="polite">${nKpi + nTerm} términos</p>
+          </div>
+        </div>
+
+        <nav class="gl-index" aria-label="Secciones del glosario">
+          <div class="gl-index__row"><p class="gl-index__k">Términos</p><ul>${chips('termino')}</ul></div>
+          <div class="gl-index__row"><p class="gl-index__k">KPIs</p><ul>${chips('kpi')}</ul></div>
+        </nav>
+
+        <p class="gl-empty" data-gl-empty hidden>Ningún término coincide con la búsqueda.</p>
+
+        <div class="gl-part-wrap" id="terminos-del-dia">
+          <h2 class="gl-part">Términos del día a día</h2>
+          <p class="gl-part__lead">Estados de habitación, reservas, canales y sistemas: las siglas que salen en el panel y en esta web.</p>
+${parte('termino')}
+        </div>
+
+        <div class="gl-part-wrap" id="kpis">
+          <h2 class="gl-part">${nKpi} KPIs hoteleros</h2>
+          <p class="gl-part__lead">El catálogo del producto, agrupado como una guía de KPIs: definición, fórmula y unidad. Cada uno se abre en el panel demo.</p>
+${parte('kpi')}
+        </div>
+      </div>
+    </section>
+
+${cta()}  </main>
+
+${pie()}`;
+}
+
+/* ------------------------------------------------------------- los menús
+   El desplegable de Funciones (cabecera) y su lista en el drawer se generan
+   desde features.json: nombre, frase SIN ventanas (un término dentro de un
+   enlace sería una parada de más) e icono de 24 px, en las tres columnas del
+   diseño de iconos. Se reescribe solo ese bloque de cada archivo del shell;
+   después replicate-shell.js lo lleva a todas las páginas. */
+function menus() {
+  const cols = SRC.grupos.map((g) => {
+    const idCat = 'mnu-fn-' + g.claves[0];
+    const items = g.claves.map((c) => {
+      const f = byClave.get(c);
+      return `                      <li><a class="mnu__item mnu__item--ic" href="/funciones/${f.slug}/">
+                        ${icon(f.clave, 24)}
+                        <span class="mnu__txt"><span class="mnu__name">${esc(f.nombre)}</span>
+                        <span class="mnu__desc">${esc(plain(f.frase))}</span></span>
+                      </a></li>`;
+    }).join('\n');
+    return `                  <div class="mnu__col">
+                    <p class="mnu__cat" id="${idCat}">${esc(g.nombre)}</p>
+                    <ul class="mnu__list" aria-labelledby="${idCat}">
+${items}
+                    </ul>
+                  </div>`;
+  }).join('\n');
+
+  const panel = `<div class="mnu__panel mnu__panel--fn" id="mnu-funciones" data-menu-panel hidden>
+              <div class="mnu__inner">
+                <div class="mnu__cols mnu__cols--fn">
+${cols}
+                </div>
+              </div>
+              <div class="mnu__foot">
+                <a class="mnu__all" href="/glosario/">Glosario de KPIs y términos${flechaMenu}</a>
+                <a class="mnu__all" href="/funciones/">Ver todas las funciones${flechaMenu}</a>
+              </div>
+            </div>`;
+
+  const hFile = path.join(SHELL, 'header.html');
+  let h = fs.readFileSync(hFile, 'utf8');
+  const a = h.indexOf('<div class="mnu__panel mnu__panel--fn"');
+  const b = h.indexOf('<a class="mnu__trigger" href="/integraciones.html"');
+  if (a < 0 || b < 0 || b < a) throw new Error('header.html: no encuentro el panel de Funciones');
+  const tail = h.slice(a, b);
+  const end = tail.lastIndexOf('</div>') + '</div>'.length;
+  h = h.slice(0, a) + panel + h.slice(a + end);
+  fs.writeFileSync(hFile, h);
+
+  const list = features.map((f) => `            <a class="msub__item msub__item--ic" href="/funciones/${f.slug}/">
+              ${icon(f.clave, 24)}
+              <span class="msub__txt"><span class="msub__name">${esc(f.nombre)}</span>
+              <span class="msub__desc">${esc(plain(f.frase))}</span></span>
+            </a>`).join('\n');
+  const msub = `<div class="msub__list" id="msub-funciones" hidden>
+${list}
+            <a class="msub__all" href="/funciones/">Ver todas las funciones${flechaMenu}</a>
+            <a class="msub__all" href="/glosario/">Glosario de KPIs${flechaMenu}</a>
+          </div>`;
+  const dFile = path.join(SHELL, 'drawer.html');
+  let d = fs.readFileSync(dFile, 'utf8');
+  const s = d.indexOf('<div class="msub__list" id="msub-funciones" hidden>');
+  if (s < 0) throw new Error('drawer.html: no encuentro la lista de Funciones');
+  const e = d.indexOf('</div>', s) + '</div>'.length;
+  d = d.slice(0, s) + msub + d.slice(e);
+  fs.writeFileSync(dFile, d);
+
+  const fFile = path.join(SHELL, 'footer.html');
+  let ft = fs.readFileSync(fFile, 'utf8');
+  if (ft.indexOf('href="/glosario/"') < 0) {
+    const anchor = '<a href="/funciones/">Funciones</a>';
+    if (ft.indexOf(anchor) < 0) throw new Error('footer.html: no encuentro el enlace a Funciones');
+    ft = ft.split(anchor).join(anchor + '\n        <a href="/glosario/">Glosario</a>');
+    fs.writeFileSync(fFile, ft);
+  }
+}
+
+/* ----------------------------------------- datos de la ventana (terminos.js) */
+function datosVentana() {
+  const file = path.join(ROOT, 'terminos.js');
+  const src = fs.readFileSync(file, 'utf8');
+  const A = '/* terms:data-start */';
+  const B = '/* terms:data-end */';
+  const a = src.indexOf(A);
+  const b = src.indexOf(B);
+  if (a < 0 || b < a) throw new Error('terminos.js: faltan las marcas terms:data');
+  const json = JSON.stringify(lib.runtimeData()).split('\u2028').join('\\u2028').split('\u2029').join('\\u2029');
+  const out = src.slice(0, a + A.length) + '\n  var T = ' + json + ';\n  ' + src.slice(b);
+  fs.writeFileSync(file, out);
+}
+
+/* ------------------------------------------------------- meta.json (SEO) */
 function entradaMeta(o) {
-  const crumbs = [
-    { '@type': 'ListItem', position: 1, name: 'Inicio', item: '{{SITE}}/' },
-  ];
+  const crumbs = [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: '{{SITE}}/' }];
   if (o.slug) {
     crumbs.push({ '@type': 'ListItem', position: 2, name: 'Funciones', item: '{{SITE}}/funciones/' });
     crumbs.push({ '@type': 'ListItem', position: 3, name: o.nombre, item: '{{SITE}}' + o.path });
   } else {
-    crumbs.push({ '@type': 'ListItem', position: 2, name: 'Funciones', item: '{{SITE}}/funciones/' });
+    crumbs.push({ '@type': 'ListItem', position: 2, name: o.nombre, item: '{{SITE}}' + o.path });
   }
+  const graph = [
+    {
+      '@type': 'WebPage',
+      '@id': '{{SITE}}' + o.path + '#webpage',
+      url: '{{SITE}}' + o.path,
+      name: o.title,
+      description: o.description,
+      isPartOf: { '@id': '{{SITE}}/#website' },
+      about: { '@id': '{{SITE}}/#organization' },
+      primaryImageOfPage: { '@type': 'ImageObject', url: '{{SITE}}/assets/seo/og-default.png', width: 1200, height: 630 },
+      breadcrumb: { '@id': '{{SITE}}' + o.path + '#breadcrumb' },
+      inLanguage: 'es-ES',
+    },
+    { '@type': 'BreadcrumbList', '@id': '{{SITE}}' + o.path + '#breadcrumb', itemListElement: crumbs },
+  ];
+  if (o.extraGraph) graph.push(...o.extraGraph);
   return {
     file: o.file,
     path: o.path,
@@ -503,111 +628,111 @@ function entradaMeta(o) {
     description: o.description,
     robots: 'index, follow',
     sitemap: { priority: o.priority },
-    og: {
-      type: 'website',
-      title: o.ogTitle,
-      description: o.ogDescription,
-      image: '{{SITE}}/assets/seo/og-default.png',
-      imageAlt: IMG_ALT,
-    },
-    graph: [
-      {
-        '@type': 'WebPage',
-        '@id': '{{SITE}}' + o.path + '#webpage',
-        url: '{{SITE}}' + o.path,
-        name: o.title,
-        description: o.description,
-        isPartOf: { '@id': '{{SITE}}/#website' },
-        about: { '@id': '{{SITE}}/#organization' },
-        primaryImageOfPage: {
-          '@type': 'ImageObject',
-          url: '{{SITE}}/assets/seo/og-default.png',
-          width: 1200,
-          height: 630,
-        },
-        breadcrumb: { '@id': '{{SITE}}' + o.path + '#breadcrumb' },
-        inLanguage: 'es-ES',
-      },
-      {
-        '@type': 'BreadcrumbList',
-        '@id': '{{SITE}}' + o.path + '#breadcrumb',
-        itemListElement: crumbs,
-      },
-    ],
+    og: { type: 'website', title: o.ogTitle, description: o.ogDescription, image: '{{SITE}}/assets/seo/og-default.png', imageAlt: IMG_ALT },
+    graph,
   };
 }
 
-/* -------------------------------------------------------------------------- */
+/* El glosario es un DefinedTermSet de schema.org: cada término, su nombre y
+   su definición. Es lo que es, y es como lo entiende un buscador. */
+function grafoGlosario() {
+  const set = '{{SITE}}/glosario/#glosario';
+  return [{
+    '@type': 'DefinedTermSet',
+    '@id': set,
+    name: 'Glosario de KPIs y términos hoteleros',
+    inLanguage: 'es-ES',
+    hasDefinedTerm: lib.DATA.terminos.map((t) => ({
+      '@type': 'DefinedTerm',
+      '@id': '{{SITE}}/glosario/#t-' + t.id,
+      name: t.en && t.en.toLowerCase() !== t.t.toLowerCase() ? `${t.t} (${t.en})` : t.t,
+      termCode: t.t,
+      description: t.f ? `${t.def} Fórmula: ${t.f}.` : t.def,
+      inDefinedTermSet: { '@id': set },
+    })),
+  }];
+}
+
+function meta() {
+  const pages = [];
+  pages.push(entradaMeta({
+    file: 'funciones/index.html', path: '/funciones/', nombre: 'Funciones',
+    title: INDICE.title, description: INDICE.metaDescription,
+    ogTitle: 'Funciones de Holdera — una pantalla, una página', ogDescription: INDICE.metaDescription,
+    priority: '0.8',
+  }));
+  for (const f of features) {
+    pages.push(entradaMeta({
+      file: `funciones/${f.slug}/index.html`, path: `/funciones/${f.slug}/`, slug: f.slug, nombre: f.nombre,
+      title: f.title, description: f.metaDescription,
+      ogTitle: `${f.nombre} — ${plain(f.frase)}`, ogDescription: f.metaDescription,
+      priority: '0.7',
+    }));
+  }
+  pages.push(entradaMeta({
+    file: 'glosario/index.html', path: '/glosario/', nombre: 'Glosario',
+    title: GLOSARIO.title, description: GLOSARIO.metaDescription,
+    ogTitle: 'Glosario de KPIs hoteleros — Holdera', ogDescription: GLOSARIO.metaDescription,
+    priority: '0.7', extraGraph: grafoGlosario(),
+  }));
+
+  const fragment = {
+    _notes: [
+      'Fragmento generado por _build/contenido/build-funciones.js. NO se edita a mano: se edita features.json / glosario.json o el generador y se vuelve a ejecutar.',
+      'El generador lo funde él mismo en meta.pages de _build/seo/meta.json (sustituye las entradas funciones/* y glosario/* en su sitio). Después: node _build/seo-inject.js && node _build/seo/build-sitemap.js',
+    ],
+    pages,
+  };
+  fs.writeFileSync(path.join(__dirname, 'meta-funciones.json'), JSON.stringify(fragment, null, 2) + '\n', 'utf8');
+
+  // Fundido en meta.json: fuera las entradas viejas, dentro las nuevas, en el
+  // hueco de la primera que había (o delante de integraciones.html).
+  const m = JSON.parse(fs.readFileSync(META_JSON, 'utf8'));
+  const mine = (p) => p.file.startsWith('funciones/') || p.file.startsWith('glosario/');
+  let at = m.pages.findIndex(mine);
+  if (at < 0) at = m.pages.findIndex((p) => p.file === 'integraciones.html');
+  if (at < 0) at = m.pages.length;
+  const before = m.pages.slice(0, at).filter((p) => !mine(p));
+  const after = m.pages.slice(at).filter((p) => !mine(p));
+  m.pages = before.concat(pages, after);
+  fs.writeFileSync(META_JSON, JSON.stringify(m, null, 2) + '\n', 'utf8');
+  return pages.length;
+}
+
+/* ------------------------------------------------------------------------ */
 function main() {
   fs.mkdirSync(OUT_DIR, { recursive: true });
+  fs.mkdirSync(GL_DIR, { recursive: true });
 
-  // El CSS servible. Si la parte ya esta dentro de pages.css, la copia sobra
-  // y se borra: dos copias de las mismas reglas es la manera de que una se
-  // quede vieja sin que nadie lo note.
   const copia = path.join(OUT_DIR, 'funciones.css');
   if (CSS_FUNDIDO) { if (fs.existsSync(copia)) fs.unlinkSync(copia); }
   else fs.writeFileSync(copia, fs.readFileSync(CSS_SRC, 'utf8'), 'utf8');
 
+  // Primero el shell: las páginas de aquí lo copian al generarse.
+  menus();
+  datosVentana();
+
   const escritos = [];
   fs.writeFileSync(path.join(OUT_DIR, 'index.html'), paginaIndice(), 'utf8');
   escritos.push('funciones/index.html');
-
   features.forEach((f, i) => {
     const dir = path.join(OUT_DIR, f.slug);
     fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(path.join(dir, 'index.html'), paginaFuncion(f, i), 'utf8');
     escritos.push(`funciones/${f.slug}/index.html`);
   });
+  fs.writeFileSync(path.join(GL_DIR, 'index.html'), paginaGlosario(), 'utf8');
+  escritos.push('glosario/index.html');
 
-  const meta = {
-    _notes: [
-      'Fragmento generado por _build/contenido/build-funciones.js. NO se edita a mano: se edita features.json o el generador y se vuelve a ejecutar.',
-      'El orquestador funde estas nueve entradas dentro de meta.pages de _build/seo/meta.json (al final, despues de 404.html) y despues pasa: node _build/seo/validate-meta.js && node _build/seo-inject.js && node _build/seo/build-sitemap.js',
-      'Comprobado contra las reglas de validate-meta.js: titulo <=60 y acabado en "| Holdera", descripcion entre 70 y 155, titulos y descripciones unicos entre si y contra las siete paginas que ya hay, un solo nodo WebPage, una sola BreadcrumbList, ningun nodo Service, ninguna propiedad prohibida.',
-      'La descripcion de operacion-diaria-hotel se recorta de 159 a 146 caracteres respecto a features.json (el maximo del sitio son 155). Ver META_DESC_OVERRIDE en el generador.',
-    ],
-    pages: [],
-  };
-
-  meta.pages.push(entradaMeta({
-    file: 'funciones/index.html',
-    path: '/funciones/',
-    slug: null,
-    nombre: 'Funciones',
-    title: INDICE.title,
-    description: INDICE.metaDescription,
-    ogTitle: 'Funciones de Holdera — una pantalla, una página',
-    ogDescription: INDICE.metaDescription,
-    priority: '0.8',
-  }));
-
-  features.forEach((f) => {
-    const corto = NOMBRE_CORTO[f.clave];
-    meta.pages.push(entradaMeta({
-      file: `funciones/${f.slug}/index.html`,
-      path: `/funciones/${f.slug}/`,
-      slug: f.slug,
-      nombre: corto,
-      title: f.title,
-      description: META_DESC_OVERRIDE[f.clave] || f.metaDescription,
-      ogTitle: `${corto} — ${f.frase}`,
-      ogDescription: f.metaDescription,
-      priority: '0.7',
-    }));
-  });
-
-  fs.writeFileSync(
-    path.join(__dirname, 'meta-funciones.json'),
-    JSON.stringify(meta, null, 2) + '\n',
-    'utf8'
-  );
+  const n = meta();
 
   console.log(escritos.length + ' paginas escritas:');
   escritos.forEach((p) => console.log('  ' + p));
-  console.log(CSS_FUNDIDO
-    ? '  (pagina-funcion.css ya esta dentro de pages.css: sin <link> aparte y sin copia)'
-    : '  funciones/funciones.css   (copia de _build/parts/pagina-funcion.css)');
-  console.log('  _build/contenido/meta-funciones.json   (' + meta.pages.length + ' entradas)');
+  console.log('  terminos.js                  (bloque terms:data, ' + Object.keys(lib.runtimeData()).length + ' términos)');
+  console.log('  _build/shell/header.html + drawer.html + footer.html   (menús de Funciones)');
+  console.log('  _build/contenido/meta-funciones.json + _build/seo/meta.json   (' + n + ' entradas)');
+  console.log(CSS_FUNDIDO ? '  (pagina-funcion.css ya está dentro de pages.css)' : '  funciones/funciones.css   (copia de _build/parts/pagina-funcion.css)');
+  console.log('\nAhora: node _build/replicate-shell.js && node _build/gates.js --fix');
 }
 
 main();

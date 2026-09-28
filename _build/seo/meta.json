@@ -539,7 +539,7 @@
       "file": "funciones/index.html",
       "path": "/funciones/",
       "title": "Funciones del software hotelero | Holdera",
-      "description": "Las ocho pantallas de Holdera, una por página: qué hace cada una, qué preguntas contesta y dónde está su límite declarado.",
+      "description": "Las ocho pantallas de Holdera, una por página: qué KPIs enseña cada una, en qué términos, y su captura del panel demo.",
       "robots": "index, follow",
       "sitemap": {
         "priority": "0.8"
@@ -547,7 +547,7 @@
       "og": {
         "type": "website",
         "title": "Funciones de Holdera — una pantalla, una página",
-        "description": "Las ocho pantallas de Holdera, una por página: qué hace cada una, qué preguntas contesta y dónde está su límite declarado.",
+        "description": "Las ocho pantallas de Holdera, una por página: qué KPIs enseña cada una, en qué términos, y su captura del panel demo.",
         "image": "{{SITE}}/assets/seo/og-default.png",
         "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
@@ -557,7 +557,7 @@
           "@id": "{{SITE}}/funciones/#webpage",
           "url": "{{SITE}}/funciones/",
           "name": "Funciones del software hotelero | Holdera",
-          "description": "Las ocho pantallas de Holdera, una por página: qué hace cada una, qué preguntas contesta y dónde está su límite declarado.",
+          "description": "Las ocho pantallas de Holdera, una por página: qué KPIs enseña cada una, en qué términos, y su captura del panel demo.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },
@@ -599,15 +599,15 @@
       "file": "funciones/operacion-diaria-hotel/index.html",
       "path": "/funciones/operacion-diaria-hotel/",
       "title": "El día del hotel en una pantalla | Holdera",
-      "description": "Llegadas, salidas, habitaciones en casa y listas a la hora en que las miras. Holdera lee la foto intradía de tu PMS y dice de cuándo es cada dato.",
+      "description": "Llegadas y salidas hechas y pendientes, huéspedes in house y habitaciones VC frente a los due in, con la hora de cada lectura del PMS.",
       "robots": "index, follow",
       "sitemap": {
         "priority": "0.7"
       },
       "og": {
         "type": "website",
-        "title": "Hoy — No el cierre de ayer: el hotel a las 14:30.",
-        "description": "Llegadas, salidas, habitaciones en casa y habitaciones listas a la hora en que las miras. Holdera lee la foto intradía de tu PMS y dice de cuándo es cada dato.",
+        "title": "Hoy — Llegadas, salidas e in house, a la hora que lo miras.",
+        "description": "Llegadas y salidas hechas y pendientes, huéspedes in house y habitaciones VC frente a los due in, con la hora de cada lectura del PMS.",
         "image": "{{SITE}}/assets/seo/og-default.png",
         "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
@@ -617,7 +617,7 @@
           "@id": "{{SITE}}/funciones/operacion-diaria-hotel/#webpage",
           "url": "{{SITE}}/funciones/operacion-diaria-hotel/",
           "name": "El día del hotel en una pantalla | Holdera",
-          "description": "Llegadas, salidas, habitaciones en casa y listas a la hora en que las miras. Holdera lee la foto intradía de tu PMS y dice de cuándo es cada dato.",
+          "description": "Llegadas y salidas hechas y pendientes, huéspedes in house y habitaciones VC frente a los due in, con la hora de cada lectura del PMS.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },
@@ -665,15 +665,15 @@
       "file": "funciones/estado-de-habitaciones-por-planta/index.html",
       "path": "/funciones/estado-de-habitaciones-por-planta/",
       "title": "Estado de las habitaciones, planta a planta | Holdera",
-      "description": "El hotel dibujado por plantas, con el reparto de estados de cada una y la línea que separa el dato del PMS de la configuración del edificio.",
+      "description": "Cada planta con su reparto de ocupadas, VC, VD, IP y OOO, y el plano con el estado de cada habitación. Las OOO salen del inventario; las OOS, no.",
       "robots": "index, follow",
       "sitemap": {
         "priority": "0.7"
       },
       "og": {
         "type": "website",
-        "title": "Habitaciones — Planta por planta, y qué pasa en cada una.",
-        "description": "El hotel dibujado por plantas, con el reparto de estados de cada una y la línea que separa el dato del PMS de la configuración del edificio.",
+        "title": "Habitaciones — Cada planta, con el estado de cada habitación.",
+        "description": "Cada planta con su reparto de ocupadas, VC, VD, IP y OOO, y el plano con el estado de cada habitación. Las OOO salen del inventario; las OOS, no.",
         "image": "{{SITE}}/assets/seo/og-default.png",
         "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
@@ -683,7 +683,7 @@
           "@id": "{{SITE}}/funciones/estado-de-habitaciones-por-planta/#webpage",
           "url": "{{SITE}}/funciones/estado-de-habitaciones-por-planta/",
           "name": "Estado de las habitaciones, planta a planta | Holdera",
-          "description": "El hotel dibujado por plantas, con el reparto de estados de cada una y la línea que separa el dato del PMS de la configuración del edificio.",
+          "description": "Cada planta con su reparto de ocupadas, VC, VD, IP y OOO, y el plano con el estado de cada habitación. Las OOO salen del inventario; las OOS, no.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },
@@ -731,15 +731,15 @@
       "file": "funciones/housekeeping-hotel/index.html",
       "path": "/funciones/housekeeping-hotel/",
       "title": "Housekeeping: VC, VD, IP, OOO y OOS | Holdera",
-      "description": "Vacant Clean, Cleaning, Vacant Dirty, fuera de orden y fuera de servicio, contados aparte y cruzados con las llegadas que faltan por entrar.",
+      "description": "Room inventory status por planta: VC, VD, IP, OOO y OOS, cruzado con los due in del día para saber si las habitaciones listas cubren las llegadas.",
       "robots": "index, follow",
       "sitemap": {
         "priority": "0.7"
       },
       "og": {
         "type": "website",
-        "title": "Housekeeping — Vacante limpia no es lo mismo que vacante.",
-        "description": "Vacant Clean, Cleaning, Vacant Dirty, fuera de orden y fuera de servicio, contados aparte y cruzados con las llegadas que faltan por entrar.",
+        "title": "Housekeeping — VC, VD, IP, OOO y OOS, planta a planta.",
+        "description": "Room inventory status por planta: VC, VD, IP, OOO y OOS, cruzado con los due in del día para saber si las habitaciones listas cubren las llegadas.",
         "image": "{{SITE}}/assets/seo/og-default.png",
         "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
@@ -749,7 +749,7 @@
           "@id": "{{SITE}}/funciones/housekeeping-hotel/#webpage",
           "url": "{{SITE}}/funciones/housekeeping-hotel/",
           "name": "Housekeeping: VC, VD, IP, OOO y OOS | Holdera",
-          "description": "Vacant Clean, Cleaning, Vacant Dirty, fuera de orden y fuera de servicio, contados aparte y cruzados con las llegadas que faltan por entrar.",
+          "description": "Room inventory status por planta: VC, VD, IP, OOO y OOS, cruzado con los due in del día para saber si las habitaciones listas cubren las llegadas.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },
@@ -797,15 +797,15 @@
       "file": "funciones/revenue-adr-revpar-trevpar/index.html",
       "path": "/funciones/revenue-adr-revpar-trevpar/",
       "title": "Revenue del hotel: ADR, RevPAR y TRevPAR | Holdera",
-      "description": "Ocupación, ADR, RevPAR y TRevPAR de esta noche, del mes y de las 30 noches que vienen, comparados al mismo punto de la curva de reserva del año pasado.",
+      "description": "Occ, ADR, RevPAR y TRevPAR de esta noche, del MTD y de los próximos 30 días contra STLY, con desglose de ingresos y mix por canal.",
       "robots": "index, follow",
       "sitemap": {
         "priority": "0.7"
       },
       "og": {
         "type": "website",
-        "title": "Revenue — Ocupación, ADR, RevPAR y TRevPAR a la vez.",
-        "description": "Ocupación, ADR, RevPAR y TRevPAR de esta noche, del mes y de las 30 noches que vienen, comparados al mismo punto de la curva de reserva del año pasado.",
+        "title": "Revenue — Esta noche, MTD y próximos 30 días, contra STLY.",
+        "description": "Occ, ADR, RevPAR y TRevPAR de esta noche, del MTD y de los próximos 30 días contra STLY, con desglose de ingresos y mix por canal.",
         "image": "{{SITE}}/assets/seo/og-default.png",
         "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
@@ -815,7 +815,7 @@
           "@id": "{{SITE}}/funciones/revenue-adr-revpar-trevpar/#webpage",
           "url": "{{SITE}}/funciones/revenue-adr-revpar-trevpar/",
           "name": "Revenue del hotel: ADR, RevPAR y TRevPAR | Holdera",
-          "description": "Ocupación, ADR, RevPAR y TRevPAR de esta noche, del mes y de las 30 noches que vienen, comparados al mismo punto de la curva de reserva del año pasado.",
+          "description": "Occ, ADR, RevPAR y TRevPAR de esta noche, del MTD y de los próximos 30 días contra STLY, con desglose de ingresos y mix por canal.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },
@@ -863,15 +863,15 @@
       "file": "funciones/calendario-de-reservas-pickup-pace/index.html",
       "path": "/funciones/calendario-de-reservas-pickup-pace/",
       "title": "Calendario de reservas, pickup y pace | Holdera",
-      "description": "Ocupación, tarifa y habitaciones on the books noche a noche, con el pickup de los últimos siete días y el ritmo de venta contra el año pasado.",
+      "description": "Calendario noche a noche con Occ, ADR y habitaciones OTB, booking pace, pickup de la última semana y ADR contra STLY.",
       "robots": "index, follow",
       "sitemap": {
         "priority": "0.7"
       },
       "og": {
         "type": "website",
-        "title": "Reservas — Ocho meses, y el pickup de los últimos siete días.",
-        "description": "Ocupación, tarifa y habitaciones on the books noche a noche, con el pickup de los últimos siete días y el ritmo de venta contra el año pasado.",
+        "title": "Reservas — Noche a noche: Occ, ADR y habitaciones OTB.",
+        "description": "Calendario noche a noche con Occ, ADR y habitaciones OTB, booking pace, pickup de la última semana y ADR contra STLY.",
         "image": "{{SITE}}/assets/seo/og-default.png",
         "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
@@ -881,7 +881,7 @@
           "@id": "{{SITE}}/funciones/calendario-de-reservas-pickup-pace/#webpage",
           "url": "{{SITE}}/funciones/calendario-de-reservas-pickup-pace/",
           "name": "Calendario de reservas, pickup y pace | Holdera",
-          "description": "Ocupación, tarifa y habitaciones on the books noche a noche, con el pickup de los últimos siete días y el ritmo de venta contra el año pasado.",
+          "description": "Calendario noche a noche con Occ, ADR y habitaciones OTB, booking pace, pickup de la última semana y ADR contra STLY.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },
@@ -929,15 +929,15 @@
       "file": "funciones/trazabilidad-de-cifras/index.html",
       "path": "/funciones/trazabilidad-de-cifras/",
       "title": "Trazabilidad: cada cifra hasta su registro | Holdera",
-      "description": "Fórmula, valor de cada entrada, registro normalizado y la fila en bruto con su huella de contenido. Cuatro pasos detrás de cualquier número del panel.",
+      "description": "Cada KPI se abre en su fórmula, sus entradas, el registro del PMS del que sale y el dato en bruto tal como llegó.",
       "robots": "index, follow",
       "sitemap": {
         "priority": "0.7"
       },
       "og": {
         "type": "website",
-        "title": "Trazabilidad — Fórmula, entradas, registro y dato en bruto.",
-        "description": "Fórmula, valor de cada entrada, registro normalizado y la fila en bruto con su huella de contenido. Cuatro pasos detrás de cualquier número del panel.",
+        "title": "Trazabilidad — Fórmula, entradas y registro de cada cifra.",
+        "description": "Cada KPI se abre en su fórmula, sus entradas, el registro del PMS del que sale y el dato en bruto tal como llegó.",
         "image": "{{SITE}}/assets/seo/og-default.png",
         "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
@@ -947,7 +947,7 @@
           "@id": "{{SITE}}/funciones/trazabilidad-de-cifras/#webpage",
           "url": "{{SITE}}/funciones/trazabilidad-de-cifras/",
           "name": "Trazabilidad: cada cifra hasta su registro | Holdera",
-          "description": "Fórmula, valor de cada entrada, registro normalizado y la fila en bruto con su huella de contenido. Cuatro pasos detrás de cualquier número del panel.",
+          "description": "Cada KPI se abre en su fórmula, sus entradas, el registro del PMS del que sale y el dato en bruto tal como llegó.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },
@@ -994,16 +994,16 @@
     {
       "file": "funciones/definiciones-acordadas/index.html",
       "path": "/funciones/definiciones-acordadas/",
-      "title": "Definiciones acordadas antes que pantallas | Holdera",
-      "description": "Ocupación sobre habitaciones físicas o sobre habitaciones en operación: Holdera enseña las dos, escribe la fórmula y espera a que tu hotel valide la suya.",
+      "title": "Definiciones de KPIs con tu convención | Holdera",
+      "description": "Cada KPI con su fórmula escrita. Ocupación sobre habitaciones físicas o sobre disponibles, sin OOO: eliges la convención de tu hotel y queda registrada.",
       "robots": "index, follow",
       "sitemap": {
         "priority": "0.7"
       },
       "og": {
         "type": "website",
-        "title": "Definiciones — Tu convención de OOO y OOS, no la nuestra.",
-        "description": "Ocupación sobre habitaciones físicas o sobre habitaciones en operación: Holdera enseña las dos, escribe la fórmula y espera a que tu hotel valide la suya.",
+        "title": "Definiciones — Occ con o sin OOO: lo decides tú.",
+        "description": "Cada KPI con su fórmula escrita. Ocupación sobre habitaciones físicas o sobre disponibles, sin OOO: eliges la convención de tu hotel y queda registrada.",
         "image": "{{SITE}}/assets/seo/og-default.png",
         "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
@@ -1012,8 +1012,8 @@
           "@type": "WebPage",
           "@id": "{{SITE}}/funciones/definiciones-acordadas/#webpage",
           "url": "{{SITE}}/funciones/definiciones-acordadas/",
-          "name": "Definiciones acordadas antes que pantallas | Holdera",
-          "description": "Ocupación sobre habitaciones físicas o sobre habitaciones en operación: Holdera enseña las dos, escribe la fórmula y espera a que tu hotel valide la suya.",
+          "name": "Definiciones de KPIs con tu convención | Holdera",
+          "description": "Cada KPI con su fórmula escrita. Ocupación sobre habitaciones físicas o sobre disponibles, sin OOO: eliges la convención de tu hotel y queda registrada.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },
@@ -1061,15 +1061,15 @@
       "file": "funciones/catalogo-de-metricas-hoteleras/index.html",
       "path": "/funciones/catalogo-de-metricas-hoteleras/",
       "title": "Catálogo de 57 métricas hoteleras | Holdera",
-      "description": "57 KPIs hoteleros con su fórmula, y para cada uno si tu hotel puede calcularlo hoy o qué fuente le falta. Sin estimaciones para rellenar huecos.",
+      "description": "57 KPIs hoteleros con fórmula, unidad y fuente: qué se calcula con tu PMS y qué necesita contabilidad, POS o datos de mercado.",
       "robots": "index, follow",
       "sitemap": {
         "priority": "0.7"
       },
       "og": {
         "type": "website",
-        "title": "Catálogo de métricas — Lo que falta se dice que falta, con nombre.",
-        "description": "57 KPIs hoteleros con su fórmula, y para cada uno si tu hotel puede calcularlo hoy o qué fuente le falta. Sin estimaciones para rellenar huecos.",
+        "title": "Catálogo de métricas — Fórmula, unidad y fuente de cada KPI.",
+        "description": "57 KPIs hoteleros con fórmula, unidad y fuente: qué se calcula con tu PMS y qué necesita contabilidad, POS o datos de mercado.",
         "image": "{{SITE}}/assets/seo/og-default.png",
         "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
@@ -1079,7 +1079,7 @@
           "@id": "{{SITE}}/funciones/catalogo-de-metricas-hoteleras/#webpage",
           "url": "{{SITE}}/funciones/catalogo-de-metricas-hoteleras/",
           "name": "Catálogo de 57 métricas hoteleras | Holdera",
-          "description": "57 KPIs hoteleros con su fórmula, y para cada uno si tu hotel puede calcularlo hoy o qué fuente le falta. Sin estimaciones para rellenar huecos.",
+          "description": "57 KPIs hoteleros con fórmula, unidad y fuente: qué se calcula con tu PMS y qué necesita contabilidad, POS o datos de mercado.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },
@@ -1118,6 +1118,1044 @@
               "position": 3,
               "name": "Catálogo de métricas",
               "item": "{{SITE}}/funciones/catalogo-de-metricas-hoteleras/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "glosario/index.html",
+      "path": "/glosario/",
+      "title": "Glosario de KPIs hoteleros: ADR, RevPAR, OTB | Holdera",
+      "description": "Definición y fórmula de 57 KPIs hoteleros y de las siglas del día a día: ADR, RevPAR, TRevPAR, GOPPAR, OTB, STLY, MTD, VC, VD, OOO, OOS y más.",
+      "robots": "index, follow",
+      "sitemap": {
+        "priority": "0.7"
+      },
+      "og": {
+        "type": "website",
+        "title": "Glosario de KPIs hoteleros — Holdera",
+        "description": "Definición y fórmula de 57 KPIs hoteleros y de las siglas del día a día: ADR, RevPAR, TRevPAR, GOPPAR, OTB, STLY, MTD, VC, VD, OOO, OOS y más.",
+        "image": "{{SITE}}/assets/seo/og-default.png",
+        "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
+      },
+      "graph": [
+        {
+          "@type": "WebPage",
+          "@id": "{{SITE}}/glosario/#webpage",
+          "url": "{{SITE}}/glosario/",
+          "name": "Glosario de KPIs hoteleros: ADR, RevPAR, OTB | Holdera",
+          "description": "Definición y fórmula de 57 KPIs hoteleros y de las siglas del día a día: ADR, RevPAR, TRevPAR, GOPPAR, OTB, STLY, MTD, VC, VD, OOO, OOS y más.",
+          "isPartOf": {
+            "@id": "{{SITE}}/#website"
+          },
+          "about": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "{{SITE}}/assets/seo/og-default.png",
+            "width": 1200,
+            "height": 630
+          },
+          "breadcrumb": {
+            "@id": "{{SITE}}/glosario/#breadcrumb"
+          },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/glosario/#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "{{SITE}}/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Glosario",
+              "item": "{{SITE}}/glosario/"
+            }
+          ]
+        },
+        {
+          "@type": "DefinedTermSet",
+          "@id": "{{SITE}}/glosario/#glosario",
+          "name": "Glosario de KPIs y términos hoteleros",
+          "inLanguage": "es-ES",
+          "hasDefinedTerm": [
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-fisicas",
+              "name": "Habitaciones físicas (Physical rooms)",
+              "termCode": "Habitaciones físicas",
+              "description": "Todas las habitaciones del hotel, estén o no a la venta.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-disponibles",
+              "name": "Habitaciones disponibles (Rooms available)",
+              "termCode": "Habitaciones disponibles",
+              "description": "Las habitaciones que se pueden vender: físicas menos OOO. Fórmula: Físicas − OOO.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-vendidas",
+              "name": "Habitaciones vendidas (Rooms sold)",
+              "termCode": "Habitaciones vendidas",
+              "description": "Habitaciones con reserva para una noche.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-rn",
+              "name": "RN (Room nights)",
+              "termCode": "RN",
+              "description": "Una habitación vendida durante una noche: la unidad de volumen del hotel.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-occupied",
+              "name": "Occupied",
+              "termCode": "Occupied",
+              "description": "Habitación con huésped alojado.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-vc",
+              "name": "VC (Vacant Clean)",
+              "termCode": "VC",
+              "description": "Libre, limpia y lista para vender.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-vd",
+              "name": "VD (Vacant Dirty)",
+              "termCode": "VD",
+              "description": "Libre y pendiente de limpieza.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-ip",
+              "name": "IP (Cleaning in progress)",
+              "termCode": "IP",
+              "description": "Housekeeping la está limpiando ahora.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-ooo",
+              "name": "OOO (Out of Order)",
+              "termCode": "OOO",
+              "description": "Bloqueada por avería u obra: sale del inventario disponible.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-oos",
+              "name": "OOS (Out of Service)",
+              "termCode": "OOS",
+              "description": "Bloqueo breve por mantenimiento menor: sigue en el inventario disponible.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-in-house",
+              "name": "In house",
+              "termCode": "In house",
+              "description": "Huéspedes alojados en el hotel ahora mismo.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-due-in",
+              "name": "Due in",
+              "termCode": "Due in",
+              "description": "Llegadas previstas hoy que aún no han hecho check-in.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-due-out",
+              "name": "Due out",
+              "termCode": "Due out",
+              "description": "Salidas previstas hoy que aún no han hecho check-out.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-otb",
+              "name": "OTB (On the Books)",
+              "termCode": "OTB",
+              "description": "Reservas confirmadas para fechas futuras en el momento de la lectura.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-stly",
+              "name": "STLY (Same Time Last Year)",
+              "termCode": "STLY",
+              "description": "La misma fecha del año pasado, leída al mismo lead time (364 días, mismo día de la semana).",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-ly",
+              "name": "LY (Last Year)",
+              "termCode": "LY",
+              "description": "Cifra final del mismo periodo el año pasado.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-mtd",
+              "name": "MTD (Month to Date)",
+              "termCode": "MTD",
+              "description": "Acumulado desde el día 1 del mes hasta la fecha.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-booking-pace",
+              "name": "Booking pace",
+              "termCode": "Booking pace",
+              "description": "Ritmo al que entran las reservas de un periodo, frente a una referencia (normalmente STLY).",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-lead-time",
+              "name": "Lead time",
+              "termCode": "Lead time",
+              "description": "Días que faltan hasta la llegada en el momento de la lectura.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-noche-cerrada",
+              "name": "Noche cerrada (Closed night)",
+              "termCode": "Noche cerrada",
+              "description": "Noche ya pasada: sus cifras son reales, no OTB.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-comp-set",
+              "name": "Comp set (Competitive set)",
+              "termCode": "Comp set",
+              "description": "Hoteles competidores con los que se compara el tuyo en ARI, MPI y RGI.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-pms",
+              "name": "PMS (Property Management System)",
+              "termCode": "PMS",
+              "description": "El sistema de gestión del hotel: reservas, habitaciones, estancias y facturación.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-pos",
+              "name": "POS (Point of Sale)",
+              "termCode": "POS",
+              "description": "El terminal de venta de restaurante, bar, spa o tienda.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-channel-manager",
+              "name": "Channel manager",
+              "termCode": "Channel manager",
+              "description": "Reparte tarifas y disponibilidad entre los canales de venta.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-rms",
+              "name": "RMS (Revenue Management System)",
+              "termCode": "RMS",
+              "description": "Sistema que recomienda o fija tarifas según la demanda.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-crm",
+              "name": "CRM (Customer Relationship Management)",
+              "termCode": "CRM",
+              "description": "Base de datos de clientes y su historial.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-ota",
+              "name": "OTA (Online Travel Agency)",
+              "termCode": "OTA",
+              "description": "Intermediario online: Booking.com, Expedia…",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-gds",
+              "name": "GDS (Global Distribution System)",
+              "termCode": "GDS",
+              "description": "Sistema de reservas de agencias y empresas (Amadeus, Sabre…).",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-directo",
+              "name": "Directo (Direct)",
+              "termCode": "Directo",
+              "description": "Reserva sin intermediario: web propia, teléfono o walk-in.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-fnb",
+              "name": "F&B (Food & Beverage)",
+              "termCode": "F&B",
+              "description": "Restauración: restaurante, bar, room service y banquetes.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-mice",
+              "name": "MICE (Meetings, Incentives, Conferences & Exhibitions)",
+              "termCode": "MICE",
+              "description": "Segmento de reuniones, incentivos, congresos y eventos.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-esg",
+              "name": "ESG (Environmental, Social & Governance)",
+              "termCode": "ESG",
+              "description": "Criterios ambientales, sociales y de gobierno.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-gop",
+              "name": "GOP (Gross Operating Profit)",
+              "termCode": "GOP",
+              "description": "Ingresos totales menos los costes operativos del hotel. Fórmula: Ingresos totales − costes operativos.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-night-audit",
+              "name": "Night audit",
+              "termCode": "Night audit",
+              "description": "Cierre del día hotelero en el PMS: fija las cifras y abre el día siguiente.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-business-date",
+              "name": "Business date",
+              "termCode": "Business date",
+              "description": "El día hotelero al que se imputa una cifra; cambia con el night audit.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-kpi",
+              "name": "KPI (Key Performance Indicator)",
+              "termCode": "KPI",
+              "description": "Métrica que mide el rendimiento del hotel.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-formula",
+              "name": "Fórmula (Formula)",
+              "termCode": "Fórmula",
+              "description": "Cómo se calcula el KPI a partir de sus entradas.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-entradas",
+              "name": "Entradas (Inputs)",
+              "termCode": "Entradas",
+              "description": "El valor que toma cada variable de la fórmula.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-registro",
+              "name": "Registro de origen (Source record)",
+              "termCode": "Registro de origen",
+              "description": "La fila del PMS (u otra fuente) de la que sale cada entrada.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-raw",
+              "name": "Dato en bruto (Raw record)",
+              "termCode": "Dato en bruto",
+              "description": "Esa fila tal como llegó de la fuente, sin transformar.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-occupancy_rate",
+              "name": "Occupancy (Occupancy rate)",
+              "termCode": "Occupancy",
+              "description": "Porcentaje de las habitaciones disponibles que se han vendido. Fórmula: Habitaciones vendidas ÷ habitaciones disponibles × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-adr",
+              "name": "ADR (Average Daily Rate)",
+              "termCode": "ADR",
+              "description": "Ingreso medio por habitación vendida. Fórmula: Ingresos de habitaciones ÷ habitaciones vendidas.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-revpar",
+              "name": "RevPAR (Revenue per Available Room)",
+              "termCode": "RevPAR",
+              "description": "Ingreso de habitaciones por habitación disponible (ADR × Occ). Fórmula: Ingresos de habitaciones ÷ habitaciones disponibles.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-trevpar",
+              "name": "TRevPAR (Total Revenue per Available Room)",
+              "termCode": "TRevPAR",
+              "description": "Ingreso total del hotel por habitación disponible. Fórmula: Ingresos totales ÷ habitaciones disponibles.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-revpor",
+              "name": "RevPOR (Revenue per Occupied Room)",
+              "termCode": "RevPOR",
+              "description": "Ingreso por habitación ocupada. Fórmula: Ingresos ÷ habitaciones ocupadas.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-goppar",
+              "name": "GOPPAR (Gross Operating Profit per Available Room)",
+              "termCode": "GOPPAR",
+              "description": "Beneficio operativo bruto por habitación disponible. Fórmula: GOP ÷ habitaciones disponibles.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-goppor",
+              "name": "GOPPOR (Gross Operating Profit per Occupied Room)",
+              "termCode": "GOPPOR",
+              "description": "Beneficio operativo bruto por habitación ocupada. Fórmula: GOP ÷ habitaciones ocupadas.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-gop_margin",
+              "name": "GOP margin",
+              "termCode": "GOP margin",
+              "description": "GOP sobre los ingresos. Fórmula: GOP ÷ ingresos × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-gross_profit_i_margin",
+              "name": "GP I margin (Gross Profit I margin)",
+              "termCode": "GP I margin",
+              "description": "Primer nivel de margen bruto, según la definición contable del hotel. Fórmula: Beneficio bruto I ÷ ingresos × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-gross_profit_ii_margin",
+              "name": "GP II margin (Gross Profit II margin)",
+              "termCode": "GP II margin",
+              "description": "Segundo nivel de margen bruto, según la definición contable del hotel. Fórmula: Beneficio bruto II ÷ ingresos × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-room_revenue",
+              "name": "Room revenue",
+              "termCode": "Room revenue",
+              "description": "Ingresos del departamento de habitaciones. Fórmula: Suma de ingresos del departamento de habitaciones.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-total_revenue",
+              "name": "Total revenue",
+              "termCode": "Total revenue",
+              "description": "Ingresos de todos los departamentos incluidos. Fórmula: Suma de ingresos departamentales incluidos.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-departmental_revenue",
+              "name": "Department revenue",
+              "termCode": "Department revenue",
+              "description": "Ingresos asignados a un departamento del hotel. Fórmula: Suma de ingresos del departamento.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-departmental_profit",
+              "name": "Department profit",
+              "termCode": "Department profit",
+              "description": "Ingresos del departamento menos sus costes directos. Fórmula: Ingresos del departamento − costes directos.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-pickup",
+              "name": "Pickup",
+              "termCode": "Pickup",
+              "description": "Habitaciones o ingresos OTB que han entrado entre dos lecturas. Fórmula: OTB actual − OTB de la lectura anterior.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-pace_vs_stly",
+              "name": "Pace vs STLY (Pace versus Same Time Last Year)",
+              "termCode": "Pace vs STLY",
+              "description": "Posición OTB frente a la del año pasado al mismo lead time. Fórmula: OTB actual − OTB STLY al mismo lead time.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-booking_window",
+              "name": "Booking window",
+              "termCode": "Booking window",
+              "description": "Días entre la creación de la reserva y la llegada. Fórmula: Fecha de llegada − fecha de reserva.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-cancellation_rate",
+              "name": "Cancellation % (Cancellation rate)",
+              "termCode": "Cancellation %",
+              "description": "Reservas canceladas sobre las reservas elegibles. Fórmula: Canceladas ÷ reservas elegibles × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-no_show_rate",
+              "name": "No-show % (No-show rate)",
+              "termCode": "No-show %",
+              "description": "Llegadas previstas que no se presentan. Fórmula: No-shows ÷ llegadas previstas × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-ari",
+              "name": "ARI (Average Rate Index)",
+              "termCode": "ARI",
+              "description": "ADR del hotel frente al de su comp set. Fórmula: ADR del hotel ÷ ADR del comp set × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-mpi",
+              "name": "MPI (Market Penetration Index)",
+              "termCode": "MPI",
+              "description": "Ocupación del hotel frente a la de su comp set. Fórmula: Occ del hotel ÷ Occ del comp set × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-rgi",
+              "name": "RGI (Revenue Generation Index)",
+              "termCode": "RGI",
+              "description": "RevPAR del hotel frente al de su comp set. Fórmula: RevPAR del hotel ÷ RevPAR del comp set × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-fnb_revpar",
+              "name": "F&B RevPAR (Food & Beverage Revenue per Available Room)",
+              "termCode": "F&B RevPAR",
+              "description": "Ingresos de F&B por habitación disponible. Fórmula: Ingresos F&B ÷ habitaciones disponibles.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-average_check",
+              "name": "Average check",
+              "termCode": "Average check",
+              "description": "Ingreso medio de F&B por cubierto. Fórmula: Ingresos F&B ÷ cubiertos.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-food_cost_percentage",
+              "name": "Food cost % (Food cost percentage)",
+              "termCode": "Food cost %",
+              "description": "Coste de los ingredientes sobre los ingresos de comida. Fórmula: Ingredientes consumidos ÷ ingresos de comida × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-beverage_cost_percentage",
+              "name": "Beverage cost % (Beverage cost percentage)",
+              "termCode": "Beverage cost %",
+              "description": "Coste de la bebida sobre los ingresos de bebida. Fórmula: Coste de bebida consumida ÷ ingresos de bebida × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-prime_cost",
+              "name": "Prime cost % (Prime cost percentage)",
+              "termCode": "Prime cost %",
+              "description": "Coste de mercancía más coste de personal de F&B, sobre ingresos de F&B. Fórmula: (COGS + coste de personal) ÷ ingresos F&B × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-revpash",
+              "name": "RevPASH (Revenue per Available Seat Hour)",
+              "termCode": "RevPASH",
+              "description": "Ingresos de F&B por asiento y hora disponibles. Fórmula: Ingresos F&B ÷ (asientos × horas de servicio).",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-table_turnover_rate",
+              "name": "Table turns (Table turnover rate)",
+              "termCode": "Table turns",
+              "description": "Cubiertos servidos por mesa en cada servicio. Fórmula: Cubiertos servidos ÷ mesas por servicio.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-other_department_cogs_ratio",
+              "name": "Other dept COGS % (Other department COGS ratio)",
+              "termCode": "Other dept COGS %",
+              "description": "Coste de mercancía sobre ingresos de otro departamento (spa, tienda…). Fórmula: Coste de mercancía ÷ ingresos del departamento × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-ooo_rate",
+              "name": "OOO rate (Out of Order rate)",
+              "termCode": "OOO rate",
+              "description": "Habitaciones fuera de orden sobre el inventario físico. Fórmula: Habitaciones OOO ÷ habitaciones físicas × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-operational_occupancy",
+              "name": "Operational occupancy",
+              "termCode": "Operational occupancy",
+              "description": "Ocupación sobre las habitaciones en servicio, sin contar las OOO. Fórmula: Habitaciones ocupadas ÷ (físicas − OOO) × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-cpor",
+              "name": "CPOR (Cost per Occupied Room)",
+              "termCode": "CPOR",
+              "description": "Coste operativo por habitación ocupada. Fórmula: Costes operativos totales ÷ habitaciones ocupadas.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-cogs",
+              "name": "COGS (Cost of Goods Sold)",
+              "termCode": "COGS",
+              "description": "Coste de la mercancía consumida en el periodo. Fórmula: Inventario inicial + compras − inventario final.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-cogs_ratio",
+              "name": "COGS % (Cost of Goods Sold ratio)",
+              "termCode": "COGS %",
+              "description": "Coste de la mercancía sobre los ingresos del departamento. Fórmula: COGS ÷ ingresos del departamento × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-maintenance_percentage",
+              "name": "Maintenance % (Maintenance percentage)",
+              "termCode": "Maintenance %",
+              "description": "Coste de mantenimiento sobre los ingresos. Fórmula: Coste de mantenimiento ÷ ingresos × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-utility_cost_per_occupied_room",
+              "name": "Utility / occupied room (Utility cost per occupied room)",
+              "termCode": "Utility / occupied room",
+              "description": "Coste de suministros por habitación ocupada. Fórmula: Coste de suministros ÷ habitaciones ocupadas.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-direct_booking_ratio",
+              "name": "Direct booking % (Direct booking ratio)",
+              "termCode": "Direct booking %",
+              "description": "Reservas por canal directo sobre el total. Fórmula: Reservas directas ÷ reservas totales × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-distribution_cost_percentage",
+              "name": "Distribution cost % (Distribution cost percentage)",
+              "termCode": "Distribution cost %",
+              "description": "Comisiones y costes de distribución sobre los ingresos. Fórmula: Costes de distribución ÷ ingresos totales × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-gds_wholesale_mix",
+              "name": "GDS / wholesale mix (GDS and wholesale mix)",
+              "termCode": "GDS / wholesale mix",
+              "description": "Producción por GDS y mayoristas sobre el total. Fórmula: Producción GDS y mayorista ÷ producción total × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-conversion_rate",
+              "name": "Conversion rate",
+              "termCode": "Conversion rate",
+              "description": "Sesiones del motor de reservas que acaban en reserva. Fórmula: Reservas directas completadas ÷ sesiones de reserva × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-marketing_cost_per_acquisition",
+              "name": "CPA (Cost per Acquisition)",
+              "termCode": "CPA",
+              "description": "Gasto de marketing por cliente captado. Fórmula: Gasto de marketing ÷ adquisiciones atribuidas.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-website_source_mix",
+              "name": "Website source mix",
+              "termCode": "Website source mix",
+              "description": "Reparto de la demanda de la web por fuente de captación. Fórmula: Producción de la fuente ÷ producción web total × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-alos",
+              "name": "ALOS (Average Length of Stay)",
+              "termCode": "ALOS",
+              "description": "Noches medias por estancia. Fórmula: Room nights vendidas ÷ estancias.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-repeat_guest_ratio",
+              "name": "Repeat guest % (Repeat guest ratio)",
+              "termCode": "Repeat guest %",
+              "description": "Huéspedes que repiten sobre el total. Fórmula: Huéspedes repetidores ÷ huéspedes totales × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-loyalty_member_share",
+              "name": "Loyalty share (Loyalty member share)",
+              "termCode": "Loyalty share",
+              "description": "Estancias de miembros del programa de fidelización sobre el total. Fórmula: Estancias de miembros ÷ estancias × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-nps",
+              "name": "NPS (Net Promoter Score)",
+              "termCode": "NPS",
+              "description": "Porcentaje de promotores menos porcentaje de detractores. Fórmula: % promotores − % detractores.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-gss",
+              "name": "GSS / CSAT (Guest Satisfaction Score / Customer Satisfaction)",
+              "termCode": "GSS / CSAT",
+              "description": "Puntuación media de encuestas o reseñas en la escala declarada. Fórmula: Media de respuestas en la escala declarada.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-guest_wait_time",
+              "name": "Guest wait (Guest wait time)",
+              "termCode": "Guest wait",
+              "description": "Minutos que espera un huésped en un punto de servicio. Fórmula: Duración medida o estimada de la espera.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-labour_cost_ratio",
+              "name": "Labour cost % (Labour cost ratio)",
+              "termCode": "Labour cost %",
+              "description": "Coste de personal sobre los ingresos. Fórmula: Coste de personal ÷ ingresos × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-payroll_per_occupied_room",
+              "name": "Payroll / occupied room (Payroll per occupied room)",
+              "termCode": "Payroll / occupied room",
+              "description": "Coste de nómina por habitación ocupada. Fórmula: Coste de nómina ÷ habitaciones ocupadas.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-overtime_rate",
+              "name": "Overtime % (Overtime rate)",
+              "termCode": "Overtime %",
+              "description": "Horas extra sobre las horas trabajadas. Fórmula: Horas extra ÷ horas trabajadas × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-staff_productivity",
+              "name": "Staff productivity",
+              "termCode": "Staff productivity",
+              "description": "Producción operativa por hora trabajada. Fórmula: Producción declarada ÷ horas de trabajo.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-group_room_nights",
+              "name": "Group room nights",
+              "termCode": "Group room nights",
+              "description": "Noches de habitación del segmento grupos y eventos. Fórmula: Suma de room nights del segmento grupos.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-event_space_utilisation",
+              "name": "Event utilisation (Event space utilisation)",
+              "termCode": "Event utilisation",
+              "description": "Horas de espacio de eventos vendidas sobre las vendibles. Fórmula: Horas-espacio reservadas ÷ horas-espacio vendibles × 100.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-energy_intensity",
+              "name": "Energy intensity",
+              "termCode": "Energy intensity",
+              "description": "Energía consumida por unidad de actividad del hotel. Fórmula: Energía medida ÷ unidad de actividad.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
+            },
+            {
+              "@type": "DefinedTerm",
+              "@id": "{{SITE}}/glosario/#t-water_intensity",
+              "name": "Water intensity",
+              "termCode": "Water intensity",
+              "description": "Agua consumida por unidad de actividad del hotel. Fórmula: Agua medida ÷ unidad de actividad.",
+              "inDefinedTermSet": {
+                "@id": "{{SITE}}/glosario/#glosario"
+              }
             }
           ]
         }

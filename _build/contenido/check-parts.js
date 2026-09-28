@@ -11,8 +11,8 @@
      1. faq.html   ↔ faq.json      — las 12 preguntas y las 12 respuestas,
                                       palabra por palabra.
      2. faq-jsonld ↔ faq.json      — solo las respuestas SIN marcador.
-     3. features.html ↔ features.json — título, frase, párrafo, enlace y los
-                                      tres «qué contesta» de cada feature.
+     3. /funciones/<slug>/ ↔ features.json — H1, encuadre, enlace al panel y
+                                      la captura de cada una.
      4. Ni un literal de color fuera de :root en los tres CSS del bloque.
      5. Con --http <base>: que cada enlace profundo del panel devuelva 200.
 
@@ -119,43 +119,35 @@ faqLd.jsonld.mainEntity.forEach((e, i) => {
 });
 if (fallos === antes) ok(`faq-jsonld.json al día — ${enLd.length} preguntas, ${faq.preguntas.length - enLd.length} fuera por marcador`);
 
-/* ---------------------------------------------------------- 3: las features */
+/* ---------------------------------------------------------- 3: las features
+   Paso 14: el bloque de tarjetas _build/parts/features.html ya no sale en
+   ninguna página (la portada es el recorrido desde el 20-09-2026), así que
+   compararlo con features.json no protegía nada. Lo que se sirve son las
+   páginas de /funciones/, generadas desde features.json: se comprueba que
+   cada una dice lo que dice su JSON (título, encuadre, enlace al panel) y que
+   su captura existe. */
 const ft = JSON.parse(read(path.join(DIR, 'features.json')));
-const ftHtml = read(path.join(PARTS, 'features.html'));
+const lib = require('./terminos-lib');
+const ROOT_SITE = path.join(DIR, '..', '..');
 const antesFt = fallos;
 
 for (const f of ft.features) {
-  const li = bloque(ftHtml, 'li', 'funcion-' + f.clave);
-  if (!li) { fallo(`features.html no tiene <li id="funcion-${f.clave}">`); continue; }
-
-  const titulo = entre(li, /<a class="ft-card__link"[^>]*>/i, 'a');
-  if (visible(titulo || '') !== f.titulo) fallo(`${f.clave}: el título del HTML no es el de features.json`);
-
-  const kicker = entre(li, /<p class="ft-card__kicker">/i, 'p');
-  if (visible(kicker || '') !== f.frase) fallo(`${f.clave}: la frase corta no coincide`);
-
-  const body = entre(li, /<p class="ft-card__body">/i, 'p');
-  if (visible(body || '') !== f.parrafo) fallo(`${f.clave}: el párrafo no coincide`);
-
-  if (!new RegExp('href="' + f.enlace.replace(/[/]/g, '\\/') + '"').test(li)) {
-    fallo(`${f.clave}: el href del HTML no es ${f.enlace}`);
-  }
-  if (!li.includes('data-feature-page="' + f.slug + '"')) fallo(`${f.clave}: falta data-feature-page="${f.slug}"`);
-
-  const lista = entre(li, /<ul class="ft-card__q">/i, 'ul');
-  const items = [...(lista || '').matchAll(/<li>([\s\S]*?)<\/li>/g)].map((m) => visible(m[1]));
-  if (items.join('|') !== f.contesta.join('|')) {
-    fallo(`${f.clave}: los "qué contesta" no coinciden`);
-    console.error('        html: ' + items.join(' / '));
-    console.error('        json: ' + f.contesta.join(' / '));
-  }
+  const file = path.join(ROOT_SITE, 'funciones', f.slug, 'index.html');
+  if (!fs.existsSync(file)) { fallo(`${f.clave}: falta funciones/${f.slug}/index.html (node _build/contenido/build-funciones.js)`); continue; }
+  const html = read(file);
+  const h1 = entre(html, /<h1 class="phead__title"[^>]*>/i, 'h1');
+  if (visible(h1 || '') !== lib.plain(f.titulo)) fallo(`${f.clave}: el H1 servido no es el título de features.json`);
+  const h2 = entre(html, /<h2 id="pt-title"[^>]*>/i, 'h2');
+  if (visible(h2 || '') !== lib.plain(f.encuadre)) fallo(`${f.clave}: el encuadre servido no es el de features.json`);
+  if (!html.includes('href="' + f.enlace + '"')) fallo(`${f.clave}: la página no enlaza a ${f.enlace}`);
+  if (!fs.existsSync(path.join(ROOT_SITE, 'assets', 'img', 'funciones', f.captura + '.webp'))) fallo(`${f.clave}: falta la captura assets/img/funciones/${f.captura}.webp`);
   if (!f.slug || !f.title || !f.metaDescription) fallo(`${f.clave}: le falta slug, title o metaDescription`);
-  if (f.metaDescription.length > 165) fallo(`${f.clave}: metaDescription de ${f.metaDescription.length} caracteres (máx. 165)`);
-  if (f.title.length > 65) fallo(`${f.clave}: title de ${f.title.length} caracteres (máx. 65)`);
+  if (f.metaDescription.length > 155) fallo(`${f.clave}: metaDescription de ${f.metaDescription.length} caracteres (máx. 155)`);
+  if (f.title.length > 60) fallo(`${f.clave}: title de ${f.title.length} caracteres (máx. 60)`);
 }
 const slugs = ft.features.map((f) => f.slug);
 if (new Set(slugs).size !== slugs.length) fallo('hay slugs de feature repetidos');
-if (fallos === antesFt) ok(`features.html dice lo mismo que features.json — ${ft.features.length} features`);
+if (fallos === antesFt) ok(`las ${ft.features.length} páginas de /funciones/ dicen lo mismo que features.json`);
 
 /* ------------------------------------------ 4: ni un color fuera de :root */
 const antesCss = fallos;

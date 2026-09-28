@@ -10,17 +10,17 @@
        un "#contenido" a secas iria a la portada. -->
   <base href="/">
   <title>El día del hotel en una pantalla | Holdera</title>
-  <meta name="description" content="Llegadas, salidas, habitaciones en casa y listas a la hora en que las miras. Holdera lee la foto intradía de tu PMS y dice de cuándo es cada dato.">
+  <meta name="description" content="Llegadas y salidas hechas y pendientes, huéspedes in house y habitaciones VC frente a los due in, con la hora de cada lectura del PMS.">
   <meta name="theme-color" content="#e5e5e5">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Hoy — No el cierre de ayer: el hotel a las 14:30.">
-  <meta property="og:description" content="Llegadas, salidas, habitaciones en casa y habitaciones listas a la hora en que las miras. Holdera lee la foto intradía de tu PMS y dice de cuándo es cada dato.">
+  <meta property="og:title" content="Hoy — Llegadas, salidas e in house, a la hora que lo miras.">
+  <meta property="og:description" content="Llegadas y salidas hechas y pendientes, huéspedes in house y habitaciones VC frente a los due in, con la hora de cada lectura del PMS.">
   <meta property="og:locale" content="es_ES">
   <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=a2a8c147">
+  <link rel="stylesheet" href="styles.css?v=b1a15fd7">
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="pages.css?v=b7b2361e">
-  <link rel="stylesheet" href="funciones/funciones.css?v=f317fe4b">
+  <link rel="stylesheet" href="funciones/funciones.css?v=0497857e">
   <script>document.documentElement.classList.add('has-js');</script>
   <!-- seo:head -->
   <link rel="canonical" href="https://holdera.es/funciones/operacion-diaria-hotel/">
@@ -33,8 +33,8 @@
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona.">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Hoy — No el cierre de ayer: el hotel a las 14:30.">
-  <meta name="twitter:description" content="Llegadas, salidas, habitaciones en casa y habitaciones listas a la hora en que las miras. Holdera lee la foto intradía de tu PMS y dice de cuándo es cada dato.">
+  <meta name="twitter:title" content="Hoy — Llegadas, salidas e in house, a la hora que lo miras.">
+  <meta name="twitter:description" content="Llegadas y salidas hechas y pendientes, huéspedes in house y habitaciones VC frente a los due in, con la hora de cada lectura del PMS.">
   <meta name="twitter:image" content="https://holdera.es/assets/seo/og-default.png">
   <meta name="twitter:image:alt" content="Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona.">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
@@ -116,7 +116,7 @@
         "@id": "https://holdera.es/funciones/operacion-diaria-hotel/#webpage",
         "url": "https://holdera.es/funciones/operacion-diaria-hotel/",
         "name": "El día del hotel en una pantalla | Holdera",
-        "description": "Llegadas, salidas, habitaciones en casa y listas a la hora en que las miras. Holdera lee la foto intradía de tu PMS y dice de cuándo es cada dato.",
+        "description": "Llegadas y salidas hechas y pendientes, huéspedes in house y habitaciones VC frente a los due in, con la hora de cada lectura del PMS.",
         "isPartOf": {
           "@id": "https://holdera.es/#website"
         },
@@ -183,54 +183,62 @@
                   <div class="mnu__col">
                     <p class="mnu__cat" id="mnu-fn-hoy">La operación</p>
                     <ul class="mnu__list" aria-labelledby="mnu-fn-hoy">
-                      <li><a class="mnu__item" href="/funciones/operacion-diaria-hotel/">
-                        <span class="mnu__name">Hoy</span>
-                        <span class="mnu__desc">No el cierre de ayer: el hotel a las 14:30.</span>
+                      <li><a class="mnu__item mnu__item--ic" href="/funciones/operacion-diaria-hotel/">
+                        <svg class="sic sic--hoy" width="24" height="24" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="17"/><path d="M24 9.5v2.5M38.5 24H36M24 38.5V36M9.5 24H12"/><path d="M24 24l8.2-2.2"/><path class="sic-a" d="M24 24v11"/><circle class="sic-dot" cx="24" cy="24" r="1.4"/></svg>
+                        <span class="mnu__txt"><span class="mnu__name">Hoy</span>
+                        <span class="mnu__desc">Llegadas, salidas e in house, a la hora que lo miras.</span></span>
                       </a></li>
-                      <li><a class="mnu__item" href="/funciones/estado-de-habitaciones-por-planta/">
-                        <span class="mnu__name">Habitaciones</span>
-                        <span class="mnu__desc">Planta por planta, y qué pasa en cada una.</span>
+                      <li><a class="mnu__item mnu__item--ic" href="/funciones/estado-de-habitaciones-por-planta/">
+                        <svg class="sic sic--habitaciones" width="24" height="24" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="11" y="7" width="26" height="34" rx="1.5"/><path d="M11 15.5h26M11 24h26M11 32.5h26"/><path d="M21 41v-4.5h6V41"/><rect class="sic-a" x="15" y="18" width="7" height="3.5" rx="0.8"/></svg>
+                        <span class="mnu__txt"><span class="mnu__name">Habitaciones</span>
+                        <span class="mnu__desc">Cada planta, con el estado de cada habitación.</span></span>
                       </a></li>
-                      <li><a class="mnu__item" href="/funciones/housekeeping-hotel/">
-                        <span class="mnu__name">Housekeeping</span>
-                        <span class="mnu__desc">Vacante limpia no es lo mismo que vacante.</span>
+                      <li><a class="mnu__item mnu__item--ic" href="/funciones/housekeeping-hotel/">
+                        <svg class="sic sic--housekeeping" width="24" height="24" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 14v23M40 30v7"/><rect x="8" y="24" width="32" height="6" rx="1"/><rect x="11.5" y="18.5" width="9" height="5.5" rx="2.2"/><path class="sic-a" d="M33 7.5c0 4 1.5 5.5 5.5 5.5c-4 0-5.5 1.5-5.5 5.5c0-4-1.5-5.5-5.5-5.5c4 0 5.5-1.5 5.5-5.5z"/></svg>
+                        <span class="mnu__txt"><span class="mnu__name">Housekeeping</span>
+                        <span class="mnu__desc">VC, VD, IP, OOO y OOS, planta a planta.</span></span>
                       </a></li>
                     </ul>
                   </div>
                   <div class="mnu__col">
                     <p class="mnu__cat" id="mnu-fn-revenue">Lo comercial</p>
                     <ul class="mnu__list" aria-labelledby="mnu-fn-revenue">
-                      <li><a class="mnu__item" href="/funciones/revenue-adr-revpar-trevpar/">
-                        <span class="mnu__name">Revenue</span>
-                        <span class="mnu__desc">Ocupación, ADR, RevPAR y TRevPAR a la vez.</span>
+                      <li><a class="mnu__item mnu__item--ic" href="/funciones/revenue-adr-revpar-trevpar/">
+                        <svg class="sic sic--revenue" width="24" height="24" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 9v30h31"/><rect x="14" y="29" width="5" height="10" rx="0.8"/><rect x="22" y="24" width="5" height="15" rx="0.8"/><rect x="30" y="19" width="5" height="20" rx="0.8"/><path class="sic-a" d="M13 22l8-5l7 2l10-8"/><path class="sic-a" d="M33.5 11H38v4.5"/></svg>
+                        <span class="mnu__txt"><span class="mnu__name">Revenue</span>
+                        <span class="mnu__desc">Esta noche, MTD y próximos 30 días, contra STLY.</span></span>
                       </a></li>
-                      <li><a class="mnu__item" href="/funciones/calendario-de-reservas-pickup-pace/">
-                        <span class="mnu__name">Reservas</span>
-                        <span class="mnu__desc">Ocho meses, y el pickup de los últimos siete días.</span>
+                      <li><a class="mnu__item mnu__item--ic" href="/funciones/calendario-de-reservas-pickup-pace/">
+                        <svg class="sic sic--reservas" width="24" height="24" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="8" y="11" width="32" height="29" rx="2"/><path d="M8 19h32M16 7v7M32 7v7"/><rect class="sic-a sic-af" x="12" y="23.5" width="4.5" height="4.5" rx="1"/><rect class="sic-a sic-af" x="19.5" y="23.5" width="4.5" height="4.5" rx="1"/><rect class="sic-a sic-af" x="27" y="23.5" width="4.5" height="4.5" rx="1"/><rect x="12" y="31" width="4.5" height="4.5" rx="1"/><rect x="19.5" y="31" width="4.5" height="4.5" rx="1"/></svg>
+                        <span class="mnu__txt"><span class="mnu__name">Reservas</span>
+                        <span class="mnu__desc">Noche a noche: Occ, ADR y habitaciones OTB.</span></span>
                       </a></li>
                     </ul>
                   </div>
                   <div class="mnu__col">
                     <p class="mnu__cat" id="mnu-fn-trazabilidad">La cifra y su origen</p>
                     <ul class="mnu__list" aria-labelledby="mnu-fn-trazabilidad">
-                      <li><a class="mnu__item" href="/funciones/trazabilidad-de-cifras/">
-                        <span class="mnu__name">Trazabilidad</span>
-                        <span class="mnu__desc">Fórmula, entradas, registro y dato en bruto.</span>
+                      <li><a class="mnu__item mnu__item--ic" href="/funciones/trazabilidad-de-cifras/">
+                        <svg class="sic sic--trazabilidad" width="24" height="24" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle class="sic-a" cx="12" cy="24" r="4.5"/><path d="M16.5 24H30M21 24c4 0 4.5-10 9-10M21 24c4 0 4.5 10 9 10"/><rect x="30" y="11" width="9" height="6" rx="1.2"/><rect x="30" y="21" width="9" height="6" rx="1.2"/><rect x="30" y="31" width="9" height="6" rx="1.2"/></svg>
+                        <span class="mnu__txt"><span class="mnu__name">Trazabilidad</span>
+                        <span class="mnu__desc">Fórmula, entradas y registro de cada cifra.</span></span>
                       </a></li>
-                      <li><a class="mnu__item" href="/funciones/definiciones-acordadas/">
-                        <span class="mnu__name">Definiciones</span>
-                        <span class="mnu__desc">Tu convención de OOO y OOS, no la nuestra.</span>
+                      <li><a class="mnu__item mnu__item--ic" href="/funciones/definiciones-acordadas/">
+                        <svg class="sic sic--definiciones" width="24" height="24" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M24 14c-5-3-11-3-16-2v24c5-1 11-1 16 2c5-3 11-3 16-2V12c-5-1-11-1-16 2z"/><path d="M24 14v24M12 19h7.5M12 24h7.5M12 29h5"/><path class="sic-a" d="M30 12.5v9l2.5-2l2.5 2v-9.6"/></svg>
+                        <span class="mnu__txt"><span class="mnu__name">Definiciones</span>
+                        <span class="mnu__desc">Occ con o sin OOO: lo decides tú.</span></span>
                       </a></li>
-                      <li><a class="mnu__item" href="/funciones/catalogo-de-metricas-hoteleras/">
-                        <span class="mnu__name">Catálogo de métricas</span>
-                        <span class="mnu__desc">Lo que falta se dice que falta, con nombre.</span>
+                      <li><a class="mnu__item mnu__item--ic" href="/funciones/catalogo-de-metricas-hoteleras/">
+                        <svg class="sic sic--catalogo" width="24" height="24" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="13" height="13" rx="2"/><rect x="26" y="9" width="13" height="13" rx="2"/><rect x="9" y="26" width="13" height="13" rx="2"/><rect class="sic-a" x="26" y="26" width="13" height="13" rx="2" stroke-dasharray="3 2.6"/></svg>
+                        <span class="mnu__txt"><span class="mnu__name">Catálogo de métricas</span>
+                        <span class="mnu__desc">Fórmula, unidad y fuente de cada KPI.</span></span>
                       </a></li>
                     </ul>
                   </div>
                 </div>
               </div>
               <div class="mnu__foot">
-                <p class="mnu__note">Ocho funciones. Cada una con su página, y su pantalla en el panel demo.</p>
+                <a class="mnu__all" href="/glosario/">Glosario de KPIs y términos<span class="mnu__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
                 <a class="mnu__all" href="/funciones/">Ver todas las funciones<span class="mnu__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
               </div>
             </div>
@@ -283,79 +291,110 @@
           <a href="funciones/">Funciones</a>
           <span aria-current="page">Hoy</span>
         </nav>
-        <h1 class="phead__title" id="page-title" data-enter style="--d:140">El día de hoy, tal como está a esta hora</h1>
+        <h1 class="phead__title" id="page-title" data-enter style="--d:140">El día del hotel, en una pantalla</h1>
       </div>
-      <p class="phead__lead" data-enter style="--d:260">No el cierre de ayer: el hotel a las 14:30.</p>
+      <p class="phead__lead" data-enter style="--d:260">Llegadas, salidas e <abbr class="term" data-term="in-house" title="Huéspedes alojados en el hotel ahora mismo.">in house</abbr>, a la hora que lo miras.</p>
     </div>
     <div class="hero-sentinel" aria-hidden="true"></div>
   </div>
 
-  <!-- ============ CONTENT SHEET (dark) ============ -->
+  <!-- ============ CONTENT SHEET ============ -->
   <main id="contenido" class="page__main">
 
-    <section class="sheet sheet--intro" id="que-hace" aria-labelledby="qh-title">
-      <div class="container pgf-lede">
-        <div>
-          <p class="tag reveal" data-reveal="up">Función 01 de 08</p>
-          <h2 id="qh-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Qué hace</h2>
-          <aside class="pgf-deep reveal" data-reveal="up" style="--i:2" aria-labelledby="deep-title">
-            <div class="pgf-deep__core">
-              <p class="pgf-deep__k">Pantalla del producto</p>
-              <p class="pgf-deep__name" id="deep-title">Hoy</p>
-              <p class="pgf-deep__note">Ábrela en el panel de demostración y compruébalo tú: está abierto, sin registro.</p>
-              <a class="btn btn--secondary" href="/panel/"><span>Abrir Hoy en el panel demo</span><span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
-              <p class="pgf-deep__url">/panel/</p>
-            </div>
-          </aside>
+    <section class="sheet sheet--intro pgf-sec" id="pantalla" aria-labelledby="pt-title">
+      <div class="container pgf-screen">
+        <div class="pgf-screen__copy">
+          <p class="tag reveal" data-reveal="up">Función 01 de 08 · La operación</p>
+          <div class="pgf-screen__head reveal" data-reveal="up" style="--i:1">
+            <span class="pgf-ic"><svg class="sic sic--hoy" width="40" height="40" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="17"/><path d="M24 9.5v2.5M38.5 24H36M24 38.5V36M9.5 24H12"/><path d="M24 24l8.2-2.2"/><path class="sic-a" d="M24 24v11"/><circle class="sic-dot" cx="24" cy="24" r="1.4"/></svg></span>
+            <h2 id="pt-title" class="pgf-screen__title">Front office, hoy</h2>
+          </div>
+          <p class="pgf-screen__lead reveal" data-reveal="up" style="--i:2">Llegadas y salidas hechas y pendientes, huéspedes <abbr class="term" data-term="in-house" title="Huéspedes alojados en el hotel ahora mismo.">in house</abbr> y habitaciones <abbr class="term" data-term="vc" title="Vacant Clean">VC</abbr> frente a los <abbr class="term" data-term="due-in" title="Llegadas previstas hoy que aún no han hecho check-in.">due in</abbr>. Cada dato lleva la hora de la lectura del <abbr class="term" data-term="pms" title="Property Management System">PMS</abbr>.</p>
+          <ol class="pgf-points reveal" data-reveal="up" style="--i:3">
+            <li class="pgf-point">
+              <span class="pgf-point__n" aria-hidden="true">01</span>
+              <div>
+                <p class="pgf-point__t">Llegadas y salidas</p>
+                <p class="pgf-point__d">Hechas y pendientes: <abbr class="term" data-term="due-in" title="Llegadas previstas hoy que aún no han hecho check-in.">due in</abbr> y <abbr class="term" data-term="due-out" title="Salidas previstas hoy que aún no han hecho check-out.">due out</abbr>.</p>
+              </div>
+            </li>
+            <li class="pgf-point">
+              <span class="pgf-point__n" aria-hidden="true">02</span>
+              <div>
+                <p class="pgf-point__t"><abbr class="term" data-term="vc" title="Vacant Clean">VC</abbr> frente a <abbr class="term" data-term="due-in" title="Llegadas previstas hoy que aún no han hecho check-in.">due in</abbr></p>
+                <p class="pgf-point__d">Si las habitaciones listas cubren las llegadas que faltan.</p>
+              </div>
+            </li>
+            <li class="pgf-point">
+              <span class="pgf-point__n" aria-hidden="true">03</span>
+              <div>
+                <p class="pgf-point__t"><abbr class="term" data-term="occupancy_rate" title="Occupancy rate">Occ</abbr> de esta noche</p>
+                <p class="pgf-point__d">En <abbr class="term" data-term="otb" title="On the Books">OTB</abbr> hasta el <abbr class="term" data-term="night-audit" title="Cierre del día hotelero en el PMS: fija las cifras y abre el día siguiente.">night audit</abbr>.</p>
+              </div>
+            </li>
+          </ol>
+          <p class="pgf-screen__cta reveal" data-reveal="up" style="--i:4">
+            <a class="btn btn--secondary" href="/panel/today/"><span>Abrir Hoy en el panel demo</span><span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+          </p>
         </div>
-        <div class="prose reveal" data-reveal="up" style="--i:3">
-            <p>Llegadas, salidas, habitaciones en casa y habitaciones listas, leídas de la foto intradía que tu PMS deja a una hora concreta. Cada pantalla lleva escrito de cuándo es el dato que estás mirando, y lo que todavía no ha cerrado sale marcado como no cerrado en vez de redondeado.</p>
-            <p>El día no es una sola cifra. La pantalla parte las llegadas en las que ya han entrado y las que faltan, las salidas en las que ya se han ido y las que quedan, y pone al lado las habitaciones que están listas para recibir. Así la pregunta de recepción —¿me llega con lo que tengo limpio?— se contesta mirando, no sumando.</p>
-            <p>Debajo, el hotel entero por plantas, con lo que ocurre en cada una. Y la hora, siempre: lo que ves es un instante concreto del export de tu PMS, no «ahora mismo», y eso también sale escrito en pantalla.</p>
-        </div>
+        <figure class="pgf-shot reveal" data-reveal="up" style="--i:2">
+          <a class="pgf-shot__frame" href="/panel/today/" tabindex="-1" aria-hidden="true">
+            <img src="assets/img/funciones/hoy.webp?v=d90243b5" width="1280" height="800" alt="" loading="lazy" decoding="async">
+          </a>
+          <figcaption>Panel demo · Hoy</figcaption>
+        </figure>
       </div>
     </section>
 
-    <section class="sheet sheet--process" id="que-contesta" aria-labelledby="qc-title">
+    <section class="sheet sheet--process pgf-sec" id="terminos" aria-labelledby="tm-title">
       <div class="container">
-        <div class="sec__head">
-          <p class="tag reveal" data-reveal="up">Qué contesta</p>
-          <h2 id="qc-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Las preguntas <span class="fade">que se hacen a esta hora.</span></h2>
+        <div class="pgf-terms__head">
+          <div>
+            <p class="tag reveal" data-reveal="up">Términos de esta pantalla</p>
+            <h2 id="tm-title" class="sheet__title reveal" data-reveal="up" style="--i:1">KPIs y siglas, <span class="fade">definidos.</span></h2>
+          </div>
+          <a class="btn btn--secondary reveal" data-reveal="up" style="--i:2" href="glosario/"><span>Ver el glosario completo</span><span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
         </div>
-        <ol class="pgf-qa">
-            <li class="pgf-q reveal" data-reveal="up">
-              <span class="pgf-q__n" aria-hidden="true">01</span>
-              <p class="pgf-q__t">¿Cuántas llegadas me quedan por entrar esta tarde?</p>
-            </li>
-            <li class="pgf-q reveal" data-reveal="up">
-              <span class="pgf-q__n" aria-hidden="true">02</span>
-              <p class="pgf-q__t">¿Tengo habitaciones listas suficientes para las que faltan?</p>
-            </li>
-            <li class="pgf-q reveal" data-reveal="up">
-              <span class="pgf-q__n" aria-hidden="true">03</span>
-              <p class="pgf-q__t">¿Cuántas habitaciones espero esta noche, y eso es un hecho o una proyección?</p>
-            </li>
-        </ol>
+        <dl class="gl-list reveal" data-reveal="up" style="--i:2">
+            <div class="gl-row">
+              <dt class="gl-term"><span class="gl-code">In house</span><span class="gl-es">Alojados</span></dt>
+              <dd class="gl-def">Huéspedes alojados en el hotel ahora mismo.</dd>
+            </div>
+            <div class="gl-row">
+              <dt class="gl-term"><span class="gl-code">VC</span><span class="gl-en">Vacant Clean</span><span class="gl-es">Libre y limpia</span></dt>
+              <dd class="gl-def">Libre, limpia y lista para vender.</dd>
+            </div>
+            <div class="gl-row">
+              <dt class="gl-term"><span class="gl-code">Due in</span><span class="gl-es">Llegadas pendientes</span></dt>
+              <dd class="gl-def">Llegadas previstas hoy que aún no han hecho check-in.</dd>
+            </div>
+            <div class="gl-row">
+              <dt class="gl-term"><span class="gl-code">PMS</span><span class="gl-en">Property Management System</span></dt>
+              <dd class="gl-def">El sistema de gestión del hotel: reservas, habitaciones, estancias y facturación.</dd>
+            </div>
+            <div class="gl-row">
+              <dt class="gl-term"><span class="gl-code">Due out</span><span class="gl-es">Salidas pendientes</span></dt>
+              <dd class="gl-def">Salidas previstas hoy que aún no han hecho check-out.</dd>
+            </div>
+            <div class="gl-row">
+              <dt class="gl-term"><span class="gl-code">Occupancy</span><span class="gl-en">Occupancy rate</span><span class="gl-es">Ocupación</span></dt>
+              <dd class="gl-def">Porcentaje de las habitaciones disponibles que se han vendido.</dd>
+              <dd class="gl-f"><span class="gl-k">Fórmula</span>Habitaciones vendidas ÷ habitaciones disponibles × 100</dd>
+              <dd class="gl-meta"><span>Unidad: %</span><a href="panel/metrics/occupancy_rate/" aria-label="Occupancy en el panel demo">En el panel<span class="gl-arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a></dd>
+            </div>
+            <div class="gl-row">
+              <dt class="gl-term"><span class="gl-code">OTB</span><span class="gl-en">On the Books</span><span class="gl-es">En cartera</span></dt>
+              <dd class="gl-def">Reservas confirmadas para fechas futuras en el momento de la lectura.</dd>
+            </div>
+            <div class="gl-row">
+              <dt class="gl-term"><span class="gl-code">Night audit</span><span class="gl-es">Cierre del día</span></dt>
+              <dd class="gl-def">Cierre del día hotelero en el PMS: fija las cifras y abre el día siguiente.</dd>
+            </div>
+        </dl>
       </div>
     </section>
 
-    <section class="sheet" id="limite" aria-labelledby="lim-title">
-      <div class="container pgf-limit">
-        <div>
-          <p class="tag reveal" data-reveal="up">Lo que no hace</p>
-          <h2 id="lim-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Una proyección no se enseña como un hecho</h2>
-        </div>
-        <div class="pgf-limit__body reveal" data-reveal="up" style="--i:2">
-          <p>La ocupación de esta noche todavía no ha ocurrido: sale marcada como no cerrada y con su definición todavía sin validar, no redondeada a un número limpio. Entre un export y el siguiente Holdera no rellena el hueco — enseña la hora de la foto y espera.</p>
-          <figure class="pgf-cite">
-            <blockquote>Not final · Definition pending</blockquote>
-            <figcaption>Literal del panel, en inglés · Hoy · ocupación de esta noche</figcaption>
-          </figure>
-        </div>
-      </div>
-    </section>
-
-    <section class="sheet sheet--process" id="mas-funciones" aria-labelledby="pag-title">
+    <section class="sheet pgf-sec" id="mas-funciones" aria-labelledby="pag-title">
       <div class="container">
         <div class="sec__head">
           <p class="tag reveal" data-reveal="up">Sigue por aquí</p>
@@ -364,22 +403,23 @@
         <nav class="pgf-pager reveal" data-reveal="up" style="--i:2" aria-label="Funciones anterior y siguiente">
           <a class="pgf-pager__link pgf-pager__link--next" href="funciones/estado-de-habitaciones-por-planta/" rel="next">
             <span class="pgf-pager__k">Siguiente</span>
-            <span class="pgf-pager__t">Habitaciones</span>
-            <span class="pgf-pager__d">Planta por planta, y qué pasa en cada una.</span>
+            <span class="pgf-pager__row"><svg class="sic sic--habitaciones" width="28" height="28" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="11" y="7" width="26" height="34" rx="1.5"/><path d="M11 15.5h26M11 24h26M11 32.5h26"/><path d="M21 41v-4.5h6V41"/><rect class="sic-a" x="15" y="18" width="7" height="3.5" rx="0.8"/></svg><span class="pgf-pager__t">Habitaciones</span></span>
+            <span class="pgf-pager__d">Cada planta, con el estado de cada habitación.</span>
           </a>
         </nav>
         <p class="pgf-pager__all reveal" data-reveal="up" style="--i:3">
           <a class="btn btn--secondary" href="funciones/"><span>Ver las 8 funciones</span><span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+          <a class="btn btn--secondary" href="glosario/"><span>Glosario de KPIs</span><span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
         </p>
       </div>
     </section>
 
-    <section class="sheet sheet--cta" id="hablamos" aria-labelledby="cta-title">
+    <section class="sheet sheet--cta pgf-sec" id="hablamos" aria-labelledby="cta-title">
       <div class="container ctaband">
         <div>
           <p class="tag reveal" data-reveal="up">Siguiente paso</p>
           <h2 id="cta-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Ábrelo por dentro <span class="fade">y después hablamos.</span></h2>
-          <p class="sheet__lead reveal" data-reveal="up" style="--i:2">El panel de demostración está abierto: no hay formulario delante. Si después quieres hablarlo, cuéntanos cómo es tu hotel —qué PMS usas, cuántas habitaciones tienes y qué informe estás rehaciendo a mano cada semana.</p>
+          <p class="sheet__lead reveal" data-reveal="up" style="--i:2">El panel demo está abierto, sin registro. Si encaja, cuéntanos qué <abbr class="term" data-term="pms" title="Property Management System">PMS</abbr> usas y cuántas habitaciones tienes.</p>
         </div>
         <div class="ctaband__actions reveal" data-reveal="up" style="--i:3">
           <a class="btn btn--primary btn--on-dark" href="contacto.html"><span>Cuéntanos cómo es tu hotel</span><span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
@@ -387,7 +427,7 @@
         </div>
       </div>
       <div class="container">
-        <p class="pgf-note reveal" data-reveal="up" style="--i:4">Las pantallas que enlazamos son el panel de demostración: un hotel de ejemplo de 100 habitaciones, congelado el jueves 15 de enero de 2026 a las 14:30. Las cifras son de ese hotel, no de ninguno real.</p>
+        <p class="pgf-note reveal" data-reveal="up" style="--i:4">Las pantallas enlazadas son las del panel de demostración: un hotel ficticio de 100 habitaciones. Ninguna cifra es de un hotel real.</p>
       </div>
     </section>
 
@@ -404,6 +444,7 @@
         <a href="index.html">Inicio</a>
         <a href="index.html#ha-recorrido">El producto</a>
         <a href="/funciones/">Funciones</a>
+        <a href="/glosario/">Glosario</a>
         <a href="/integraciones.html">Integraciones</a>
         <a href="nosotros.html">Nosotros</a>
         <a href="partners.html">Partners</a>
@@ -430,9 +471,6 @@
   </footer>
 
   <!-- Side menu -->
-  <!-- Side menu -->
-  <!-- Side menu -->
-  <!-- Side menu -->
   <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Menú de navegación" aria-hidden="true" inert>
     <div class="drawer__panel">
       <div class="drawer__head">
@@ -457,39 +495,48 @@
             <span class="mrow__band" aria-hidden="true"><span class="mrow__track"><span class="mrow__inner" aria-hidden="true"><span>Hoy</span><span>Habitaciones</span><span>Housekeeping</span><span>Revenue</span><span>Reservas</span><span>Trazabilidad</span><span>Definiciones</span><span>Catálogo de métricas</span><span>Hoy</span><span>Habitaciones</span><span>Housekeeping</span><span>Revenue</span><span>Reservas</span><span>Trazabilidad</span><span>Definiciones</span><span>Catálogo de métricas</span></span></span></span>
           </a>
           <div class="msub__list" id="msub-funciones" hidden>
-            <a class="msub__item" href="/funciones/operacion-diaria-hotel/">
-              <span class="msub__name">Hoy</span>
-              <span class="msub__desc">No el cierre de ayer: el hotel a las 14:30.</span>
+            <a class="msub__item msub__item--ic" href="/funciones/operacion-diaria-hotel/">
+              <svg class="sic sic--hoy" width="24" height="24" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="17"/><path d="M24 9.5v2.5M38.5 24H36M24 38.5V36M9.5 24H12"/><path d="M24 24l8.2-2.2"/><path class="sic-a" d="M24 24v11"/><circle class="sic-dot" cx="24" cy="24" r="1.4"/></svg>
+              <span class="msub__txt"><span class="msub__name">Hoy</span>
+              <span class="msub__desc">Llegadas, salidas e in house, a la hora que lo miras.</span></span>
             </a>
-            <a class="msub__item" href="/funciones/estado-de-habitaciones-por-planta/">
-              <span class="msub__name">Habitaciones</span>
-              <span class="msub__desc">Planta por planta, y qué pasa en cada una.</span>
+            <a class="msub__item msub__item--ic" href="/funciones/estado-de-habitaciones-por-planta/">
+              <svg class="sic sic--habitaciones" width="24" height="24" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="11" y="7" width="26" height="34" rx="1.5"/><path d="M11 15.5h26M11 24h26M11 32.5h26"/><path d="M21 41v-4.5h6V41"/><rect class="sic-a" x="15" y="18" width="7" height="3.5" rx="0.8"/></svg>
+              <span class="msub__txt"><span class="msub__name">Habitaciones</span>
+              <span class="msub__desc">Cada planta, con el estado de cada habitación.</span></span>
             </a>
-            <a class="msub__item" href="/funciones/housekeeping-hotel/">
-              <span class="msub__name">Housekeeping</span>
-              <span class="msub__desc">Vacante limpia no es lo mismo que vacante.</span>
+            <a class="msub__item msub__item--ic" href="/funciones/housekeeping-hotel/">
+              <svg class="sic sic--housekeeping" width="24" height="24" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 14v23M40 30v7"/><rect x="8" y="24" width="32" height="6" rx="1"/><rect x="11.5" y="18.5" width="9" height="5.5" rx="2.2"/><path class="sic-a" d="M33 7.5c0 4 1.5 5.5 5.5 5.5c-4 0-5.5 1.5-5.5 5.5c0-4-1.5-5.5-5.5-5.5c4 0 5.5-1.5 5.5-5.5z"/></svg>
+              <span class="msub__txt"><span class="msub__name">Housekeeping</span>
+              <span class="msub__desc">VC, VD, IP, OOO y OOS, planta a planta.</span></span>
             </a>
-            <a class="msub__item" href="/funciones/revenue-adr-revpar-trevpar/">
-              <span class="msub__name">Revenue</span>
-              <span class="msub__desc">Ocupación, ADR, RevPAR y TRevPAR a la vez.</span>
+            <a class="msub__item msub__item--ic" href="/funciones/revenue-adr-revpar-trevpar/">
+              <svg class="sic sic--revenue" width="24" height="24" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 9v30h31"/><rect x="14" y="29" width="5" height="10" rx="0.8"/><rect x="22" y="24" width="5" height="15" rx="0.8"/><rect x="30" y="19" width="5" height="20" rx="0.8"/><path class="sic-a" d="M13 22l8-5l7 2l10-8"/><path class="sic-a" d="M33.5 11H38v4.5"/></svg>
+              <span class="msub__txt"><span class="msub__name">Revenue</span>
+              <span class="msub__desc">Esta noche, MTD y próximos 30 días, contra STLY.</span></span>
             </a>
-            <a class="msub__item" href="/funciones/calendario-de-reservas-pickup-pace/">
-              <span class="msub__name">Reservas</span>
-              <span class="msub__desc">Ocho meses, y el pickup de los últimos siete días.</span>
+            <a class="msub__item msub__item--ic" href="/funciones/calendario-de-reservas-pickup-pace/">
+              <svg class="sic sic--reservas" width="24" height="24" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="8" y="11" width="32" height="29" rx="2"/><path d="M8 19h32M16 7v7M32 7v7"/><rect class="sic-a sic-af" x="12" y="23.5" width="4.5" height="4.5" rx="1"/><rect class="sic-a sic-af" x="19.5" y="23.5" width="4.5" height="4.5" rx="1"/><rect class="sic-a sic-af" x="27" y="23.5" width="4.5" height="4.5" rx="1"/><rect x="12" y="31" width="4.5" height="4.5" rx="1"/><rect x="19.5" y="31" width="4.5" height="4.5" rx="1"/></svg>
+              <span class="msub__txt"><span class="msub__name">Reservas</span>
+              <span class="msub__desc">Noche a noche: Occ, ADR y habitaciones OTB.</span></span>
             </a>
-            <a class="msub__item" href="/funciones/trazabilidad-de-cifras/">
-              <span class="msub__name">Trazabilidad</span>
-              <span class="msub__desc">Fórmula, entradas, registro y dato en bruto.</span>
+            <a class="msub__item msub__item--ic" href="/funciones/trazabilidad-de-cifras/">
+              <svg class="sic sic--trazabilidad" width="24" height="24" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle class="sic-a" cx="12" cy="24" r="4.5"/><path d="M16.5 24H30M21 24c4 0 4.5-10 9-10M21 24c4 0 4.5 10 9 10"/><rect x="30" y="11" width="9" height="6" rx="1.2"/><rect x="30" y="21" width="9" height="6" rx="1.2"/><rect x="30" y="31" width="9" height="6" rx="1.2"/></svg>
+              <span class="msub__txt"><span class="msub__name">Trazabilidad</span>
+              <span class="msub__desc">Fórmula, entradas y registro de cada cifra.</span></span>
             </a>
-            <a class="msub__item" href="/funciones/definiciones-acordadas/">
-              <span class="msub__name">Definiciones</span>
-              <span class="msub__desc">Tu convención de OOO y OOS, no la nuestra.</span>
+            <a class="msub__item msub__item--ic" href="/funciones/definiciones-acordadas/">
+              <svg class="sic sic--definiciones" width="24" height="24" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M24 14c-5-3-11-3-16-2v24c5-1 11-1 16 2c5-3 11-3 16-2V12c-5-1-11-1-16 2z"/><path d="M24 14v24M12 19h7.5M12 24h7.5M12 29h5"/><path class="sic-a" d="M30 12.5v9l2.5-2l2.5 2v-9.6"/></svg>
+              <span class="msub__txt"><span class="msub__name">Definiciones</span>
+              <span class="msub__desc">Occ con o sin OOO: lo decides tú.</span></span>
             </a>
-            <a class="msub__item" href="/funciones/catalogo-de-metricas-hoteleras/">
-              <span class="msub__name">Catálogo de métricas</span>
-              <span class="msub__desc">Lo que falta se dice que falta, con nombre.</span>
+            <a class="msub__item msub__item--ic" href="/funciones/catalogo-de-metricas-hoteleras/">
+              <svg class="sic sic--catalogo" width="24" height="24" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="13" height="13" rx="2"/><rect x="26" y="9" width="13" height="13" rx="2"/><rect x="9" y="26" width="13" height="13" rx="2"/><rect class="sic-a" x="26" y="26" width="13" height="13" rx="2" stroke-dasharray="3 2.6"/></svg>
+              <span class="msub__txt"><span class="msub__name">Catálogo de métricas</span>
+              <span class="msub__desc">Fórmula, unidad y fuente de cada KPI.</span></span>
             </a>
             <a class="msub__all" href="/funciones/">Ver todas las funciones<span class="mnu__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+            <a class="msub__all" href="/glosario/">Glosario de KPIs<span class="mnu__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
           </div>
         </div>
         <div class="msub" data-msub>
@@ -538,5 +585,6 @@
   <!-- /drawer -->
 
   <script src="script.js?v=19570da1" defer></script>
+  <script src="terminos.js?v=c9c1c77f" defer></script>
 </body>
 </html>

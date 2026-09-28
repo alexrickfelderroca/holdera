@@ -63,9 +63,10 @@ function hashOf(file) {
 // Solo rutas relativas sin barra ni protocolo: nada de //cdn, http, /abs.
 const RE = /\b(href|src)="(?!https?:|\/\/|\/)([A-Za-z0-9_\-./]+\.(?:css|js))(?:\?v=[0-9a-f]+)?"/g;
 
-// La obra del escaparate, en src= y en data-bg=. Acotada a assets/img/producto/
+// La obra del escaparate, en src= y en data-bg=, y desde el paso 14 las
+// capturas de cada funcion (assets/img/funciones/). Acotada a esas dos carpetas
 // a proposito: son las unicas imagenes que cambian con el producto.
-const RE_ART = /\b(src|data-bg)="(assets\/img\/producto\/[A-Za-z0-9_\-.]+\.webp)(?:\?v=[0-9a-f]+)?"/g;
+const RE_ART = /\b(src|data-bg)="(assets\/img\/(?:producto|funciones)\/[A-Za-z0-9_\-.]+\.webp)(?:\?v=[0-9a-f]+)?"/g;
 
 let changed = 0;
 const report = [];

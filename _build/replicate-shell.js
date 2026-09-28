@@ -68,10 +68,17 @@ for (const page of PAGES) {
     // respetar la que ya tiene la página en la primera línea.
     const lineStart = html.lastIndexOf('\n', a) + 1;
     const indent = html.slice(lineStart, a);
-    const body = forPage(ref, page, name).replace(/^\s+/, '');
+    /* El drawer del shell empieza con su comentario "<!-- Side menu -->", y
+       el bloque que se sustituye empieza DESPUÉS de él (en `<div class=
+       "drawer"`). Copiarlo con comentario incluido dejaba uno más en cada
+       pasada: la portada llegó a llevar nueve seguidos. Se copia sin él. */
+    const body = forPage(ref, page, name).replace(/^\s+/, '').replace(/^(?:<!--[^>]*-->\s*)+/, '');
     const next = html.slice(0, lineStart) + indent + body + html.slice(b);
     if (next !== html) { html = next; changed++; }
   }
+  // Y los que ya se habían acumulado, a uno solo.
+  const limpio = html.replace(/(?:[ \t]*<!-- Side menu -->\r?\n)+(?=[ \t]*<div class="drawer")/, () => '  <!-- Side menu -->\n');
+  if (limpio !== html) { html = limpio; changed++; }
   fs.writeFileSync(file, html);
   console.log(`OK   ${page}`);
 }

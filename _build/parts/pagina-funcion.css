@@ -1,43 +1,48 @@
 /* ==========================================================================
    HOLDERA — pagina-funcion.css
-   Las nueve paginas de /funciones/ : el indice y las ocho funciones.
+   Las páginas de /funciones/ (el índice y las ocho funciones) y /glosario/.
 
-   Se genera junto a las paginas: `node _build/contenido/build-funciones.js`
+   Se genera junto a las páginas: `node _build/contenido/build-funciones.js`
    copia este archivo a `funciones/funciones.css`, que es lo que sirven las
-   paginas (el .htaccess deniega /_build/). ESTE es el original; la copia se
-   reescribe en cada ejecucion, asi que no se edita alli.
+   páginas (el .htaccess deniega /_build/). ESTE es el original; la copia se
+   reescribe en cada ejecución, así que no se edita allí.
 
-   Arte: la misma direccion que pages.css, sin inventar una segunda. Banda
-   clara arriba (paleta del hero), hoja calida casi negra debajo, Geist,
-   filetes de un pixel, micro-etiquetas en mono y UN solo naranja. Lo unico
-   nuevo es el ritmo: estas paginas son cortas y responden cuatro preguntas
-   seguidas — que hace, que contesta, que NO hace, y por donde sigues.
+   Paso 14 (28-09-2026), sobre las notas de la reunión con Alex: la página de
+   una función deja de ser «qué hace / qué contesta / qué NO hace» en tres
+   bloques de texto y pasa a ser la PANTALLA —el concepto hotelero que cubre,
+   dos líneas, los puntos y la captura del panel— y el CATÁLOGO de los
+   términos que salen en ella, al estilo de una guía de KPIs. El bloque «lo
+   que no hace» se fue entero: Alex no lo entendía («why do we need this
+   explanation? We should remove it»), y si quien lo encarga no lo entiende,
+   un hotelero tampoco.
 
-   Color: todo sale de :root (styles.css y pages.css). Los cuatro valores que
-   no existian estan abajo con prefijo --pgf-* y con su motivo escrito. No hay
-   ni un literal de color fuera de ese bloque: greparlo antes de publicar.
+   Color: todo sale de :root (styles.css y pages.css). Los valores nuevos van
+   abajo con prefijo --pgf-* y su motivo. Ni un literal fuera de ese bloque.
    ========================================================================== */
 :root {
   /* medidas */
-  --pgf-aside-max: 460px; /* techo de la tarjeta del enlace al panel */
-  --pgf-num: 64px;      /* la canaleta del numero en las listas numeradas */
-  --pgf-rule: 2px;      /* el filete de acento del bloque "lo que no hace" */
+  --pgf-num: 44px;       /* la canaleta del número en las listas numeradas */
+  --pgf-shot-max: 760px; /* techo de la captura: a 1440 la columna mide ~700 */
 
   /* La barra "/" entre migas de pan, sobre la banda clara. Es aria-hidden y
-     puramente decorativa, asi que le basta con separarse del fondo; usar
-     --text-muted la pondria al mismo peso que el enlace y --border (0.10) la
-     hace desaparecer sobre el suelo #cbcbcb del degradado. */
+     puramente decorativa, así que le basta con separarse del fondo. */
   --pgf-crumb-sep: rgba(20, 20, 20, 0.28);
 
-  /* El contorno discontinuo de la cita literal del panel. NO es un control:
-     --sh-control-border (0.36) esta calculado para cosas que se pueden pulsar
-     y aqui se leeria como un boton. Este es el escalon decorativo. */
-  --pgf-stamp-border: rgba(255, 250, 242, 0.16);
+  /* El lavado de una fila al pasar el ratón. --sh-tint (0.035) es el relleno
+     en reposo de esas mismas filas, así que no puede ser también el hover. */
+  --pgf-row-hover: rgba(22, 19, 15, 0.045);
 
-  /* El lavado de una fila del indice al pasar el raton. --sh-tint (0.035) es
-     el relleno en reposo de esas mismas filas, asi que no puede ser tambien
-     el hover: no se notaria el cambio. Un escalon por encima. */
-  --pgf-row-hover: rgba(255, 250, 242, 0.05);
+  /* La baldosa del icono de sección: el papel y el filete del diseño de
+     iconos (#FBF8F4 / #E2D9CE), que son los de la hoja de la casa. */
+  --pgf-ic-bg: var(--sh-surface-2);
+  --pgf-ic-edge: rgba(22, 19, 15, 0.12);
+
+  /* El marco de la captura: sombra apilada (nunca de una capa) y filete. */
+  --pgf-shot-edge: rgba(22, 19, 15, 0.12);
+  --pgf-shot-shadow:
+    0 1px 2px rgba(22, 19, 15, 0.05),
+    0 12px 28px -12px rgba(22, 19, 15, 0.16),
+    0 40px 80px -40px rgba(22, 19, 15, 0.22);
 }
 
 /* --------------------------------------------------------------------------
@@ -45,8 +50,8 @@
    -------------------------------------------------------------------------- */
 .pgf-crumbs {
   display: flex; flex-wrap: wrap; align-items: center; gap: 0 8px;
-  /* los enlaces miden 44px de alto por ergonomia tactil; el margen negativo
-     devuelve el bloque a su sitio optico sin tocar el tamano de letra */
+  /* los enlaces miden 44px de alto por ergonomía táctil; el margen negativo
+     devuelve el bloque a su sitio óptico sin tocar el tamaño de letra */
   margin: -10px 0 12px;
   font-family: var(--font-mono);
   font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
@@ -57,126 +62,134 @@
 .pgf-crumbs [aria-current="page"] { color: var(--text); }
 .pgf-crumbs > * + *::before { content: "/"; margin-right: 8px; color: var(--pgf-crumb-sep); }
 
+/* Las páginas son cortas: la hoja no necesita los 168px de aire de la home. */
+.pgf-sec { padding: clamp(72px, 9vw, 128px) 0; }
+
 /* --------------------------------------------------------------------------
-   "Que hace" — columna de titulo + tarjeta de la pantalla | prosa
-
-   La primera version ponia la prosa a la izquierda y la tarjeta a la derecha,
-   con el titulo encima de la prosa a tamano de .sheet__title (74px). Medido a
-   1440: la prosa se para en sus 58ch (577px) dentro de una columna de 830 y el
-   titulo, que son dos palabras, dejaba media pantalla vacia. Las proporciones
-   5fr/7fr son las de .split en pages.css, que es el mismo problema ya resuelto
-   en nosotros.html: titulo corto a la izquierda, texto largo a la derecha.
+   La pantalla: el concepto, dos líneas, los puntos | la captura del panel
    -------------------------------------------------------------------------- */
-.pgf-lede {
+.pgf-screen {
   display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: clamp(32px, 6vw, 112px); align-items: start;
+  gap: clamp(32px, 5vw, 88px); align-items: start;
 }
-.pgf-lede .sheet__title { max-width: 12ch; font-size: clamp(34px, 3.9vw, 56px); }
-
-/* la tarjeta de bisel doble de la casa (6px de marco + nucleo), aqui con el
-   enlace profundo a la pantalla que la funcion describe */
-.pgf-deep {
-  margin-top: clamp(24px, 3vw, 40px); max-width: var(--pgf-aside-max);
-  padding: 6px; border-radius: var(--r-xl);
-  background: var(--sh-tint); border: 1px solid var(--sh-border);
-  box-shadow: var(--shadow-sh);
-}
-.pgf-deep__core {
-  border-radius: calc(var(--r-xl) - 6px);
-  background: var(--sh-surface); box-shadow: var(--sh-bevel);
-  padding: clamp(24px, 2.4vw, 32px);
-}
-.pgf-deep__k {
-  margin: 0 0 10px; display: flex; align-items: center; gap: 10px;
-  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--sh-text-2);
-}
-.pgf-deep__k::before { content: ""; width: 1px; height: 13px; background: var(--accent-ink); }
-.pgf-deep__name {
-  margin: 0 0 14px;
-  font-size: clamp(24px, 2.2vw, 30px); line-height: 1.1; letter-spacing: -0.025em; font-weight: 500;
+.pgf-screen__head { display: flex; align-items: center; gap: 18px; margin: 0 0 20px; }
+/* La baldosa del icono: la del diseño, a escala de página. */
+.pgf-ic {
+  flex: none; display: grid; place-items: center;
+  width: 64px; height: 64px; border-radius: var(--r-md);
+  background: var(--pgf-ic-bg); border: 1px solid var(--pgf-ic-edge);
   color: var(--sh-text);
 }
-.pgf-deep__note { margin: 0 0 20px; font-size: 14px; line-height: 1.55; color: var(--sh-muted); }
-/* 🔴 El label es largo ("Abrir el catálogo en el panel demo") y .btn lleva
-   white-space: nowrap del sistema: su MIN-CONTENT son 305px, que con el
-   relleno de la tarjeta (44), el bisel (12) y el borde (2) son 363. Dentro de
-   un grid, una pista `1fr` es `minmax(auto, 1fr)` y NO baja de ese
-   min-content: a 360px la columna entera se salia 23px por la derecha. Y NO
-   se ve con un check de scrollWidth, porque styles.css pone `overflow: clip`
-   en `main` y el desbordamiento queda recortado, sin barra horizontal — hay
-   que mirar los rects, no el ancho del documento. Los dos arreglos hacen
-   falta: aqui que el label pueda partirse, y minmax(0,1fr) en la pista. */
-.pgf-deep .btn { width: 100%; justify-content: space-between; white-space: normal; text-align: left; }
-.pgf-deep__url {
-  margin: 14px 0 0; padding-top: 14px; border-top: 1px solid var(--sh-border);
-  font-family: var(--font-mono); font-size: 11.5px; line-height: 1.5; color: var(--sh-muted);
-  overflow-wrap: anywhere;
-}
-
-/* --------------------------------------------------------------------------
-   "Que contesta" — las preguntas en grande, una por fila
-   -------------------------------------------------------------------------- */
-.pgf-qa { list-style: none; margin: 0; padding: 0; }
-.pgf-q {
-  display: grid; grid-template-columns: var(--pgf-num) minmax(0, 1fr);
-  gap: 12px clamp(20px, 3vw, 48px);
-  padding: clamp(24px, 3vw, 40px) 0; border-top: 1px solid var(--sh-border);
-}
-.pgf-q:last-child { border-bottom: 1px solid var(--sh-border); }
-.pgf-q__n {
-  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em;
-  color: var(--accent-ink); padding-top: 0.6em;
-}
-.pgf-q__t {
-  margin: 0; max-width: 26ch;
-  font-size: clamp(21px, 2.2vw, 33px); line-height: 1.16; letter-spacing: -0.025em; font-weight: 500;
+.pgf-screen__title {
+  margin: 0;
+  font-size: clamp(28px, 3.1vw, 44px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 500;
   color: var(--sh-text); text-wrap: balance;
 }
+.pgf-screen__lead {
+  margin: 0 0 28px; max-width: 46ch;
+  font-size: clamp(17px, 1.35vw, 20px); line-height: 1.5; color: var(--sh-text-2);
+}
+
+.pgf-points { list-style: none; margin: 0 0 32px; padding: 0; }
+.pgf-point {
+  display: grid; grid-template-columns: var(--pgf-num) minmax(0, 1fr); gap: 0 8px;
+  padding: 16px 0; border-top: 1px solid var(--sh-border);
+}
+.pgf-point:last-child { border-bottom: 1px solid var(--sh-border); }
+.pgf-point__n { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; color: var(--accent-ink); padding-top: 0.3em; }
+.pgf-point__t { margin: 0; font-size: clamp(16.5px, 1.25vw, 18.5px); line-height: 1.35; font-weight: 500; letter-spacing: -0.01em; color: var(--sh-text); }
+.pgf-point__d { margin: 4px 0 0; font-size: 15px; line-height: 1.5; color: var(--sh-muted); }
+.pgf-screen__cta { margin: 0; }
+/* El label del botón es largo ("Abrir Housekeeping en el panel demo") y .btn
+   lleva white-space: nowrap del sistema: en una pista de grid eso empuja la
+   columna fuera del móvil sin barra horizontal (main tiene overflow: clip).
+   Se deja partir. */
+.pgf-screen__cta .btn { white-space: normal; text-align: left; }
+
+/* La captura: el producto de verdad, enlazado a la misma pantalla. */
+.pgf-shot { margin: 0; max-width: var(--pgf-shot-max); justify-self: end; width: 100%; }
+.pgf-shot__frame {
+  display: block; overflow: hidden;
+  border-radius: var(--r-md); border: 1px solid var(--pgf-shot-edge);
+  background: var(--sh-surface); box-shadow: var(--pgf-shot-shadow);
+  transition: transform var(--t-mid) var(--ease);
+}
+.pgf-shot__frame:hover { transform: translateY(-3px); }
+.pgf-shot__frame img { display: block; width: 100%; height: auto; }
+.pgf-shot figcaption {
+  margin-top: 14px; display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sh-muted);
+}
+.pgf-shot figcaption::before { content: ""; width: 1px; height: 13px; background: var(--accent-ink); }
 
 /* --------------------------------------------------------------------------
-   "Lo que no hace" — el limite declarado, con su cita literal del panel
+   Catálogo de términos — en cada función (los suyos) y en /glosario/ (todos)
+   Una fila por término, como una guía de KPIs: sigla, qué significa,
+   definición, fórmula y unidad.
    -------------------------------------------------------------------------- */
-.pgf-limit {
-  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: clamp(28px, 4vw, 72px); align-items: start;
+.pgf-terms__head {
+  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 32px;
+  margin-bottom: clamp(28px, 3.5vw, 48px);
 }
-.pgf-limit .sheet__title { max-width: 13ch; font-size: clamp(30px, 3.4vw, 48px); }
-.pgf-limit__body { border-left: var(--pgf-rule) solid var(--accent-ink); padding-left: clamp(20px, 2.5vw, 32px); }
-.pgf-limit__body p { margin: 0; max-width: 54ch; font-size: clamp(16.5px, 1.35vw, 20px); line-height: 1.6; color: var(--sh-text-2); }
+.pgf-terms__head .sheet__title { margin-bottom: 0; font-size: clamp(32px, 3.6vw, 52px); }
 
-.pgf-cite {
-  margin: clamp(24px, 3vw, 32px) 0 0; padding: 20px 22px;
-  border: 1px dashed var(--pgf-stamp-border); border-radius: var(--r-md);
-  background: var(--sh-tint);
+.gl-list { margin: 0; padding: 0; }
+.gl-row {
+  display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 4fr) minmax(0, 4fr);
+  gap: 6px clamp(20px, 2.5vw, 40px); align-items: baseline;
+  padding: 18px 0; border-top: 1px solid var(--sh-border);
 }
-.pgf-cite blockquote { margin: 0; font-family: var(--font-mono); font-size: 13.5px; line-height: 1.6; color: var(--sh-text); }
-.pgf-cite figcaption {
-  margin-top: 12px; font-family: var(--font-mono);
-  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sh-muted);
+.gl-list > .gl-row:last-child { border-bottom: 1px solid var(--sh-border); }
+.gl-term { margin: 0; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.gl-code { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; color: var(--sh-text); }
+.gl-en { font-size: 13.5px; line-height: 1.4; color: var(--accent-ink); }
+.gl-es { font-size: 13px; line-height: 1.4; color: var(--sh-muted); }
+.gl-def { margin: 0; font-size: 15px; line-height: 1.55; color: var(--sh-text-2); }
+.gl-f { margin: 0; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.6; color: var(--sh-text); overflow-wrap: anywhere; }
+.gl-f:empty { display: none; }
+.gl-k {
+  display: block; margin-bottom: 2px;
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sh-muted);
 }
+/* La unidad y el enlace al panel viajan juntos bajo la fórmula. El término y
+   la definición ocupan las DOS filas de la ficha: si no, la segunda fila (la
+   de la unidad) empezaba donde acaba la columna más alta —el término con su
+   sigla, su nombre inglés y el español— y dejaba un hueco bajo la fórmula. */
+.gl-term, .gl-def { grid-row: span 2; }
+.gl-meta {
+  grid-column: 3; margin: 2px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px;
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--sh-muted);
+}
+.gl-meta a {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 32px;
+  color: var(--accent-ink); text-decoration: none;
+}
+.gl-meta a:hover { color: var(--sh-text); }
 
 /* --------------------------------------------------------------------------
-   Indice: las ocho, con nombre simple + descripcion corta
+   Índice de funciones: las ocho, en sus tres grupos, con su icono
    -------------------------------------------------------------------------- */
+.pgf-groups { display: grid; gap: clamp(40px, 5vw, 64px); }
+.pgf-group__t {
+  display: flex; align-items: center; gap: 10px; margin: 0 0 12px;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--sh-text-2);
+}
+.pgf-group__t::before { content: ""; width: 1px; height: 13px; background: var(--accent-ink); }
 .pgf-list { list-style: none; margin: 0; padding: 0; }
 .pgf-item { border-top: 1px solid var(--sh-border); }
 .pgf-item:last-child { border-bottom: 1px solid var(--sh-border); }
 .pgf-item > a {
-  display: grid; grid-template-columns: var(--pgf-num) minmax(0, 1fr) max-content 44px;
-  align-items: center; gap: clamp(16px, 3vw, 48px);
-  padding: clamp(24px, 2.8vw, 36px) clamp(12px, 1.4vw, 20px);
+  display: grid; grid-template-columns: 64px minmax(0, 1fr) max-content 44px;
+  align-items: center; gap: clamp(16px, 2.6vw, 40px);
+  padding: clamp(18px, 2.2vw, 28px) clamp(12px, 1.4vw, 20px);
   margin-inline: calc(-1 * clamp(12px, 1.4vw, 20px));
   border-radius: var(--r-md); text-decoration: none; color: var(--sh-text);
   transition: background-color var(--t-fast) var(--ease);
 }
 .pgf-item > a:hover { background: var(--pgf-row-hover); }
-.pgf-item__n { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; color: var(--accent-ink); align-self: start; padding-top: 0.5em; }
-.pgf-item__t { display: block; font-size: clamp(26px, 3vw, 42px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.05; }
-.pgf-item__d { display: block; margin-top: 10px; max-width: 54ch; font-size: clamp(15px, 1.2vw, 17px); line-height: 1.5; color: var(--sh-muted); }
-/* La pantalla del panel va en su PROPIA columna, alineada a la derecha. Antes
-   iba apilada bajo la descripcion y la fila dejaba ~500px de vacio entre el
-   texto y el aro de la flecha; ahora ese hueco lo ocupa el dato. */
+.pgf-item__t { display: block; font-size: clamp(24px, 2.6vw, 36px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.05; }
+.pgf-item__d { display: block; margin-top: 8px; max-width: 54ch; font-size: clamp(15px, 1.15vw, 17px); line-height: 1.5; color: var(--sh-muted); }
 .pgf-item__s {
   display: block; text-align: right; white-space: nowrap;
   font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
@@ -187,31 +200,39 @@
   border: 1px solid var(--sh-control-border); color: var(--sh-text);
   transition: background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
 }
-.pgf-item > a:hover .pgf-go { background: var(--sh-text); color: var(--ink); transform: translate(2px, -1px); }
+.pgf-item > a:hover .pgf-go { background: var(--sh-text); color: var(--sh-bg); transform: translate(2px, -1px); }
+
+/* El remate del índice: el glosario, a una fila de distancia. */
+.pgf-gl-cta {
+  margin-top: clamp(40px, 5vw, 64px); padding: clamp(22px, 2.6vw, 32px);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px;
+  border-radius: var(--r-lg); border: 1px solid var(--sh-border); background: var(--sh-tint);
+}
+.pgf-gl-cta p { margin: 0; max-width: 60ch; font-size: 16px; line-height: 1.55; color: var(--sh-text-2); }
+.pgf-gl-cta strong { display: block; margin-bottom: 4px; font-size: 19px; font-weight: 500; letter-spacing: -0.015em; color: var(--sh-text); }
 
 /* --------------------------------------------------------------------------
-   Pie de pagina de la funcion: anterior / siguiente / indice
+   Pie de la función: anterior / siguiente / índice
    -------------------------------------------------------------------------- */
 .pgf-pager { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(16px, 2vw, 24px); }
 .pgf-pager__link {
   display: grid; align-content: start; gap: 10px;
-  padding: clamp(22px, 2.6vw, 34px);
+  padding: clamp(22px, 2.6vw, 32px);
   border-radius: var(--r-lg); border: 1px solid var(--sh-border); background: var(--sh-tint);
   text-decoration: none; color: var(--sh-text);
   transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
 }
 .pgf-pager__link:hover { background: var(--pgf-row-hover); border-color: var(--sh-control-border); transform: translateY(-2px); }
-.pgf-pager__link--next { grid-column: 2; text-align: right; }
+.pgf-pager__link--next { grid-column: 2; }
 .pgf-pager__k {
-  display: flex; align-items: center; gap: 10px;
   font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sh-muted);
 }
-.pgf-pager__link--next .pgf-pager__k { justify-content: flex-end; }
+.pgf-pager__row { display: flex; align-items: center; gap: 12px; }
 .pgf-pager__t { font-size: clamp(18px, 1.7vw, 24px); line-height: 1.18; letter-spacing: -0.02em; font-weight: 500; }
 .pgf-pager__d { font-size: 14.5px; line-height: 1.55; color: var(--sh-muted); }
-.pgf-pager__all { margin: clamp(24px, 3vw, 36px) 0 0; padding-top: 20px; border-top: 1px solid var(--sh-border); }
+.pgf-pager__all { display: flex; flex-wrap: wrap; gap: 12px; margin: clamp(24px, 3vw, 36px) 0 0; padding-top: 20px; border-top: 1px solid var(--sh-border); }
 
-/* nota al pie de la hoja: de que hotel son las cifras que se acaban de leer */
+/* nota al pie de la hoja: de qué hotel son las pantallas enlazadas */
 .pgf-note {
   display: flex; gap: 14px; margin: clamp(32px, 4vw, 48px) 0 0; padding-top: 20px;
   border-top: 1px solid var(--sh-border);
@@ -220,42 +241,93 @@
 .pgf-note::before { content: ""; flex: none; width: 1px; background: var(--accent-ink); }
 
 /* --------------------------------------------------------------------------
+   /glosario/ — el catálogo entero
+   -------------------------------------------------------------------------- */
+.gl-top {
+  display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 24px clamp(32px, 5vw, 80px); align-items: end;
+  margin-bottom: clamp(28px, 3.5vw, 44px);
+}
+.gl-top .sheet__title { margin-bottom: 0; }
+/* El buscador solo existe con JS: sin JS la página ya es la lista entera. */
+.gl-tools { display: none; }
+.has-js .gl-tools { display: grid; gap: 10px; }
+.gl-search { display: grid; gap: 8px; }
+.gl-search__k { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sh-text-2); }
+.gl-search input {
+  width: 100%; min-height: 48px; box-sizing: border-box; padding: 12px 16px;
+  border-radius: var(--r-sm); border: 1px solid var(--sh-field-border);
+  background: var(--sh-surface); color: var(--sh-text);
+  font: inherit; font-size: 16px; /* 16px: iOS no amplía al enfocar (paso 8) */
+}
+.gl-search input::placeholder { color: var(--sh-muted); opacity: 1; }
+.gl-search input:focus-visible { outline: 2px solid var(--sh-text); outline-offset: 2px; }
+.gl-count { margin: 0; font-family: var(--font-mono); font-size: 12px; color: var(--sh-muted); }
+
+.gl-index { display: grid; gap: 14px; margin-bottom: clamp(40px, 5vw, 64px); padding-top: 20px; border-top: 1px solid var(--sh-border); }
+.gl-index__row { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; align-items: baseline; }
+.gl-index__k { margin: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sh-muted); }
+.gl-index ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.gl-index a {
+  display: inline-flex; align-items: center; min-height: 36px; padding: 6px 14px;
+  border-radius: var(--r-pill); border: 1px solid var(--sh-border-strong); background: var(--sh-surface);
+  font-size: 13.5px; color: var(--sh-text-2); text-decoration: none;
+  transition: border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.gl-index a:hover { border-color: var(--sh-control-border); color: var(--sh-text); }
+
+.gl-part { margin: 0 0 8px; font-size: clamp(30px, 3.4vw, 48px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.05; color: var(--sh-text); }
+.gl-part__lead { margin: 0 0 clamp(28px, 3.5vw, 44px); max-width: 60ch; font-size: 16px; line-height: 1.55; color: var(--sh-text-2); }
+.gl-part-wrap + .gl-part-wrap { margin-top: clamp(64px, 8vw, 112px); }
+.gl-group { scroll-margin-top: 96px; }
+.gl-group + .gl-group { margin-top: clamp(36px, 4.5vw, 56px); }
+.gl-group__t {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+  margin: 0 0 4px; padding-bottom: 10px;
+  font-size: clamp(19px, 1.6vw, 23px); font-weight: 500; letter-spacing: -0.015em; color: var(--sh-text);
+}
+.gl-group__n { font-family: var(--font-mono); font-size: 12px; font-weight: 400; color: var(--sh-muted); }
+.gl-row { scroll-margin-top: 96px; }
+.gl-empty { margin: 0 0 24px; font-size: 16px; color: var(--sh-text-2); }
+
+/* --------------------------------------------------------------------------
    Responsive
    -------------------------------------------------------------------------- */
 @media (max-width: 1100px) {
-  /* la pantalla deja de tener columna propia y vuelve bajo la descripcion:
-     a 1024 el nombre mas largo ("Métricas · Ocupación") se comia el titulo */
-  .pgf-item > a { grid-template-columns: var(--pgf-num) minmax(0, 1fr) 44px; }
-  .pgf-item__s { grid-column: 2; grid-row: 2; text-align: left; margin-top: 12px; white-space: normal; }
+  .pgf-item > a { grid-template-columns: 64px minmax(0, 1fr) 44px; }
+  .pgf-item__s { grid-column: 2; grid-row: 2; text-align: left; margin-top: 10px; white-space: normal; }
   .pgf-item__c { grid-column: 2; grid-row: 1; }
-  .pgf-item__n { grid-row: 1 / span 2; }
+  .pgf-item__ic { grid-row: 1 / span 2; }
   .pgf-go { grid-column: 3; grid-row: 1 / span 2; }
+  .gl-row { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
+  .gl-term { grid-row: span 3; }
+  .gl-def { grid-row: auto; }
+  .gl-row .gl-f { grid-column: 2; }
+  .gl-meta { grid-column: 2; }
 }
 @media (max-width: 900px) {
-  /* minmax(0,1fr), no 1fr: ver la nota del boton de .pgf-deep */
-  .pgf-lede, .pgf-limit, .pgf-pager { grid-template-columns: minmax(0, 1fr); }
-  .pgf-lede .sheet__title { max-width: none; }
-  .pgf-deep { max-width: none; }
-  .pgf-pager__link--next { grid-column: auto; text-align: left; }
-  .pgf-pager__link--next .pgf-pager__k { justify-content: flex-start; }
-  .pgf-limit .sheet__title { max-width: none; }
-  .pgf-q { grid-template-columns: 40px minmax(0, 1fr); }
-  .pgf-q__t { max-width: none; }
-  .pgf-item > a { grid-template-columns: 40px minmax(0, 1fr); }
-  .pgf-item__d, .pgf-item__s { max-width: none; }
+  /* minmax(0,1fr), no 1fr: ver la nota del botón de .pgf-screen__cta */
+  .pgf-screen, .pgf-pager, .gl-top { grid-template-columns: minmax(0, 1fr); }
+  .pgf-shot { justify-self: stretch; max-width: none; }
+  .pgf-pager__link--next { grid-column: auto; }
+  .pgf-item > a { grid-template-columns: 52px minmax(0, 1fr); }
+  .pgf-item__ic .pgf-ic { width: 52px; height: 52px; }
   .pgf-go { display: none; }
+  .gl-index__row { grid-template-columns: minmax(0, 1fr); gap: 8px; }
 }
-@media (max-width: 560px) {
-  .pgf-limit__body { padding-left: 16px; }
-  .pgf-deep__core { padding: 22px; }
-  .pgf-cite { padding: 16px 18px; }
+@media (max-width: 640px) {
+  .gl-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .gl-term, .gl-def { grid-row: auto; }
+  .gl-row .gl-f, .gl-meta { grid-column: 1; }
+  .gl-f { margin-top: 4px; }
+  .pgf-ic { width: 56px; height: 56px; }
 }
 
 /* --------------------------------------------------------------------------
-   Movimiento reducido — styles.css ya anula toda transicion; se repite aqui
+   Movimiento reducido — styles.css ya anula toda transición; se repite aquí
    para que el desplazamiento del hover no sobreviva por descuido.
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  .pgf-pager__link:hover { transform: none; }
+  .pgf-pager__link:hover, .pgf-shot__frame:hover { transform: none; }
   .pgf-item > a:hover .pgf-go { transform: none; }
 }

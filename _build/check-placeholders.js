@@ -20,7 +20,11 @@ for (const f of pages) {
   const lines = html.split('\n');
   const hits = [];
   lines.forEach((l, i) => {
-    if (/data-placeholder=|\[[^\]\n]*por confirmar\]|PENDIENTE|\[(Razón social|NIF|Domicilio[^\]]*|Nombre del fundador|fecha|Registro mercantil)\]/i.test(l)) hits.push((i + 1) + ': ' + l.trim().slice(0, 110));
+    /* PENDIENTE va aparte y SIN /i: el marcador es la palabra en mayúsculas
+       (href="https://wa.me/PENDIENTE"). Con la bandera i casaba con cualquier
+       «pendiente» del texto —«llegadas pendientes», «independientes»— y con
+       --strict esas frases normales habrían cerrado la puerta. */
+    if (/data-placeholder=|\[[^\]\n]*por confirmar\]|\[(Razón social|NIF|Domicilio[^\]]*|Nombre del fundador|fecha|Registro mercantil)\]/i.test(l) || /PENDIENTE/.test(l)) hits.push((i + 1) + ': ' + l.trim().slice(0, 110));
     else if (/<!--\s*TODO/i.test(l)) hits.push((i + 1) + ': ' + l.trim().slice(0, 110));
   });
   if (!hits.length) continue;

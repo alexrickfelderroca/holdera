@@ -1926,6 +1926,120 @@ main {
   .mnu__chev, .msub__chev, .mnu__arrow, .mnu__item::before { transition: none; }
 }
 
+/* ==========================================================================
+   PASO 14 — Términos técnicos con su ventana, e iconos de sección
+
+   Reunión con Alex (27-09-2026): «tener el lenguaje técnico en bold y poder
+   poner el cursor encima y que salga una ventana pequeña que te defina what
+   it stands for». El marcado es <abbr class="term" data-term="…"> y lo
+   escriben los generadores desde _build/contenido/glosario.json; la ventana
+   la monta terminos.js. Aquí solo el aspecto.
+
+   Los iconos de sección (.sic) son los del diseño «Iconos secciones Holdera»
+   que pasó Alex: retícula de 48, trazo de 1,6 y un único detalle en cobre.
+   Los escribe _build/contenido/iconos.js.
+
+   Va ANTES del bloque logos:brand, que _build/integraciones/build-brand-tokens.js
+   reescribe entre sus dos marcas y que tiene que seguir siendo el final del
+   archivo.
+   ========================================================================== */
+:root {
+  /* El cobre del diseño de iconos: el único color de cada icono. Es
+     decorativo —el icono siempre lleva su nombre escrito al lado—, así que
+     no debe contraste; es el valor exacto del diseño. */
+  --sic-accent: #b8612a;
+  /* El subrayado punteado de un término. Dice «aquí hay una definición» sin
+     confundirse con un enlace, que en este sitio nunca va punteado. */
+  --term-line: rgba(22, 19, 15, 0.42);
+  /* La ventana: tinta cálida y texto claro, la pareja on-ink de la casa.
+     Medido sobre #16130f: texto 17,1:1 · secundario 10,2:1 · cobre 8,7:1. */
+  --term-tip-bg: #16130f;
+  --term-tip-text: #f7f5f1;
+  --term-tip-muted: rgba(247, 245, 241, 0.74);
+  --term-tip-rule: rgba(247, 245, 241, 0.16);
+  --term-tip-accent: #f59b45;
+  /* Sombra apilada, nunca de una capa (CLAUDE.md global). */
+  --term-tip-shadow:
+    0 1px 2px rgba(22, 19, 15, 0.18),
+    0 8px 20px -6px rgba(22, 19, 15, 0.30),
+    0 24px 48px -16px rgba(22, 19, 15, 0.34);
+  /* Por encima de la barra (30) y del grano (60), por debajo del drawer (80):
+     una ventana abierta no puede quedar tapada por la nav fija, y el drawer
+     abierto sí la tiene que tapar a ella. */
+  --z-tip: 70;
+}
+
+/* ---------------------------------------------------------------- iconos */
+.sic { display: block; flex: none; color: inherit; overflow: visible; }
+.sic .sic-a { stroke: var(--sic-accent); }
+.sic .sic-af { fill: var(--sic-accent); }
+.sic .sic-dot { fill: currentColor; stroke: none; }
+
+/* Los mismos iconos en el desplegable de Funciones y en el drawer: 24 px a la
+   izquierda del nombre, como la fila «EN LA WEB · 24 PX» del diseño. */
+.mnu__item--ic { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 0 12px; align-items: start; padding-left: 14px; }
+.mnu__item--ic .sic { margin-top: 1px; color: var(--mnu-text); }
+.mnu__txt { display: block; min-width: 0; }
+.msub__item--ic { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 0 12px; align-items: start; }
+.msub__item--ic .sic { margin-top: 1px; color: var(--mnu-text); }
+.msub__txt { display: block; min-width: 0; }
+.mnu__foot-links { display: flex; align-items: center; gap: 24px; }
+
+/* --------------------------------------------------------------- términos */
+abbr.term {
+  font-weight: 600;
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--term-line);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  text-decoration-skip-ink: none;
+  cursor: help;
+  border-radius: 3px;
+  transition: text-decoration-color var(--t-fast) var(--ease);
+}
+abbr.term:hover,
+abbr.term.is-open { text-decoration-color: var(--accent-ink); }
+abbr.term:focus-visible { outline: 2px solid var(--sh-text); outline-offset: 2px; }
+
+.term-tip {
+  position: fixed; left: 0; top: 0; z-index: var(--z-tip);
+  box-sizing: border-box;
+  width: max-content; max-width: min(320px, calc(100vw - 16px));
+  margin: 0; padding: 12px 14px 13px;
+  border-radius: 12px;
+  background: var(--term-tip-bg); color: var(--term-tip-text);
+  box-shadow: var(--term-tip-shadow);
+  font-family: var(--font); font-size: 13px; font-weight: 400; line-height: 1.45;
+  letter-spacing: 0; text-align: left; text-transform: none; white-space: normal;
+  opacity: 0; transform: translateY(4px);
+  transition: opacity 140ms var(--ease), transform 140ms var(--ease);
+}
+.term-tip.is-below { transform: translateY(-4px); }
+.term-tip.is-in { opacity: 1; transform: none; }
+.term-tip[hidden], .term-tip [hidden] { display: none; }
+/* La flecha apunta al término aunque la ventana se haya corrido para caber. */
+.term-tip::after {
+  content: ""; position: absolute; left: var(--tip-arrow, 50%); bottom: -5px;
+  width: 10px; height: 10px; margin-left: -5px;
+  background: var(--term-tip-bg); border-radius: 2px; transform: rotate(45deg);
+}
+.term-tip.is-below::after { bottom: auto; top: -5px; }
+.term-tip__head { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; }
+.term-tip__t { font-size: 14px; font-weight: 600; letter-spacing: -0.005em; }
+.term-tip__en { font-size: 12.5px; color: var(--term-tip-accent); }
+.term-tip__es { margin: 2px 0 0; font-size: 12px; color: var(--term-tip-muted); }
+.term-tip__d { margin: 6px 0 0; }
+.term-tip__f {
+  margin: 8px 0 0; padding-top: 8px; border-top: 1px solid var(--term-tip-rule);
+  font-family: var(--font-mono); font-size: 11.5px; line-height: 1.5; color: var(--term-tip-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .term-tip, .term-tip.is-below { transition: none; transform: none; }
+  abbr.term { transition: none; }
+}
+
 /* logos:brand-start */
 /* Generado por `node _build/integraciones/build-brand-tokens.js`. No editar a mano:
    se reescribe entero. El color de cada marca es el que publica su empresa,

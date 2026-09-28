@@ -1,0 +1,96 @@
+/* ==========================================================================
+   HOLDERA — ajustes de la web sobre el panel demo capturado (paso 14).
+
+   FUENTE: _build/panel/holdera-panel.css. Lo copia a panel/_holdera/ el
+   script _build/panel-copy.js. La carpeta panel/ se borra entera en cada
+   recaptura: no se edita allí.
+
+   Reunión con Alex (27-09-2026): «el panel demo en general no es demasiado
+   user friendly» y, para todo el sitio, «hay demasiadas explicaciones sobre
+   una terminología que el que lo lee ya entiende». Dos cosas:
+
+   1. FUERA LAS EXPLICACIONES LARGAS. Las preguntas retóricas bajo cada
+      gráfico, los pies de varias líneas y las notas que explicaban cómo leer
+      una comparación. Se ocultan por CSS y no se borran del HTML a propósito:
+      borrar nodos de un árbol que React hidrata rompe la hidratación, y
+      display:none no toca el árbol. Las cifras que llevaban esos párrafos
+      siguen en los gráficos y en las fichas.
+   2. LAS SIGLAS, DESTACADAS Y CON SU VENTANA (ver terminos-panel.js).
+   ========================================================================== */
+
+.rv-block-note,
+.rv-final-note,
+.rv-panel-question,
+.rv-panel-foot,
+.rv-mix-caption,
+.rv-readout-measure,
+.rv-total-explain,
+.bkx-pace-note,
+.bkd-words {
+  display: none !important;
+}
+
+/* La sigla: subrayado de puntos y un punto más de peso. ::highlight no admite
+   font-weight (solo color, decoración y sombra), así que el peso es una
+   sombra de 0,3 px a cada lado: engorda el trazo sin mover una letra. */
+::highlight(hx-term) {
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 1px;
+  text-shadow: 0.3px 0 0 currentColor, -0.3px 0 0 currentColor;
+}
+
+:root {
+  --hx-tip-bg: #1c1c1e;
+  --hx-tip-text: #ffffff;
+  --hx-tip-muted: rgba(235, 235, 245, 0.78);
+  --hx-tip-accent: #ffb340;
+  --hx-tip-rule: rgba(235, 235, 245, 0.18);
+  --hx-tip-edge: rgba(0, 0, 0, 0);
+  --hx-tip-shadow: 0 1px 2px rgba(0, 0, 0, 0.14), 0 8px 20px -6px rgba(0, 0, 0, 0.28), 0 24px 48px -16px rgba(0, 0, 0, 0.30);
+}
+/* En oscuro la ventana sube un escalón sobre el lienzo (#1C1C1E) en vez de
+   fundirse con él, y lleva filete. */
+:root[data-theme="dark"] {
+  --hx-tip-bg: #3a3a3c;
+  --hx-tip-edge: rgba(235, 235, 245, 0.16);
+  --hx-tip-shadow: 0 1px 2px rgba(0, 0, 0, 0.40), 0 12px 32px -8px rgba(0, 0, 0, 0.60);
+}
+
+.hx-tip {
+  position: fixed; left: 0; top: 0; z-index: 10000;
+  box-sizing: border-box;
+  width: max-content; max-width: min(320px, calc(100vw - 16px));
+  margin: 0; padding: 11px 14px 12px;
+  border-radius: 12px; border: 1px solid var(--hx-tip-edge);
+  background: var(--hx-tip-bg); color: var(--hx-tip-text);
+  box-shadow: var(--hx-tip-shadow);
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+  font-size: 13px; font-weight: 400; line-height: 1.42; letter-spacing: -0.003em;
+  text-align: left; text-transform: none; white-space: normal;
+  pointer-events: auto;
+  opacity: 0; transform: translateY(4px);
+  transition: opacity 140ms cubic-bezier(.25,.1,.25,1), transform 140ms cubic-bezier(.25,.1,.25,1);
+}
+.hx-tip.is-below { transform: translateY(-4px); }
+.hx-tip.is-in { opacity: 1; transform: none; }
+.hx-tip[hidden], .hx-tip [hidden] { display: none; }
+.hx-tip::after {
+  content: ""; position: absolute; left: var(--hx-arrow, 50%); bottom: -5px;
+  width: 10px; height: 10px; margin-left: -5px;
+  background: var(--hx-tip-bg); border-radius: 2px; transform: rotate(45deg);
+}
+.hx-tip.is-below::after { bottom: auto; top: -5px; }
+.hx-tip__head { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; }
+.hx-tip__t { font-size: 14px; font-weight: 600; }
+.hx-tip__en { font-size: 12.5px; color: var(--hx-tip-accent); }
+.hx-tip__d { margin: 5px 0 0; }
+.hx-tip__f {
+  margin: 8px 0 0; padding-top: 8px; border-top: 1px solid var(--hx-tip-rule);
+  font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: 11.5px; line-height: 1.5; color: var(--hx-tip-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hx-tip, .hx-tip.is-below { transition: none; transform: none; }
+}
