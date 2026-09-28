@@ -58,6 +58,7 @@ const { icon } = require('./iconos');
 const ROOT = path.resolve(__dirname, '..', '..');
 const SHELL = path.join(ROOT, '_build', 'shell');
 const OUT_DIR = path.join(ROOT, 'funciones');
+const COMO_DIR = path.join(ROOT, 'como-funciona');
 const GL_DIR = path.join(ROOT, 'glosario');
 const CSS_SRC = path.join(ROOT, '_build', 'parts', 'pagina-funcion.css');
 const SHOTS = path.join(ROOT, 'assets', 'img', 'funciones');
@@ -69,8 +70,17 @@ const CSS_FUNDIDO =
 
 const SRC = JSON.parse(fs.readFileSync(path.join(__dirname, 'features.json'), 'utf8'));
 const features = SRC.features.slice().sort((a, b) => a.orden - b.orden);
-const total = features.length;
+/* «Cómo funciona» (reunión del 28-09-2026): trazabilidad, definiciones y
+   catálogo no son funciones, explican cómo trabaja el producto. Tienen su
+   propia sección, su índice y sus URL (/como-funciona/<slug>/). */
+const COMO = SRC.comoFunciona;
+const esComo = (f) => COMO.claves.includes(f.clave);
+const funciones = features.filter((f) => !esComo(f));
+const total = funciones.length;
 const byClave = new Map(features.map((f) => [f.clave, f]));
+const comos = COMO.claves.map((c) => byClave.get(c));
+const base = (f) => (esComo(f) ? 'como-funciona' : 'funciones');
+const listaDe = (f) => (esComo(f) ? comos : funciones);
 const grupoDe = new Map();
 for (const g of SRC.grupos) for (const c of g.claves) grupoDe.set(c, g);
 
@@ -91,9 +101,17 @@ const IMG_ALT = 'Holdera — software de operaciones para hoteles. Todo tu hotel
 const INDICE = {
   path: '/funciones/',
   title: 'Funciones del software hotelero | Holdera',
-  metaDescription: 'Las ocho pantallas de Holdera, una por página: qué KPIs enseña cada una, en qué términos, y su captura del panel demo.',
-  h1: '<span class="ln">Ocho pantallas,</span> <span class="ln">un solo hotel.</span>',
-  lead: 'Operación, revenue y trazabilidad, pantalla a pantalla.',
+  metaDescription: 'Las cinco pantallas de Holdera, una por página: qué KPIs enseña cada una, en qué términos, y su captura del panel demo.',
+  h1: '<span class="ln">Cinco pantallas,</span> <span class="ln">un solo hotel.</span>',
+  lead: 'La operación y lo comercial, pantalla a pantalla.',
+};
+
+const INDICE_COMO = {
+  path: '/como-funciona/',
+  title: 'Cómo funciona: trazabilidad y KPIs hoteleros | Holdera',
+  metaDescription: 'Cómo trabaja Holdera: cada cifra trazada hasta su registro, cada KPI con su definición y su fórmula, y el catálogo de 57 KPIs hoteleros.',
+  h1: '<span class="ln">Cómo funciona,</span> <span class="ln">cifra a cifra.</span>',
+  lead: 'De dónde sale cada número y cómo se calcula.',
 };
 
 const GLOSARIO = {
@@ -175,9 +193,10 @@ function head(o) {
 function migas(actual, seccion) {
   const filas = ['<a href="index.html">Inicio</a>'];
   if (seccion === 'glosario') filas.push('<span aria-current="page">Glosario</span>');
+  else if (actual === null && seccion === 'como') filas.push('<span aria-current="page">Cómo funciona</span>');
   else if (actual === null) filas.push('<span aria-current="page">Funciones</span>');
   else {
-    filas.push('<a href="funciones/">Funciones</a>');
+    filas.push(seccion === 'como' ? '<a href="como-funciona/">Cómo funciona</a>' : '<a href="funciones/">Funciones</a>');
     filas.push(`<span aria-current="page">${esc(actual)}</span>`);
   }
   return `<nav class="pgf-crumbs" aria-label="Migas de pan" data-enter style="--d:60">
@@ -262,10 +281,19 @@ function idsDe(f) {
 
 /* ------------------------------------------------------------ una función */
 function paginaFuncion(f, i) {
-  const url = `/funciones/${f.slug}/`;
-  const prev = i > 0 ? features[i - 1] : null;
-  const next = i < total - 1 ? features[i + 1] : null;
+  const url = `/${base(f)}/${f.slug}/`;
+  const L = listaDe(f);
+  const k = L.indexOf(f);
+  const prev = k > 0 ? L[k - 1] : null;
+  const next = k < L.length - 1 ? L[k + 1] : null;
   const g = grupoDe.get(f.clave);
+  const etiqueta = esComo(f)
+    ? `Cómo funciona · ${dosDigitos(k + 1)} de ${dosDigitos(L.length)}`
+    : `Función ${dosDigitos(f.orden)} de ${dosDigitos(total)} · ${esc(g.nombre)}`;
+  const verTodas = esComo(f)
+    ? `<a class="btn btn--secondary" href="como-funciona/"><span>Cómo funciona</span>${flecha('btn__icon')}</a>
+          <a class="btn btn--secondary" href="funciones/"><span>Ver las ${esc(String(total))} funciones</span>${flecha('btn__icon')}</a>`
+    : `<a class="btn btn--secondary" href="funciones/"><span>Ver las ${esc(String(total))} funciones</span>${flecha('btn__icon')}</a>`;
 
   const puntos = f.puntos.map((p, k) => `            <li class="pgf-point">
               <span class="pgf-point__n" aria-hidden="true">${dosDigitos(k + 1)}</span>
@@ -280,7 +308,7 @@ function paginaFuncion(f, i) {
               ${fila(t, true)}
             </div>`).join('\n');
 
-  const pagerLink = (feat, tipo) => `          <a class="pgf-pager__link pgf-pager__link--${tipo}" href="funciones/${feat.slug}/" rel="${tipo}">
+  const pagerLink = (feat, tipo) => `          <a class="pgf-pager__link pgf-pager__link--${tipo}" href="${base(feat)}/${feat.slug}/" rel="${tipo}">
             <span class="pgf-pager__k">${tipo === 'prev' ? 'Anterior' : 'Siguiente'}</span>
             <span class="pgf-pager__row">${icon(feat.clave, 28)}<span class="pgf-pager__t">${esc(feat.nombre)}</span></span>
             <span class="pgf-pager__d">${esc(plain(feat.frase))}</span>
@@ -299,7 +327,7 @@ function paginaFuncion(f, i) {
 
 ${header()}
 
-${banda(migas(f.nombre), render(f.titulo, f.clave), render(f.frase, f.clave))}
+${banda(migas(f.nombre, esComo(f) ? 'como' : undefined), render(f.titulo, f.clave), render(f.frase, f.clave))}
 
   <!-- ============ CONTENT SHEET ============ -->
   <main id="contenido" class="page__main">
@@ -307,7 +335,7 @@ ${banda(migas(f.nombre), render(f.titulo, f.clave), render(f.frase, f.clave))}
     <section class="sheet sheet--intro pgf-sec" id="pantalla" aria-labelledby="pt-title">
       <div class="container pgf-screen">
         <div class="pgf-screen__copy">
-          <p class="tag reveal" data-reveal="up">Función ${dosDigitos(f.orden)} de ${dosDigitos(total)} · ${esc(g.nombre)}</p>
+          <p class="tag reveal" data-reveal="up">${etiqueta}</p>
           <div class="pgf-screen__head reveal" data-reveal="up" style="--i:1">
             <span class="pgf-ic">${icon(f.clave, 40)}</span>
             <h2 id="pt-title" class="pgf-screen__title">${render(f.encuadre, f.clave)}</h2>
@@ -348,7 +376,7 @@ ${filas}
 ${pager}
         </nav>
         <p class="pgf-pager__all reveal" data-reveal="up" style="--i:3">
-          <a class="btn btn--secondary" href="funciones/"><span>Ver las ${esc(String(total))} funciones</span>${flecha('btn__icon')}</a>
+          ${verTodas}
           <a class="btn btn--secondary" href="glosario/"><span>Glosario de KPIs</span>${flecha('btn__icon')}</a>
         </p>
       </div>
@@ -414,6 +442,67 @@ ${grupos}
         <div class="pgf-gl-cta reveal" data-reveal="up">
           <p><strong>Glosario de KPIs y términos</strong>${render('Las 57 fórmulas y todas las siglas: [[ADR]], [[RevPAR]], [[OTB]], [[STLY]], [[OOO]]…', 'indice')}</p>
           <a class="btn btn--secondary" href="glosario/"><span>Abrir el glosario</span>${flecha('btn__icon')}</a>
+        </div>
+        <div class="pgf-gl-cta reveal" data-reveal="up">
+          <p><strong>Cómo funciona</strong>Trazabilidad, definiciones y catálogo de KPIs: de dónde sale cada cifra y cómo se calcula.</p>
+          <a class="btn btn--secondary" href="como-funciona/"><span>Ver cómo funciona</span>${flecha('btn__icon')}</a>
+        </div>
+      </div>
+    </section>
+
+${cta()}  </main>
+
+${pie()}`;
+}
+
+/* ----------------------------------------------- el índice de Cómo funciona */
+function paginaComo() {
+  const filas = comos.map((f) => `            <li class="pgf-item reveal" data-reveal="up">
+              <a href="como-funciona/${f.slug}/">
+                <span class="pgf-item__ic"><span class="pgf-ic">${icon(f.clave, 40)}</span></span>
+                <span class="pgf-item__c">
+                  <span class="pgf-item__t">${esc(f.nombre)}</span>
+                  <span class="pgf-item__d">${esc(plain(f.frase))}</span>
+                </span>
+                <span class="pgf-item__s">Pantalla · ${esc(f.pantalla)}</span>
+                ${flecha('pgf-go')}
+              </a>
+            </li>`).join('\n');
+
+  return `${head({
+    title: INDICE_COMO.title,
+    description: INDICE_COMO.metaDescription,
+    ogTitle: 'Cómo funciona Holdera — cada cifra con su origen',
+    ogDescription: INDICE_COMO.metaDescription,
+  })}
+<body class="page">
+  <a class="skip-link" href="${INDICE_COMO.path}#contenido">Saltar al contenido</a>
+  <div class="grain" aria-hidden="true"></div>
+
+${header()}
+
+${banda(migas(null, 'como'), INDICE_COMO.h1, esc(INDICE_COMO.lead))}
+
+  <!-- ============ CONTENT SHEET ============ -->
+  <main id="contenido" class="page__main">
+
+    <section class="sheet sheet--intro pgf-sec" id="todas" aria-labelledby="todas-title">
+      <div class="container">
+        <div class="sec__head">
+          <p class="tag reveal" data-reveal="up">Cómo funciona</p>
+          <h2 id="todas-title" class="sheet__title reveal" data-reveal="up" style="--i:1">Cada cifra, <span class="fade">con su origen.</span></h2>
+          <p class="sheet__lead reveal" data-reveal="up" style="--i:2">No son funciones aparte: es cómo trabaja Holdera por debajo de todas ellas.</p>
+        </div>
+        <div class="pgf-groups">
+        <div class="pgf-group">
+          <ol class="pgf-list">
+${filas}
+          </ol>
+        </div>
+        </div>
+        <div class="pgf-gl-cta reveal" data-reveal="up">
+          <p><strong>Funciones</strong>${esc('Las pantallas del producto: Hoy, Habitaciones, Housekeeping, Revenue y Reservas.')}</p>
+          <a class="btn btn--secondary" href="funciones/"><span>Ver las ${esc(String(total))} funciones</span>${flecha('btn__icon')}</a>
         </div>
       </div>
     </section>
@@ -534,13 +623,31 @@ ${items}
 
   const panel = `<div class="mnu__panel mnu__panel--fn" id="mnu-funciones" data-menu-panel hidden>
               <div class="mnu__inner">
-                <div class="mnu__cols mnu__cols--fn">
+                <div class="mnu__cols mnu__cols--fn mnu__cols--c${SRC.grupos.length}">
 ${cols}
                 </div>
               </div>
               <div class="mnu__foot">
                 <a class="mnu__all" href="/glosario/">Glosario de KPIs y términos${flechaMenu}</a>
                 <a class="mnu__all" href="/funciones/">Ver todas las funciones${flechaMenu}</a>
+              </div>
+            </div>`;
+
+  const CHEV = '<span class="mnu__chev" aria-hidden="true"><svg viewBox="0 0 10 6" width="10" height="6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1.5 5 4.75 9 1.5"/></svg></span>';
+  const itemsComo = comos.map((f) => `                  <li><a class="mnu__item mnu__item--ic" href="/como-funciona/${f.slug}/">
+                    ${icon(f.clave, 24)}
+                    <span class="mnu__txt"><span class="mnu__name">${esc(f.nombre)}</span>
+                    <span class="mnu__desc">${esc(plain(f.frase))}</span></span>
+                  </a></li>`).join('\n');
+  const panelComo = `<a class="mnu__trigger" href="/como-funciona/" data-menu="mnu-como">Cómo funciona${CHEV}</a>
+          <div class="mnu__panel mnu__panel--fn mnu__panel--como" id="mnu-como" data-menu-panel hidden>
+              <div class="mnu__inner">
+                <ul class="mnu__list">
+${itemsComo}
+                </ul>
+              </div>
+              <div class="mnu__foot">
+                <a class="mnu__all" href="/como-funciona/">Ver cómo funciona${flechaMenu}</a>
               </div>
             </div>`;
 
@@ -551,10 +658,10 @@ ${cols}
   if (a < 0 || b < 0 || b < a) throw new Error('header.html: no encuentro el panel de Funciones');
   const tail = h.slice(a, b);
   const end = tail.lastIndexOf('</div>') + '</div>'.length;
-  h = h.slice(0, a) + panel + h.slice(a + end);
+  h = h.slice(0, a) + panel + '\n\n          ' + panelComo + h.slice(a + end);
   fs.writeFileSync(hFile, h);
 
-  const list = features.map((f) => `            <a class="msub__item msub__item--ic" href="/funciones/${f.slug}/">
+  const list = funciones.map((f) => `            <a class="msub__item msub__item--ic" href="/funciones/${f.slug}/">
               ${icon(f.clave, 24)}
               <span class="msub__txt"><span class="msub__name">${esc(f.nombre)}</span>
               <span class="msub__desc">${esc(plain(f.frase))}</span></span>
@@ -570,10 +677,47 @@ ${list}
   if (s < 0) throw new Error('drawer.html: no encuentro la lista de Funciones');
   const e = d.indexOf('</div>', s) + '</div>'.length;
   d = d.slice(0, s) + msub + d.slice(e);
+
+  // El bloque de «Cómo funciona» en el drawer, justo antes de Integraciones.
+  const bandaComo = [0, 1].map(() => comos.map((f) => `<span>${esc(f.nombre)}</span>`).join('')).join('');
+  const listaComo = comos.map((f) => `            <a class="msub__item msub__item--ic" href="/como-funciona/${f.slug}/">
+              ${icon(f.clave, 24)}
+              <span class="msub__txt"><span class="msub__name">${esc(f.nombre)}</span>
+              <span class="msub__desc">${esc(plain(f.frase))}</span></span>
+            </a>`).join('\n');
+  const bloqueComo = `<div class="msub" data-msub>
+          <a class="mrow__link msub__head" href="/como-funciona/" data-msub-trigger data-msub-panel="msub-como" style="--i:2">
+            <span class="mrow__label">Cómo funciona</span>
+            <span class="msub__chev" aria-hidden="true"><svg viewBox="0 0 12 8" width="12" height="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 2 6 6.25 10.5 2"/></svg></span>
+            <span class="mrow__band" aria-hidden="true"><span class="mrow__track"><span class="mrow__inner" aria-hidden="true">${bandaComo}</span></span></span>
+          </a>
+          <div class="msub__list" id="msub-como" hidden>
+${listaComo}
+            <a class="msub__all" href="/como-funciona/">Ver cómo funciona${flechaMenu}</a>
+          </div>
+        </div>
+        `;
+  const ints = '<div class="msub" data-msub>\n          <a class="mrow__link msub__head" href="/integraciones.html"';
+  const viejo = d.indexOf('<div class="msub" data-msub>\n          <a class="mrow__link msub__head" href="/como-funciona/"');
+  if (viejo >= 0) d = d.slice(0, viejo) + d.slice(d.indexOf(ints));
+  const at = d.indexOf(ints);
+  if (at < 0) throw new Error('drawer.html: no encuentro el bloque de Integraciones');
+  d = d.slice(0, at) + bloqueComo + d.slice(at);
+  // La cinta de Funciones solo nombra funciones.
+  const bandaFn = [0, 1].map(() => funciones.map((f) => `<span>${esc(f.nombre)}</span>`).join('')).join('');
+  const hFn = d.indexOf('data-msub-panel="msub-funciones"');
+  const b0 = d.indexOf('<span class="mrow__inner" aria-hidden="true">', hFn);
+  const b1 = d.lastIndexOf('</span></span></span>', d.indexOf('\n', b0));
+  d = d.slice(0, b0) + '<span class="mrow__inner" aria-hidden="true">' + bandaFn + d.slice(b1);
   fs.writeFileSync(dFile, d);
 
   const fFile = path.join(SHELL, 'footer.html');
   let ft = fs.readFileSync(fFile, 'utf8');
+  if (ft.indexOf('href="/como-funciona/"') < 0) {
+    const anchor = '<a href="/funciones/">Funciones</a>';
+    ft = ft.split(anchor).join(anchor + '\n        <a href="/como-funciona/">Cómo funciona</a>');
+    fs.writeFileSync(fFile, ft);
+  }
   if (ft.indexOf('href="/glosario/"') < 0) {
     const anchor = '<a href="/funciones/">Funciones</a>';
     if (ft.indexOf(anchor) < 0) throw new Error('footer.html: no encuentro el enlace a Funciones');
@@ -600,7 +744,9 @@ function datosVentana() {
 function entradaMeta(o) {
   const crumbs = [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: '{{SITE}}/' }];
   if (o.slug) {
-    crumbs.push({ '@type': 'ListItem', position: 2, name: 'Funciones', item: '{{SITE}}/funciones/' });
+    crumbs.push(o.como
+      ? { '@type': 'ListItem', position: 2, name: 'Cómo funciona', item: '{{SITE}}/como-funciona/' }
+      : { '@type': 'ListItem', position: 2, name: 'Funciones', item: '{{SITE}}/funciones/' });
     crumbs.push({ '@type': 'ListItem', position: 3, name: o.nombre, item: '{{SITE}}' + o.path });
   } else {
     crumbs.push({ '@type': 'ListItem', position: 2, name: o.nombre, item: '{{SITE}}' + o.path });
@@ -661,9 +807,15 @@ function meta() {
     ogTitle: 'Funciones de Holdera — una pantalla, una página', ogDescription: INDICE.metaDescription,
     priority: '0.8',
   }));
-  for (const f of features) {
+  pages.push(entradaMeta({
+    file: 'como-funciona/index.html', path: '/como-funciona/', nombre: 'Cómo funciona',
+    title: INDICE_COMO.title, description: INDICE_COMO.metaDescription,
+    ogTitle: 'Cómo funciona Holdera — cada cifra con su origen', ogDescription: INDICE_COMO.metaDescription,
+    priority: '0.8',
+  }));
+  for (const f of funciones.concat(comos)) {
     pages.push(entradaMeta({
-      file: `funciones/${f.slug}/index.html`, path: `/funciones/${f.slug}/`, slug: f.slug, nombre: f.nombre,
+      file: `${base(f)}/${f.slug}/index.html`, path: `/${base(f)}/${f.slug}/`, slug: f.slug, nombre: f.nombre, como: esComo(f),
       title: f.title, description: f.metaDescription,
       ogTitle: `${f.nombre} — ${plain(f.frase)}`, ogDescription: f.metaDescription,
       priority: '0.7',
@@ -688,7 +840,7 @@ function meta() {
   // Fundido en meta.json: fuera las entradas viejas, dentro las nuevas, en el
   // hueco de la primera que había (o delante de integraciones.html).
   const m = JSON.parse(fs.readFileSync(META_JSON, 'utf8'));
-  const mine = (p) => p.file.startsWith('funciones/') || p.file.startsWith('glosario/');
+  const mine = (p) => p.file.startsWith('funciones/') || p.file.startsWith('como-funciona/') || p.file.startsWith('glosario/');
   let at = m.pages.findIndex(mine);
   if (at < 0) at = m.pages.findIndex((p) => p.file === 'integraciones.html');
   if (at < 0) at = m.pages.length;
@@ -715,11 +867,18 @@ function main() {
   const escritos = [];
   fs.writeFileSync(path.join(OUT_DIR, 'index.html'), paginaIndice(), 'utf8');
   escritos.push('funciones/index.html');
+  fs.mkdirSync(COMO_DIR, { recursive: true });
+  fs.writeFileSync(path.join(COMO_DIR, 'index.html'), paginaComo(), 'utf8');
+  escritos.push('como-funciona/index.html');
   features.forEach((f, i) => {
-    const dir = path.join(OUT_DIR, f.slug);
+    const dir = path.join(ROOT, base(f), f.slug);
     fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(path.join(dir, 'index.html'), paginaFuncion(f, i), 'utf8');
-    escritos.push(`funciones/${f.slug}/index.html`);
+    escritos.push(`${base(f)}/${f.slug}/index.html`);
+    // La URL vieja de una página que se mudó a «Cómo funciona» ya no se
+    // genera: la redirige el .htaccess (301).
+    const vieja = path.join(OUT_DIR, f.slug);
+    if (esComo(f) && fs.existsSync(vieja)) fs.rmSync(vieja, { recursive: true });
   });
   fs.writeFileSync(path.join(GL_DIR, 'index.html'), paginaGlosario(), 'utf8');
   escritos.push('glosario/index.html');

@@ -1682,8 +1682,9 @@ main {
   /* Anchos. Integraciones es un indice vertical deliberadamente compacto;
      los dos se recortan al viewport, que por debajo de 901px ya no existe
      (ahi la barra esconde .nav__links y manda el drawer). */
-  --mnu-w-fn: 780px;
+  --mnu-w-fn: 620px;
   --mnu-w-ints: 320px;
+  --mnu-w-como: 400px;
   /* Separacion entre el borde inferior de la barra y el panel. 6px: lo justo
      para que se lea como una pieza aparte sin abrir un pasillo por el que el
      raton se salga de camino al panel. */
@@ -1785,6 +1786,10 @@ main {
 .mnu__inner--ints { padding: 10px; }
 .mnu__cols { display: grid; }
 .mnu__cols--fn { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 24px; }
+/* Funciones con dos grupos (La operación, Lo comercial) desde que Trazabilidad,
+   Definiciones y Catálogo pasaron a «Cómo funciona» (28-09-2026). */
+.mnu__cols--fn.mnu__cols--c2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.mnu__panel--como { width: min(var(--mnu-w-como), calc(100vw - var(--gutter) * 2)); }
 
 .mnu__cat {
   margin: 0 0 8px; padding: 0 8px;

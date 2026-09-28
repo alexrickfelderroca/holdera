@@ -8,7 +8,7 @@
       "file": "funciones/index.html",
       "path": "/funciones/",
       "title": "Funciones del software hotelero | Holdera",
-      "description": "Las ocho pantallas de Holdera, una por página: qué KPIs enseña cada una, en qué términos, y su captura del panel demo.",
+      "description": "Las cinco pantallas de Holdera, una por página: qué KPIs enseña cada una, en qué términos, y su captura del panel demo.",
       "robots": "index, follow",
       "sitemap": {
         "priority": "0.8"
@@ -16,7 +16,7 @@
       "og": {
         "type": "website",
         "title": "Funciones de Holdera — una pantalla, una página",
-        "description": "Las ocho pantallas de Holdera, una por página: qué KPIs enseña cada una, en qué términos, y su captura del panel demo.",
+        "description": "Las cinco pantallas de Holdera, una por página: qué KPIs enseña cada una, en qué términos, y su captura del panel demo.",
         "image": "{{SITE}}/assets/seo/og-default.png",
         "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
@@ -26,7 +26,7 @@
           "@id": "{{SITE}}/funciones/#webpage",
           "url": "{{SITE}}/funciones/",
           "name": "Funciones del software hotelero | Holdera",
-          "description": "Las ocho pantallas de Holdera, una por página: qué KPIs enseña cada una, en qué términos, y su captura del panel demo.",
+          "description": "Las cinco pantallas de Holdera, una por página: qué KPIs enseña cada una, en qué términos, y su captura del panel demo.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },
@@ -59,6 +59,66 @@
               "position": 2,
               "name": "Funciones",
               "item": "{{SITE}}/funciones/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "como-funciona/index.html",
+      "path": "/como-funciona/",
+      "title": "Cómo funciona: trazabilidad y KPIs hoteleros | Holdera",
+      "description": "Cómo trabaja Holdera: cada cifra trazada hasta su registro, cada KPI con su definición y su fórmula, y el catálogo de 57 KPIs hoteleros.",
+      "robots": "index, follow",
+      "sitemap": {
+        "priority": "0.8"
+      },
+      "og": {
+        "type": "website",
+        "title": "Cómo funciona Holdera — cada cifra con su origen",
+        "description": "Cómo trabaja Holdera: cada cifra trazada hasta su registro, cada KPI con su definición y su fórmula, y el catálogo de 57 KPIs hoteleros.",
+        "image": "{{SITE}}/assets/seo/og-default.png",
+        "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
+      },
+      "graph": [
+        {
+          "@type": "WebPage",
+          "@id": "{{SITE}}/como-funciona/#webpage",
+          "url": "{{SITE}}/como-funciona/",
+          "name": "Cómo funciona: trazabilidad y KPIs hoteleros | Holdera",
+          "description": "Cómo trabaja Holdera: cada cifra trazada hasta su registro, cada KPI con su definición y su fórmula, y el catálogo de 57 KPIs hoteleros.",
+          "isPartOf": {
+            "@id": "{{SITE}}/#website"
+          },
+          "about": {
+            "@id": "{{SITE}}/#organization"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "{{SITE}}/assets/seo/og-default.png",
+            "width": 1200,
+            "height": 630
+          },
+          "breadcrumb": {
+            "@id": "{{SITE}}/como-funciona/#breadcrumb"
+          },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "{{SITE}}/como-funciona/#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "{{SITE}}/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Cómo funciona",
+              "item": "{{SITE}}/como-funciona/"
             }
           ]
         }
@@ -395,8 +455,8 @@
       ]
     },
     {
-      "file": "funciones/trazabilidad-de-cifras/index.html",
-      "path": "/funciones/trazabilidad-de-cifras/",
+      "file": "como-funciona/trazabilidad-de-cifras/index.html",
+      "path": "/como-funciona/trazabilidad-de-cifras/",
       "title": "Trazabilidad: cada cifra hasta su registro | Holdera",
       "description": "Cada KPI se abre en su fórmula, sus entradas, el registro del PMS del que sale y el dato en bruto tal como llegó.",
       "robots": "index, follow",
@@ -413,8 +473,8 @@
       "graph": [
         {
           "@type": "WebPage",
-          "@id": "{{SITE}}/funciones/trazabilidad-de-cifras/#webpage",
-          "url": "{{SITE}}/funciones/trazabilidad-de-cifras/",
+          "@id": "{{SITE}}/como-funciona/trazabilidad-de-cifras/#webpage",
+          "url": "{{SITE}}/como-funciona/trazabilidad-de-cifras/",
           "name": "Trazabilidad: cada cifra hasta su registro | Holdera",
           "description": "Cada KPI se abre en su fórmula, sus entradas, el registro del PMS del que sale y el dato en bruto tal como llegó.",
           "isPartOf": {
@@ -430,13 +490,13 @@
             "height": 630
           },
           "breadcrumb": {
-            "@id": "{{SITE}}/funciones/trazabilidad-de-cifras/#breadcrumb"
+            "@id": "{{SITE}}/como-funciona/trazabilidad-de-cifras/#breadcrumb"
           },
           "inLanguage": "es-ES"
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "{{SITE}}/funciones/trazabilidad-de-cifras/#breadcrumb",
+          "@id": "{{SITE}}/como-funciona/trazabilidad-de-cifras/#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
@@ -447,42 +507,42 @@
             {
               "@type": "ListItem",
               "position": 2,
-              "name": "Funciones",
-              "item": "{{SITE}}/funciones/"
+              "name": "Cómo funciona",
+              "item": "{{SITE}}/como-funciona/"
             },
             {
               "@type": "ListItem",
               "position": 3,
               "name": "Trazabilidad",
-              "item": "{{SITE}}/funciones/trazabilidad-de-cifras/"
+              "item": "{{SITE}}/como-funciona/trazabilidad-de-cifras/"
             }
           ]
         }
       ]
     },
     {
-      "file": "funciones/definiciones-acordadas/index.html",
-      "path": "/funciones/definiciones-acordadas/",
-      "title": "Definiciones de KPIs con tu convención | Holdera",
-      "description": "Cada KPI con su fórmula escrita. Ocupación sobre habitaciones físicas o sobre disponibles, sin OOO: eliges la convención de tu hotel y queda registrada.",
+      "file": "como-funciona/definiciones-acordadas/index.html",
+      "path": "/como-funciona/definiciones-acordadas/",
+      "title": "Definiciones de KPIs hoteleros, con su fórmula | Holdera",
+      "description": "Qué mide cada KPI hotelero y cómo se calcula: Occ, ADR, RevPAR, TRevPAR y el resto del catálogo. Donde hay más de una convención, eliges la de tu hotel.",
       "robots": "index, follow",
       "sitemap": {
         "priority": "0.7"
       },
       "og": {
         "type": "website",
-        "title": "Definiciones — Occ con o sin OOO: lo decides tú.",
-        "description": "Cada KPI con su fórmula escrita. Ocupación sobre habitaciones físicas o sobre disponibles, sin OOO: eliges la convención de tu hotel y queda registrada.",
+        "title": "Definiciones — Una definición y una fórmula por KPI.",
+        "description": "Qué mide cada KPI hotelero y cómo se calcula: Occ, ADR, RevPAR, TRevPAR y el resto del catálogo. Donde hay más de una convención, eliges la de tu hotel.",
         "image": "{{SITE}}/assets/seo/og-default.png",
         "imageAlt": "Holdera — software de operaciones para hoteles. Todo tu hotel en una pantalla, y cada cifra con su origen. holdera.es, Barcelona."
       },
       "graph": [
         {
           "@type": "WebPage",
-          "@id": "{{SITE}}/funciones/definiciones-acordadas/#webpage",
-          "url": "{{SITE}}/funciones/definiciones-acordadas/",
-          "name": "Definiciones de KPIs con tu convención | Holdera",
-          "description": "Cada KPI con su fórmula escrita. Ocupación sobre habitaciones físicas o sobre disponibles, sin OOO: eliges la convención de tu hotel y queda registrada.",
+          "@id": "{{SITE}}/como-funciona/definiciones-acordadas/#webpage",
+          "url": "{{SITE}}/como-funciona/definiciones-acordadas/",
+          "name": "Definiciones de KPIs hoteleros, con su fórmula | Holdera",
+          "description": "Qué mide cada KPI hotelero y cómo se calcula: Occ, ADR, RevPAR, TRevPAR y el resto del catálogo. Donde hay más de una convención, eliges la de tu hotel.",
           "isPartOf": {
             "@id": "{{SITE}}/#website"
           },
@@ -496,13 +556,13 @@
             "height": 630
           },
           "breadcrumb": {
-            "@id": "{{SITE}}/funciones/definiciones-acordadas/#breadcrumb"
+            "@id": "{{SITE}}/como-funciona/definiciones-acordadas/#breadcrumb"
           },
           "inLanguage": "es-ES"
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "{{SITE}}/funciones/definiciones-acordadas/#breadcrumb",
+          "@id": "{{SITE}}/como-funciona/definiciones-acordadas/#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
@@ -513,22 +573,22 @@
             {
               "@type": "ListItem",
               "position": 2,
-              "name": "Funciones",
-              "item": "{{SITE}}/funciones/"
+              "name": "Cómo funciona",
+              "item": "{{SITE}}/como-funciona/"
             },
             {
               "@type": "ListItem",
               "position": 3,
               "name": "Definiciones",
-              "item": "{{SITE}}/funciones/definiciones-acordadas/"
+              "item": "{{SITE}}/como-funciona/definiciones-acordadas/"
             }
           ]
         }
       ]
     },
     {
-      "file": "funciones/catalogo-de-metricas-hoteleras/index.html",
-      "path": "/funciones/catalogo-de-metricas-hoteleras/",
+      "file": "como-funciona/catalogo-de-metricas-hoteleras/index.html",
+      "path": "/como-funciona/catalogo-de-metricas-hoteleras/",
       "title": "Catálogo de 57 métricas hoteleras | Holdera",
       "description": "57 KPIs hoteleros con fórmula, unidad y fuente: qué se calcula con tu PMS y qué necesita contabilidad, POS o datos de mercado.",
       "robots": "index, follow",
@@ -545,8 +605,8 @@
       "graph": [
         {
           "@type": "WebPage",
-          "@id": "{{SITE}}/funciones/catalogo-de-metricas-hoteleras/#webpage",
-          "url": "{{SITE}}/funciones/catalogo-de-metricas-hoteleras/",
+          "@id": "{{SITE}}/como-funciona/catalogo-de-metricas-hoteleras/#webpage",
+          "url": "{{SITE}}/como-funciona/catalogo-de-metricas-hoteleras/",
           "name": "Catálogo de 57 métricas hoteleras | Holdera",
           "description": "57 KPIs hoteleros con fórmula, unidad y fuente: qué se calcula con tu PMS y qué necesita contabilidad, POS o datos de mercado.",
           "isPartOf": {
@@ -562,13 +622,13 @@
             "height": 630
           },
           "breadcrumb": {
-            "@id": "{{SITE}}/funciones/catalogo-de-metricas-hoteleras/#breadcrumb"
+            "@id": "{{SITE}}/como-funciona/catalogo-de-metricas-hoteleras/#breadcrumb"
           },
           "inLanguage": "es-ES"
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "{{SITE}}/funciones/catalogo-de-metricas-hoteleras/#breadcrumb",
+          "@id": "{{SITE}}/como-funciona/catalogo-de-metricas-hoteleras/#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
@@ -579,14 +639,14 @@
             {
               "@type": "ListItem",
               "position": 2,
-              "name": "Funciones",
-              "item": "{{SITE}}/funciones/"
+              "name": "Cómo funciona",
+              "item": "{{SITE}}/como-funciona/"
             },
             {
               "@type": "ListItem",
               "position": 3,
               "name": "Catálogo de métricas",
-              "item": "{{SITE}}/funciones/catalogo-de-metricas-hoteleras/"
+              "item": "{{SITE}}/como-funciona/catalogo-de-metricas-hoteleras/"
             }
           ]
         }

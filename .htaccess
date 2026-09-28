@@ -90,6 +90,14 @@ RedirectMatch 404 ^/.+\.md$
 # ErrorDocument 404 y se pierde el enlace que ya tuviera fuera.
 Redirect 301 /panel.html /panel/
 
+# ─────────────────────────────── /funciones/* -> /como-funciona/* (28-09-2026)
+# Trazabilidad, Definiciones y Catálogo dejaron de ser «funciones»: explican
+# cómo trabaja el producto y viven en /como-funciona/. Las URL viejas estaban
+# en el sitemap y en los menús de todas las páginas.
+Redirect 301 /funciones/trazabilidad-de-cifras/ /como-funciona/trazabilidad-de-cifras/
+Redirect 301 /funciones/definiciones-acordadas/ /como-funciona/definiciones-acordadas/
+Redirect 301 /funciones/catalogo-de-metricas-hoteleras/ /como-funciona/catalogo-de-metricas-hoteleras/
+
 
 # ──────────────────────────────────────────────────────────────────── cache
 # Por defecto el sitio se sirve con `no-store, no-cache, must-revalidate`, o

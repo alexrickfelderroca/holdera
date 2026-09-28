@@ -21,8 +21,7 @@
 
   "grupos": [
     { "id": "operacion", "nombre": "La operación", "claves": ["hoy", "habitaciones", "housekeeping"] },
-    { "id": "comercial", "nombre": "Lo comercial", "claves": ["revenue", "reservas"] },
-    { "id": "origen", "nombre": "La cifra y su origen", "claves": ["trazabilidad", "definiciones", "catalogo"] }
+    { "id": "comercial", "nombre": "Lo comercial", "claves": ["revenue", "reservas"] }
   ],
 
   "features": [
@@ -162,23 +161,24 @@
       "clave": "definiciones",
       "orden": 7,
       "nombre": "Definiciones",
-      "titulo": "Definiciones: la convención de tu hotel",
-      "frase": "[[Occ]] con o sin [[OOO]]: lo decides tú.",
-      "resumen": "Cada [[KPI]] con su fórmula escrita. Donde hay dos convenciones, como la [[Occ]] con o sin [[OOO]], eliges la de tu hotel y queda registrada.",
-      "encuadre": "Occupancy: dos convenciones",
+      "titulo": "Definiciones: qué mide cada [[KPI]] y cómo se calcula",
+      "frase": "Una definición y una fórmula por [[KPI]].",
+      "resumen": "Cada [[KPI]] tiene su definición y su fórmula escritas, así todo el equipo lee la misma cifra de la misma forma. Donde hay más de una manera de calcularlo, como la [[Occ]] con o sin [[OOO]], eliges la de tu hotel y queda registrada.",
+      "encuadre": "Una definición por KPI",
       "puntos": [
-        { "t": "[[Occ]] sobre habitaciones físicas", "d": "Ocupadas ÷ físicas × 100." },
-        { "t": "[[Occ]] sobre habitaciones disponibles", "d": "Ocupadas ÷ (físicas − [[OOO]]) × 100." },
-        { "t": "La convención de tu hotel", "d": "La eliges tú y queda escrita en el catálogo." }
+        { "t": "[[Occ]]", "d": "Habitaciones vendidas ÷ [[habitaciones disponibles|disponibles]] × 100. Con o sin [[OOO]]: lo eliges tú." },
+        { "t": "[[ADR]]", "d": "Ingresos de habitaciones ÷ habitaciones vendidas." },
+        { "t": "[[RevPAR]]", "d": "Ingresos de habitaciones ÷ habitaciones disponibles." },
+        { "t": "[[TRevPAR]]", "d": "Ingresos totales del hotel ÷ habitaciones disponibles." }
       ],
-      "terminos": ["fisicas", "disponibles", "operational_occupancy", "oos"],
-      "pantalla": "Métricas · Occupancy",
-      "enlace": "/panel/metrics/occupancy_rate/",
-      "enlaceEtiqueta": "Ver una definición en el panel demo",
-      "captura": "definiciones",
+      "terminos": ["fisicas", "vendidas"],
+      "pantalla": "Métricas",
+      "enlace": "/panel/metrics/",
+      "enlaceEtiqueta": "Ver las definiciones en el panel demo",
+      "captura": "catalogo",
       "slug": "definiciones-acordadas",
-      "title": "Definiciones de KPIs con tu convención | Holdera",
-      "metaDescription": "Cada KPI con su fórmula escrita. Ocupación sobre habitaciones físicas o sobre disponibles, sin OOO: eliges la convención de tu hotel y queda registrada."
+      "title": "Definiciones de KPIs hoteleros, con su fórmula | Holdera",
+      "metaDescription": "Qué mide cada KPI hotelero y cómo se calcula: Occ, ADR, RevPAR, TRevPAR y el resto del catálogo. Donde hay más de una convención, eliges la de tu hotel."
     },
     {
       "clave": "catalogo",
@@ -207,5 +207,13 @@
   "pendiente": [
     "Las capturas de assets/img/funciones/ son del panel demo en el estado de hoy. Si el panel cambia, se rehacen con node _build/funciones-shots.js (servidor local en marcha) y se vuelve a pasar el generador.",
     "El catálogo de 57 KPI de /glosario/ sale del catálogo del producto (panel/metrics/<id>/). Si el producto añade o renombra una métrica, se actualiza glosario.json con el mismo id."
-  ]
+  ],
+
+  "comoFunciona": {
+    "id": "como-funciona",
+    "nombre": "Cómo funciona",
+    "ruta": "/como-funciona/",
+    "nota": "No son funciones del producto: explican cómo trabaja. Nota de la reunión del 28-09-2026.",
+    "claves": ["trazabilidad", "definiciones", "catalogo"]
+  }
 }
