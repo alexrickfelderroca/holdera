@@ -217,6 +217,7 @@
 .team__note { margin-top: clamp(32px, 6vw, 96px); padding-top: 24px; border-top: 1px solid var(--sh-border); }
 .team__note p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--sh-muted); max-width: 40ch; }
 .team__note p + p { margin-top: 12px; }
+.team__note .team__lead { font-size: clamp(20px, 1.8vw, 24px); line-height: 1.2; letter-spacing: -0.02em; color: var(--sh-text); }
 
 /* ---- closing CTA band: copy left, actions bottom-right ---- */
 .ctaband { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px clamp(32px, 5vw, 80px); align-items: end; }

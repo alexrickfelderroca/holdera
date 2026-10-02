@@ -370,7 +370,6 @@ ${grupos.map(bloque).join('\n\n')}
 
         <div class="pgi-foot reveal" data-reveal="up">
           <p class="pgi-foot__legal">Las marcas y los logotipos pertenecen a sus respectivos titulares. Aparecer en esta lista no implica acuerdo comercial, patrocinio ni respaldo.</p>
-          <p class="pgi-foot__todo">Alcance y estado de cada conexión: <span data-placeholder="integraciones-alcance">[Alcance por confirmar]</span></p>
         </div>
       </div>
     </section>
